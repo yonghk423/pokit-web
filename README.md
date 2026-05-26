@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# pokit-web
 
-## Getting Started
+POKIT iOS 앱 **홍보용** 원페이지 랜딩 (Next.js + TypeScript)
 
-First, run the development server:
+## 페이지
+
+| 경로 | 설명 |
+|------|------|
+| `/` | 원페이지 랜딩 (Hero → 문제/해결 → 사용 방법 → 기능 → 프라이버시 → FAQ → 다운로드) |
+| `/privacy` | 개인정보 처리방침 (초안) |
+| `/support` | 지원·문의 안내 |
+
+## 실행
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev    # http://localhost:3000
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 수정 위치
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **카피·링크**: `src/content/landing.ts` (App Store URL, 지원 메일 등)
+- **랜딩 UI**: `src/components/landing/landing-page.tsx`
+- **스타일**: `src/app/globals.css`
+- **SEO 메타**: `src/app/layout.tsx`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 출시 전 체크
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] `site.appStoreUrl` — 실제 App Store 앱 ID
+- [ ] `site.supportEmail` — 앱 고객센터와 동일 주소
+- [ ] 히어로·기능 섹션 — 실제 앱 스크린샷으로 교체
+- [ ] `public/sitemap.xml` · `robots.txt` — 확정 도메인 반영
