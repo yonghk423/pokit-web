@@ -1,33 +1,42 @@
 # pokit-web
 
-POKIT iOS 앱 **홍보용** 원페이지 랜딩 (Next.js + TypeScript)
+Next.js + TypeScript 프로젝트. **새 컨셉으로 처음부터 다시 시작하는 상태**입니다.
 
-## 페이지
+## 현재 구조
 
 | 경로 | 설명 |
 |------|------|
-| `/` | 원페이지 랜딩 (Hero → 문제/해결 → 사용 방법 → 기능 → 프라이버시 → FAQ → 다운로드) |
-| `/privacy` | 개인정보 처리방침 (초안) |
-| `/support` | 지원·문의 안내 |
+| `/` | 빈 슬레이트 홈 |
+| `/privacy` | 개인정보 처리방침 (임시) |
+| `/support` | 지원 (임시) |
 
 ## 실행
 
 ```bash
-npm run dev    # http://localhost:3000
+cp .env.example .env.local   # 최초 1회 (키는 .env.local에만)
+npm run dev
 npm run build
-npm start
 ```
+
+## 환경 변수 (Unsplash)
+
+로컬 `.env.local`에 Unsplash 키를 둡니다. Git에는 올라가지 않습니다.
+
+| 변수 | 설명 |
+|------|------|
+| `UNSPLASH_ACCESS_KEY` | API Access Key |
+| `UNSPLASH_SECRET_KEY` | Secret Key (서버 전용) |
+| `UNSPLASH_APPLICATION_ID` | Application ID |
+
+Vercel 배포 시 **Settings → Environment Variables**에 동일한 이름으로 등록하세요.
 
 ## 수정 위치
 
-- **카피·링크**: `src/content/landing.ts` (App Store URL, 지원 메일 등)
-- **랜딩 UI**: `src/components/landing/landing-page.tsx`
+- **사이트 이름·URL·이메일**: `src/config/site.ts`
+- **홈**: `src/app/page.tsx`
 - **스타일**: `src/app/globals.css`
-- **SEO 메타**: `src/app/layout.tsx`
 
-## 출시 전 체크
+## 정리된 항목
 
-- [ ] `site.appStoreUrl` — 실제 App Store 앱 ID
-- [ ] `site.supportEmail` — 앱 고객센터와 동일 주소
-- [ ] 히어로·기능 섹션 — 실제 앱 스크린샷으로 교체
-- [ ] `public/sitemap.xml` · `robots.txt` — 확정 도메인 반영
+이전에 있던 가이드, 랜딩 컴포넌트, 기사 이미지, 콘텐츠 파일은 모두 제거했습니다.  
+Unsplash API 키(`.env.local`)는 이후 이미지 연동을 위해 **유지**해 두었습니다.

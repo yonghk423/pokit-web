@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
+import { site } from "@/config/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "POKIT — 우선순위로 하루를 짜는 iOS 집중 앱",
-    template: "%s | POKIT",
+    default: `${site.name} — 일상 웰니스 가이드`,
+    template: `%s | ${site.name}`,
   },
-  description:
-    "데일리·위클리·먼슬리 투두와 루틴, 잠금화면 빠른 메모, 위클리·먼슬리 히스토리까지. 우선순위로 하루를 짜는 iPhone 전용 집중 앱.",
+  description: "일상의 작은 루틴으로 웰니스를 만드는 가이드와 앱.",
+  icons: {
+    icon: "/pokitstory.png",
+    apple: "/pokitstory.png",
+  },
   openGraph: {
-    title: "POKIT — 우선순위로 하루를 짜는 iOS 집중 앱",
-    description:
-      "데일리 루틴·위클리·먼슬리 계획·히스토리·잠금화면 빠른 메모. iPhone 전용 · 기기 로컬 저장.",
+    title: site.name,
+    description: "일상의 작은 루틴으로 웰니스를 만드는 가이드와 앱.",
     locale: "ko_KR",
     type: "website",
   },
@@ -24,6 +27,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
