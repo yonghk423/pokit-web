@@ -3,6 +3,7 @@ export const site = {
   name: "POKIT",
   tagline: "",
   siteUrl: "https://pokitstory.com",
-  supportEmail: "support@pokit.app",
-  appStoreUrl: "https://apps.apple.com/app/id0000000000",
+  supportEmail: "pokit.app.help@gmail.com",
+  appStoreId: "6762331629",
+  appStoreUrl: "https://apps.apple.com/kr/app/id6762331629",
 } as const;

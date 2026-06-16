@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -21,7 +22,9 @@ export default function PrivacyPage() {
         </p>
         <h2>문의</h2>
         <p>
-          <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>
+          <SupportEmailLink className="support-email-link">
+            {site.supportEmail}
+          </SupportEmailLink>
         </p>
         <Link href="/" className="back-link">← 홈으로</Link>
       </main>

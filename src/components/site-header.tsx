@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 import { categories } from "@/content/home";
 
@@ -7,11 +8,6 @@ export function SiteHeader() {
   return (
     <header className="masthead">
       <div className="masthead__utility mono-container">
-        <nav className="masthead__utility-left" aria-label="서비스 메뉴">
-          <a href={site.appStoreUrl}>Subscribe</a>
-          <span aria-hidden="true">|</span>
-          <Link href="/support">Log in</Link>
-        </nav>
         <p>Daily pocket intelligence for better routines</p>
       </div>
 
@@ -25,7 +21,7 @@ export function SiteHeader() {
         </Link>
         <div className="masthead__actions">
           <a href="#app">App</a>
-          <a href={`mailto:${site.supportEmail}`}>Contact</a>
+          <SupportEmailLink>Contact</SupportEmailLink>
         </div>
       </div>
 

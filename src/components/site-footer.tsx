@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 
 export function SiteFooter() {
@@ -17,9 +18,10 @@ export function SiteFooter() {
           <h2>Sections</h2>
           <ul>
             <li><a href="#affairs">Affairs</a></li>
-            <li><a href="#wellness">Wellness</a></li>
+            <li><a href="#spotlight">Editor&apos;s Pick</a></li>
+            <li><a href="#radio">Radio</a></li>
             <li><a href="#design">Design</a></li>
-            <li><a href="#shop">Shop</a></li>
+            <li><a href="#wellness">Wellness</a></li>
           </ul>
         </div>
         <div>
@@ -27,12 +29,16 @@ export function SiteFooter() {
           <ul>
             <li><Link href="/privacy">개인정보 처리방침</Link></li>
             <li><Link href="/support">지원</Link></li>
-            <li><a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a></li>
+            <li>
+              <SupportEmailLink className="site-footer__email-link">
+                {site.supportEmail}
+              </SupportEmailLink>
+            </li>
           </ul>
         </div>
       </div>
       <p className="site-footer__copy mono-container">
-        © {new Date().getFullYear()} {site.name}. Unsplash photography used for editorial mockups.
+        © {new Date().getFullYear()} {site.name}. All rights reserved.
       </p>
     </footer>
   );

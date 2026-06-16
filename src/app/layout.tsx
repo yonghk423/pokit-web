@@ -18,6 +18,9 @@ export const metadata: Metadata = {
     locale: "ko_KR",
     type: "website",
   },
+  other: {
+    "apple-itunes-app": `app-id=${site.appStoreId}`,
+  },
 };
 
 export default function RootLayout({

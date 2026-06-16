@@ -1,15 +1,8 @@
+import { AppDownload } from "@/components/app-download";
 import { ArticleCard } from "@/components/article-card";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { site } from "@/config/site";
-import {
-  cityGuides,
-  designAwards,
-  featuredArticle,
-  latestRadio,
-  leadStories,
-  shopItems,
-} from "@/content/home";
+import { getHomePageContent } from "@/sanity/lib/fetch";
 
 function SectionHeading({ kicker, title }: { kicker?: string; title: string }) {
   return (
@@ -46,7 +39,22 @@ function RadioWidget() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const {
+    featuredArticle,
+    leadStories,
+    spotlightRow,
+    spotlightRowSection,
+    radioLatestSection,
+    radioArticles,
+    designAwardsSection,
+    designAwards,
+    cityGuidesSection,
+    cityGuides,
+  } = await getHomePageContent();
+
+  const hasTopStories = featuredArticle || leadStories.length > 0;
+
   return (
     <>
       <SiteHeader />
@@ -58,78 +66,104 @@ export default function Home() {
 
         <RadioWidget />
 
-        <section id="affairs" className="top-stories mono-container">
-          <div className="top-stories__lead">
-            <ArticleCard article={featuredArticle} variant="feature" />
-          </div>
-          <div className="top-stories__rail">
-            {leadStories.map((article) => (
-              <ArticleCard key={article.slug} article={article} variant="compact" />
-            ))}
-          </div>
-        </section>
+        {hasTopStories && (
+          <section id="affairs" className="top-stories mono-container">
+            {featuredArticle && (
+              <div className="top-stories__lead">
+                <ArticleCard article={featuredArticle} variant="feature" />
+              </div>
+            )}
+            {leadStories.length > 0 && (
+              <div className="top-stories__rail">
+                {leadStories.map((article) => (
+                  <ArticleCard
+                    key={article.slug}
+                    article={article}
+                    variant="compact"
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
 
-        <section className="below-fold mono-container">
-          <div className="below-fold__grid">
-            {cityGuides.slice(0, 3).map((article) => (
-              <ArticleCard key={article.slug} article={article} variant="vertical" />
-            ))}
-          </div>
-        </section>
-
-        <section className="radio-latest mono-container">
-          <SectionHeading title="Latest from POKIT radio" />
-          <div className="radio-latest__grid">
-            {latestRadio.map((item) => (
-              <article key={item.title} className="episode-card">
-                <p>{item.show}</p>
-                <h3>{item.title}</h3>
-                <span>{item.length}</span>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section id="design" className="editorial-section mono-container">
-          <SectionHeading kicker="Design Awards" title="더 나은 하루를 만드는 작은 디자인" />
-          <div className="editorial-grid editorial-grid--3">
-            {designAwards.map((article) => (
-              <ArticleCard key={article.slug} article={article} variant="vertical" />
-            ))}
-          </div>
-        </section>
-
-        <section id="wellness" className="tinted-section">
-          <div className="mono-container">
-            <SectionHeading kicker="City Guides" title="도시의 리듬으로 배우는 웰니스" />
-            <div className="city-grid">
-              {cityGuides.map((article) => (
-                <ArticleCard key={article.slug} article={article} variant="vertical" />
+        {spotlightRow.length > 0 && (
+          <section id="spotlight" className="below-fold mono-container">
+            <SectionHeading
+              kicker={spotlightRowSection?.kicker}
+              title={spotlightRowSection?.title ?? "지금 주목할 이야기"}
+            />
+            <div className="below-fold__grid">
+              {spotlightRow.map((article) => (
+                <ArticleCard
+                  key={article.slug}
+                  article={article}
+                  variant="vertical"
+                />
               ))}
             </div>
-          </div>
+          </section>
+        )}
+
+        <section id="radio" className="radio-latest mono-container">
+          <SectionHeading
+            kicker={radioLatestSection?.kicker}
+            title={radioLatestSection?.title ?? "Latest from POKIT radio"}
+          />
+          {radioArticles.length > 0 ? (
+            <div className="radio-latest__grid">
+              {radioArticles.map((article) => (
+                <ArticleCard
+                  key={article.slug}
+                  article={article}
+                  variant="vertical"
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="section-empty">Home Page → POKIT Radio에서 기사 3개를 연결해주세요.</p>
+          )}
         </section>
 
-        <section id="shop" className="shop-section mono-container">
-          <SectionHeading kicker="From the POKIT shop" title="루틴을 돕는 작은 도구들" />
-          <div className="shop-grid">
-            {shopItems.map((item) => (
-              <article key={item.name} className="product-card">
-                <p>{item.brand}</p>
-                <h3>{item.name}</h3>
-                <span>{item.price}</span>
-              </article>
-            ))}
-          </div>
-        </section>
+        {designAwards.length > 0 && (
+          <section id="design" className="editorial-section mono-container">
+            <SectionHeading
+              kicker={designAwardsSection?.kicker}
+              title={designAwardsSection?.title ?? "Design Awards"}
+            />
+            <div className="editorial-grid editorial-grid--3">
+              {designAwards.map((article) => (
+                <ArticleCard
+                  key={article.slug}
+                  article={article}
+                  variant="vertical"
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
-        <section id="app" className="newsletter-block mono-container">
-          <div>
-            <p>Want more stories like these in your pocket?</p>
-            <h2>POKIT 앱에서 루틴을 기록하고, 하루를 정리하세요.</h2>
-          </div>
-          <a href={site.appStoreUrl}>Download the app</a>
-        </section>
+        {cityGuides.length > 0 && (
+          <section id="wellness" className="tinted-section">
+            <div className="mono-container">
+              <SectionHeading
+                kicker={cityGuidesSection?.kicker}
+                title={cityGuidesSection?.title ?? "City Guides"}
+              />
+              <div className="city-grid">
+                {cityGuides.map((article) => (
+                  <ArticleCard
+                    key={article.slug}
+                    article={article}
+                    variant="vertical"
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <AppDownload />
       </main>
 
       <SiteFooter />

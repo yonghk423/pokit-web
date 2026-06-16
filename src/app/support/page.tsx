@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -20,7 +21,14 @@ export default function SupportPage() {
         </p>
         <h2>이메일</h2>
         <p>
-          <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>
+          <SupportEmailLink className="support-email-link">
+            {site.supportEmail}
+          </SupportEmailLink>
+        </p>
+        <p>
+          <SupportEmailLink className="support-email-link support-email-link--button">
+            메일 보내기
+          </SupportEmailLink>
         </p>
         <Link href="/" className="back-link">← 홈으로</Link>
       </main>
