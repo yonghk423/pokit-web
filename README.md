@@ -5,7 +5,6 @@ Next.js + Sanity CMS 매거진 사이트.
 ## 실행
 
 ```bash
-cp .env.example .env.local   # Sanity project ID 입력
 npm install
 npm run dev
 ```
@@ -22,9 +21,11 @@ npm run dev
 npx sanity@latest init
 ```
 
-기존 Next.js 프로젝트에 연동 → Studio embed `/studio` → `.env.local`에 project ID 추가.
+기존 Next.js 프로젝트에 연동 → Studio embed `/studio`.
 
-또는 [sanity.io/manage](https://www.sanity.io/manage)에서 프로젝트 생성 후 ID를 `.env.local`에 직접 입력.
+Sanity project ID는 `src/sanity/env.ts`에 기본값으로 설정되어 있습니다. 로컬에서 덮어쓰려면 `.env.local`을 사용하세요.
+
+또는 [sanity.io/manage](https://www.sanity.io/manage)에서 프로젝트를 확인할 수 있습니다.
 
 3. CORS 허용:
 
@@ -36,28 +37,11 @@ npx sanity cors add https://www.pokitstory.com
 
 4. Studio(`/studio`)에서 **Home Page** singleton과 **Article** 문서 생성·발행
 
-## Vercel 배포 (중요)
+## Vercel 배포
 
-`NEXT_PUBLIC_*` 변수는 **빌드 시점**에 코드에 박힙니다. Vercel 대시보드 → Project → Settings → Environment Variables에 아래를 등록한 뒤 **반드시 Redeploy** 하세요.
+Sanity project ID는 `src/sanity/env.ts` 기본값으로 동작합니다. Vercel Environment Variables는 선택 사항입니다(덮어쓰기용).
 
-| 변수 | 값 |
-|------|-----|
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | `p1a0jtm8` |
-| `NEXT_PUBLIC_SANITY_DATASET` | `production` |
-
-배포 후 홈에 기사 섹션이 보이고 `cdn.sanity.io` 이미지가 로드되어야 합니다. env 없이 배포하면 기사·커버 이미지가 전부 비어 있습니다.
-
-Sanity env가 없으면 홈은 빈 상태로 렌더됩니다.
-
-## 환경 변수
-
-| 변수 | 설명 |
-|------|------|
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity 프로젝트 ID |
-| `NEXT_PUBLIC_SANITY_DATASET` | dataset (기본: `production`) |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | API 버전 (기본: `2026-05-15`) |
-
-Vercel 배포 시 Environment Variables에 동일하게 등록하세요.
+배포 후 홈에 기사 섹션과 `cdn.sanity.io` 이미지가 보여야 합니다.
 
 ## 구조
 
