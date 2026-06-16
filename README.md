@@ -31,11 +31,23 @@ npx sanity@latest init
 ```bash
 npx sanity cors add http://localhost:3000
 npx sanity cors add https://pokitstory.com
+npx sanity cors add https://www.pokitstory.com
 ```
 
 4. Studio(`/studio`)에서 **Home Page** singleton과 **Article** 문서 생성·발행
 
-Sanity env가 없으면 홈은 `src/content/home.ts` fallback을 사용합니다.
+## Vercel 배포 (중요)
+
+`NEXT_PUBLIC_*` 변수는 **빌드 시점**에 코드에 박힙니다. Vercel 대시보드 → Project → Settings → Environment Variables에 아래를 등록한 뒤 **반드시 Redeploy** 하세요.
+
+| 변수 | 값 |
+|------|-----|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | `p1a0jtm8` |
+| `NEXT_PUBLIC_SANITY_DATASET` | `production` |
+
+배포 후 홈에 기사 섹션이 보이고 `cdn.sanity.io` 이미지가 로드되어야 합니다. env 없이 배포하면 기사·커버 이미지가 전부 비어 있습니다.
+
+Sanity env가 없으면 홈은 빈 상태로 렌더됩니다.
 
 ## 환경 변수
 
