@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { articlePath } from "@/lib/article-path";
 import { isSanityConfigured } from "@/sanity/env";
 import { urlForImage } from "@/sanity/image";
 import type { ArticleCardData } from "@/sanity/types";
@@ -36,7 +37,7 @@ export function ArticleCard({
         <figure className="article-card__figure">
           {imageUrl ? (
             <Link
-              href={`/articles/${article.slug}`}
+              href={articlePath(article.slug)}
               className="article-card__media"
               aria-label={article.title}
             >
@@ -56,7 +57,7 @@ export function ArticleCard({
             </Link>
           ) : (
             <Link
-              href={`/articles/${article.slug}`}
+              href={articlePath(article.slug)}
               className="article-card__media article-card__media--placeholder"
               aria-label={article.title}
             >
@@ -70,7 +71,7 @@ export function ArticleCard({
           <p className="article-card__kicker">{article.kicker}</p>
         )}
         <h3 className="article-card__title">
-          <Link href={`/articles/${article.slug}`}>{article.title}</Link>
+          <Link href={articlePath(article.slug)}>{article.title}</Link>
         </h3>
         {article.description && variant === "feature" && (
           <p className="article-card__desc">{article.description}</p>

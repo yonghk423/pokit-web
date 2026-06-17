@@ -15,8 +15,18 @@ export const article = defineType({
       name: "slug",
       title: "Slug",
       type: "slug",
+      description:
+        "URL 경로. 영문 소문자, 숫자, 하이픈(-)만 사용 (예: balanced-eating-out). 공백·한글 금지.",
       options: { source: "title", maxLength: 96 },
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().custom((value) => {
+          const current = (value as { current?: string } | undefined)?.current;
+          if (!current) return true;
+          if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(current)) {
+            return "영문 소문자, 숫자, 하이픈(-)만 사용하세요. (예: morning-10min-ritual)";
+          }
+          return true;
+        }),
     }),
     defineField({
       name: "kicker",

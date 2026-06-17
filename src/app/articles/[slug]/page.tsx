@@ -16,6 +16,8 @@ import type { ArticleDocument } from "@/sanity/types";
 
 const fetchOptions = { next: { revalidate: 60 } };
 
+export const dynamicParams = true;
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -39,7 +41,8 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
   const article = await client.fetch<ArticleDocument | null>(
     ARTICLE_QUERY,
     { slug },
@@ -103,7 +106,8 @@ export async function generateMetadata({ params }: Props) {
     return { title: "Article" };
   }
 
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
   const article = await client.fetch<ArticleDocument | null>(
     ARTICLE_QUERY,
     { slug },
