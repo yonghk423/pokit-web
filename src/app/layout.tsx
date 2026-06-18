@@ -8,10 +8,6 @@ export const metadata: Metadata = {
     template: `%s | ${site.name}`,
   },
   description: "일상의 작은 루틴으로 웰니스를 만드는 가이드와 앱.",
-  icons: {
-    icon: "/pokitstory.png",
-    apple: "/pokitstory.png",
-  },
   verification: {
     google: "8seF3--uVP-BHV8H6FqZXTdkKXNxWqocHU5lou2eLUI",
   },
