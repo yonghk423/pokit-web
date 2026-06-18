@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { SiteFooter } from "@/components/site-footer";
+import { articlePath } from "@/lib/article-path";
 import { SiteHeader } from "@/components/site-header";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
@@ -101,7 +103,7 @@ export default async function ArticlePage({ params }: Props) {
   );
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!isSanityConfigured() || !client) {
     return { title: "Article" };
   }
@@ -118,8 +120,31 @@ export async function generateMetadata({ params }: Props) {
     return { title: "Article not found" };
   }
 
+  const coverImage = article.coverImage
+    ? urlForImage(article.coverImage).width(1200).height(630).fit("crop").url()
+    : undefined;
+
   return {
-    title: `${article.title} | POKIT`,
+    title: article.title,
     description: article.description,
+    alternates: {
+      canonical: articlePath(slug),
+    },
+    openGraph: {
+      title: article.title,
+      description: article.description,
+      type: "article",
+      publishedTime: article.publishedAt,
+      locale: "ko_KR",
+      images: coverImage
+        ? [{ url: coverImage, alt: article.imageAlt }]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.description,
+      images: coverImage ? [coverImage] : undefined,
+    },
   };
 }

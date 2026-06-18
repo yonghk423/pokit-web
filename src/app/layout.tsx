@@ -3,6 +3,7 @@ import { site } from "@/config/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.siteUrl),
   title: {
     default: `${site.name} — 일상 웰니스 가이드`,
     template: `%s | ${site.name}`,

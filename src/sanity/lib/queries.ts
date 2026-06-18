@@ -30,3 +30,8 @@ export const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
 export const ARTICLE_SLUGS_QUERY = `*[_type == "article" && defined(slug.current)]{
   "slug": slug.current
 }`;
+
+export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && defined(slug.current)]{
+  "slug": slug.current,
+  publishedAt
+}`;
