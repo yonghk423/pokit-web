@@ -20,6 +20,7 @@ export function SiteHeader() {
           <span>{site.name}</span>
         </Link>
         <div className="masthead__actions">
+          <Link href="/articles">모든 이야기</Link>
           <a href="#app">App</a>
           <SupportEmailLink>Contact</SupportEmailLink>
         </div>

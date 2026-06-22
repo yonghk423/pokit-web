@@ -1,17 +1,14 @@
+import Link from "next/link";
+
 import { AppDownload } from "@/components/app-download";
-import { ArticleCard } from "@/components/article-card";
+import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
+import { ArticleSectionCarousel } from "@/components/article-section-carousel";
+import { SectionHeading } from "@/components/section-heading";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { getHomePageContent } from "@/sanity/lib/fetch";
-
-function SectionHeading({ kicker, title }: { kicker?: string; title: string }) {
-  return (
-    <header className="section-heading">
-      {kicker && <p>{kicker}</p>}
-      <h2>{title}</h2>
-    </header>
-  );
-}
+import { articlesArchiveHref } from "@/sanity/lib/articles";
+import { getHomePageWithCarousels } from "@/sanity/lib/fetch";
+import { homeSections } from "@/content/home";
 
 function RadioWidget() {
   return (
@@ -41,19 +38,19 @@ function RadioWidget() {
 
 export default async function Home() {
   const {
-    featuredArticle,
-    leadStories,
-    spotlightRow,
+    affairsHero,
+    affairsRail,
     spotlightRowSection,
+    spotlightCarousel,
     radioLatestSection,
-    radioArticles,
+    radioCarousel,
     designAwardsSection,
-    designAwards,
+    designCarousel,
     cityGuidesSection,
-    cityGuides,
-  } = await getHomePageContent();
+    cityCarousel,
+  } = await getHomePageWithCarousels();
 
-  const hasTopStories = featuredArticle || leadStories.length > 0;
+  const hasTopStories = affairsHero.length > 0 || affairsRail.length > 0;
 
   return (
     <>
@@ -68,100 +65,108 @@ export default async function Home() {
 
         {hasTopStories && (
           <section id="affairs" className="top-stories mono-container">
-            {featuredArticle && (
-              <div className="top-stories__lead">
-                <ArticleCard article={featuredArticle} variant="feature" />
-              </div>
-            )}
-            {leadStories.length > 0 && (
-              <div className="top-stories__rail">
-                {leadStories.map((article) => (
-                  <ArticleCard
-                    key={article.slug}
-                    article={article}
+            <SectionHeading
+              kicker={homeSections.affairs.kicker}
+              title={homeSections.affairs.title}
+              viewAllHref={articlesArchiveHref(1, homeSections.affairs.archiveCategory)}
+            />
+            <div className="top-stories__layout">
+              {affairsHero.length > 0 && (
+                <div className="top-stories__lead">
+                  <FeaturedHeadlineCarousel articles={affairsHero} />
+                </div>
+              )}
+              {affairsRail.length > 0 && (
+                <div className="top-stories__rail">
+                  <ArticleSectionCarousel
+                    articles={affairsRail}
                     variant="compact"
+                    layout="rail"
+                    ariaLabel={`${homeSections.affairs.nav} 이야기`}
                   />
-                ))}
-              </div>
-            )}
+                </div>
+              )}
+            </div>
           </section>
         )}
 
-        {spotlightRow.length > 0 && (
+        {spotlightCarousel.length > 0 && (
           <section id="spotlight" className="below-fold mono-container">
             <SectionHeading
-              kicker={spotlightRowSection?.kicker}
-              title={spotlightRowSection?.title ?? "지금 주목할 이야기"}
+              kicker={spotlightRowSection?.kicker ?? homeSections.spotlight.kicker}
+              title={spotlightRowSection?.title ?? homeSections.spotlight.title}
+              viewAllHref={articlesArchiveHref(
+                1,
+                homeSections.spotlight.archiveCategory,
+              )}
             />
-            <div className="below-fold__grid">
-              {spotlightRow.map((article) => (
-                <ArticleCard
-                  key={article.slug}
-                  article={article}
-                  variant="vertical"
-                />
-              ))}
-            </div>
+            <ArticleSectionCarousel
+              articles={spotlightCarousel}
+              variant="vertical"
+              layout="grid"
+              ariaLabel={`${homeSections.spotlight.nav} 이야기`}
+            />
           </section>
         )}
 
         <section id="radio" className="radio-latest mono-container">
           <SectionHeading
-            kicker={radioLatestSection?.kicker}
-            title={radioLatestSection?.title ?? "Latest from POKIT radio"}
+            kicker={radioLatestSection?.kicker ?? homeSections.radio.kicker}
+            title={radioLatestSection?.title ?? homeSections.radio.title}
+            viewAllHref={articlesArchiveHref(1, homeSections.radio.archiveCategory)}
           />
-          {radioArticles.length > 0 ? (
-            <div className="radio-latest__grid">
-              {radioArticles.map((article) => (
-                <ArticleCard
-                  key={article.slug}
-                  article={article}
-                  variant="vertical"
-                />
-              ))}
-            </div>
+          {radioCarousel.length > 0 ? (
+            <ArticleSectionCarousel
+              articles={radioCarousel}
+              variant="vertical"
+              layout="grid"
+              ariaLabel={`${homeSections.radio.nav} 이야기`}
+            />
           ) : (
-            <p className="section-empty">Home Page → POKIT Radio에서 기사 3개를 연결해주세요.</p>
+            <p className="section-empty">
+              Home Page → {homeSections.radio.nav}에서 이야기 3개를 연결해주세요.
+            </p>
           )}
         </section>
 
-        {designAwards.length > 0 && (
+        {designCarousel.length > 0 && (
           <section id="design" className="editorial-section mono-container">
             <SectionHeading
-              kicker={designAwardsSection?.kicker}
-              title={designAwardsSection?.title ?? "Design Awards"}
+              kicker={designAwardsSection?.kicker ?? homeSections.design.kicker}
+              title={designAwardsSection?.title ?? homeSections.design.title}
+              viewAllHref={articlesArchiveHref(1)}
             />
-            <div className="editorial-grid editorial-grid--3">
-              {designAwards.map((article) => (
-                <ArticleCard
-                  key={article.slug}
-                  article={article}
-                  variant="vertical"
-                />
-              ))}
+            <ArticleSectionCarousel
+              articles={designCarousel}
+              variant="vertical"
+              layout="grid"
+              ariaLabel={`${homeSections.design.nav} 이야기`}
+            />
+          </section>
+        )}
+
+        {cityCarousel.length > 0 && (
+          <section id="wellness" className="tinted-section">
+            <div className="mono-container">
+              <SectionHeading
+                kicker={cityGuidesSection?.kicker ?? homeSections.wellness.kicker}
+                title={cityGuidesSection?.title ?? homeSections.wellness.title}
+                viewAllHref={articlesArchiveHref(1, homeSections.wellness.archiveCategory)}
+              />
+              <ArticleSectionCarousel
+                articles={cityCarousel}
+                variant="vertical"
+                layout="grid"
+                columns={4}
+                ariaLabel={`${homeSections.wellness.nav} 이야기`}
+              />
             </div>
           </section>
         )}
 
-        {cityGuides.length > 0 && (
-          <section id="wellness" className="tinted-section">
-            <div className="mono-container">
-              <SectionHeading
-                kicker={cityGuidesSection?.kicker}
-                title={cityGuidesSection?.title ?? "City Guides"}
-              />
-              <div className="city-grid">
-                {cityGuides.map((article) => (
-                  <ArticleCard
-                    key={article.slug}
-                    article={article}
-                    variant="vertical"
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
+        <section className="home-archive-cta mono-container">
+          <Link href="/articles">모든 이야기 한 번에 보기 →</Link>
+        </section>
 
         <AppDownload />
       </main>

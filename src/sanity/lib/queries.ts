@@ -5,7 +5,8 @@ const articleCardFields = `
   kicker,
   category,
   "imageAlt": coalesce(coverImageAlt, coverImage.alt, title),
-  coverImage
+  coverImage,
+  publishedAt
 `;
 
 export const HOME_PAGE_QUERY = `*[_type == "homePage"][0]{
@@ -34,4 +35,20 @@ export const ARTICLE_SLUGS_QUERY = `*[_type == "article" && defined(slug.current
 export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && defined(slug.current)]{
   "slug": slug.current,
   publishedAt
+}`;
+
+export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && defined(slug.current) && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)])`;
+
+export const ARTICLES_COUNT_BY_CATEGORY_QUERY = `count(*[_type == "article" && defined(slug.current) && category == $category && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)])`;
+
+export const ALL_ARTICLES_CARD_QUERY = `*[_type == "article" && defined(slug.current)] | order(publishedAt desc){
+  ${articleCardFields}
+}`;
+
+export const ARTICLES_PAGINATED_QUERY = `*[_type == "article" && defined(slug.current) && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)] | order(publishedAt desc) [$start...$end]{
+  ${articleCardFields}
+}`;
+
+export const ARTICLES_PAGINATED_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)] | order(publishedAt desc) [$start...$end]{
+  ${articleCardFields}
 }`;

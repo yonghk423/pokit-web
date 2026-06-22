@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import { SiteFooter } from "@/components/site-footer";
 import { articlePath } from "@/lib/article-path";
+import { formatPublishedLabel } from "@/lib/format-published";
 import { SiteHeader } from "@/components/site-header";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
@@ -76,7 +77,9 @@ export default async function ArticlePage({ params }: Props) {
           )}
           {article.publishedAt && (
             <p className="article-page__meta">
-              {new Date(article.publishedAt).toLocaleDateString("ko-KR")}
+              <time dateTime={article.publishedAt}>
+                {formatPublishedLabel(article.publishedAt)}
+              </time>
             </p>
           )}
         </header>

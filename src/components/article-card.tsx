@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { articlePath } from "@/lib/article-path";
+import { formatPublishedLabel, formatPublishedWeekday } from "@/lib/format-published";
 import { isSanityConfigured } from "@/sanity/env";
 import { urlForImage } from "@/sanity/image";
 import type { ArticleCardData } from "@/sanity/types";
@@ -26,6 +27,10 @@ export function ArticleCard({
   hideImage = false,
 }: Props) {
   const { w, h } = imageSizes[variant];
+  const publishedLabel =
+    variant === "compact"
+      ? formatPublishedWeekday(article.publishedAt)
+      : formatPublishedLabel(article.publishedAt);
   const imageUrl =
     isSanityConfigured() && article.coverImage
       ? urlForImage(article.coverImage).width(w).height(h).fit("crop").url()
@@ -67,6 +72,11 @@ export function ArticleCard({
         </figure>
       )}
       <div className="article-card__body">
+        {publishedLabel && (
+          <p className="article-card__date">
+            <time dateTime={article.publishedAt}>{publishedLabel}</time>
+          </p>
+        )}
         {article.kicker && (
           <p className="article-card__kicker">{article.kicker}</p>
         )}

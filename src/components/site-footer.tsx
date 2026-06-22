@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
+import { categories } from "@/content/home";
 
 export function SiteFooter() {
   return (
@@ -15,18 +16,19 @@ export function SiteFooter() {
           </div>
         </div>
         <div>
-          <h2>Sections</h2>
+          <h2>섹션</h2>
           <ul>
-            <li><a href="#affairs">Affairs</a></li>
-            <li><a href="#spotlight">Editor&apos;s Pick</a></li>
-            <li><a href="#radio">Radio</a></li>
-            <li><a href="#design">Design</a></li>
-            <li><a href="#wellness">Wellness</a></li>
+            {categories.map((category) => (
+              <li key={category.id}>
+                <a href={`#${category.id}`}>{category.label}</a>
+              </li>
+            ))}
           </ul>
         </div>
         <div>
           <h2>Information</h2>
           <ul>
+            <li><Link href="/articles">모든 이야기</Link></li>
             <li><Link href="/privacy">개인정보 처리방침</Link></li>
             <li><Link href="/support">지원</Link></li>
             <li>
