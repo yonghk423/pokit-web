@@ -1,8 +1,8 @@
+import { isValidImageSource } from "@/sanity/image";
 import type { ArticleCardData } from "@/sanity/types";
 
 export function hasCoverImage(article: ArticleCardData) {
-  const cover = article.coverImage as { asset?: unknown } | null | undefined;
-  return Boolean(cover?.asset);
+  return isValidImageSource(article.coverImage);
 }
 
 function dedupeArticles(articles: ArticleCardData[]) {

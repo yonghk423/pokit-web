@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ArticleCard } from "@/components/article-card";
 import { homeSections } from "@/content/home";
+import { cn } from "@/lib/cn";
 import type { ArticleCardData } from "@/sanity/types";
 
 type Props = {
@@ -65,15 +66,18 @@ export function FeaturedHeadlineCarousel({
   const showControls = articles.length > 1;
 
   return (
-    <div className="featured-headline">
+    <div className="relative min-w-0">
       <div
         ref={scrollRef}
-        className="featured-headline__viewport"
+        className="@container w-full min-w-0 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide"
         aria-label={ariaLabel}
       >
-        <div className="featured-headline__track">
+        <div className="flex">
           {articles.map((article) => (
-            <div key={article.slug} className="featured-headline__slide">
+            <div
+              key={article.slug}
+              className="min-w-0 w-[100cqw] max-w-[100cqw] shrink-0 grow-0 basis-[100cqw] snap-start"
+            >
               <ArticleCard article={article} variant="feature" />
             </div>
           ))}
@@ -81,10 +85,10 @@ export function FeaturedHeadlineCarousel({
       </div>
 
       {showControls && (
-        <div className="featured-headline__controls">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-2 flex aspect-[16/10] items-center justify-between px-[0.65rem]">
           <button
             type="button"
-            className="featured-headline__btn featured-headline__btn--prev"
+            className="pointer-events-auto size-[2.35rem] cursor-pointer border border-white/55 bg-ink/42 font-sans text-base leading-none text-white backdrop-blur-[2px] hover:bg-ink/62 disabled:cursor-not-allowed disabled:opacity-35"
             aria-label={`${ariaLabel} 이전`}
             disabled={!canPrev}
             onClick={() => scroll("prev")}
@@ -93,7 +97,7 @@ export function FeaturedHeadlineCarousel({
           </button>
           <button
             type="button"
-            className="featured-headline__btn featured-headline__btn--next"
+            className="pointer-events-auto size-[2.35rem] cursor-pointer border border-white/55 bg-ink/42 font-sans text-base leading-none text-white backdrop-blur-[2px] hover:bg-ink/62 disabled:cursor-not-allowed disabled:opacity-35"
             aria-label={`${ariaLabel} 다음`}
             disabled={!canNext}
             onClick={() => scroll("next")}

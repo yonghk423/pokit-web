@@ -6,6 +6,7 @@ const articleCardFields = `
   category,
   "imageAlt": coalesce(coverImageAlt, coverImage.alt, title),
   coverImage,
+  "coverImageLqip": coverImage.asset->metadata.lqip,
   publishedAt
 `;
 

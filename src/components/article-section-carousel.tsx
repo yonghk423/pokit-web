@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ArticleCard } from "@/components/article-card";
+import { cn } from "@/lib/cn";
 import type { ArticleCardData } from "@/sanity/types";
 
 type Variant = "vertical" | "compact";
@@ -15,11 +16,14 @@ type Props = {
   ariaLabel: string;
 };
 
+const carouselBtnClass =
+  "size-[2.35rem] shrink-0 cursor-pointer border border-line bg-panel font-sans text-base leading-none text-ink hover:bg-wash disabled:cursor-not-allowed disabled:opacity-35";
+
 export function ArticleSectionCarousel({
   articles,
   variant = "vertical",
   layout = "grid",
-  columns = 3,
+  columns = 4,
   ariaLabel,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -70,7 +74,7 @@ export function ArticleSectionCarousel({
     const sign = direction === "next" ? 1 : -1;
 
     if (isVertical) {
-      const first = el.querySelector<HTMLElement>(".section-carousel__cell");
+      const first = el.querySelector<HTMLElement>("[data-carousel-cell]");
       const step = first?.offsetHeight ?? el.clientHeight * 0.85;
       el.scrollBy({ top: sign * step, behavior: "smooth" });
       return;
@@ -90,19 +94,46 @@ export function ArticleSectionCarousel({
   const prevIcon = isVertical ? "↑" : "←";
   const nextIcon = isVertical ? "↓" : "→";
 
-  const gridColsClass =
-    columns === 4 ? "section-carousel__track--4" : "section-carousel__track--3";
+  const trackColsClass =
+    columns === 4
+      ? "auto-cols-[calc((100cqw-3.6rem)/4)] max-nav:auto-cols-[calc((100cqw-1.2rem)/2)] max-[640px]:auto-cols-[100cqw]"
+      : "auto-cols-[calc((100cqw-2.4rem)/3)] max-nav:auto-cols-[calc((100cqw-1.2rem)/2)] max-[640px]:auto-cols-[100cqw]";
 
   const track = (
     <div
       ref={scrollRef}
-      className={`section-carousel__viewport${isVertical ? " section-carousel__viewport--vertical" : ""}`}
+      className={cn(
+        "@container w-full min-w-0 scroll-smooth scrollbar-hide",
+        isVertical
+          ? "max-h-[min(36rem,70vh)] snap-y snap-mandatory overflow-x-hidden overflow-y-auto max-[640px]:max-h-[min(28rem,62vh)]"
+          : "snap-x snap-mandatory overflow-x-auto",
+      )}
       aria-label={ariaLabel}
     >
-      <div className={`section-carousel__track ${gridColsClass}`}>
+      <div
+        className={cn(
+          isVertical
+            ? "flex w-full min-w-0 flex-col"
+            : cn(
+                "grid w-max min-w-full grid-flow-col gap-[1.2rem] max-[640px]:gap-4",
+                trackColsClass,
+              ),
+        )}
+      >
         {articles.map((article) => (
-          <div key={article.slug} className="section-carousel__cell">
-            <ArticleCard article={article} variant={variant} />
+          <div
+            key={article.slug}
+            data-carousel-cell
+            className={cn(
+              "min-w-0 snap-start",
+              isVertical && "w-full shrink-0 grow-0 basis-auto",
+            )}
+          >
+            <ArticleCard
+              article={article}
+              variant={variant}
+              inRail={isVertical}
+            />
           </div>
         ))}
       </div>
@@ -111,11 +142,11 @@ export function ArticleSectionCarousel({
 
   if (isVertical) {
     return (
-      <div className="section-carousel section-carousel--rail section-carousel--vertical">
+      <div className="grid grid-cols-1 grid-rows-[auto_minmax(0,1fr)_auto] items-stretch gap-2">
         {showControls && (
           <button
             type="button"
-            className="section-carousel__btn section-carousel__btn--prev"
+            className={cn(carouselBtnClass, "w-full justify-self-stretch")}
             aria-label={prevLabel}
             disabled={!canPrev}
             onClick={() => scroll("prev")}
@@ -127,7 +158,7 @@ export function ArticleSectionCarousel({
         {showControls && (
           <button
             type="button"
-            className="section-carousel__btn section-carousel__btn--next"
+            className={cn(carouselBtnClass, "w-full justify-self-stretch")}
             aria-label={nextLabel}
             disabled={!canNext}
             onClick={() => scroll("next")}
@@ -140,11 +171,11 @@ export function ArticleSectionCarousel({
   }
 
   return (
-    <div className="section-carousel section-carousel--grid">
+    <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-[0.65rem] max-[640px]:grid-cols-1 max-[640px]:gap-0">
       {showControls && (
         <button
           type="button"
-          className="section-carousel__btn section-carousel__btn--prev"
+          className={cn(carouselBtnClass, "max-[640px]:hidden")}
           aria-label={prevLabel}
           disabled={!canPrev}
           onClick={() => scroll("prev")}
@@ -156,7 +187,7 @@ export function ArticleSectionCarousel({
       {showControls && (
         <button
           type="button"
-          className="section-carousel__btn section-carousel__btn--next"
+          className={cn(carouselBtnClass, "max-[640px]:hidden")}
           aria-label={nextLabel}
           disabled={!canNext}
           onClick={() => scroll("next")}

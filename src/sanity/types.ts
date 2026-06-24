@@ -9,6 +9,7 @@ export type ArticleCardData = {
   category: string;
   imageAlt: string;
   coverImage?: SanityImageSource | null;
+  coverImageLqip?: string | null;
   publishedAt?: string;
 };
 

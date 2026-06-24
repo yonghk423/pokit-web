@@ -17,26 +17,27 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <nav className="article-pagination" aria-label="이야기 목록 페이지">
+    <nav
+      className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 border-t border-fine-line pt-6 font-sans text-[0.88rem]"
+      aria-label="이야기 목록 페이지"
+    >
       {page > 1 ? (
         <Link
           href={articlesArchiveHref(page - 1, category, q)}
-          className="article-pagination__nav"
+          className="text-ink underline-offset-[0.14em] hover:underline"
         >
           ← 이전
         </Link>
       ) : (
-        <span className="article-pagination__nav article-pagination__nav--disabled">
-          ← 이전
-        </span>
+        <span className="pointer-events-none text-muted">← 이전</span>
       )}
 
-      <ol className="article-pagination__pages">
+      <ol className="m-0 flex list-none flex-wrap items-center justify-center gap-[0.35rem] p-0">
         {pages.map((pageNumber) => (
           <li key={pageNumber}>
             {pageNumber === page ? (
               <span
-                className="article-pagination__page article-pagination__page--current"
+                className="inline-flex h-8 min-w-8 items-center justify-center border border-line px-[0.35rem] font-bold text-ink"
                 aria-current="page"
               >
                 {pageNumber}
@@ -44,7 +45,7 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
             ) : (
               <Link
                 href={articlesArchiveHref(pageNumber, category, q)}
-                className="article-pagination__page"
+                className="inline-flex h-8 min-w-8 items-center justify-center border border-transparent px-[0.35rem] text-ink hover:border-fine-line"
               >
                 {pageNumber}
               </Link>
@@ -56,14 +57,12 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
       {page < totalPages ? (
         <Link
           href={articlesArchiveHref(page + 1, category, q)}
-          className="article-pagination__nav"
+          className="text-ink underline-offset-[0.14em] hover:underline"
         >
           다음 →
         </Link>
       ) : (
-        <span className="article-pagination__nav article-pagination__nav--disabled">
-          다음 →
-        </span>
+        <span className="pointer-events-none text-muted">다음 →</span>
       )}
     </nav>
   );

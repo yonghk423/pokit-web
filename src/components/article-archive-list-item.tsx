@@ -12,24 +12,28 @@ export function ArticleArchiveListItem({ article }: Props) {
   const publishedLabel = formatPublishedLabel(article.publishedAt);
 
   return (
-    <li className="articles-archive__list-item">
-      <article className="articles-archive__list-row">
-        <div className="articles-archive__list-meta">
+    <li className="border-b border-fine-line">
+      <article className="grid grid-cols-[minmax(7.5rem,9.5rem)_minmax(0,1fr)] gap-x-7 gap-y-[0.45rem] py-[1.15rem] max-archive:grid-cols-1">
+        <div className="flex flex-col gap-[0.35rem]">
           {publishedLabel && (
-            <p className="articles-archive__list-date">
+            <p className="m-0 font-sans text-[0.72rem] leading-snug font-bold text-muted">
               <time dateTime={article.publishedAt}>{publishedLabel}</time>
             </p>
           )}
           {article.kicker && (
-            <p className="articles-archive__list-kicker">{article.kicker}</p>
+            <p className="m-0 font-sans text-[0.72rem] font-extrabold tracking-[0.08em] text-green uppercase">
+              {article.kicker}
+            </p>
           )}
         </div>
-        <div className="articles-archive__list-content">
-          <h2 className="articles-archive__list-title">
+        <div>
+          <h2 className="m-0 text-[clamp(1.15rem,2.2vw,1.45rem)] leading-[1.2] font-bold tracking-[-0.025em] [&_a:hover]:text-green">
             <Link href={articlePath(article.slug)}>{article.title}</Link>
           </h2>
           {article.description && (
-            <p className="articles-archive__list-desc">{article.description}</p>
+            <p className="mt-[0.55rem] mb-0 max-w-[46rem] font-sans text-[0.92rem] leading-[1.55] text-muted">
+              {article.description}
+            </p>
           )}
         </div>
       </article>

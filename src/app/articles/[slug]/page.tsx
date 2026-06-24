@@ -8,9 +8,10 @@ import { SiteFooter } from "@/components/site-footer";
 import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
 import { SiteHeader } from "@/components/site-header";
+import { cn, monoContainer } from "@/lib/cn";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
-import { urlForImage } from "@/sanity/image";
+import { coverImageUrl, imageBlurProps } from "@/sanity/image";
 import {
   ARTICLE_QUERY,
   ARTICLE_SLUGS_QUERY,
@@ -56,27 +57,34 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const coverUrl = article.coverImage
-    ? urlForImage(article.coverImage).width(1600).height(900).fit("crop").url()
-    : null;
+  const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
 
   return (
     <>
       <SiteHeader />
-      <main className="article-page mono-container">
-        <Link href="/" className="article-page__back">
+      <main className={cn(monoContainer, "py-8 pb-16")}>
+        <Link
+          href="/"
+          className="mb-8 inline-block font-sans text-[0.78rem] tracking-[0.08em] text-muted uppercase hover:text-ink"
+        >
           ← Back to POKIT
         </Link>
-        <header className="article-page__header">
+        <header className="mb-8 max-w-[42rem]">
           {article.kicker && (
-            <p className="article-page__kicker">{article.kicker}</p>
+            <p className="m-0 mb-3 font-sans text-[0.72rem] font-bold tracking-[0.12em] text-green uppercase">
+              {article.kicker}
+            </p>
           )}
-          <h1>{article.title}</h1>
+          <h1 className="m-0 font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[1.08] font-medium">
+            {article.title}
+          </h1>
           {article.description && (
-            <p className="article-page__deck">{article.description}</p>
+            <p className="mt-4 mb-0 font-sans text-[1.05rem] leading-[1.55] text-muted">
+              {article.description}
+            </p>
           )}
           {article.publishedAt && (
-            <p className="article-page__meta">
+            <p className="mt-4 mb-0 font-sans text-[0.78rem] text-muted">
               <time dateTime={article.publishedAt}>
                 {formatPublishedLabel(article.publishedAt)}
               </time>
@@ -84,19 +92,21 @@ export default async function ArticlePage({ params }: Props) {
           )}
         </header>
         {coverUrl && (
-          <figure className="article-page__cover">
+          <figure className="mb-10 overflow-hidden bg-wash">
             <Image
               src={coverUrl}
               alt={article.imageAlt}
               width={1600}
               height={900}
               priority
+              className="block h-auto w-full"
               sizes="(min-width: 1024px) 960px, 100vw"
+              {...imageBlurProps(article.coverImageLqip)}
             />
           </figure>
         )}
         {article.body && (
-          <div className="article-page__body prose">
+          <div className="prose max-w-[42rem] font-sans text-ink">
             <PortableText value={article.body} />
           </div>
         )}
@@ -123,9 +133,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Article not found" };
   }
 
-  const coverImage = article.coverImage
-    ? urlForImage(article.coverImage).width(1200).height(630).fit("crop").url()
-    : undefined;
+  const coverImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
 
   return {
     title: article.title,

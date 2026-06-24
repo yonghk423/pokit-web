@@ -8,6 +8,7 @@ import { ArticlePagination } from "@/components/article-pagination";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/config/site";
+import { cn, monoContainer } from "@/lib/cn";
 import {
   ARTICLES_PER_PAGE,
   articlesArchiveHref,
@@ -65,11 +66,15 @@ export default async function ArticlesPage({ searchParams }: Props) {
       <SiteHeader />
 
       <main>
-        <section className="articles-archive mono-container">
-          <header className="articles-archive__header">
-            <p className="articles-archive__kicker">Archive</p>
-            <h1>{category ? `${category} 이야기` : "모든 이야기"}</h1>
-            <p className="articles-archive__summary">
+        <section className={cn(monoContainer, "py-10 pb-14")}>
+          <header className="mb-8 border-b-4 border-line pb-5">
+            <p className="m-0 mb-2 font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-green uppercase">
+              Archive
+            </p>
+            <h1 className="m-0 text-[clamp(2rem,4vw,2.85rem)] leading-[1.05] tracking-[-0.035em]">
+              {category ? `${category} 이야기` : "모든 이야기"}
+            </h1>
+            <p className="mt-[0.85rem] mb-0 font-sans text-[0.92rem] text-muted">
               {searchTerm ? (
                 total > 0 ? (
                   <>
@@ -89,7 +94,7 @@ export default async function ArticlesPage({ searchParams }: Props) {
             </p>
             <ArticlesArchiveSearch q={searchTerm} category={category} />
             {category && (
-              <p className="articles-archive__filter">
+              <p className="mt-[0.65rem] mb-0 font-sans text-[0.88rem] [&_a:hover]:text-green">
                 <Link href={articlesArchiveHref(1, undefined, searchTerm)}>
                   필터 해제 · 전체 이야기 보기
                 </Link>
@@ -108,14 +113,14 @@ export default async function ArticlesPage({ searchParams }: Props) {
               />
             </>
           ) : (
-            <p className="section-empty">
+            <p className="m-0 border-t border-fine-line py-[1.2rem] font-sans text-[0.9rem] text-muted">
               {searchTerm
                 ? "다른 검색어를 시도하거나 검색을 초기화해 보세요."
                 : "Sanity Studio에서 이야기를 발행하면 여기에 표시됩니다."}
             </p>
           )}
 
-          <p className="articles-archive__back">
+          <p className="mt-10 mb-0 border-t border-fine-line pt-6 font-sans text-[0.88rem] [&_a:hover]:text-green">
             <Link href="/">← 홈으로</Link>
           </p>
         </section>

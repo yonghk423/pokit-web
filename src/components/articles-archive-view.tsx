@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 
 import { ArticleArchiveListItem } from "@/components/article-archive-list-item";
 import { ArticleCard } from "@/components/article-card";
+import { cn } from "@/lib/cn";
 import type { ArticleCardData } from "@/sanity/types";
 
 const STORAGE_KEY = "pokit-archive-view";
@@ -64,15 +65,22 @@ export function ArticlesArchiveView({ articles }: Props) {
 
   return (
     <>
-      <div className="articles-archive__toolbar">
-        <p className="articles-archive__view-label">보기</p>
+      <div className="mb-5 flex items-center justify-between gap-4">
+        <p className="m-0 font-sans text-[0.72rem] font-extrabold tracking-[0.06em] uppercase">
+          보기
+        </p>
         <div
-          className="articles-archive__view-toggle"
+          className="inline-flex border border-line"
           role="group"
           aria-label="보기 방식"
         >
           <button
             type="button"
+            className={cn(
+              "inline-flex items-center gap-[0.4rem] border-0 bg-transparent px-[0.9rem] py-[0.45rem] font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
+              view === "grid" && "bg-ink text-panel",
+              view !== "grid" && "hover:text-ink",
+            )}
             aria-pressed={view === "grid"}
             onClick={() => selectView("grid")}
           >
@@ -81,6 +89,11 @@ export function ArticlesArchiveView({ articles }: Props) {
           </button>
           <button
             type="button"
+            className={cn(
+              "inline-flex items-center gap-[0.4rem] border-0 border-l border-line bg-transparent px-[0.9rem] py-[0.45rem] font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
+              view === "list" && "bg-ink text-panel",
+              view !== "list" && "hover:text-ink",
+            )}
             aria-pressed={view === "list"}
             onClick={() => selectView("list")}
           >
@@ -91,7 +104,7 @@ export function ArticlesArchiveView({ articles }: Props) {
       </div>
 
       {view === "grid" ? (
-        <div className="articles-archive__grid">
+        <div className="grid grid-cols-4 gap-x-5 gap-y-6 max-nav:grid-cols-2 max-archive:grid-cols-1">
           {articles.map((article) => (
             <ArticleCard
               key={article.slug}
@@ -101,7 +114,7 @@ export function ArticlesArchiveView({ articles }: Props) {
           ))}
         </div>
       ) : (
-        <ul className="articles-archive__list">
+        <ul className="m-0 list-none border-t border-line p-0">
           {articles.map((article) => (
             <ArticleArchiveListItem key={article.slug} article={article} />
           ))}

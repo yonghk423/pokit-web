@@ -9,27 +9,50 @@ import { SiteHeader } from "@/components/site-header";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 import { getHomePageWithCarousels } from "@/sanity/lib/fetch";
 import { homeSections } from "@/content/home";
+import { cn, monoContainer } from "@/lib/cn";
 
 function RadioWidget() {
   return (
-    <section className="radio-widget mono-container" aria-label="POKIT Radio">
-      <div className="radio-widget__intro">
-        <p className="radio-widget__label">POKIT Radio</p>
-        <strong>On Air</strong>
+    <section
+      className={cn(
+        monoContainer,
+        "mt-[1.2rem] grid grid-cols-[0.9fr_1.8fr_1.5fr] gap-4 border border-line bg-green p-4 font-sans text-white max-nav:mt-[0.85rem] max-nav:grid-cols-1 max-nav:p-[0.85rem] max-nav:gap-[0.85rem]",
+      )}
+      aria-label="POKIT Radio"
+    >
+      <div className="border-r border-white/25 pr-4 max-nav:border-r-0 max-nav:border-b max-nav:pb-4 max-nav:pr-0">
+        <p className="m-0 text-[0.72rem] font-extrabold tracking-[0.1em] text-brand uppercase">
+          POKIT Radio
+        </p>
+        <strong className="mt-1 block text-[1.1rem]">On Air</strong>
       </div>
-      <div className="radio-widget__current">
-        <p>The Wellness Desk</p>
-        <h2>책상 앞에서 잃어버린 몸의 리듬을 되찾는 방법</h2>
-        <span>Listen Live</span>
+      <div className="border-r border-white/25 pr-4 max-nav:border-r-0 max-nav:border-b max-nav:pb-4 max-nav:pr-0">
+        <p className="m-0 text-[0.72rem] font-extrabold tracking-[0.06em] text-brand-soft uppercase">
+          The Wellness Desk
+        </p>
+        <h2 className="mt-[0.35rem] mb-0 text-[1.05rem] leading-[1.25] max-[640px]:text-[0.98rem]">
+          책상 앞에서 잃어버린 몸의 리듬을 되찾는 방법
+        </h2>
+        <span className="mt-[0.4rem] block text-[0.78rem] text-white/68">
+          Listen Live
+        </span>
       </div>
-      <div className="radio-widget__schedule">
+      <div className="grid grid-cols-2 gap-4 max-[640px]:grid-cols-1 max-[640px]:pr-0">
         <article>
-          <p>The Continental Shift</p>
-          <span>부드러운 아침 음악과 루틴 뉴스</span>
+          <p className="m-0 text-[0.72rem] font-extrabold tracking-[0.06em] text-brand-soft uppercase">
+            The Continental Shift
+          </p>
+          <span className="mt-[0.4rem] block text-[0.78rem] text-white/68">
+            부드러운 아침 음악과 루틴 뉴스
+          </span>
         </article>
         <article>
-          <p>Top of the Hour</p>
-          <span>하루를 정돈하는 짧은 헤드라인</span>
+          <p className="m-0 text-[0.72rem] font-extrabold tracking-[0.06em] text-brand-soft uppercase">
+            Top of the Hour
+          </p>
+          <span className="mt-[0.4rem] block text-[0.78rem] text-white/68">
+            하루를 정돈하는 짧은 헤드라인
+          </span>
         </article>
       </div>
     </section>
@@ -57,27 +80,29 @@ export default async function Home() {
       <SiteHeader />
 
       <main>
-        <section className="inbox-strip">
-          <p>Daily inbox intelligence from POKIT</p>
+        <section className="border-b border-fine-line bg-paper py-[1.1rem] text-center">
+          <p className="m-0 font-sans text-[0.78rem] font-bold text-green">
+            Daily inbox intelligence from POKIT
+          </p>
         </section>
 
         <RadioWidget />
 
         {hasTopStories && (
-          <section id="affairs" className="top-stories mono-container">
+          <section id="affairs" className={cn(monoContainer, "mt-[1.4rem]")}>
             <SectionHeading
               kicker={homeSections.affairs.kicker}
               title={homeSections.affairs.title}
               viewAllHref={articlesArchiveHref(1, homeSections.affairs.archiveCategory)}
             />
-            <div className="top-stories__layout">
+            <div className="grid grid-cols-[minmax(0,1.55fr)_minmax(0,0.95fr)] items-start gap-[1.4rem] max-nav:grid-cols-1">
               {affairsHero.length > 0 && (
-                <div className="top-stories__lead">
+                <div className="min-w-0 border-r border-line pr-[1.4rem] max-nav:border-r-0 max-nav:pr-0">
                   <FeaturedHeadlineCarousel articles={affairsHero} />
                 </div>
               )}
               {affairsRail.length > 0 && (
-                <div className="top-stories__rail">
+                <div className="min-w-0">
                   <ArticleSectionCarousel
                     articles={affairsRail}
                     variant="compact"
@@ -91,7 +116,7 @@ export default async function Home() {
         )}
 
         {spotlightCarousel.length > 0 && (
-          <section id="spotlight" className="below-fold mono-container">
+          <section id="spotlight" className={cn(monoContainer, "mt-[2.7rem]")}>
             <SectionHeading
               kicker={spotlightRowSection?.kicker ?? homeSections.spotlight.kicker}
               title={spotlightRowSection?.title ?? homeSections.spotlight.title}
@@ -104,12 +129,13 @@ export default async function Home() {
               articles={spotlightCarousel}
               variant="vertical"
               layout="grid"
+              columns={4}
               ariaLabel={`${homeSections.spotlight.nav} 이야기`}
             />
           </section>
         )}
 
-        <section id="radio" className="radio-latest mono-container">
+        <section id="radio" className={cn(monoContainer, "mt-[2.7rem]")}>
           <SectionHeading
             kicker={radioLatestSection?.kicker ?? homeSections.radio.kicker}
             title={radioLatestSection?.title ?? homeSections.radio.title}
@@ -120,17 +146,18 @@ export default async function Home() {
               articles={radioCarousel}
               variant="vertical"
               layout="grid"
+              columns={4}
               ariaLabel={`${homeSections.radio.nav} 이야기`}
             />
           ) : (
-            <p className="section-empty">
+            <p className="m-0 border-t border-fine-line py-[1.2rem] font-sans text-[0.9rem] text-muted">
               Home Page → {homeSections.radio.nav}에서 이야기 3개를 연결해주세요.
             </p>
           )}
         </section>
 
         {designCarousel.length > 0 && (
-          <section id="design" className="editorial-section mono-container">
+          <section id="design" className={cn(monoContainer, "mt-[2.7rem]")}>
             <SectionHeading
               kicker={designAwardsSection?.kicker ?? homeSections.design.kicker}
               title={designAwardsSection?.title ?? homeSections.design.title}
@@ -140,14 +167,18 @@ export default async function Home() {
               articles={designCarousel}
               variant="vertical"
               layout="grid"
+              columns={4}
               ariaLabel={`${homeSections.design.nav} 이야기`}
             />
           </section>
         )}
 
         {cityCarousel.length > 0 && (
-          <section id="wellness" className="tinted-section">
-            <div className="mono-container">
+          <section
+            id="wellness"
+            className="mt-12 border-y border-fine-line bg-wash py-[2.2rem] pb-[2.6rem]"
+          >
+            <div className={monoContainer}>
               <SectionHeading
                 kicker={cityGuidesSection?.kicker ?? homeSections.wellness.kicker}
                 title={cityGuidesSection?.title ?? homeSections.wellness.title}
@@ -164,7 +195,12 @@ export default async function Home() {
           </section>
         )}
 
-        <section className="home-archive-cta mono-container">
+        <section
+          className={cn(
+            monoContainer,
+            "border-t border-fine-line py-8 pb-10 text-center font-sans text-[0.92rem] [&_a]:underline [&_a]:underline-offset-[0.14em] [&_a:hover]:text-green",
+          )}
+        >
           <Link href="/articles">모든 이야기 한 번에 보기 →</Link>
         </section>
 
