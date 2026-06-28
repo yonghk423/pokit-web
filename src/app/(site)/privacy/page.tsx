@@ -1,8 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 
@@ -13,9 +11,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <>
-      <SiteHeader />
-      <main className="mx-auto max-w-[42rem] px-4 py-12 pb-20">
+    <main className="mx-auto max-w-[42rem] px-4 py-12 pb-20">
         <h1 className="m-0 mb-4 text-[clamp(2rem,5vw,3rem)] leading-[1.05] tracking-[-0.04em]">
           개인정보 처리방침
         </h1>
@@ -35,8 +31,6 @@ export default function PrivacyPage() {
         >
           ← 홈으로
         </Link>
-      </main>
-      <SiteFooter />
-    </>
+    </main>
   );
 }

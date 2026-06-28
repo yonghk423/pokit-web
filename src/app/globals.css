@@ -15,8 +15,8 @@
   --color-green-soft: #6f9278;
   --color-radio: #252422;
 
-  --font-serif: "Noto Serif KR", Georgia, "Times New Roman", serif;
-  --font-sans: "Pretendard Variable", "Noto Sans KR", Arial, sans-serif;
+  --font-serif: var(--font-noto-serif-kr), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-pretendard), "Noto Sans KR", Arial, sans-serif;
 
   --breakpoint-nav: 56.25rem;
   --breakpoint-archive: 35rem;
@@ -33,7 +33,7 @@
 
 @layer base {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     overflow-x: clip;
   }
 

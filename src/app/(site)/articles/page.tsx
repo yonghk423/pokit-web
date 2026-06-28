@@ -5,8 +5,6 @@ import { notFound } from "next/navigation";
 import { ArticlesArchiveSearch } from "@/components/articles-archive-search";
 import { ArticlesArchiveView } from "@/components/articles-archive-view";
 import { ArticlePagination } from "@/components/article-pagination";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 import { site } from "@/config/site";
 import { cn, monoContainer } from "@/lib/cn";
 import {
@@ -14,6 +12,8 @@ import {
   articlesArchiveHref,
   getPaginatedArticles,
 } from "@/sanity/lib/articles";
+
+export const revalidate = false;
 
 type Props = {
   searchParams: Promise<{ page?: string; category?: string; q?: string }>;
@@ -62,10 +62,7 @@ export default async function ArticlesPage({ searchParams }: Props) {
   const rangeEnd = Math.min(page * ARTICLES_PER_PAGE, total);
 
   return (
-    <>
-      <SiteHeader />
-
-      <main>
+    <main>
         <section className={cn(monoContainer, "py-10 pb-14")}>
           <header className="mb-8 border-b-4 border-line pb-5">
             <p className="m-0 mb-2 font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-green uppercase">
@@ -124,9 +121,6 @@ export default async function ArticlesPage({ searchParams }: Props) {
             <Link href="/">← 홈으로</Link>
           </p>
         </section>
-      </main>
-
-      <SiteFooter />
-    </>
+    </main>
   );
 }

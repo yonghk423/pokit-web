@@ -1,15 +1,51 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { AppDownload } from "@/components/app-download";
 import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
 import { ArticleSectionCarousel } from "@/components/article-section-carousel";
 import { SectionHeading } from "@/components/section-heading";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { site } from "@/config/site";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 import { getHomePageWithCarousels } from "@/sanity/lib/fetch";
 import { homeSections } from "@/content/home";
 import { cn, monoContainer } from "@/lib/cn";
+
+const HOME_TITLE = `${site.name} — 일상 웰니스 가이드`;
+const HOME_DESCRIPTION =
+  "일상의 작은 루틴으로 웰니스를 만드는 가이드와 앱. POKIT에서 루틴·웰니스 이야기를 만나보세요.";
+
+export const metadata: Metadata = {
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    url: site.siteUrl,
+    siteName: site.name,
+    locale: "ko_KR",
+    type: "website",
+    images: [
+      {
+        url: "/pokitstory.png",
+        alt: site.name,
+        width: 512,
+        height: 512,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    images: ["/pokitstory.png"],
+  },
+};
+
+export const revalidate = false;
 
 function RadioWidget() {
   return (
@@ -76,10 +112,7 @@ export default async function Home() {
   const hasTopStories = affairsHero.length > 0 || affairsRail.length > 0;
 
   return (
-    <>
-      <SiteHeader />
-
-      <main>
+    <main>
         <section className="border-b border-fine-line bg-paper py-[1.1rem] text-center">
           <p className="m-0 font-sans text-[0.78rem] font-bold text-green">
             Daily inbox intelligence from POKIT
@@ -205,9 +238,6 @@ export default async function Home() {
         </section>
 
         <AppDownload />
-      </main>
-
-      <SiteFooter />
-    </>
+    </main>
   );
 }

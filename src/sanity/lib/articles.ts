@@ -6,9 +6,8 @@ import {
   ARTICLES_PAGINATED_BY_CATEGORY_QUERY,
   ARTICLES_PAGINATED_QUERY,
 } from "@/sanity/lib/queries";
+import { sanityFetchOptions } from "@/sanity/lib/cache";
 import type { ArticleCardData } from "@/sanity/types";
-
-const fetchOptions = { next: { revalidate: 60 } };
 
 export const ARTICLES_PER_PAGE = 12;
 
@@ -57,12 +56,12 @@ export async function getPaginatedArticles(
       category
         ? { start, end, category, ...search }
         : { start, end, ...search },
-      fetchOptions,
+      sanityFetchOptions,
     ),
     client.fetch<number>(
       category ? ARTICLES_COUNT_BY_CATEGORY_QUERY : ARTICLES_COUNT_QUERY,
       category ? { category, ...search } : search,
-      fetchOptions,
+      sanityFetchOptions,
     ),
   ]);
 

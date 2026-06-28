@@ -1,11 +1,13 @@
 import { client } from "@/sanity/client";
-import { isSanityConfigured } from "@/sanity/env";
-import { HOME_PAGE_QUERY, ALL_ARTICLES_CARD_QUERY } from "@/sanity/lib/queries";
-import { mergeArticlesForCategory, mergeArticlesForSpacePool } from "@/sanity/lib/merge-articles";
-import type { ArticleCardData, HomePageContent, SectionHeading } from "@/sanity/types";
 import { homeSections } from "@/content/home";
-
-const fetchOptions = { next: { revalidate: 60 } };
+import { isSanityConfigured } from "@/sanity/env";
+import { sanityFetchOptions } from "@/sanity/lib/cache";
+import { ALL_ARTICLES_CARD_QUERY, HOME_PAGE_QUERY } from "@/sanity/lib/queries";
+import {
+  mergeArticlesForCategory,
+  mergeArticlesForSpacePool,
+} from "@/sanity/lib/merge-articles";
+import type { ArticleCardData, HomePageContent, SectionHeading } from "@/sanity/types";
 
 const DEFAULT_RADIO_LATEST_SECTION: SectionHeading = {
   kicker: homeSections.radio.kicker,
@@ -62,7 +64,7 @@ export async function getHomePageContent(): Promise<HomePageContent> {
     const content = await client.fetch<HomePageContent | null>(
       HOME_PAGE_QUERY,
       {},
-      fetchOptions,
+      sanityFetchOptions,
     );
 
     if (!content) {
@@ -129,7 +131,7 @@ export async function getHomePageWithCarousels(): Promise<HomePageWithCarousels>
     const allArticles = await client.fetch<ArticleCardData[]>(
       ALL_ARTICLES_CARD_QUERY,
       {},
-      fetchOptions,
+      sanityFetchOptions,
     );
 
     return {

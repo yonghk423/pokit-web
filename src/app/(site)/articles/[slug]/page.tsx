@@ -4,10 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { SiteFooter } from "@/components/site-footer";
 import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
-import { SiteHeader } from "@/components/site-header";
 import { cn, monoContainer } from "@/lib/cn";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
@@ -16,9 +14,10 @@ import {
   ARTICLE_QUERY,
   ARTICLE_SLUGS_QUERY,
 } from "@/sanity/lib/queries";
+import { sanityFetchOptions } from "@/sanity/lib/cache";
 import type { ArticleDocument } from "@/sanity/types";
 
-const fetchOptions = { next: { revalidate: 60 } };
+export const revalidate = false;
 
 export const dynamicParams = true;
 
@@ -34,7 +33,7 @@ export async function generateStaticParams() {
   const slugs = await client.fetch<{ slug: string }[]>(
     ARTICLE_SLUGS_QUERY,
     {},
-    fetchOptions,
+    sanityFetchOptions,
   );
 
   return slugs.map(({ slug }) => ({ slug }));
@@ -50,7 +49,7 @@ export default async function ArticlePage({ params }: Props) {
   const article = await client.fetch<ArticleDocument | null>(
     ARTICLE_QUERY,
     { slug },
-    fetchOptions,
+    sanityFetchOptions,
   );
 
   if (!article) {
@@ -60,9 +59,7 @@ export default async function ArticlePage({ params }: Props) {
   const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
 
   return (
-    <>
-      <SiteHeader />
-      <main className={cn(monoContainer, "py-8 pb-16")}>
+    <main className={cn(monoContainer, "py-8 pb-16")}>
         <Link
           href="/"
           className="mb-8 inline-block font-sans text-[0.78rem] tracking-[0.08em] text-muted uppercase hover:text-ink"
@@ -110,9 +107,7 @@ export default async function ArticlePage({ params }: Props) {
             <PortableText value={article.body} />
           </div>
         )}
-      </main>
-      <SiteFooter />
-    </>
+    </main>
   );
 }
 
@@ -126,7 +121,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await client.fetch<ArticleDocument | null>(
     ARTICLE_QUERY,
     { slug },
-    fetchOptions,
+    sanityFetchOptions,
   );
 
   if (!article) {

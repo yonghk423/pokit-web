@@ -24,6 +24,7 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
       {page > 1 ? (
         <Link
           href={articlesArchiveHref(page - 1, category, q)}
+          scroll={false}
           className="text-ink underline-offset-[0.14em] hover:underline"
         >
           ← 이전
@@ -45,6 +46,7 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
             ) : (
               <Link
                 href={articlesArchiveHref(pageNumber, category, q)}
+                scroll={false}
                 className="inline-flex h-8 min-w-8 items-center justify-center border border-transparent px-[0.35rem] text-ink hover:border-fine-line"
               >
                 {pageNumber}
@@ -57,6 +59,7 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
       {page < totalPages ? (
         <Link
           href={articlesArchiveHref(page + 1, category, q)}
+          scroll={false}
           className="text-ink underline-offset-[0.14em] hover:underline"
         >
           다음 →

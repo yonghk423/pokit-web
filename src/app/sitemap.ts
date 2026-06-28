@@ -4,9 +4,10 @@ import { site } from "@/config/site";
 import { articlePath } from "@/lib/article-path";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
+import { sanityFetchOptions } from "@/sanity/lib/cache";
 import { SITEMAP_ARTICLES_QUERY } from "@/sanity/lib/queries";
 
-const fetchOptions = { next: { revalidate: 60 } };
+export const revalidate = false;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
@@ -33,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const articles = await client.fetch<
     { slug: string; publishedAt?: string }[]
-  >(SITEMAP_ARTICLES_QUERY, {}, fetchOptions);
+  >(SITEMAP_ARTICLES_QUERY, {}, sanityFetchOptions);
 
   const articlePages: MetadataRoute.Sitemap = articles
     .filter(({ slug }) => slug)
