@@ -9,15 +9,14 @@ import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
 import { cn, monoContainer } from "@/lib/cn";
 import { articleJsonLd } from "@/lib/json-ld";
+import { getArticleBySlug } from "@/sanity/lib/article";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
 import {
-  ARTICLE_QUERY,
   ARTICLE_SLUGS_QUERY,
 } from "@/sanity/lib/queries";
 import { sanityFetchOptions } from "@/sanity/lib/cache";
-import type { ArticleDocument } from "@/sanity/types";
 
 export const revalidate = false;
 
@@ -48,11 +47,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const { slug: rawSlug } = await params;
   const slug = decodeURIComponent(rawSlug);
-  const article = await client.fetch<ArticleDocument | null>(
-    ARTICLE_QUERY,
-    { slug },
-    sanityFetchOptions,
-  );
+  const article = await getArticleBySlug(slug);
 
   if (!article) {
     notFound();
@@ -132,11 +127,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { slug: rawSlug } = await params;
   const slug = decodeURIComponent(rawSlug);
-  const article = await client.fetch<ArticleDocument | null>(
-    ARTICLE_QUERY,
-    { slug },
-    sanityFetchOptions,
-  );
+  const article = await getArticleBySlug(slug);
 
   if (!article) {
     return { title: "Article not found" };

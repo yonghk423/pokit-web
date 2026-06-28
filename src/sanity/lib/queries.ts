@@ -42,7 +42,14 @@ export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && defined(slug.
 
 export const ARTICLES_COUNT_BY_CATEGORY_QUERY = `count(*[_type == "article" && defined(slug.current) && category == $category && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)])`;
 
-export const ALL_ARTICLES_CARD_QUERY = `*[_type == "article" && defined(slug.current)] | order(publishedAt desc){
+export const ARTICLES_RECENT_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category] | order(publishedAt desc)[0...$limit]{
+  ${articleCardFields}
+}`;
+
+export const ARTICLES_DESIGN_SPACE_POOL_QUERY = `*[_type == "article" && defined(slug.current) && (
+  category == "Design" ||
+  (category == "Routine" && slug.current in $routineSlugs)
+)] | order(publishedAt desc)[0...$limit]{
   ${articleCardFields}
 }`;
 

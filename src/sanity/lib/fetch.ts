@@ -2,7 +2,11 @@ import { client } from "@/sanity/client";
 import { homeSections } from "@/content/home";
 import { isSanityConfigured } from "@/sanity/env";
 import { sanityFetchOptions } from "@/sanity/lib/cache";
-import { ALL_ARTICLES_CARD_QUERY, HOME_PAGE_QUERY } from "@/sanity/lib/queries";
+import {
+  ARTICLES_DESIGN_SPACE_POOL_QUERY,
+  ARTICLES_RECENT_BY_CATEGORY_QUERY,
+  HOME_PAGE_QUERY,
+} from "@/sanity/lib/queries";
 import {
   mergeArticlesForCategory,
   mergeArticlesForSpacePool,
@@ -112,6 +116,61 @@ export type HomePageCarousels = {
 
 export type HomePageWithCarousels = HomePageContent & HomePageCarousels;
 
+const AFFAIRS_POOL_LIMIT = 24;
+const CAROUSEL_POOL_LIMIT = 12;
+const DESIGN_POOL_LIMIT = 24;
+
+async function fetchHomeCarouselPools() {
+  if (!client) {
+    return null;
+  }
+
+  const routineSlugs = [...(homeSections.design.spaceRoutineSlugs ?? [])];
+
+  const [affairsPool, routinePool, radioPool, wellnessPool, designPool] =
+    await Promise.all([
+      client.fetch<ArticleCardData[]>(
+        ARTICLES_RECENT_BY_CATEGORY_QUERY,
+        {
+          category: homeSections.affairs.archiveCategory!,
+          limit: AFFAIRS_POOL_LIMIT,
+        },
+        sanityFetchOptions,
+      ),
+      client.fetch<ArticleCardData[]>(
+        ARTICLES_RECENT_BY_CATEGORY_QUERY,
+        {
+          category: homeSections.spotlight.archiveCategory!,
+          limit: CAROUSEL_POOL_LIMIT,
+        },
+        sanityFetchOptions,
+      ),
+      client.fetch<ArticleCardData[]>(
+        ARTICLES_RECENT_BY_CATEGORY_QUERY,
+        {
+          category: homeSections.radio.archiveCategory!,
+          limit: CAROUSEL_POOL_LIMIT,
+        },
+        sanityFetchOptions,
+      ),
+      client.fetch<ArticleCardData[]>(
+        ARTICLES_RECENT_BY_CATEGORY_QUERY,
+        {
+          category: homeSections.wellness.archiveCategory!,
+          limit: CAROUSEL_POOL_LIMIT,
+        },
+        sanityFetchOptions,
+      ),
+      client.fetch<ArticleCardData[]>(
+        ARTICLES_DESIGN_SPACE_POOL_QUERY,
+        { routineSlugs, limit: DESIGN_POOL_LIMIT },
+        sanityFetchOptions,
+      ),
+    ]);
+
+  return { affairsPool, routinePool, radioPool, wellnessPool, designPool };
+}
+
 export async function getHomePageWithCarousels(): Promise<HomePageWithCarousels> {
   const home = await getHomePageContent();
 
@@ -128,47 +187,49 @@ export async function getHomePageWithCarousels(): Promise<HomePageWithCarousels>
   }
 
   try {
-    const allArticles = await client.fetch<ArticleCardData[]>(
-      ALL_ARTICLES_CARD_QUERY,
-      {},
-      sanityFetchOptions,
-    );
+    const pools = await fetchHomeCarouselPools();
+    if (!pools) {
+      throw new Error("Sanity client unavailable");
+    }
+
+    const { affairsPool, routinePool, radioPool, wellnessPool, designPool } =
+      pools;
 
     return {
       ...home,
       affairsHero: mergeArticlesForCategory(
         home.featuredArticle ? [home.featuredArticle] : [],
-        allArticles,
+        affairsPool,
         homeSections.affairs.archiveCategory!,
         8,
       ),
       affairsRail: mergeArticlesForCategory(
         home.leadStories,
-        allArticles,
+        affairsPool,
         homeSections.affairs.archiveCategory!,
         12,
       ),
       spotlightCarousel: mergeArticlesForCategory(
         home.spotlightRow,
-        allArticles,
+        routinePool,
         homeSections.spotlight.archiveCategory!,
         12,
       ),
       radioCarousel: mergeArticlesForCategory(
         home.radioArticles,
-        allArticles,
+        radioPool,
         homeSections.radio.archiveCategory!,
         12,
       ),
       designCarousel: mergeArticlesForSpacePool(
         home.designAwards,
-        allArticles,
+        designPool,
         homeSections.design.spaceRoutineSlugs ?? [],
         12,
       ),
       cityCarousel: mergeArticlesForCategory(
         home.cityGuides,
-        allArticles,
+        wellnessPool,
         homeSections.wellness.archiveCategory!,
         12,
       ),
