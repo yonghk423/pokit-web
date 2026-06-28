@@ -24,22 +24,63 @@ function parsePage(raw?: string) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
 }
 
+const ARCHIVE_OG_IMAGE = {
+  url: "/pokitstory.png",
+  alt: site.name,
+  width: 512,
+  height: 512,
+} as const;
+
+function archiveTitle(page: number, category?: string, searchTerm?: string) {
+  const categoryLabel = category ? ` · ${category}` : "";
+  const searchLabel = searchTerm ? ` · "${searchTerm}"` : "";
+
+  if (page > 1) {
+    return `모든 이야기 (${page}페이지${categoryLabel}${searchLabel})`;
+  }
+
+  return `모든 이야기${categoryLabel}${searchLabel}`;
+}
+
+function archiveDescription(category?: string, searchTerm?: string) {
+  if (searchTerm) {
+    return `"${searchTerm}" 검색 결과 — POKIT에 발행된 이야기를 확인하세요.`;
+  }
+  if (category) {
+    return `${category} 이야기 — POKIT에서 최신순으로 확인하세요.`;
+  }
+  return "POKIT에 발행된 모든 이야기를 최신순으로 확인하세요.";
+}
+
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { page: rawPage, category, q } = await searchParams;
   const page = parsePage(rawPage);
   const searchTerm = q?.trim();
-  const categoryLabel = category ? ` · ${category}` : "";
-  const searchLabel = searchTerm ? ` · "${searchTerm}"` : "";
-  const title =
-    page > 1
-      ? `모든 이야기 (${page}페이지${categoryLabel}${searchLabel}) | ${site.name}`
-      : `모든 이야기${categoryLabel}${searchLabel} | ${site.name}`;
+  const title = `${archiveTitle(page, category, searchTerm)} | ${site.name}`;
+  const description = archiveDescription(category, searchTerm);
+  const canonical = `${site.siteUrl}${articlesArchiveHref(page, category, searchTerm)}`;
+  const ogTitle = archiveTitle(page, category, searchTerm);
 
   return {
     title,
-    description: "POKIT에 발행된 모든 이야기를 최신순으로 확인하세요.",
+    description,
     alternates: {
-      canonical: `${site.siteUrl}${articlesArchiveHref(page, category, searchTerm)}`,
+      canonical,
+    },
+    openGraph: {
+      title: `${ogTitle} | ${site.name}`,
+      description,
+      url: canonical,
+      siteName: site.name,
+      locale: "ko_KR",
+      type: "website",
+      images: [ARCHIVE_OG_IMAGE],
+    },
+    twitter: {
+      card: "summary",
+      title: `${ogTitle} | ${site.name}`,
+      description,
+      images: [ARCHIVE_OG_IMAGE.url],
     },
   };
 }

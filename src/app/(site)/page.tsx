@@ -4,12 +4,14 @@ import Link from "next/link";
 import { AppDownload } from "@/components/app-download";
 import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
 import { ArticleSectionCarousel } from "@/components/article-section-carousel";
+import { JsonLd } from "@/components/json-ld";
 import { SectionHeading } from "@/components/section-heading";
 import { site } from "@/config/site";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 import { getHomePageWithCarousels } from "@/sanity/lib/fetch";
 import { homeSections } from "@/content/home";
 import { cn, monoContainer } from "@/lib/cn";
+import { websiteJsonLd } from "@/lib/json-ld";
 
 const HOME_TITLE = `${site.name} — 일상 웰니스 가이드`;
 const HOME_DESCRIPTION =
@@ -112,7 +114,9 @@ export default async function Home() {
   const hasTopStories = affairsHero.length > 0 || affairsRail.length > 0;
 
   return (
-    <main>
+    <>
+      <JsonLd data={websiteJsonLd(HOME_DESCRIPTION)} />
+      <main>
         <section className="border-b border-fine-line bg-paper py-[1.1rem] text-center">
           <p className="m-0 font-sans text-[0.78rem] font-bold text-green">
             Daily inbox intelligence from POKIT
@@ -238,6 +242,7 @@ export default async function Home() {
         </section>
 
         <AppDownload />
-    </main>
+      </main>
+    </>
   );
 }

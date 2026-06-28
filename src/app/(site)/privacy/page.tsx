@@ -7,6 +7,9 @@ import { site } from "@/config/site";
 export const metadata: Metadata = {
   title: "개인정보 처리방침",
   description: `${site.name} 개인정보 처리방침`,
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {

@@ -7,6 +7,9 @@ import { site } from "@/config/site";
 export const metadata: Metadata = {
   title: "지원",
   description: `${site.name} 문의 안내`,
+  alternates: {
+    canonical: "/support",
+  },
 };
 
 export default function SupportPage() {

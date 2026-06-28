@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { JsonLd } from "@/components/json-ld";
 import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
 import { cn, monoContainer } from "@/lib/cn";
+import { articleJsonLd } from "@/lib/json-ld";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
@@ -57,9 +59,20 @@ export default async function ArticlePage({ params }: Props) {
   }
 
   const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
+  const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
 
   return (
-    <main className={cn(monoContainer, "py-8 pb-16")}>
+    <>
+      <JsonLd
+        data={articleJsonLd({
+          slug,
+          title: article.title,
+          description: article.description,
+          publishedAt: article.publishedAt,
+          imageUrl: jsonLdImage ?? undefined,
+        })}
+      />
+      <main className={cn(monoContainer, "py-8 pb-16")}>
         <Link
           href="/"
           className="mb-8 inline-block font-sans text-[0.78rem] tracking-[0.08em] text-muted uppercase hover:text-ink"
@@ -107,7 +120,8 @@ export default async function ArticlePage({ params }: Props) {
             <PortableText value={article.body} />
           </div>
         )}
-    </main>
+      </main>
+    </>
   );
 }
 
