@@ -57,7 +57,13 @@ export function SiteHeader() {
           <Link href="/articles" className={navLinkClass}>
             모든 이야기
           </Link>
-          <a href="#app" className={navLinkClass}>
+          <a
+            href={site.appStoreUrl}
+            className={cn(navLinkClass, "hidden max-nav:inline")}
+          >
+            App
+          </a>
+          <a href="/#app" className={cn(navLinkClass, "max-nav:hidden")}>
             App
           </a>
           <SupportEmailLink className={navLinkClass}>Contact</SupportEmailLink>
@@ -71,7 +77,7 @@ export function SiteHeader() {
         <ul
           className={cn(
             monoContainer,
-            "m-0 flex min-h-10 list-none items-center gap-[2.1rem] font-sans text-[0.76rem] font-extrabold tracking-[0.02em] max-[640px]:gap-4 max-[640px]:px-1 max-[640px]:whitespace-nowrap",
+            "m-0 flex min-h-10 list-none items-center gap-[2.1rem] font-sans text-[0.76rem] font-extrabold tracking-[0.02em] max-[640px]:justify-center max-[640px]:gap-4 max-[640px]:px-1 max-[640px]:whitespace-nowrap",
           )}
         >
           {categories.map((category) => (
