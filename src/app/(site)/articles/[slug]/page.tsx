@@ -4,12 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { CopyTitleButton } from "@/components/copy-title-button";
+import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { JsonLd } from "@/components/json-ld";
 import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
 import { cn, monoContainer } from "@/lib/cn";
 import { articleJsonLd } from "@/lib/json-ld";
+import { shouldShowPokitCta, toPokitRoutineArticle } from "@/lib/pokit-bridge";
 import { getArticleBySlug } from "@/sanity/lib/article";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
@@ -81,12 +82,9 @@ export default async function ArticlePage({ params }: Props) {
               {article.kicker}
             </p>
           )}
-          <div className="flex items-start justify-between gap-4">
-            <h1 className="m-0 font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[1.08] font-medium">
-              {article.title}
-            </h1>
-            <CopyTitleButton title={article.title} />
-          </div>
+          <h1 className="m-0 font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[1.08] font-medium">
+            {article.title}
+          </h1>
           {article.description && (
             <p className="mt-4 mb-0 font-sans text-[1.05rem] leading-[1.55] text-muted">
               {article.description}
@@ -118,6 +116,9 @@ export default async function ArticlePage({ params }: Props) {
           <div className="prose max-w-[42rem] font-sans text-ink">
             <PortableText value={article.body} />
           </div>
+        )}
+        {shouldShowPokitCta(article) && (
+          <AddToPokitCta article={toPokitRoutineArticle(article)} />
         )}
       </main>
     </>

@@ -26,7 +26,9 @@ export const HOME_PAGE_QUERY = `*[_type == "homePage"][0]{
 export const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   ${articleCardFields},
   body,
-  publishedAt
+  publishedAt,
+  durationMinutes,
+  categoryKey
 }`;
 
 export const ARTICLE_SLUGS_QUERY = `*[_type == "article" && defined(slug.current)]{

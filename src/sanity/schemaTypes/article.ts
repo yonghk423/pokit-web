@@ -74,6 +74,21 @@ export const article = defineType({
       of: [{ type: "block" }],
     }),
     defineField({
+      name: "durationMinutes",
+      title: "Duration (minutes)",
+      type: "number",
+      description:
+        "POKIT 담기용 예상 소요 시간(분). 비우면 기본 10분으로 전달됩니다.",
+      validation: (rule) => rule.min(1).max(480),
+    }),
+    defineField({
+      name: "categoryKey",
+      title: "Category key",
+      type: "string",
+      description:
+        "앱 매핑용 snake_case (예: weekly_reset). 비우면 category에서 자동 유도.",
+    }),
+    defineField({
       name: "publishedAt",
       title: "Published at",
       type: "datetime",

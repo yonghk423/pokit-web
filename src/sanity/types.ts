@@ -16,6 +16,19 @@ export type ArticleCardData = {
 export type ArticleDocument = ArticleCardData & {
   body?: PortableTextBlock[];
   publishedAt?: string;
+  durationMinutes?: number;
+  categoryKey?: string;
+};
+
+/** POKIT 앱 WebView 브릿지용 아티클 메타 */
+export type PokitRoutineArticle = {
+  slug: string;
+  title: string;
+  description?: string;
+  category: string;
+  categoryKey?: string;
+  durationMinutes: number;
+  publishedAt?: string;
 };
 
 export type SectionHeading = {
