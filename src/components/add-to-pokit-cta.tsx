@@ -29,9 +29,9 @@ export function AddToPokitCta({ article, className }: Props) {
 
   const handleAdd = useCallback(() => {
     const payload = buildAddRoutinePayload(article);
-    const sent = sendToPokitApp(payload);
+    const result = sendToPokitApp(payload, article);
 
-    if (sent) {
+    if (result === "sent" || result === "deep_link") {
       setState("sent");
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
       resetTimerRef.current = setTimeout(() => setState("idle"), 4000);

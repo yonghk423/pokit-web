@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { articlePath } from "@/lib/article-path";
+import { getCategoryLabel } from "@/lib/category-label";
 import { cn } from "@/lib/cn";
 import { formatPublishedLabel, formatPublishedWeekday } from "@/lib/format-published";
 import { isSanityConfigured } from "@/sanity/env";
@@ -93,7 +94,7 @@ export function ArticleCard({
               className={mediaClass}
               aria-label={article.title}
             >
-              <span>{article.category}</span>
+              <span>{getCategoryLabel(article.category)}</span>
             </Link>
           )}
         </figure>

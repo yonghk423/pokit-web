@@ -5,13 +5,15 @@ import { articlesArchiveHref } from "@/sanity/lib/articles";
 type Props = {
   q?: string;
   category?: string;
+  section?: string;
 };
 
-export function ArticlesArchiveSearch({ q, category }: Props) {
+export function ArticlesArchiveSearch({ q, category, section }: Props) {
   const trimmed = q?.trim();
 
   return (
     <form className="mt-5" action="/articles" method="get">
+      {section && <input type="hidden" name="section" value={section} />}
       {category && <input type="hidden" name="category" value={category} />}
       <label
         className="mb-[0.45rem] block font-sans text-[0.72rem] font-extrabold tracking-[0.06em] uppercase"
@@ -38,7 +40,7 @@ export function ArticlesArchiveSearch({ q, category }: Props) {
       </div>
       {trimmed && (
         <p className="mt-[0.55rem] mb-0 text-[0.88rem] [&_a:hover]:text-green">
-          <Link href={articlesArchiveHref(1, category)}>검색 초기화</Link>
+          <Link href={articlesArchiveHref(1, category, undefined, section)}>검색 초기화</Link>
         </p>
       )}
     </form>

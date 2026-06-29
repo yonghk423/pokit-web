@@ -35,6 +35,7 @@ export const homeSections = {
     nav: "공간",
     kicker: "공간",
     title: "공간을 다시 짜는 이야기",
+    archiveSection: "design",
     /** Design 전체 + 공간·책상·집과 연결된 Routine 글 */
     spaceRoutineSlugs: [
       "minimal-desk-design",
@@ -61,6 +62,7 @@ export const homeSections = {
     kicker: string;
     title: string;
     archiveCategory?: string;
+    archiveSection?: string;
     spaceRoutineSlugs?: readonly string[];
   }
 >;

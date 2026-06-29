@@ -82,9 +82,9 @@ export function SiteHeader() {
         >
           {categories.map((category) => (
             <li key={category.id}>
-              <a href={`#${category.id}`} className="text-ink">
+              <Link href={`/#${category.id}`} className="text-ink">
                 {category.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

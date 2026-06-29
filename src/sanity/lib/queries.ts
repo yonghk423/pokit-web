@@ -55,10 +55,29 @@ export const ARTICLES_DESIGN_SPACE_POOL_QUERY = `*[_type == "article" && defined
   ${articleCardFields}
 }`;
 
+const designSpaceFilter = `(
+  category == "Design" ||
+  (category == "Routine" && slug.current in $routineSlugs)
+)`;
+
+export const ARTICLES_DESIGN_SPACE_COUNT_QUERY = `count(*[_type == "article" && defined(slug.current) && ${designSpaceFilter} && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)])`;
+
+export const ARTICLES_DESIGN_SPACE_PAGINATED_QUERY = `*[_type == "article" && defined(slug.current) && ${designSpaceFilter} && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)] | order(publishedAt desc) [$start...$end]{
+  ${articleCardFields}
+}`;
+
 export const ARTICLES_PAGINATED_QUERY = `*[_type == "article" && defined(slug.current) && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)] | order(publishedAt desc) [$start...$end]{
   ${articleCardFields}
 }`;
 
 export const ARTICLES_PAGINATED_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category && ($q == "" || title match $pattern || coalesce(description, "") match $pattern || coalesce(kicker, "") match $pattern || category match $pattern)] | order(publishedAt desc) [$start...$end]{
+  ${articleCardFields}
+}`;
+
+export const RELATED_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category && slug.current != $slug] | order(publishedAt desc)[0...$limit]{
+  ${articleCardFields}
+}`;
+
+export const RELATED_DESIGN_SPACE_QUERY = `*[_type == "article" && defined(slug.current) && slug.current != $slug && ${designSpaceFilter}] | order(publishedAt desc)[0...$limit]{
   ${articleCardFields}
 }`;

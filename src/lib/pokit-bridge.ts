@@ -27,16 +27,42 @@ export type PokitAddRoutinePayload = {
   defaultTarget: PokitAddRoutineTarget;
 };
 
+export type PokitSendResult = "sent" | "deep_link" | "browser";
+
 declare global {
   interface Window {
     ReactNativeWebView?: {
       postMessage: (message: string) => void;
     };
+    POKIT_APP?: boolean;
+    webkit?: {
+      messageHandlers?: Record<string, { postMessage: (body: unknown) => void }>;
+    };
   }
 }
 
+function isMobileDevice() {
+  return typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
+/** POKIT 앱 WebView 안인지 (브릿지 유무와 별개) */
+export function isPokitAppContext() {
+  if (typeof window === "undefined") return false;
+
+  if (window.ReactNativeWebView?.postMessage) return true;
+  if (window.POKIT_APP === true) return true;
+  if (window.webkit?.messageHandlers?.pokit?.postMessage) return true;
+
+  if (/POKIT/i.test(navigator.userAgent)) return true;
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("pokit_app") === "1") return true;
+
+  return false;
+}
+
 export function isPokitAppWebView() {
-  return typeof window !== "undefined" && window.ReactNativeWebView !== undefined;
+  return isPokitAppContext();
 }
 
 export function formatPublishedDate(publishedAt?: string) {
@@ -68,13 +94,21 @@ export function buildAddRoutinePayload(article: PokitRoutineArticle): PokitAddRo
   };
 }
 
-export function sendToPokitApp(payload: PokitAddRoutinePayload) {
-  if (!isPokitAppWebView()) {
-    return false;
+function tryPostMessage(payload: PokitAddRoutinePayload) {
+  const message = JSON.stringify(payload);
+
+  if (window.ReactNativeWebView?.postMessage) {
+    window.ReactNativeWebView.postMessage(message);
+    return true;
   }
 
-  window.ReactNativeWebView!.postMessage(JSON.stringify(payload));
-  return true;
+  const handler = window.webkit?.messageHandlers?.pokit;
+  if (handler?.postMessage) {
+    handler.postMessage(payload);
+    return true;
+  }
+
+  return false;
 }
 
 /** 보조: 앱이 onShouldStartLoadWithRequest로 가로챌 수 있는 커스텀 스킴 */
@@ -84,7 +118,31 @@ export function buildPokitDeepLink(article: PokitRoutineArticle) {
     minutes: String(article.durationMinutes),
     title: article.title,
   });
+  if (article.description) {
+    params.set("summary", article.description);
+  }
   return `pokit://add-routine?${params.toString()}`;
+}
+
+export function sendToPokitApp(
+  payload: PokitAddRoutinePayload,
+  article: PokitRoutineArticle,
+): PokitSendResult {
+  if (typeof window === "undefined") {
+    return "browser";
+  }
+
+  if (tryPostMessage(payload)) {
+    return "sent";
+  }
+
+  // 앱 WebView이거나 모바일: postMessage 없을 때 딥링크 시도 (앱이 URL 가로채기)
+  if (isPokitAppContext() || isMobileDevice()) {
+    window.location.href = buildPokitDeepLink(article);
+    return "deep_link";
+  }
+
+  return "browser";
 }
 
 export const DEFAULT_DURATION_MINUTES = 10;

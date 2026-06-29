@@ -39,9 +39,9 @@ export function SiteFooter() {
           <ul className="m-0 grid list-none gap-[0.35rem] p-0">
             {categories.map((category) => (
               <li key={category.id}>
-                <a href={`#${category.id}`} className="text-[0.82rem] text-muted">
+                <Link href={`/#${category.id}`} className="text-[0.82rem] text-muted">
                   {category.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

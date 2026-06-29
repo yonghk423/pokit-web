@@ -198,7 +198,7 @@ export default async function Home() {
             <SectionHeading
               kicker={designAwardsSection?.kicker ?? homeSections.design.kicker}
               title={designAwardsSection?.title ?? homeSections.design.title}
-              viewAllHref={articlesArchiveHref(1)}
+              viewAllHref={articlesArchiveHref(1, undefined, undefined, homeSections.design.archiveSection)}
             />
             <ArticleSectionCarousel
               articles={designCarousel}

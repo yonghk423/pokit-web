@@ -170,6 +170,10 @@ export function ArticleSectionCarousel({
     );
   }
 
+  if (!isVertical && !showControls) {
+    return track;
+  }
+
   return (
     <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-[0.65rem] max-[640px]:grid-cols-1 max-[640px]:gap-0">
       {showControls && (

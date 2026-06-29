@@ -6,12 +6,14 @@ import { notFound } from "next/navigation";
 
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { JsonLd } from "@/components/json-ld";
+import { RelatedArticles } from "@/components/related-articles";
 import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
 import { cn, monoContainer } from "@/lib/cn";
 import { articleJsonLd } from "@/lib/json-ld";
 import { shouldShowPokitCta, toPokitRoutineArticle } from "@/lib/pokit-bridge";
 import { getArticleBySlug } from "@/sanity/lib/article";
+import { getRelatedArticles } from "@/sanity/lib/related-articles";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
@@ -54,6 +56,8 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) {
     notFound();
   }
+
+  const related = await getRelatedArticles(slug, article.category);
 
   const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
   const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
@@ -120,6 +124,7 @@ export default async function ArticlePage({ params }: Props) {
         {shouldShowPokitCta(article) && (
           <AddToPokitCta article={toPokitRoutineArticle(article)} />
         )}
+        {related && <RelatedArticles related={related} />}
       </main>
     </>
   );

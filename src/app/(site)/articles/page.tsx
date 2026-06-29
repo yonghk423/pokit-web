@@ -7,6 +7,7 @@ import { ArticlesArchiveView } from "@/components/articles-archive-view";
 import { ArticlePagination } from "@/components/article-pagination";
 import { site } from "@/config/site";
 import { cn, monoContainer } from "@/lib/cn";
+import { getArchiveHeading, getArchiveSectionLabel, getCategoryLabel, isArchiveSection } from "@/lib/category-label";
 import {
   ARTICLES_PER_PAGE,
   articlesArchiveHref,
@@ -16,7 +17,7 @@ import {
 export const revalidate = false;
 
 type Props = {
-  searchParams: Promise<{ page?: string; category?: string; q?: string }>;
+  searchParams: Promise<{ page?: string; category?: string; section?: string; q?: string }>;
 };
 
 function parsePage(raw?: string) {
@@ -31,35 +32,44 @@ const ARCHIVE_OG_IMAGE = {
   height: 512,
 } as const;
 
-function archiveTitle(page: number, category?: string, searchTerm?: string) {
-  const categoryLabel = category ? ` · ${category}` : "";
+function archiveTitle(
+  page: number,
+  category?: string,
+  section?: string,
+  searchTerm?: string,
+) {
+  const heading = getArchiveHeading(category, section);
   const searchLabel = searchTerm ? ` · "${searchTerm}"` : "";
 
   if (page > 1) {
-    return `모든 이야기 (${page}페이지${categoryLabel}${searchLabel})`;
+    return `${heading} (${page}페이지${searchLabel})`;
   }
 
-  return `모든 이야기${categoryLabel}${searchLabel}`;
+  return `${heading}${searchLabel}`;
 }
 
-function archiveDescription(category?: string, searchTerm?: string) {
+function archiveDescription(category?: string, section?: string, searchTerm?: string) {
   if (searchTerm) {
     return `"${searchTerm}" 검색 결과 — POKIT에 발행된 이야기를 확인하세요.`;
   }
+  if (section) {
+    return `${getArchiveSectionLabel(section)} 이야기 — POKIT에서 최신순으로 확인하세요.`;
+  }
   if (category) {
-    return `${category} 이야기 — POKIT에서 최신순으로 확인하세요.`;
+    return `${getCategoryLabel(category)} 이야기 — POKIT에서 최신순으로 확인하세요.`;
   }
   return "POKIT에 발행된 모든 이야기를 최신순으로 확인하세요.";
 }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
-  const { page: rawPage, category, q } = await searchParams;
+  const { page: rawPage, category, section, q } = await searchParams;
   const page = parsePage(rawPage);
   const searchTerm = q?.trim();
-  const title = `${archiveTitle(page, category, searchTerm)} | ${site.name}`;
-  const description = archiveDescription(category, searchTerm);
-  const canonical = `${site.siteUrl}${articlesArchiveHref(page, category, searchTerm)}`;
-  const ogTitle = archiveTitle(page, category, searchTerm);
+  const archiveSection = section && isArchiveSection(section) ? section : undefined;
+  const title = `${archiveTitle(page, category, archiveSection, searchTerm)} | ${site.name}`;
+  const description = archiveDescription(category, archiveSection, searchTerm);
+  const canonical = `${site.siteUrl}${articlesArchiveHref(page, category, searchTerm, archiveSection)}`;
+  const ogTitle = archiveTitle(page, category, archiveSection, searchTerm);
 
   return {
     title,
@@ -86,13 +96,20 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 
 export default async function ArticlesPage({ searchParams }: Props) {
-  const { page: rawPage, category, q } = await searchParams;
+  const { page: rawPage, category, section, q } = await searchParams;
   const page = parsePage(rawPage);
   const searchTerm = q?.trim();
+  const archiveSection = section && isArchiveSection(section) ? section : undefined;
+
+  if (section && !archiveSection) {
+    notFound();
+  }
+
   const { articles, total, totalPages } = await getPaginatedArticles(
     page,
     category,
     searchTerm,
+    archiveSection,
   );
 
   if (total > 0 && page > totalPages) {
@@ -110,7 +127,7 @@ export default async function ArticlesPage({ searchParams }: Props) {
               Archive
             </p>
             <h1 className="m-0 text-[clamp(2rem,4vw,2.85rem)] leading-[1.05] tracking-[-0.035em]">
-              {category ? `${category} 이야기` : "모든 이야기"}
+              {getArchiveHeading(category, archiveSection)}
             </h1>
             <p className="mt-[0.85rem] mb-0 font-sans text-[0.92rem] text-muted">
               {searchTerm ? (
@@ -130,8 +147,12 @@ export default async function ArticlesPage({ searchParams }: Props) {
                 "아직 발행된 이야기가 없습니다."
               )}
             </p>
-            <ArticlesArchiveSearch q={searchTerm} category={category} />
-            {category && (
+            <ArticlesArchiveSearch
+              q={searchTerm}
+              category={category}
+              section={archiveSection}
+            />
+            {(category || archiveSection) && (
               <p className="mt-[0.65rem] mb-0 font-sans text-[0.88rem] [&_a:hover]:text-green">
                 <Link href={articlesArchiveHref(1, undefined, searchTerm)}>
                   필터 해제 · 전체 이야기 보기
@@ -147,6 +168,7 @@ export default async function ArticlesPage({ searchParams }: Props) {
                 page={page}
                 totalPages={totalPages}
                 category={category}
+                section={archiveSection}
                 q={searchTerm}
               />
             </>

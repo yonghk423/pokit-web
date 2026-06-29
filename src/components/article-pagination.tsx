@@ -6,10 +6,11 @@ type Props = {
   page: number;
   totalPages: number;
   category?: string;
+  section?: string;
   q?: string;
 };
 
-export function ArticlePagination({ page, totalPages, category, q }: Props) {
+export function ArticlePagination({ page, totalPages, category, section, q }: Props) {
   if (totalPages <= 1) {
     return null;
   }
@@ -23,7 +24,7 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
     >
       {page > 1 ? (
         <Link
-          href={articlesArchiveHref(page - 1, category, q)}
+          href={articlesArchiveHref(page - 1, category, q, section)}
           scroll={false}
           className="text-ink underline-offset-[0.14em] hover:underline"
         >
@@ -45,7 +46,7 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
               </span>
             ) : (
               <Link
-                href={articlesArchiveHref(pageNumber, category, q)}
+                href={articlesArchiveHref(pageNumber, category, q, section)}
                 scroll={false}
                 className="inline-flex h-8 min-w-8 items-center justify-center border border-transparent px-[0.35rem] text-ink hover:border-fine-line"
               >
@@ -58,7 +59,7 @@ export function ArticlePagination({ page, totalPages, category, q }: Props) {
 
       {page < totalPages ? (
         <Link
-          href={articlesArchiveHref(page + 1, category, q)}
+          href={articlesArchiveHref(page + 1, category, q, section)}
           scroll={false}
           className="text-ink underline-offset-[0.14em] hover:underline"
         >
