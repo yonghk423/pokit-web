@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { CopyTitleButton } from "@/components/copy-title-button";
 import { JsonLd } from "@/components/json-ld";
 import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
@@ -80,9 +81,12 @@ export default async function ArticlePage({ params }: Props) {
               {article.kicker}
             </p>
           )}
-          <h1 className="m-0 font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[1.08] font-medium">
-            {article.title}
-          </h1>
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="m-0 font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[1.08] font-medium">
+              {article.title}
+            </h1>
+            <CopyTitleButton title={article.title} />
+          </div>
           {article.description && (
             <p className="mt-4 mb-0 font-sans text-[1.05rem] leading-[1.55] text-muted">
               {article.description}
