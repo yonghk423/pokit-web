@@ -2,9 +2,7 @@ const localizedString = (field: string) =>
   `select($locale == "en" => coalesce(${field}En, ${field}), ${field})`;
 
 const localizedTextSearch = (field: string) =>
-  `($locale == "en"
-    ? (coalesce(${field}En, ${field}) match $pattern)
-    : (${field} match $pattern))`;
+  `select($locale == "en" => coalesce(${field}En, ${field}) match $pattern, ${field} match $pattern)`;
 
 const articleCardFields = `
   "slug": slug.current,
