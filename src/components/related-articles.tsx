@@ -1,40 +1,53 @@
 import Link from "next/link";
 
 import { ArticleSectionCarousel } from "@/components/article-section-carousel";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
-import type { RelatedArticlesResult } from "@/sanity/lib/related-articles";
+import type { RelatedArticlesResult } from "@/sanity/lib/articles";
 
 type Props = {
   related: RelatedArticlesResult;
+  locale: Locale;
+  categoryLabels: Dictionary["categories"];
+  heading: string;
+  viewMoreLabel: string;
   className?: string;
 };
 
-export function RelatedArticles({ related, className }: Props) {
-  const ariaLabel = `${related.label} 이야기`;
-
+export function RelatedArticles({
+  related,
+  locale,
+  categoryLabels,
+  heading,
+  viewMoreLabel,
+  className,
+}: Props) {
   return (
     <section
       className={cn("mt-12 border-t border-fine-line pt-8", className)}
-      aria-label={ariaLabel}
+      aria-label={heading}
     >
       <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <h2 className="m-0 font-serif text-[clamp(1.35rem,3vw,1.75rem)] leading-[1.15] font-medium tracking-[-0.02em]">
-          {related.label} 이야기
+          {heading}
         </h2>
         <Link
           href={related.viewAllHref}
           className="shrink-0 font-sans text-[0.82rem] font-bold tracking-[0.02em] underline underline-offset-[0.14em] hover:text-green"
         >
-          더보기 →
+          {viewMoreLabel}
         </Link>
       </header>
 
       <ArticleSectionCarousel
         articles={related.articles}
+        locale={locale}
+        categoryLabels={categoryLabels}
         variant="vertical"
         layout="grid"
         columns={4}
-        ariaLabel={ariaLabel}
+        ariaLabel={heading}
       />
     </section>
   );

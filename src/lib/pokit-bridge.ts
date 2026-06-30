@@ -1,6 +1,7 @@
 import { articlePath } from "@/lib/article-path";
 import { resolveCategoryKey } from "@/lib/category-key";
 import { site } from "@/config/site";
+import type { Locale } from "@/i18n/config";
 import type { ArticleDocument, PokitRoutineArticle } from "@/sanity/types";
 
 export const POKIT_ADD_ROUTINE_TYPE = "pokit_add_routine" as const;
@@ -71,7 +72,10 @@ export function formatPublishedDate(publishedAt?: string) {
   return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined;
 }
 
-export function buildAddRoutinePayload(article: PokitRoutineArticle): PokitAddRoutinePayload {
+export function buildAddRoutinePayload(
+  article: PokitRoutineArticle,
+  locale: Locale,
+): PokitAddRoutinePayload {
   const categoryKey = resolveCategoryKey(article.category, article.categoryKey);
 
   return {
@@ -81,8 +85,8 @@ export function buildAddRoutinePayload(article: PokitRoutineArticle): PokitAddRo
     article: {
       id: article.slug,
       slug: article.slug,
-      url: `${site.siteUrl}${articlePath(article.slug)}`,
-      title: article.title,
+      url: `${site.siteUrl}${articlePath(locale, article.slug)}`,
+      title: article.titleKo ?? article.title,
       ...(article.description ? { summary: article.description } : {}),
       category: article.category,
       categoryKey,
@@ -160,6 +164,7 @@ export function toPokitRoutineArticle(article: ArticleDocument): PokitRoutineArt
   return {
     slug: article.slug,
     title: article.title,
+    titleKo: article.titleKo ?? article.title,
     description: article.description,
     category: article.category,
     categoryKey: article.categoryKey,

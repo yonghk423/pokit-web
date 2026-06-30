@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { articlePath } from "@/lib/article-path";
-import { getCategoryLabel } from "@/lib/category-label";
 import { cn } from "@/lib/cn";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { formatPublishedLabel, formatPublishedWeekday } from "@/lib/format-published";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
@@ -11,6 +12,8 @@ import type { ArticleCardData } from "@/sanity/types";
 
 type Props = {
   article: ArticleCardData;
+  locale: Locale;
+  categoryLabels: Dictionary["categories"];
   variant?: "feature" | "vertical" | "compact" | "mini";
   hideImage?: boolean;
   inRail?: boolean;
@@ -26,6 +29,8 @@ const imageSizes: Record<NonNullable<Props["variant"]>, { w: number; h: number }
 
 export function ArticleCard({
   article,
+  locale,
+  categoryLabels,
   variant = "vertical",
   hideImage = false,
   inRail = false,
@@ -33,8 +38,8 @@ export function ArticleCard({
   const { w, h } = imageSizes[variant];
   const publishedLabel =
     variant === "compact"
-      ? formatPublishedWeekday(article.publishedAt)
-      : formatPublishedLabel(article.publishedAt);
+      ? formatPublishedWeekday(article.publishedAt, locale)
+      : formatPublishedLabel(article.publishedAt, locale);
   const imageUrl = isSanityConfigured()
     ? coverImageUrl(article.coverImage, w, h)
     : null;
@@ -68,7 +73,7 @@ export function ArticleCard({
         >
           {imageUrl ? (
             <Link
-              href={articlePath(article.slug)}
+              href={articlePath(locale, article.slug)}
               className={mediaClass}
               aria-label={article.title}
             >
@@ -90,11 +95,11 @@ export function ArticleCard({
             </Link>
           ) : (
             <Link
-              href={articlePath(article.slug)}
+              href={articlePath(locale, article.slug)}
               className={mediaClass}
               aria-label={article.title}
             >
-              <span>{getCategoryLabel(article.category)}</span>
+              <span>{categoryLabels[article.category as keyof Dictionary["categories"]] ?? article.category}</span>
             </Link>
           )}
         </figure>
@@ -120,7 +125,7 @@ export function ArticleCard({
           className={cn(
             "m-0 mt-[0.28rem] font-bold tracking-[-0.025em]",
             variant === "feature" &&
-            "text-[clamp(2.1rem,4vw,3.9rem)] leading-[1.02] tracking-[-0.045em] max-[640px]:text-[clamp(1.45rem,6.5vw,2.1rem)] max-[640px]:leading-[1.08]",
+            "text-[clamp(1.65rem,3vw,2.5rem)] leading-[1.06] tracking-[-0.035em] max-[640px]:text-[clamp(1.35rem,5.5vw,1.85rem)] max-[640px]:leading-[1.1]",
             variant === "compact" && "text-[1.05rem] leading-[1.25]",
             variant === "mini" && "text-[0.98rem]",
             (variant === "vertical" || !variant) &&
@@ -128,7 +133,7 @@ export function ArticleCard({
             "[&_a:hover]:underline [&_a:hover]:decoration-[0.06em] [&_a:hover]:underline-offset-[0.14em]",
           )}
         >
-          <Link href={articlePath(article.slug)}>{article.title}</Link>
+          <Link href={articlePath(locale, article.slug)}>{article.title}</Link>
         </h3>
         {article.description && variant === "feature" && (
           <p className="mt-[0.7rem] mb-0 max-w-[43rem] text-base leading-[1.55] text-muted max-[640px]:text-[0.92rem] max-[640px]:leading-normal">

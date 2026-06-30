@@ -1,4 +1,6 @@
 import { site } from "@/config/site";
+import type { Locale } from "@/i18n/config";
+import { localeToIntl } from "@/i18n/config";
 import { articlePath } from "@/lib/article-path";
 
 const publisher = {
@@ -11,26 +13,27 @@ const publisher = {
   },
 };
 
-export function websiteJsonLd(description: string) {
+export function websiteJsonLd(description: string, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: site.name,
     url: site.siteUrl,
     description,
-    inLanguage: "ko-KR",
+    inLanguage: localeToIntl(locale),
     publisher,
   };
 }
 
 export function articleJsonLd(params: {
+  locale: Locale;
   slug: string;
   title: string;
   description?: string;
   publishedAt?: string;
   imageUrl?: string;
 }) {
-  const url = `${site.siteUrl}${articlePath(params.slug)}`;
+  const url = `${site.siteUrl}${articlePath(params.locale, params.slug)}`;
 
   return {
     "@context": "https://schema.org",
@@ -38,7 +41,7 @@ export function articleJsonLd(params: {
     headline: params.title,
     description: params.description,
     datePublished: params.publishedAt,
-    inLanguage: "ko-KR",
+    inLanguage: localeToIntl(params.locale),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,

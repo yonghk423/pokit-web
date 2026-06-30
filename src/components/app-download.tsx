@@ -2,10 +2,17 @@
 
 import { QRCodeSVG } from "qrcode.react";
 
-import { site } from "@/config/site";
+import { appStoreUrl } from "@/config/site";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { cn, monoContainer } from "@/lib/cn";
 
-export function AppDownload() {
+type Props = {
+  locale: Locale;
+  copy: Dictionary["appDownload"];
+};
+
+export function AppDownload({ locale, copy }: Props) {
   return (
     <section
       id="app"
@@ -16,30 +23,30 @@ export function AppDownload() {
     >
       <div>
         <p className="m-0 font-sans text-[0.75rem] font-extrabold tracking-[0.1em] text-brand uppercase">
-          Want more stories like these in your pocket?
+          {copy.kicker}
         </p>
         <h2 className="mt-[0.55rem] mb-0 text-[clamp(1.6rem,3vw,2.7rem)] leading-[1.05] tracking-[-0.04em]">
-          POKIT 앱에서 루틴을 기록하고, 하루를 정리하세요.
+          {copy.title}
         </h2>
       </div>
       <div className="flex flex-col items-center gap-[0.85rem]">
         <a
-          href={site.appStoreUrl}
+          href={appStoreUrl(locale)}
           className="hidden min-h-[2.75rem] items-center justify-center bg-brand px-[1.2rem] font-sans text-[0.78rem] font-extrabold tracking-[0.08em] text-ink uppercase max-nav:inline-flex"
         >
-          App Store에서 다운로드
+          {copy.download}
         </a>
         <div className="flex flex-col items-center gap-2 rounded-lg bg-white p-[0.85rem] max-nav:hidden">
           <QRCodeSVG
-            value={site.appStoreUrl}
+            value={appStoreUrl(locale)}
             size={132}
             bgColor="#ffffff"
             fgColor="#1a1a1a"
             role="img"
-            aria-label="POKIT 앱 App Store QR 코드"
+            aria-label={copy.qrAria}
           />
           <p className="m-0 font-sans text-[0.72rem] font-bold tracking-[0.04em] text-ink normal-case">
-            iPhone 카메라로 스캔해서 설치
+            {copy.qrHint}
           </p>
         </div>
       </div>

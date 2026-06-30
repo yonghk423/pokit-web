@@ -3,18 +3,27 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ArticleCard } from "@/components/article-card";
-import { homeSections } from "@/content/home";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
 import type { ArticleCardData } from "@/sanity/types";
 
 type Props = {
   articles: ArticleCardData[];
-  ariaLabel?: string;
+  locale: Locale;
+  categoryLabels: Dictionary["categories"];
+  ariaLabel: string;
+  prevAria: string;
+  nextAria: string;
 };
 
 export function FeaturedHeadlineCarousel({
   articles,
-  ariaLabel = homeSections.affairs.title,
+  locale,
+  categoryLabels,
+  ariaLabel,
+  prevAria,
+  nextAria,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -45,7 +54,7 @@ export function FeaturedHeadlineCarousel({
       el.removeEventListener("scroll", updateControls);
       window.removeEventListener("resize", updateControls);
     };
-  }, [articles, updateControls]);
+  }, [articles.length, updateControls]);
 
   const scroll = (direction: "prev" | "next") => {
     const el = scrollRef.current;
@@ -53,15 +62,9 @@ export function FeaturedHeadlineCarousel({
       return;
     }
 
-    el.scrollBy({
-      left: direction === "next" ? el.clientWidth : -el.clientWidth,
-      behavior: "smooth",
-    });
+    const offset = direction === "prev" ? -el.clientWidth : el.clientWidth;
+    el.scrollBy({ left: offset, behavior: "smooth" });
   };
-
-  if (articles.length === 0) {
-    return null;
-  }
 
   const showControls = articles.length > 1;
 
@@ -78,7 +81,12 @@ export function FeaturedHeadlineCarousel({
               key={article.slug}
               className="min-w-0 w-[100cqw] max-w-[100cqw] shrink-0 grow-0 basis-[100cqw] snap-start"
             >
-              <ArticleCard article={article} variant="feature" />
+              <ArticleCard
+                article={article}
+                locale={locale}
+                categoryLabels={categoryLabels}
+                variant="feature"
+              />
             </div>
           ))}
         </div>
@@ -89,7 +97,7 @@ export function FeaturedHeadlineCarousel({
           <button
             type="button"
             className="pointer-events-auto size-[2.35rem] cursor-pointer border border-white/55 bg-ink/42 font-sans text-base leading-none text-white backdrop-blur-[2px] hover:bg-ink/62 disabled:cursor-not-allowed disabled:opacity-35"
-            aria-label={`${ariaLabel} 이전`}
+            aria-label={prevAria}
             disabled={!canPrev}
             onClick={() => scroll("prev")}
           >
@@ -98,7 +106,7 @@ export function FeaturedHeadlineCarousel({
           <button
             type="button"
             className="pointer-events-auto size-[2.35rem] cursor-pointer border border-white/55 bg-ink/42 font-sans text-base leading-none text-white backdrop-blur-[2px] hover:bg-ink/62 disabled:cursor-not-allowed disabled:opacity-35"
-            aria-label={`${ariaLabel} 다음`}
+            aria-label={nextAria}
             disabled={!canNext}
             onClick={() => scroll("next")}
           >

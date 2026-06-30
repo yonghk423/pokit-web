@@ -4,6 +4,8 @@ import { useSyncExternalStore } from "react";
 
 import { ArticleArchiveListItem } from "@/components/article-archive-list-item";
 import { ArticleCard } from "@/components/article-card";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
 import type { ArticleCardData } from "@/sanity/types";
 
@@ -12,8 +14,18 @@ const STORAGE_EVENT = "pokit-archive-view-change";
 
 type ViewMode = "grid" | "list";
 
+type ArchiveViewLabels = {
+  viewLabel: string;
+  viewModeAria: string;
+  viewGrid: string;
+  viewList: string;
+};
+
 type Props = {
   articles: ArticleCardData[];
+  locale: Locale;
+  categoryLabels: Dictionary["categories"];
+  labels: ArchiveViewLabels;
 };
 
 function getSnapshot(): ViewMode {
@@ -60,19 +72,19 @@ function ListIcon() {
   );
 }
 
-export function ArticlesArchiveView({ articles }: Props) {
+export function ArticlesArchiveView({ articles, locale, categoryLabels, labels }: Props) {
   const view = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
     <>
       <div className="mb-5 flex items-center justify-between gap-4">
         <p className="m-0 font-sans text-[0.72rem] font-extrabold tracking-[0.06em] uppercase">
-          보기
+          {labels.viewLabel}
         </p>
         <div
           className="inline-flex border border-line"
           role="group"
-          aria-label="보기 방식"
+          aria-label={labels.viewModeAria}
         >
           <button
             type="button"
@@ -85,7 +97,7 @@ export function ArticlesArchiveView({ articles }: Props) {
             onClick={() => selectView("grid")}
           >
             <GridIcon />
-            갤러리
+            {labels.viewGrid}
           </button>
           <button
             type="button"
@@ -98,7 +110,7 @@ export function ArticlesArchiveView({ articles }: Props) {
             onClick={() => selectView("list")}
           >
             <ListIcon />
-            리스트
+            {labels.viewList}
           </button>
         </div>
       </div>
@@ -109,6 +121,8 @@ export function ArticlesArchiveView({ articles }: Props) {
             <ArticleCard
               key={article.slug}
               article={article}
+              locale={locale}
+              categoryLabels={categoryLabels}
               variant="vertical"
             />
           ))}
@@ -116,7 +130,7 @@ export function ArticlesArchiveView({ articles }: Props) {
       ) : (
         <ul className="m-0 list-none border-t border-line p-0">
           {articles.map((article) => (
-            <ArticleArchiveListItem key={article.slug} article={article} />
+            <ArticleArchiveListItem key={article.slug} article={article} locale={locale} />
           ))}
         </ul>
       )}

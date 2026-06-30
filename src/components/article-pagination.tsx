@@ -1,8 +1,12 @@
 import Link from "next/link";
 
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 
 type Props = {
+  locale: Locale;
+  dict: Dictionary;
   page: number;
   totalPages: number;
   category?: string;
@@ -10,7 +14,15 @@ type Props = {
   q?: string;
 };
 
-export function ArticlePagination({ page, totalPages, category, section, q }: Props) {
+export function ArticlePagination({
+  locale,
+  dict,
+  page,
+  totalPages,
+  category,
+  section,
+  q,
+}: Props) {
   if (totalPages <= 1) {
     return null;
   }
@@ -20,18 +32,18 @@ export function ArticlePagination({ page, totalPages, category, section, q }: Pr
   return (
     <nav
       className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 border-t border-fine-line pt-6 font-sans text-[0.88rem]"
-      aria-label="이야기 목록 페이지"
+      aria-label={dict.archive.paginationAria}
     >
       {page > 1 ? (
         <Link
-          href={articlesArchiveHref(page - 1, category, q, section)}
+          href={articlesArchiveHref(locale, page - 1, category, q, section)}
           scroll={false}
           className="text-ink underline-offset-[0.14em] hover:underline"
         >
-          ← 이전
+          {dict.archive.prev}
         </Link>
       ) : (
-        <span className="pointer-events-none text-muted">← 이전</span>
+        <span className="pointer-events-none text-muted">{dict.archive.prev}</span>
       )}
 
       <ol className="m-0 flex list-none flex-wrap items-center justify-center gap-[0.35rem] p-0">
@@ -46,7 +58,7 @@ export function ArticlePagination({ page, totalPages, category, section, q }: Pr
               </span>
             ) : (
               <Link
-                href={articlesArchiveHref(pageNumber, category, q, section)}
+                href={articlesArchiveHref(locale, pageNumber, category, q, section)}
                 scroll={false}
                 className="inline-flex h-8 min-w-8 items-center justify-center border border-transparent px-[0.35rem] text-ink hover:border-fine-line"
               >
@@ -59,14 +71,14 @@ export function ArticlePagination({ page, totalPages, category, section, q }: Pr
 
       {page < totalPages ? (
         <Link
-          href={articlesArchiveHref(page + 1, category, q, section)}
+          href={articlesArchiveHref(locale, page + 1, category, q, section)}
           scroll={false}
           className="text-ink underline-offset-[0.14em] hover:underline"
         >
-          다음 →
+          {dict.archive.next}
         </Link>
       ) : (
-        <span className="pointer-events-none text-muted">다음 →</span>
+        <span className="pointer-events-none text-muted">{dict.archive.next}</span>
       )}
     </nav>
   );

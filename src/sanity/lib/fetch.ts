@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { client } from "@/sanity/client";
 import { homeSections } from "@/content/home";
 import { isSanityConfigured } from "@/sanity/env";
@@ -13,25 +15,26 @@ import {
 } from "@/sanity/lib/merge-articles";
 import type { ArticleCardData, HomePageContent, SectionHeading } from "@/sanity/types";
 
-const DEFAULT_RADIO_LATEST_SECTION: SectionHeading = {
-  kicker: homeSections.radio.kicker,
-  title: homeSections.radio.title,
-};
-
-const DEFAULT_SPOTLIGHT_ROW_SECTION: SectionHeading = {
-  kicker: homeSections.spotlight.kicker,
-  title: homeSections.spotlight.title,
-};
-
-const DEFAULT_DESIGN_AWARDS_SECTION: SectionHeading = {
-  kicker: homeSections.design.kicker,
-  title: homeSections.design.title,
-};
-
-const DEFAULT_CITY_GUIDES_SECTION: SectionHeading = {
-  kicker: homeSections.wellness.kicker,
-  title: homeSections.wellness.title,
-};
+function sectionDefaults(dict: Dictionary) {
+  return {
+    spotlight: {
+      kicker: dict.home.sections.spotlight.kicker,
+      title: dict.home.sections.spotlight.title,
+    },
+    radio: {
+      kicker: dict.home.sections.radio.kicker,
+      title: dict.home.sections.radio.title,
+    },
+    design: {
+      kicker: dict.home.sections.design.kicker,
+      title: dict.home.sections.design.title,
+    },
+    wellness: {
+      kicker: dict.home.sections.wellness.kicker,
+      title: dict.home.sections.wellness.title,
+    },
+  };
+}
 
 function withSectionDefaults(
   section: SectionHeading | null,
@@ -56,7 +59,12 @@ const emptyHomeContent = (): HomePageContent => ({
   cityGuides: [],
 });
 
-export async function getHomePageContent(): Promise<HomePageContent> {
+export async function getHomePageContent(
+  locale: Locale,
+  dict: Dictionary,
+): Promise<HomePageContent> {
+  const defaults = sectionDefaults(dict);
+
   if (!isSanityConfigured() || !client) {
     console.warn(
       "Sanity is not configured. Set NEXT_PUBLIC_SANITY_PROJECT_ID in .env.local.",
@@ -67,7 +75,7 @@ export async function getHomePageContent(): Promise<HomePageContent> {
   try {
     const content = await client.fetch<HomePageContent | null>(
       HOME_PAGE_QUERY,
-      {},
+      { locale },
       sanityFetchOptions,
     );
 
@@ -81,21 +89,21 @@ export async function getHomePageContent(): Promise<HomePageContent> {
       spotlightRow: content.spotlightRow?.filter(Boolean) ?? [],
       spotlightRowSection: withSectionDefaults(
         content.spotlightRowSection,
-        DEFAULT_SPOTLIGHT_ROW_SECTION,
+        defaults.spotlight,
       ),
       radioLatestSection: withSectionDefaults(
         content.radioLatestSection,
-        DEFAULT_RADIO_LATEST_SECTION,
+        defaults.radio,
       ),
       radioArticles: content.radioArticles?.filter(Boolean) ?? [],
       designAwardsSection: withSectionDefaults(
         content.designAwardsSection,
-        DEFAULT_DESIGN_AWARDS_SECTION,
+        defaults.design,
       ),
       designAwards: content.designAwards?.filter(Boolean) ?? [],
       cityGuidesSection: withSectionDefaults(
         content.cityGuidesSection,
-        DEFAULT_CITY_GUIDES_SECTION,
+        defaults.wellness,
       ),
       cityGuides: content.cityGuides?.filter(Boolean) ?? [],
     };
@@ -120,7 +128,7 @@ const AFFAIRS_POOL_LIMIT = 24;
 const CAROUSEL_POOL_LIMIT = 12;
 const DESIGN_POOL_LIMIT = 24;
 
-async function fetchHomeCarouselPools() {
+async function fetchHomeCarouselPools(locale: Locale) {
   if (!client) {
     return null;
   }
@@ -134,6 +142,7 @@ async function fetchHomeCarouselPools() {
         {
           category: homeSections.affairs.archiveCategory!,
           limit: AFFAIRS_POOL_LIMIT,
+          locale,
         },
         sanityFetchOptions,
       ),
@@ -142,6 +151,7 @@ async function fetchHomeCarouselPools() {
         {
           category: homeSections.spotlight.archiveCategory!,
           limit: CAROUSEL_POOL_LIMIT,
+          locale,
         },
         sanityFetchOptions,
       ),
@@ -150,6 +160,7 @@ async function fetchHomeCarouselPools() {
         {
           category: homeSections.radio.archiveCategory!,
           limit: CAROUSEL_POOL_LIMIT,
+          locale,
         },
         sanityFetchOptions,
       ),
@@ -158,12 +169,13 @@ async function fetchHomeCarouselPools() {
         {
           category: homeSections.wellness.archiveCategory!,
           limit: CAROUSEL_POOL_LIMIT,
+          locale,
         },
         sanityFetchOptions,
       ),
       client.fetch<ArticleCardData[]>(
         ARTICLES_DESIGN_SPACE_POOL_QUERY,
-        { routineSlugs, limit: DESIGN_POOL_LIMIT },
+        { routineSlugs, limit: DESIGN_POOL_LIMIT, locale },
         sanityFetchOptions,
       ),
     ]);
@@ -171,8 +183,11 @@ async function fetchHomeCarouselPools() {
   return { affairsPool, routinePool, radioPool, wellnessPool, designPool };
 }
 
-export async function getHomePageWithCarousels(): Promise<HomePageWithCarousels> {
-  const home = await getHomePageContent();
+export async function getHomePageWithCarousels(
+  locale: Locale,
+  dict: Dictionary,
+): Promise<HomePageWithCarousels> {
+  const home = await getHomePageContent(locale, dict);
 
   if (!isSanityConfigured() || !client) {
     return {
@@ -187,7 +202,7 @@ export async function getHomePageWithCarousels(): Promise<HomePageWithCarousels>
   }
 
   try {
-    const pools = await fetchHomeCarouselPools();
+    const pools = await fetchHomeCarouselPools(locale);
     if (!pools) {
       throw new Error("Sanity client unavailable");
     }

@@ -1,5 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 
+import { locales } from "@/i18n/config";
 import { SANITY_CACHE_TAG } from "@/sanity/lib/cache";
 
 type SlugField = string | { current?: string };
@@ -37,16 +38,23 @@ export function slugsFromSanityWebhook(body: unknown): string[] {
 export function revalidateSanityContent(slugs: string[] = []) {
   revalidateTag(SANITY_CACHE_TAG, "max");
 
-  revalidatePath("/");
-  revalidatePath("/articles");
-  revalidatePath("/sitemap.xml");
+  const paths = new Set<string>(["/sitemap.xml"]);
 
-  for (const slug of slugs) {
-    revalidatePath(`/articles/${encodeURIComponent(slug)}`);
+  for (const locale of locales) {
+    paths.add(`/${locale}`);
+    paths.add(`/${locale}/articles`);
+
+    for (const slug of slugs) {
+      paths.add(`/${locale}/articles/${encodeURIComponent(slug)}`);
+    }
+  }
+
+  for (const path of paths) {
+    revalidatePath(path);
   }
 
   return {
     tag: SANITY_CACHE_TAG,
-    paths: ["/", "/articles", "/sitemap.xml", ...slugs.map((s) => `/articles/${s}`)],
+    paths: [...paths],
   };
 }

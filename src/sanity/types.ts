@@ -4,6 +4,7 @@ import type { SanityImageSource } from "@sanity/image-url";
 export type ArticleCardData = {
   slug: string;
   title: string;
+  titleKo?: string;
   description?: string;
   kicker?: string;
   category: string;
@@ -11,6 +12,7 @@ export type ArticleCardData = {
   coverImage?: SanityImageSource | null;
   coverImageLqip?: string | null;
   publishedAt?: string;
+  hasEnglishTranslation?: boolean;
 };
 
 export type ArticleDocument = ArticleCardData & {
@@ -24,6 +26,7 @@ export type ArticleDocument = ArticleCardData & {
 export type PokitRoutineArticle = {
   slug: string;
   title: string;
+  titleKo?: string;
   description?: string;
   category: string;
   categoryKey?: string;

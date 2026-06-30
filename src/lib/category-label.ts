@@ -1,36 +1,51 @@
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { homeSections } from "@/content/home";
 
-const CATEGORY_LABELS: Record<string, string> = {
-  Affairs: homeSections.affairs.nav,
-  Routine: homeSections.spotlight.nav,
-  Radio: homeSections.radio.nav,
-  Design: homeSections.design.nav,
-  Wellness: homeSections.wellness.nav,
-};
+const CATEGORY_KEYS = ["Affairs", "Routine", "Radio", "Design", "Wellness"] as const;
 
-const SECTION_LABELS: Record<string, string> = {
-  design: homeSections.design.nav,
-};
-
-/** Sanity CMS category → 사용자-facing 한글 라벨 */
-export function getCategoryLabel(category: string) {
-  return CATEGORY_LABELS[category] ?? category;
+/** Sanity CMS category → localized label */
+export function getCategoryLabel(category: string, dict: Dictionary) {
+  if (CATEGORY_KEYS.includes(category as (typeof CATEGORY_KEYS)[number])) {
+    return dict.categories[category as keyof typeof dict.categories];
+  }
+  return category;
 }
 
-export function getArchiveSectionLabel(section: string) {
-  return SECTION_LABELS[section] ?? section;
+export function getArchiveSectionLabel(section: string, dict: Dictionary) {
+  if (section === "design") {
+    return dict.categories.design;
+  }
+  return section;
 }
 
 export function isArchiveSection(section: string) {
-  return section in SECTION_LABELS;
+  return section === homeSections.design.archiveSection;
 }
 
-export function getArchiveHeading(category?: string, section?: string) {
+export function getArchiveHeading(
+  dict: Dictionary,
+  category?: string,
+  section?: string,
+) {
   if (section) {
-    return `${getArchiveSectionLabel(section)} 이야기`;
+    return dict.archive.storiesIn(getArchiveSectionLabel(section, dict));
   }
   if (category) {
-    return `${getCategoryLabel(category)} 이야기`;
+    return dict.archive.storiesIn(getCategoryLabel(category, dict));
   }
-  return "모든 이야기";
+  return dict.archive.allStories;
 }
+
+export function getHomeSectionCopy(dict: Dictionary, sectionId: keyof typeof homeSections) {
+  return dict.home.sections[sectionId];
+}
+
+export function getCategories(dict: Dictionary) {
+  return (Object.keys(homeSections) as Array<keyof typeof homeSections>).map((key) => ({
+    id: homeSections[key].id,
+    label: dict.home.sections[key].nav,
+  }));
+}
+
+export type { Locale };

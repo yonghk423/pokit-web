@@ -1,6 +1,11 @@
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
+import { withLocale } from "@/lib/locale-path";
 import { homeSections } from "@/content/home";
+import { getArchiveSectionLabel, getCategoryLabel } from "@/lib/category-label";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
+import { sanityFetchOptions } from "@/sanity/lib/cache";
 import {
   ARTICLES_COUNT_BY_CATEGORY_QUERY,
   ARTICLES_COUNT_QUERY,
@@ -9,7 +14,6 @@ import {
   ARTICLES_PAGINATED_BY_CATEGORY_QUERY,
   ARTICLES_PAGINATED_QUERY,
 } from "@/sanity/lib/queries";
-import { sanityFetchOptions } from "@/sanity/lib/cache";
 import type { ArticleCardData } from "@/sanity/types";
 
 export const ARTICLES_PER_PAGE = 12;
@@ -38,6 +42,7 @@ const designSpaceParams = {
 
 export async function getPaginatedArticles(
   page: number,
+  locale: Locale,
   category?: string,
   q?: string,
   section?: string,
@@ -62,16 +67,16 @@ export async function getPaginatedArticles(
 
   let articlesQuery = ARTICLES_PAGINATED_QUERY;
   let countQuery = ARTICLES_COUNT_QUERY;
-  let queryParams: Record<string, unknown> = { start, end, ...search };
+  let queryParams: Record<string, unknown> = { start, end, locale, ...search };
 
   if (section === "design") {
     articlesQuery = ARTICLES_DESIGN_SPACE_PAGINATED_QUERY;
     countQuery = ARTICLES_DESIGN_SPACE_COUNT_QUERY;
-    queryParams = { start, end, ...search, ...designSpaceParams };
+    queryParams = { start, end, locale, ...search, ...designSpaceParams };
   } else if (category) {
     articlesQuery = ARTICLES_PAGINATED_BY_CATEGORY_QUERY;
     countQuery = ARTICLES_COUNT_BY_CATEGORY_QUERY;
-    queryParams = { start, end, category, ...search };
+    queryParams = { start, end, category, locale, ...search };
   }
 
   const [articles, total] = await Promise.all([
@@ -93,6 +98,7 @@ export async function getPaginatedArticles(
 }
 
 export function articlesArchiveHref(
+  locale: Locale,
   page = 1,
   category?: string,
   q?: string,
@@ -114,5 +120,59 @@ export function articlesArchiveHref(
   }
 
   const query = params.toString();
-  return query ? `/articles?${query}` : "/articles";
+  const path = query ? `/articles?${query}` : "/articles";
+  return withLocale(locale, path);
+}
+
+export type RelatedArticlesResult = {
+  articles: ArticleCardData[];
+  label: string;
+  viewAllHref: string;
+};
+
+export async function getRelatedArticles(
+  slug: string,
+  category: string,
+  locale: Locale,
+  dict: Dictionary,
+): Promise<RelatedArticlesResult | null> {
+  if (!isSanityConfigured() || !client) {
+    return null;
+  }
+
+  const designRoutineSlugSet = new Set<string>(homeSections.design.spaceRoutineSlugs ?? []);
+  const inDesignSpace =
+    category === "Design" ||
+    (category === "Routine" && designRoutineSlugSet.has(slug));
+
+  const { RELATED_BY_CATEGORY_QUERY, RELATED_DESIGN_SPACE_QUERY } = await import(
+    "@/sanity/lib/queries"
+  );
+
+  const articles = await client.fetch<ArticleCardData[]>(
+    inDesignSpace ? RELATED_DESIGN_SPACE_QUERY : RELATED_BY_CATEGORY_QUERY,
+    inDesignSpace
+      ? {
+          slug,
+          limit: 4,
+          routineSlugs: [...designRoutineSlugSet],
+          locale,
+        }
+      : { slug, category, limit: 4, locale },
+    sanityFetchOptions,
+  );
+
+  if (articles.length === 0) {
+    return null;
+  }
+
+  return {
+    articles,
+    label: inDesignSpace
+      ? getArchiveSectionLabel(homeSections.design.archiveSection!, dict)
+      : getCategoryLabel(category, dict),
+    viewAllHref: inDesignSpace
+      ? articlesArchiveHref(locale, 1, undefined, undefined, homeSections.design.archiveSection)
+      : articlesArchiveHref(locale, 1, category),
+  };
 }

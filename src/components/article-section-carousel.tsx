@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ArticleCard } from "@/components/article-card";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
 import type { ArticleCardData } from "@/sanity/types";
 
@@ -10,6 +12,8 @@ type Variant = "vertical" | "compact";
 
 type Props = {
   articles: ArticleCardData[];
+  locale: Locale;
+  categoryLabels: Dictionary["categories"];
   variant?: Variant;
   layout?: "rail" | "grid";
   columns?: 3 | 4;
@@ -21,6 +25,8 @@ const carouselBtnClass =
 
 export function ArticleSectionCarousel({
   articles,
+  locale,
+  categoryLabels,
   variant = "vertical",
   layout = "grid",
   columns = 4,
@@ -131,6 +137,8 @@ export function ArticleSectionCarousel({
           >
             <ArticleCard
               article={article}
+              locale={locale}
+              categoryLabels={categoryLabels}
               variant={variant}
               inRail={isVertical}
             />

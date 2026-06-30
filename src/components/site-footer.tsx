@@ -3,10 +3,20 @@ import Link from "next/link";
 
 import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
-import { categories } from "@/content/home";
+import { getCategories } from "@/lib/category-label";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
+import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
-export function SiteFooter() {
+type Props = {
+  locale: Locale;
+  dict: Dictionary;
+};
+
+export function SiteFooter({ locale, dict }: Props) {
+  const categories = getCategories(dict);
+
   return (
     <footer className="mt-12 border-t-2 border-line bg-panel py-8 font-sans">
       <div
@@ -27,19 +37,20 @@ export function SiteFooter() {
             <p className="m-0 font-black tracking-[0.1em] text-ink!">
               {site.name}
             </p>
-            <p className="m-0 text-[0.82rem] text-muted">
-              Global affairs for your body, desk and day.
-            </p>
+            <p className="m-0 text-[0.82rem] text-muted">{dict.footer.tagline}</p>
           </div>
         </div>
         <div>
           <h2 className="m-0 mb-[0.7rem] text-[0.76rem] font-black tracking-[0.1em] text-ink uppercase">
-            섹션
+            {dict.footer.sections}
           </h2>
           <ul className="m-0 grid list-none gap-[0.35rem] p-0">
             {categories.map((category) => (
               <li key={category.id}>
-                <Link href={`/#${category.id}`} className="text-[0.82rem] text-muted">
+                <Link
+                  href={`${withLocale(locale, "/")}#${category.id}`}
+                  className="text-[0.82rem] text-muted"
+                >
                   {category.label}
                 </Link>
               </li>
@@ -48,22 +59,22 @@ export function SiteFooter() {
         </div>
         <div>
           <h2 className="m-0 mb-[0.7rem] text-[0.76rem] font-black tracking-[0.1em] text-ink uppercase">
-            Information
+            {dict.footer.information}
           </h2>
           <ul className="m-0 grid list-none gap-[0.35rem] p-0">
             <li>
-              <Link href="/articles" className="text-[0.82rem] text-muted">
-                모든 이야기
+              <Link href={withLocale(locale, "/articles")} className="text-[0.82rem] text-muted">
+                {dict.footer.allStories}
               </Link>
             </li>
             <li>
-              <Link href="/privacy" className="text-[0.82rem] text-muted">
-                개인정보 처리방침
+              <Link href={withLocale(locale, "/privacy")} className="text-[0.82rem] text-muted">
+                {dict.footer.privacy}
               </Link>
             </li>
             <li>
-              <Link href="/support" className="text-[0.82rem] text-muted">
-                지원
+              <Link href={withLocale(locale, "/support")} className="text-[0.82rem] text-muted">
+                {dict.footer.support}
               </Link>
             </li>
             <li>
@@ -80,7 +91,7 @@ export function SiteFooter() {
           "mt-6 border-t border-fine-line pt-4 text-[0.82rem] text-muted",
         )}
       >
-        © {new Date().getFullYear()} {site.name}. All rights reserved.
+        © {new Date().getFullYear()} {site.name}. {dict.footer.rights}
       </p>
     </footer>
   );

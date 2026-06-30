@@ -4,6 +4,14 @@ export const article = defineType({
   name: "article",
   title: "Article",
   type: "document",
+  fieldsets: [
+    {
+      name: "english",
+      title: "English",
+      description: "Optional English translation for global visitors.",
+      options: { collapsible: true, collapsed: true },
+    },
+  ],
   fields: [
     defineField({
       name: "title",
@@ -93,6 +101,38 @@ export const article = defineType({
       title: "Published at",
       type: "datetime",
       initialValue: () => new Date().toISOString(),
+    }),
+    defineField({
+      name: "titleEn",
+      title: "Title (English)",
+      type: "string",
+      fieldset: "english",
+    }),
+    defineField({
+      name: "kickerEn",
+      title: "Kicker (English)",
+      type: "string",
+      fieldset: "english",
+    }),
+    defineField({
+      name: "descriptionEn",
+      title: "Description (English)",
+      type: "text",
+      rows: 3,
+      fieldset: "english",
+    }),
+    defineField({
+      name: "coverImageAltEn",
+      title: "Cover image alt text (English)",
+      type: "string",
+      fieldset: "english",
+    }),
+    defineField({
+      name: "bodyEn",
+      title: "Body (English)",
+      type: "array",
+      of: [{ type: "block" }],
+      fieldset: "english",
     }),
   ],
   preview: {

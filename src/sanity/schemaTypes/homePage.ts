@@ -13,6 +13,16 @@ const sectionHeadingFields = [
     type: "string",
     description: "비워두면 기본 제목이 사용됩니다.",
   }),
+  defineField({
+    name: "kickerEn",
+    title: "소제목 (English)",
+    type: "string",
+  }),
+  defineField({
+    name: "titleEn",
+    title: "섹션 제목 (English)",
+    type: "string",
+  }),
 ];
 
 export const homePage = defineType({
@@ -29,13 +39,13 @@ export const homePage = defineType({
     {
       name: "spotlight",
       title: "추천 3열",
-      description: "Radio 위 가로 3칸 카드 (City Guides와 별도 주제)",
+      description: "Radio 위 카드 섹션 (City Guides와 별도 주제)",
       options: { collapsible: true, collapsed: false },
     },
     {
       name: "radioLatest",
       title: "POKIT Radio",
-      description: "Latest from POKIT radio — 에피소드 3개 + 이미지",
+      description: "Latest from POKIT radio — 에피소드 + 이미지",
       options: { collapsible: true, collapsed: false },
     },
     {
@@ -71,11 +81,10 @@ export const homePage = defineType({
     }),
     defineField({
       name: "spotlightRow",
-      title: "기사 3개",
-      description: "최대 3개. City Guides와 별도 주제 기사 연결",
+      title: "기사 목록",
+      description: "City Guides와 별도 주제 기사 연결 (순서대로 우선 노출)",
       type: "array",
       fieldset: "spotlight",
-      validation: (rule) => rule.max(3),
       of: [{ type: "reference", to: [{ type: "article" }] }],
     }),
     defineField({
@@ -92,11 +101,10 @@ export const homePage = defineType({
     }),
     defineField({
       name: "radioArticles",
-      title: "기사 3개",
-      description: "최대 3개. Article 문서를 연결하세요 (Kicker에 프로그램명 입력)",
+      title: "기사 목록",
+      description: "Article 문서를 연결하세요 (Kicker에 프로그램명 입력, 순서대로 우선 노출)",
       type: "array",
       fieldset: "radioLatest",
-      validation: (rule) => rule.max(3),
       of: [{ type: "reference", to: [{ type: "article" }] }],
     }),
     defineField({

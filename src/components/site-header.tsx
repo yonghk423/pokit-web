@@ -1,26 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
-import { site } from "@/config/site";
-import { categories } from "@/content/home";
+import { appStoreUrl, site } from "@/config/site";
+import { getCategories } from "@/lib/category-label";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
+import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
 const navLinkClass =
   "border-0 bg-transparent p-0 font-sans text-[0.75rem] font-bold tracking-[0.08em] text-muted uppercase";
 
-export function SiteHeader() {
+type Props = {
+  locale: Locale;
+  dict: Dictionary;
+};
+
+export function SiteHeader({ locale, dict }: Props) {
+  const categories = getCategories(dict);
+
   return (
     <header className="border-b border-line bg-panel">
       <div
         className={cn(
           monoContainer,
-          "flex min-h-[2.15rem] items-center justify-center border-b border-fine-line font-sans text-[0.74rem] text-muted max-[640px]:[&_p]:px-2 max-[640px]:[&_p]:text-center max-[640px]:[&_p]:text-[0.68rem]",
+          "flex min-h-[2.15rem] items-center justify-between gap-3 border-b border-fine-line px-4 font-sans text-[0.74rem] text-muted max-[640px]:[&_p]:text-[0.68rem]",
         )}
       >
-        <p className="m-0 tracking-[0.01em]">
-          Daily pocket intelligence for better routines
+        <p className="m-0 flex-1 text-center tracking-[0.01em] max-[640px]:px-2">
+          {dict.header.tagline}
         </p>
+        <LanguageSwitcher locale={locale} labels={dict.languageSwitcher} />
       </div>
 
       <div
@@ -32,14 +44,14 @@ export function SiteHeader() {
         <button
           className={cn(navLinkClass, "max-nav:hidden")}
           type="button"
-          aria-label="메뉴 열기"
+          aria-label={dict.header.openMenu}
         >
           Menu
         </button>
         <Link
-          href="/"
+          href={withLocale(locale, "/")}
           className="flex items-center justify-center gap-[0.8rem]"
-          aria-label="POKIT 홈"
+          aria-label={dict.header.homeAria}
         >
           <Image
             src="/pokitstory.png"
@@ -54,25 +66,25 @@ export function SiteHeader() {
           </span>
         </Link>
         <div className="flex justify-self-end gap-4 max-nav:justify-self-center max-nav:flex-wrap max-nav:justify-center max-nav:gap-x-4 max-nav:gap-y-[0.65rem]">
-          <Link href="/articles" className={navLinkClass}>
-            모든 이야기
+          <Link href={withLocale(locale, "/articles")} className={navLinkClass}>
+            {dict.header.allStories}
           </Link>
           <a
-            href={site.appStoreUrl}
+            href={appStoreUrl(locale)}
             className={cn(navLinkClass, "hidden max-nav:inline")}
           >
-            App
+            {dict.header.app}
           </a>
-          <a href="/#app" className={cn(navLinkClass, "max-nav:hidden")}>
-            App
+          <a href={`${withLocale(locale, "/")}#app`} className={cn(navLinkClass, "max-nav:hidden")}>
+            {dict.header.app}
           </a>
-          <SupportEmailLink className={navLinkClass}>Contact</SupportEmailLink>
+          <SupportEmailLink className={navLinkClass}>{dict.header.contact}</SupportEmailLink>
         </div>
       </div>
 
       <nav
         className="overflow-x-auto border-t border-line bg-panel"
-        aria-label="카테고리"
+        aria-label={dict.header.categoriesAria}
       >
         <ul
           className={cn(
@@ -82,7 +94,7 @@ export function SiteHeader() {
         >
           {categories.map((category) => (
             <li key={category.id}>
-              <Link href={`/#${category.id}`} className="text-ink">
+              <Link href={`${withLocale(locale, "/")}#${category.id}`} className="text-ink">
                 {category.label}
               </Link>
             </li>

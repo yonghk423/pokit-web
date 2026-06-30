@@ -1,15 +1,18 @@
 import Link from "next/link";
 
 import { articlePath } from "@/lib/article-path";
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
 import { formatPublishedLabel } from "@/lib/format-published";
 import type { ArticleCardData } from "@/sanity/types";
 
 type Props = {
   article: ArticleCardData;
+  locale: Locale;
 };
 
-export function ArticleArchiveListItem({ article }: Props) {
-  const publishedLabel = formatPublishedLabel(article.publishedAt);
+export function ArticleArchiveListItem({ article, locale }: Props) {
+  const publishedLabel = formatPublishedLabel(article.publishedAt, locale);
 
   return (
     <li className="border-b border-fine-line">
@@ -28,7 +31,7 @@ export function ArticleArchiveListItem({ article }: Props) {
         </div>
         <div>
           <h2 className="m-0 text-[clamp(1.15rem,2.2vw,1.45rem)] leading-[1.2] font-bold tracking-[-0.025em] [&_a:hover]:text-green">
-            <Link href={articlePath(article.slug)}>{article.title}</Link>
+            <Link href={articlePath(locale, article.slug)}>{article.title}</Link>
           </h2>
           {article.description && (
             <p className="mt-[0.55rem] mb-0 max-w-[46rem] font-sans text-[0.92rem] leading-[1.55] text-muted">

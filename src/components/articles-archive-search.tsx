@@ -1,25 +1,30 @@
 import Link from "next/link";
 
+import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/types";
+import { withLocale } from "@/lib/locale-path";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 
 type Props = {
+  locale: Locale;
+  dict: Dictionary;
   q?: string;
   category?: string;
   section?: string;
 };
 
-export function ArticlesArchiveSearch({ q, category, section }: Props) {
+export function ArticlesArchiveSearch({ locale, dict, q, category, section }: Props) {
   const trimmed = q?.trim();
 
   return (
-    <form className="mt-5" action="/articles" method="get">
+    <form className="mt-5" action={withLocale(locale, "/articles")} method="get">
       {section && <input type="hidden" name="section" value={section} />}
       {category && <input type="hidden" name="category" value={category} />}
       <label
         className="mb-[0.45rem] block font-sans text-[0.72rem] font-extrabold tracking-[0.06em] uppercase"
         htmlFor="articles-search"
       >
-        검색
+        {dict.archive.search}
       </label>
       <div className="flex max-w-lg gap-2">
         <input
@@ -27,7 +32,7 @@ export function ArticlesArchiveSearch({ q, category, section }: Props) {
           name="q"
           type="search"
           defaultValue={trimmed ?? ""}
-          placeholder="제목, 설명, 키워드"
+          placeholder={dict.archive.searchPlaceholder}
           autoComplete="off"
           className="min-w-0 flex-1 border border-line bg-panel px-3 py-[0.65rem] font-[inherit] text-[0.92rem]"
         />
@@ -35,12 +40,14 @@ export function ArticlesArchiveSearch({ q, category, section }: Props) {
           type="submit"
           className="cursor-pointer border border-ink bg-ink px-4 py-[0.65rem] font-[inherit] text-[0.88rem] font-bold text-panel"
         >
-          검색
+          {dict.archive.searchSubmit}
         </button>
       </div>
       {trimmed && (
         <p className="mt-[0.55rem] mb-0 text-[0.88rem] [&_a:hover]:text-green">
-          <Link href={articlesArchiveHref(1, category, undefined, section)}>검색 초기화</Link>
+          <Link href={articlesArchiveHref(locale, 1, category, undefined, section)}>
+            {dict.archive.clearSearch}
+          </Link>
         </p>
       )}
     </form>

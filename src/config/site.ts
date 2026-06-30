@@ -5,5 +5,12 @@ export const site = {
   siteUrl: "https://pokitstory.com",
   supportEmail: "pokit.app.help@gmail.com",
   appStoreId: "6762331629",
-  appStoreUrl: "https://apps.apple.com/kr/app/id6762331629",
+  appStoreUrls: {
+    ko: "https://apps.apple.com/kr/app/id6762331629",
+    en: "https://apps.apple.com/app/id6762331629",
+  },
 } as const;
+
+export function appStoreUrl(locale: "ko" | "en") {
+  return site.appStoreUrls[locale];
+}
