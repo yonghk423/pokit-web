@@ -6,6 +6,7 @@ import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 import { isLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { cn, narrowContainer } from "@/lib/cn";
 import { localeAlternates, withLocale } from "@/lib/locale-path";
 
 type Props = {
@@ -36,18 +37,21 @@ export default async function PrivacyPage({ params }: Props) {
   const dict = await getDictionary(rawLocale);
 
   return (
-    <main className="mx-auto max-w-[42rem] px-4 py-12 pb-20">
-      <h1 className="m-0 mb-4 text-[clamp(2rem,5vw,3rem)] leading-[1.05] tracking-[-0.04em]">
+    <main className={cn(narrowContainer, "py-14 pb-24")}>
+      <h1 className="m-0 mb-6 text-[clamp(2rem,5vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.04em]">
         {dict.privacy.title}
       </h1>
-      <p className="text-muted">{dict.privacy.body}</p>
-      <h2 className="mt-8 mb-2 font-sans text-[0.95rem] font-black">
+      <p className="text-muted leading-relaxed">{dict.privacy.body}</p>
+      <h2 className="mt-10 mb-3 label-caps">
         {dict.privacy.contact}
       </h2>
       <p className="text-muted">
         <SupportEmailLink>{site.supportEmail}</SupportEmailLink>
       </p>
-      <Link href={withLocale(rawLocale, "/")} className="mt-8 inline-block font-sans text-green">
+      <Link
+        href={withLocale(rawLocale, "/")}
+        className="mt-10 inline-block border-2 border-black bg-panel px-5 py-2 font-sans font-bold text-ink hover:bg-wash"
+      >
         {dict.privacy.backHome}
       </Link>
     </main>

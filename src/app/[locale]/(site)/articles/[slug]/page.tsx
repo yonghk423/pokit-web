@@ -83,39 +83,39 @@ export default async function ArticlePage({ params }: Props) {
           imageUrl: jsonLdImage ?? undefined,
         })}
       />
-      <main className={cn(monoContainer, "py-8 pb-16")}>
+      <main className={cn(monoContainer, "py-12 pb-20")}>
         <Link
           href={withLocale(locale, "/")}
-          className="mb-8 inline-block font-sans text-[0.78rem] tracking-[0.08em] text-muted uppercase hover:text-ink"
+          className="mb-10 inline-block border-2 border-black bg-panel px-4 py-2 label-caps text-muted hover:bg-wash hover:text-ink"
         >
           {dict.article.backHome}
         </Link>
 
         {showKoreanOnlyBanner && (
           <p
-            className="mb-6 max-w-[42rem] border border-fine-line bg-wash px-4 py-3 font-sans text-[0.88rem] leading-[1.5] text-muted"
+            className="mb-8 max-w-[42rem] border-2 border-black bg-pink-soft px-5 py-4 font-sans text-[0.88rem] leading-[1.6] text-ink"
             role="note"
           >
             {dict.article.koreanOnlyBanner}
           </p>
         )}
 
-        <header className="mb-8">
+        <header className="mb-10">
           {article.kicker && (
-            <p className="m-0 mb-3 max-w-[42rem] font-sans text-[0.72rem] font-bold tracking-[0.12em] text-green uppercase">
+            <p className="m-0 mb-4 max-w-[42rem] label-caps text-green">
               {article.kicker}
             </p>
           )}
-          <h1 className="m-0 font-serif text-[clamp(1.75rem,3.25vw,2.65rem)] leading-[1.08] font-medium">
+          <h1 className="m-0 font-sans text-[clamp(1.75rem,3.25vw,2.65rem)] font-extrabold leading-[1.1] tracking-[-0.03em]">
             {article.title}
           </h1>
           {article.description && (
-            <p className="mt-4 mb-0 max-w-[42rem] font-sans text-[1.05rem] leading-[1.55] text-muted">
+            <p className="mt-5 mb-0 max-w-[42rem] font-sans text-[1.05rem] leading-[1.65] text-muted">
               {article.description}
             </p>
           )}
           {article.publishedAt && (
-            <p className="mt-4 mb-0 max-w-[42rem] font-sans text-[0.78rem] text-muted">
+            <p className="mt-5 mb-0 max-w-[42rem] label-caps text-muted">
               <time dateTime={article.publishedAt}>
                 {formatPublishedLabel(article.publishedAt, locale)}
               </time>
@@ -123,7 +123,7 @@ export default async function ArticlePage({ params }: Props) {
           )}
         </header>
         {coverUrl && (
-          <figure className="mb-10 overflow-hidden bg-wash">
+          <figure className="mb-12 overflow-hidden border-2 border-black bg-beige">
             <Image
               src={coverUrl}
               alt={article.imageAlt}

@@ -45,13 +45,13 @@ export function ArticleCard({
     : null;
 
   const mediaClass = cn(
-    "group/media block overflow-hidden bg-wash",
+    "group/media block overflow-hidden bg-beige",
     variant === "feature" && "aspect-[16/10]",
-    variant === "vertical" && "aspect-[4/3]",
+    variant === "vertical" && "aspect-[4/3] border-2 border-black",
     variant === "compact" &&
-    "aspect-square max-[640px]:aspect-[4/3]",
+    "aspect-square border-2 border-black max-[640px]:aspect-[4/3]",
     !imageUrl &&
-    "grid place-items-center font-sans text-[0.72rem] font-black tracking-[0.1em] text-green uppercase",
+    "grid place-items-center font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-indigo uppercase",
   );
 
   return (
@@ -60,7 +60,8 @@ export function ArticleCard({
         "min-w-0",
         variant === "compact" &&
         "grid grid-cols-[minmax(0,1fr)_8.6rem] gap-4 max-[640px]:grid-cols-1",
-        inRail && "border-b border-fine-line py-4 first:pt-0",
+        variant === "feature" && "border-2 border-black bg-panel",
+        inRail && "border-b-2 border-black py-4 first:pt-0",
       )}
     >
       {!hideImage && (
@@ -82,7 +83,7 @@ export function ArticleCard({
                 alt={article.imageAlt}
                 width={w}
                 height={h}
-                className="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover/media:scale-[1.025]"
+                className="h-full w-full object-cover"
                 sizes={
                   variant === "feature"
                     ? "(min-width: 1024px) 66vw, 100vw"
@@ -106,18 +107,18 @@ export function ArticleCard({
       )}
       <div
         className={cn(
-          "mt-3",
+          variant === "feature" ? "p-4 pt-3" : "mt-3",
           variant === "compact" &&
           "col-start-1 row-start-1 mt-0 max-[640px]:col-auto max-[640px]:row-auto",
         )}
       >
         {publishedLabel && (
-          <p className="m-0 mb-[0.35rem] font-sans text-[0.72rem] font-bold tracking-[0.02em] text-muted">
+          <p className="m-0 mb-[0.35rem] label-caps text-muted">
             <time dateTime={article.publishedAt}>{publishedLabel}</time>
           </p>
         )}
         {article.kicker && (
-          <p className="m-0 font-sans text-[0.72rem] leading-tight font-extrabold tracking-[0.08em] text-green uppercase">
+          <p className="m-0 label-caps text-green">
             {article.kicker}
           </p>
         )}
@@ -130,7 +131,7 @@ export function ArticleCard({
             variant === "mini" && "text-[0.98rem]",
             (variant === "vertical" || !variant) &&
             "text-[1.24rem] leading-[1.18]",
-            "[&_a:hover]:underline [&_a:hover]:decoration-[0.06em] [&_a:hover]:underline-offset-[0.14em]",
+            "[&_a:hover]:text-indigo",
           )}
         >
           <Link href={articlePath(locale, article.slug)}>{article.title}</Link>

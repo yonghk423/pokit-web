@@ -118,15 +118,15 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
   return (
     <main>
-      <section className={cn(monoContainer, "py-10 pb-14")}>
-        <header className="mb-8 border-b-4 border-line pb-5">
-          <p className="m-0 mb-2 font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-green uppercase">
+      <section className={cn(monoContainer, "py-12 pb-16")}>
+        <header className="mb-10 border-b-4 border-black pb-6">
+          <p className="m-0 mb-3 label-caps text-green">
             {dict.archive.label}
           </p>
-          <h1 className="m-0 text-[clamp(2rem,4vw,2.85rem)] leading-[1.05] tracking-[-0.035em]">
+          <h1 className="m-0 text-[clamp(2rem,4vw,2.85rem)] font-extrabold leading-[1.08] tracking-[-0.035em]">
             {heading}
           </h1>
-          <p className="mt-[0.85rem] mb-0 font-sans text-[0.92rem] text-muted">
+          <p className="mt-4 mb-0 font-sans text-[0.92rem] leading-relaxed text-muted">
             {searchTerm ? (
               total > 0 ? (
                 dict.archive.searchResults(searchTerm, total, rangeStart, rangeEnd)
@@ -147,7 +147,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             section={archiveSection}
           />
           {(category || archiveSection) && (
-            <p className="mt-[0.65rem] mb-0 font-sans text-[0.88rem] [&_a:hover]:text-green">
+            <p className="mt-4 mb-0 font-sans text-[0.88rem] [&_a]:border-b-2 [&_a]:border-indigo [&_a:hover]:text-indigo">
               <Link href={articlesArchiveHref(locale, 1, undefined, searchTerm)}>
                 {dict.archive.clearFilters}
               </Link>
@@ -179,12 +179,12 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             />
           </>
         ) : (
-          <p className="m-0 border-t border-fine-line py-[1.2rem] font-sans text-[0.9rem] text-muted">
+          <p className="m-0 border-t-2 border-black py-6 font-sans text-[0.9rem] text-muted">
             {searchTerm ? dict.archive.noSearchMatch : dict.archive.studioHint}
           </p>
         )}
 
-        <p className="mt-10 mb-0 border-t border-fine-line pt-6 font-sans text-[0.88rem] [&_a:hover]:text-green">
+        <p className="mt-12 mb-0 border-t-2 border-black pt-8 font-sans text-[0.88rem] [&_a]:inline-block [&_a]:border-2 [&_a]:border-black [&_a]:bg-panel [&_a]:px-5 [&_a]:py-2 [&_a]:font-bold [&_a]:hover:bg-wash">
           <Link href={withLocale(locale, "/")}>{dict.archive.backHome}</Link>
         </p>
       </section>

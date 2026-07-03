@@ -17,6 +17,9 @@ type Props = {
   nextAria: string;
 };
 
+const carouselBtnClass =
+  "pointer-events-auto size-10 cursor-pointer border-2 border-black bg-panel font-sans text-base font-bold leading-none text-ink hover:bg-wash hover:brutal-shadow disabled:cursor-not-allowed disabled:bg-beige disabled:text-muted";
+
 export function FeaturedHeadlineCarousel({
   articles,
   locale,
@@ -93,10 +96,10 @@ export function FeaturedHeadlineCarousel({
       </div>
 
       {showControls && (
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-2 flex aspect-[16/10] items-center justify-between px-[0.65rem]">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-2 flex aspect-[16/10] items-center justify-between px-3">
           <button
             type="button"
-            className="pointer-events-auto size-[2.35rem] cursor-pointer border border-white/55 bg-ink/42 font-sans text-base leading-none text-white backdrop-blur-[2px] hover:bg-ink/62 disabled:cursor-not-allowed disabled:opacity-35"
+            className={carouselBtnClass}
             aria-label={prevAria}
             disabled={!canPrev}
             onClick={() => scroll("prev")}
@@ -105,7 +108,7 @@ export function FeaturedHeadlineCarousel({
           </button>
           <button
             type="button"
-            className="pointer-events-auto size-[2.35rem] cursor-pointer border border-white/55 bg-ink/42 font-sans text-base leading-none text-white backdrop-blur-[2px] hover:bg-ink/62 disabled:cursor-not-allowed disabled:opacity-35"
+            className={carouselBtnClass}
             aria-label={nextAria}
             disabled={!canNext}
             onClick={() => scroll("next")}

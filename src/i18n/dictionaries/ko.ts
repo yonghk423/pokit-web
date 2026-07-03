@@ -26,16 +26,14 @@ const dictionary: Dictionary = {
   },
   home: {
     inboxTagline: "Daily inbox intelligence from POKIT",
-    radio: {
-      ariaLabel: "POKIT Radio",
-      onAir: "On Air",
-      deskKicker: "The Wellness Desk",
-      deskTitle: "책상 앞에서 잃어버린 몸의 리듬을 되찾는 방법",
-      listenLive: "Listen Live",
-      continentalKicker: "The Continental Shift",
-      continentalDesc: "부드러운 아침 음악과 루틴 뉴스",
-      topHourKicker: "Top of the Hour",
-      topHourDesc: "하루를 정돈하는 짧은 헤드라인",
+    digest: {
+      ariaLabel: "홈 요약",
+      brandKicker: "POKIT",
+      brandTagline: "일상 루틴 가이드",
+      featuredKicker: "이번 주",
+      featuredTitle: "책상 앞에서 잃어버린 몸의 리듬을 되찾는 방법",
+      routineDesc: "지금 시작하기 좋은 루틴",
+      commuteDesc: "이동과 쉬는 시간에 읽기",
     },
     sections: {
       affairs: {

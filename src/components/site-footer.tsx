@@ -18,38 +18,40 @@ export function SiteFooter({ locale, dict }: Props) {
   const categories = getCategories(dict);
 
   return (
-    <footer className="mt-12 border-t-2 border-line bg-panel py-8 font-sans">
+    <footer className="mt-16 border-t-2 border-black bg-beige py-12 font-sans">
       <div
         className={cn(
           monoContainer,
-          "grid grid-cols-[2fr_1fr_1fr] gap-8 max-nav:grid-cols-1",
+          "grid grid-cols-[2fr_1fr_1fr] gap-12 max-nav:grid-cols-1 max-nav:gap-10",
         )}
       >
-        <div className="flex items-start gap-[0.85rem]">
+        <div className="flex items-start gap-4">
           <Image
             src="/pokitstory.png"
             alt=""
             width={44}
             height={44}
-            className="rounded-full"
+            className="border-2 border-black"
           />
           <div>
-            <p className="m-0 font-black tracking-[0.1em] text-ink!">
+            <p className="m-0 font-extrabold tracking-[0.1em] text-ink!">
               {site.name}
             </p>
-            <p className="m-0 text-[0.82rem] text-muted">{dict.footer.tagline}</p>
+            <p className="m-0 mt-1 text-[0.82rem] leading-relaxed text-muted">
+              {dict.footer.tagline}
+            </p>
           </div>
         </div>
         <div>
-          <h2 className="m-0 mb-[0.7rem] text-[0.76rem] font-black tracking-[0.1em] text-ink uppercase">
+          <h2 className="m-0 mb-4 label-caps text-ink">
             {dict.footer.sections}
           </h2>
-          <ul className="m-0 grid list-none gap-[0.35rem] p-0">
+          <ul className="m-0 grid list-none gap-2 p-0">
             {categories.map((category) => (
               <li key={category.id}>
                 <Link
                   href={`${withLocale(locale, "/")}#${category.id}`}
-                  className="text-[0.82rem] text-muted"
+                  className="text-[0.82rem] text-muted hover:text-indigo"
                 >
                   {category.label}
                 </Link>
@@ -58,22 +60,22 @@ export function SiteFooter({ locale, dict }: Props) {
           </ul>
         </div>
         <div>
-          <h2 className="m-0 mb-[0.7rem] text-[0.76rem] font-black tracking-[0.1em] text-ink uppercase">
+          <h2 className="m-0 mb-4 label-caps text-ink">
             {dict.footer.information}
           </h2>
-          <ul className="m-0 grid list-none gap-[0.35rem] p-0">
+          <ul className="m-0 grid list-none gap-2 p-0">
             <li>
-              <Link href={withLocale(locale, "/articles")} className="text-[0.82rem] text-muted">
+              <Link href={withLocale(locale, "/articles")} className="text-[0.82rem] text-muted hover:text-indigo">
                 {dict.footer.allStories}
               </Link>
             </li>
             <li>
-              <Link href={withLocale(locale, "/privacy")} className="text-[0.82rem] text-muted">
+              <Link href={withLocale(locale, "/privacy")} className="text-[0.82rem] text-muted hover:text-indigo">
                 {dict.footer.privacy}
               </Link>
             </li>
             <li>
-              <Link href={withLocale(locale, "/support")} className="text-[0.82rem] text-muted">
+              <Link href={withLocale(locale, "/support")} className="text-[0.82rem] text-muted hover:text-indigo">
                 {dict.footer.support}
               </Link>
             </li>
@@ -88,7 +90,7 @@ export function SiteFooter({ locale, dict }: Props) {
       <p
         className={cn(
           monoContainer,
-          "mt-6 border-t border-fine-line pt-4 text-[0.82rem] text-muted",
+          "mt-10 border-t-2 border-black pt-6 text-[0.82rem] text-muted",
         )}
       >
         © {new Date().getFullYear()} {site.name}. {dict.footer.rights}

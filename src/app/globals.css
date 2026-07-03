@@ -2,25 +2,33 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-paper: #fbfaf6;
-  --color-panel: #fffdf8;
-  --color-ink: #11110f;
-  --color-muted: #646058;
-  --color-line: #171713;
-  --color-fine-line: #d7d1c6;
-  --color-wash: #e8efe9;
-  --color-brand: #e8b84b;
-  --color-brand-soft: #f4e4b7;
-  --color-green: #2b4a35;
-  --color-green-soft: #6f9278;
-  --color-radio: #252422;
+  /* City Pop Minimalist — Retro Pastels */
+  --color-paper: #f5f2eb;
+  --color-panel: #fbf8ff;
+  --color-ink: #181a2e;
+  --color-muted: #404848;
+  --color-line: #000000;
+  --color-fine-line: #c0c8c8;
+  --color-wash: #a8dadc;
+  --color-brand: #a8dadc;
+  --color-brand-soft: #b9ecee;
+  --color-green: #356668;
+  --color-green-soft: #9ecfd1;
+  --color-radio: #436086;
+  --color-indigo: #436086;
+  --color-pink: #d9a8a8;
+  --color-pink-soft: #f0d4d4;
+  --color-beige: #e8e2d8;
+  --color-tertiary-light: #b6d3ff;
 
-  --font-serif: var(--font-noto-serif-kr), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-pretendard), "Noto Sans KR", Arial, sans-serif;
+  --font-sans: var(--font-hanken), "Hanken Grotesk", system-ui, sans-serif;
+  --font-serif: var(--font-hanken), "Hanken Grotesk", system-ui, sans-serif;
 
   --breakpoint-nav: 56.25rem;
   --breakpoint-archive: 35rem;
 }
+
+/* ── Utilities ── */
 
 @utility scrollbar-hide {
   scrollbar-width: none;
@@ -30,6 +38,41 @@
     display: none;
   }
 }
+
+@utility brutal-border {
+  border: 2px solid #000000;
+}
+
+@utility brutal-shadow {
+  box-shadow: 4px 4px 0 0 #000000;
+}
+
+@utility brutal-shadow-mint {
+  box-shadow: 4px 4px 0 0 var(--color-green);
+}
+
+@utility brutal-btn {
+  border: 2px solid #000000;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@utility brutal-card {
+  border: 2px solid #000000;
+  background-color: var(--color-panel);
+}
+
+@utility label-caps {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Base ── */
 
 @layer base {
   html {
@@ -42,9 +85,24 @@
     overflow-x: clip;
     background-color: var(--color-paper);
     color: var(--color-ink);
-    font-family: var(--font-serif);
-    line-height: 1.45;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Paper grain texture overlay */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px 180px;
   }
 
   a {
@@ -56,10 +114,56 @@
     display: block;
     max-width: 100%;
   }
+
+  button,
+  [type="button"],
+  [type="submit"],
+  [type="reset"] {
+    border-radius: 0;
+  }
+
+  input,
+  textarea,
+  select {
+    border-radius: 0;
+  }
 }
+
+/* ── Prose (article body) ── */
 
 .prose {
   --tw-prose-body: var(--color-ink);
   --tw-prose-headings: var(--color-ink);
-  --tw-prose-links: var(--color-green);
+  --tw-prose-links: var(--color-indigo);
+  --tw-prose-bold: var(--color-ink);
+  --tw-prose-quotes: var(--color-muted);
+  --tw-prose-quote-borders: var(--color-indigo);
+  --tw-prose-hr: var(--color-fine-line);
+
+  font-size: 1.125rem;
+  line-height: 1.7;
+
+  & h2,
+  & h3,
+  & h4 {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  & a {
+    text-decoration: underline;
+    text-underline-offset: 0.14em;
+    text-decoration-color: var(--color-indigo);
+  }
+
+  & blockquote {
+    border-left: 2px solid var(--color-indigo);
+    padding-left: 1.25rem;
+    font-style: normal;
+  }
+
+  & hr {
+    border-top-width: 1px;
+    border-color: var(--color-fine-line);
+  }
 }

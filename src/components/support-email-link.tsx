@@ -37,7 +37,7 @@ export function SupportEmailLink({
         variant === "link" &&
           "cursor-pointer underline underline-offset-[0.18em]",
         variant === "button" &&
-          "inline-flex min-h-[2.75rem] items-center justify-center bg-green px-[1.2rem] font-sans text-[0.82rem] font-extrabold tracking-[0.06em] text-white no-underline hover:opacity-92",
+          "inline-flex min-h-12 items-center justify-center border-2 border-black bg-green px-6 font-sans text-[0.82rem] font-extrabold tracking-[0.06em] text-white no-underline hover:brutal-shadow-mint",
         className,
       )}
       onClick={handleClick}

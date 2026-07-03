@@ -21,7 +21,7 @@ type Props = {
 };
 
 const carouselBtnClass =
-  "size-[2.35rem] shrink-0 cursor-pointer border border-line bg-panel font-sans text-base leading-none text-ink hover:bg-wash disabled:cursor-not-allowed disabled:opacity-35";
+  "size-10 shrink-0 cursor-pointer border-2 border-black bg-panel font-sans text-base font-bold leading-none text-ink hover:bg-wash hover:brutal-shadow disabled:cursor-not-allowed disabled:bg-beige disabled:text-muted";
 
 export function ArticleSectionCarousel({
   articles,

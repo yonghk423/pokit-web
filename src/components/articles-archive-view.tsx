@@ -77,21 +77,21 @@ export function ArticlesArchiveView({ articles, locale, categoryLabels, labels }
 
   return (
     <>
-      <div className="mb-5 flex items-center justify-between gap-4">
-        <p className="m-0 font-sans text-[0.72rem] font-extrabold tracking-[0.06em] uppercase">
+      <div className="mb-8 flex items-center justify-between gap-6">
+        <p className="m-0 label-caps">
           {labels.viewLabel}
         </p>
         <div
-          className="inline-flex border border-line"
+          className="inline-flex border-2 border-black"
           role="group"
           aria-label={labels.viewModeAria}
         >
           <button
             type="button"
             className={cn(
-              "inline-flex items-center gap-[0.4rem] border-0 bg-transparent px-[0.9rem] py-[0.45rem] font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
+              "inline-flex items-center gap-2 border-0 bg-transparent px-4 py-2 font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
               view === "grid" && "bg-ink text-panel",
-              view !== "grid" && "hover:text-ink",
+              view !== "grid" && "hover:bg-wash hover:text-ink",
             )}
             aria-pressed={view === "grid"}
             onClick={() => selectView("grid")}
@@ -102,9 +102,9 @@ export function ArticlesArchiveView({ articles, locale, categoryLabels, labels }
           <button
             type="button"
             className={cn(
-              "inline-flex items-center gap-[0.4rem] border-0 border-l border-line bg-transparent px-[0.9rem] py-[0.45rem] font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
+              "inline-flex items-center gap-2 border-0 border-l-2 border-black bg-transparent px-4 py-2 font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
               view === "list" && "bg-ink text-panel",
-              view !== "list" && "hover:text-ink",
+              view !== "list" && "hover:bg-wash hover:text-ink",
             )}
             aria-pressed={view === "list"}
             onClick={() => selectView("list")}
@@ -128,7 +128,7 @@ export function ArticlesArchiveView({ articles, locale, categoryLabels, labels }
           ))}
         </div>
       ) : (
-        <ul className="m-0 list-none border-t border-line p-0">
+        <ul className="m-0 list-none border-t-2 border-black p-0">
           {articles.map((article) => (
             <ArticleArchiveListItem key={article.slug} article={article} locale={locale} />
           ))}

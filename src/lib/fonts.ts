@@ -1,18 +1,10 @@
-import { Noto_Serif_KR } from "next/font/google";
-import localFont from "next/font/local";
+import { Hanken_Grotesk } from "next/font/google";
 
-export const pretendard = localFont({
-  src: "../fonts/PretendardVariable.woff2",
-  variable: "--font-pretendard",
+export const hankenGrotesk = Hanken_Grotesk({
+  subsets: ["latin", "latin-ext"],
   display: "swap",
-  weight: "45 920",
+  variable: "--font-hanken",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-export const notoSerifKr = Noto_Serif_KR({
-  weight: ["400", "700"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-noto-serif-kr",
-});
-
-export const fontVariables = `${pretendard.variable} ${notoSerifKr.variable}`;
+export const fontVariables = hankenGrotesk.variable;

@@ -31,16 +31,14 @@ export type Dictionary = {
   };
   home: {
     inboxTagline: string;
-    radio: {
+    digest: {
       ariaLabel: string;
-      onAir: string;
-      deskKicker: string;
-      deskTitle: string;
-      listenLive: string;
-      continentalKicker: string;
-      continentalDesc: string;
-      topHourKicker: string;
-      topHourDesc: string;
+      brandKicker: string;
+      brandTagline: string;
+      featuredKicker: string;
+      featuredTitle: string;
+      routineDesc: string;
+      commuteDesc: string;
     };
     sections: Record<HomeSectionId, HomeSectionCopy>;
     storiesAria: (label: string) => string;

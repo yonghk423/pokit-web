@@ -26,16 +26,14 @@ const dictionary: Dictionary = {
   },
   home: {
     inboxTagline: "Daily inbox intelligence from POKIT",
-    radio: {
-      ariaLabel: "POKIT Radio",
-      onAir: "On Air",
-      deskKicker: "The Wellness Desk",
-      deskTitle: "How to reclaim your body's rhythm at your desk",
-      listenLive: "Listen Live",
-      continentalKicker: "The Continental Shift",
-      continentalDesc: "Gentle morning music and routine news",
-      topHourKicker: "Top of the Hour",
-      topHourDesc: "Short headlines to reset your day",
+    digest: {
+      ariaLabel: "Home digest",
+      brandKicker: "POKIT",
+      brandTagline: "Your daily routine guide",
+      featuredKicker: "This week",
+      featuredTitle: "How to reclaim your body's rhythm at your desk",
+      routineDesc: "Routines worth starting now",
+      commuteDesc: "Stories for time in motion and pause",
     },
     sections: {
       affairs: {

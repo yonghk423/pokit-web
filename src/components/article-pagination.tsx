@@ -31,27 +31,29 @@ export function ArticlePagination({
 
   return (
     <nav
-      className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 border-t border-fine-line pt-6 font-sans text-[0.88rem]"
+      className="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-5 border-t-2 border-black pt-8 font-sans text-[0.88rem]"
       aria-label={dict.archive.paginationAria}
     >
       {page > 1 ? (
         <Link
           href={articlesArchiveHref(locale, page - 1, category, q, section)}
           scroll={false}
-          className="text-ink underline-offset-[0.14em] hover:underline"
+          className="border-2 border-black bg-panel px-4 py-2 font-bold text-ink hover:bg-wash"
         >
           {dict.archive.prev}
         </Link>
       ) : (
-        <span className="pointer-events-none text-muted">{dict.archive.prev}</span>
+        <span className="pointer-events-none border-2 border-fine-line px-4 py-2 text-muted">
+          {dict.archive.prev}
+        </span>
       )}
 
-      <ol className="m-0 flex list-none flex-wrap items-center justify-center gap-[0.35rem] p-0">
+      <ol className="m-0 flex list-none flex-wrap items-center justify-center gap-2 p-0">
         {pages.map((pageNumber) => (
           <li key={pageNumber}>
             {pageNumber === page ? (
               <span
-                className="inline-flex h-8 min-w-8 items-center justify-center border border-line px-[0.35rem] font-bold text-ink"
+                className="inline-flex h-10 min-w-10 items-center justify-center border-2 border-black bg-wash px-2 font-bold text-ink"
                 aria-current="page"
               >
                 {pageNumber}
@@ -60,7 +62,7 @@ export function ArticlePagination({
               <Link
                 href={articlesArchiveHref(locale, pageNumber, category, q, section)}
                 scroll={false}
-                className="inline-flex h-8 min-w-8 items-center justify-center border border-transparent px-[0.35rem] text-ink hover:border-fine-line"
+                className="inline-flex h-10 min-w-10 items-center justify-center border-2 border-black bg-panel px-2 font-bold text-ink hover:bg-wash"
               >
                 {pageNumber}
               </Link>
@@ -73,12 +75,14 @@ export function ArticlePagination({
         <Link
           href={articlesArchiveHref(locale, page + 1, category, q, section)}
           scroll={false}
-          className="text-ink underline-offset-[0.14em] hover:underline"
+          className="border-2 border-black bg-panel px-4 py-2 font-bold text-ink hover:bg-wash"
         >
           {dict.archive.next}
         </Link>
       ) : (
-        <span className="pointer-events-none text-muted">{dict.archive.next}</span>
+        <span className="pointer-events-none border-2 border-fine-line px-4 py-2 text-muted">
+          {dict.archive.next}
+        </span>
       )}
     </nav>
   );

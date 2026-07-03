@@ -17,16 +17,16 @@ export function ArticlesArchiveSearch({ locale, dict, q, category, section }: Pr
   const trimmed = q?.trim();
 
   return (
-    <form className="mt-5" action={withLocale(locale, "/articles")} method="get">
+    <form className="mt-6" action={withLocale(locale, "/articles")} method="get">
       {section && <input type="hidden" name="section" value={section} />}
       {category && <input type="hidden" name="category" value={category} />}
       <label
-        className="mb-[0.45rem] block font-sans text-[0.72rem] font-extrabold tracking-[0.06em] uppercase"
+        className="mb-2 inline-block border-2 border-black bg-indigo px-2 py-1 label-caps text-panel"
         htmlFor="articles-search"
       >
         {dict.archive.search}
       </label>
-      <div className="flex max-w-lg gap-2">
+      <div className="flex max-w-lg gap-3">
         <input
           id="articles-search"
           name="q"
@@ -34,17 +34,17 @@ export function ArticlesArchiveSearch({ locale, dict, q, category, section }: Pr
           defaultValue={trimmed ?? ""}
           placeholder={dict.archive.searchPlaceholder}
           autoComplete="off"
-          className="min-w-0 flex-1 border border-line bg-panel px-3 py-[0.65rem] font-[inherit] text-[0.92rem]"
+          className="min-w-0 flex-1 border-2 border-black bg-panel px-4 py-3 font-[inherit] text-[0.92rem] focus:bg-wash focus:outline-none"
         />
         <button
           type="submit"
-          className="cursor-pointer border border-ink bg-ink px-4 py-[0.65rem] font-[inherit] text-[0.88rem] font-bold text-panel"
+          className="cursor-pointer border-2 border-black bg-ink px-5 py-3 font-[inherit] text-[0.88rem] font-bold text-panel hover:brutal-shadow"
         >
           {dict.archive.searchSubmit}
         </button>
       </div>
       {trimmed && (
-        <p className="mt-[0.55rem] mb-0 text-[0.88rem] [&_a:hover]:text-green">
+        <p className="mt-3 mb-0 text-[0.88rem] [&_a]:border-b-2 [&_a]:border-indigo [&_a:hover]:text-indigo">
           <Link href={articlesArchiveHref(locale, 1, category, undefined, section)}>
             {dict.archive.clearSearch}
           </Link>
