@@ -6,6 +6,8 @@ import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
+import { shuffleArticles } from "@/lib/shuffle-articles";
+import { useCarouselAutoplay } from "@/lib/use-carousel-autoplay";
 import type { ArticleCardData } from "@/sanity/types";
 
 type Props = {
@@ -15,6 +17,8 @@ type Props = {
   ariaLabel: string;
   prevAria: string;
   nextAria: string;
+  shuffle?: boolean;
+  autoPlay?: boolean;
 };
 
 const carouselBtnClass =
@@ -27,10 +31,17 @@ export function FeaturedHeadlineCarousel({
   ariaLabel,
   prevAria,
   nextAria,
+  shuffle = false,
+  autoPlay = false,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
+  const [displayArticles, setDisplayArticles] = useState(articles);
+
+  useEffect(() => {
+    setDisplayArticles(shuffle ? shuffleArticles(articles) : articles);
+  }, [articles, shuffle]);
 
   const updateControls = useCallback(() => {
     const el = scrollRef.current;
@@ -57,7 +68,13 @@ export function FeaturedHeadlineCarousel({
       el.removeEventListener("scroll", updateControls);
       window.removeEventListener("resize", updateControls);
     };
-  }, [articles.length, updateControls]);
+  }, [displayArticles.length, updateControls]);
+
+  useCarouselAutoplay(scrollRef, {
+    enabled: autoPlay,
+    itemCount: displayArticles.length,
+    direction: "horizontal",
+  });
 
   const scroll = (direction: "prev" | "next") => {
     const el = scrollRef.current;
@@ -69,7 +86,7 @@ export function FeaturedHeadlineCarousel({
     el.scrollBy({ left: offset, behavior: "smooth" });
   };
 
-  const showControls = articles.length > 1;
+  const showControls = displayArticles.length > 1;
 
   return (
     <div className="relative min-w-0">
@@ -79,7 +96,7 @@ export function FeaturedHeadlineCarousel({
         aria-label={ariaLabel}
       >
         <div className="flex">
-          {articles.map((article) => (
+          {displayArticles.map((article) => (
             <div
               key={article.slug}
               className="min-w-0 w-[100cqw] max-w-[100cqw] shrink-0 grow-0 basis-[100cqw] snap-start"

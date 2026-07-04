@@ -6,6 +6,8 @@ import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
+import { shuffleArticles } from "@/lib/shuffle-articles";
+import { useCarouselAutoplay } from "@/lib/use-carousel-autoplay";
 import type { ArticleCardData } from "@/sanity/types";
 
 type Variant = "vertical" | "compact";
@@ -18,6 +20,8 @@ type Props = {
   layout?: "rail" | "grid";
   columns?: 3 | 4;
   ariaLabel: string;
+  shuffle?: boolean;
+  autoPlay?: boolean;
 };
 
 const carouselBtnClass =
@@ -31,11 +35,18 @@ export function ArticleSectionCarousel({
   layout = "grid",
   columns = 4,
   ariaLabel,
+  shuffle = false,
+  autoPlay = false,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
+  const [displayArticles, setDisplayArticles] = useState(articles);
   const isVertical = layout === "rail";
+
+  useEffect(() => {
+    setDisplayArticles(shuffle ? shuffleArticles(articles) : articles);
+  }, [articles, shuffle]);
 
   const updateControls = useCallback(() => {
     const el = scrollRef.current;
@@ -69,7 +80,13 @@ export function ArticleSectionCarousel({
       el.removeEventListener("scroll", updateControls);
       window.removeEventListener("resize", updateControls);
     };
-  }, [articles, columns, updateControls]);
+  }, [displayArticles, columns, updateControls]);
+
+  useCarouselAutoplay(scrollRef, {
+    enabled: autoPlay,
+    itemCount: displayArticles.length,
+    direction: isVertical ? "vertical" : "horizontal",
+  });
 
   const scroll = (direction: "prev" | "next") => {
     const el = scrollRef.current;
@@ -89,11 +106,11 @@ export function ArticleSectionCarousel({
     el.scrollBy({ left: sign * el.clientWidth, behavior: "smooth" });
   };
 
-  if (articles.length === 0) {
+  if (displayArticles.length === 0) {
     return null;
   }
 
-  const showControls = articles.length > (isVertical ? 1 : columns);
+  const showControls = displayArticles.length > (isVertical ? 1 : columns);
 
   const prevLabel = isVertical ? `${ariaLabel} 위로` : `${ariaLabel} 이전`;
   const nextLabel = isVertical ? `${ariaLabel} 아래로` : `${ariaLabel} 다음`;
@@ -126,7 +143,7 @@ export function ArticleSectionCarousel({
               ),
         )}
       >
-        {articles.map((article) => (
+        {displayArticles.map((article) => (
           <div
             key={article.slug}
             data-carousel-cell

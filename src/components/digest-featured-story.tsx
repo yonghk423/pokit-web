@@ -7,10 +7,9 @@ import { digestKickerClass, digestTitleClass } from "@/components/home-digest-st
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { articlePath } from "@/lib/article-path";
-import { cn } from "@/lib/cn";
 import type { ArticleCardData } from "@/sanity/types";
 
-const ROTATE_MS = 8_000;
+const ROTATE_MS = 10_000;
 
 type Props = {
   articles: ArticleCardData[];
@@ -19,6 +18,8 @@ type Props = {
   linkClass: string;
   featuredKicker: string;
   featuredTitle: string;
+  fallbackHref?: string;
+  fixedKicker?: string;
 };
 
 function pickNextIndex(length: number, current: number) {
@@ -37,6 +38,8 @@ export function DigestFeaturedStory({
   linkClass,
   featuredKicker,
   featuredTitle,
+  fallbackHref = "#affairs",
+  fixedKicker,
 }: Props) {
   const [index, setIndex] = useState(0);
 
@@ -56,14 +59,8 @@ export function DigestFeaturedStory({
 
   if (articles.length === 0) {
     return (
-      <a
-        href="#affairs"
-        className={cn(
-          linkClass,
-          "border-r-2 border-black p-5 max-nav:border-r-0 max-nav:border-b-2",
-        )}
-      >
-        <p className={digestKickerClass}>{featuredKicker}</p>
+      <a href={fallbackHref} className={linkClass}>
+        <p className={digestKickerClass}>{fixedKicker ?? featuredKicker}</p>
         <p className={digestTitleClass}>{featuredTitle}</p>
       </a>
     );
@@ -71,18 +68,13 @@ export function DigestFeaturedStory({
 
   const article = articles[index] ?? articles[0];
   const kicker =
+    fixedKicker ??
     article.kicker ??
     categoryLabels[article.category as keyof Dictionary["categories"]] ??
     featuredKicker;
 
   return (
-    <Link
-      href={articlePath(locale, article.slug)}
-      className={cn(
-        linkClass,
-        "border-r-2 border-black p-5 max-nav:border-r-0 max-nav:border-b-2",
-      )}
-    >
+    <Link href={articlePath(locale, article.slug)} className={linkClass}>
       <p className={digestKickerClass}>{kicker}</p>
       <p key={article.slug} className={digestTitleClass}>
         {article.title}

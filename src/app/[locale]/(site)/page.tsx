@@ -3,18 +3,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
-import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
 import { ArticleSectionCarousel } from "@/components/article-section-carousel";
+import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
 import { HomeDigestStrip } from "@/components/home-digest-strip";
 import { JsonLd } from "@/components/json-ld";
 import { SectionHeading } from "@/components/section-heading";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import { buildDigestArticlePool } from "@/lib/digest-articles";
 import { websiteJsonLd } from "@/lib/json-ld";
+import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 import { getHomePageWithCarousels } from "@/sanity/lib/fetch";
 
@@ -116,6 +116,8 @@ export default async function Home({ params }: Props) {
           dict={dict}
           locale={locale}
           articles={digestArticles}
+          spotlightArticles={spotlightCarousel}
+          radioArticles={radioCarousel}
           categoryLabels={categoryLabels}
         />
 
@@ -137,6 +139,8 @@ export default async function Home({ params }: Props) {
                     ariaLabel={affairsStoriesAria}
                     prevAria={dict.home.carouselPrev(affairsStoriesAria)}
                     nextAria={dict.home.carouselNext(affairsStoriesAria)}
+                    shuffle
+                    autoPlay
                   />
                 </div>
               )}
@@ -149,6 +153,8 @@ export default async function Home({ params }: Props) {
                     variant="compact"
                     layout="rail"
                     ariaLabel={dict.home.storiesAria(affairs.nav)}
+                    shuffle
+                    autoPlay
                   />
                 </div>
               )}
@@ -176,6 +182,8 @@ export default async function Home({ params }: Props) {
               layout="grid"
               columns={4}
               ariaLabel={dict.home.storiesAria(spotlight.nav)}
+              shuffle
+              autoPlay
             />
           </section>
         )}
@@ -196,6 +204,8 @@ export default async function Home({ params }: Props) {
               layout="grid"
               columns={4}
               ariaLabel={dict.home.storiesAria(radio.nav)}
+              shuffle
+              autoPlay
             />
           ) : (
             <p className="m-0 border-t-2 border-black py-6 font-sans text-[0.9rem] text-muted">
@@ -226,6 +236,8 @@ export default async function Home({ params }: Props) {
               layout="grid"
               columns={4}
               ariaLabel={dict.home.storiesAria(design.nav)}
+              shuffle
+              autoPlay
             />
           </section>
         )}
@@ -250,6 +262,8 @@ export default async function Home({ params }: Props) {
                 layout="grid"
                 columns={4}
                 ariaLabel={dict.home.storiesAria(wellness.nav)}
+                shuffle
+                autoPlay
               />
             </div>
           </section>

@@ -12,10 +12,19 @@ type Props = {
   dict: Dictionary;
   locale: Locale;
   articles: ArticleCardData[];
+  spotlightArticles: ArticleCardData[];
+  radioArticles: ArticleCardData[];
   categoryLabels: Dictionary["categories"];
 };
 
-export function HomeDigestStrip({ dict, locale, articles, categoryLabels }: Props) {
+export function HomeDigestStrip({
+  dict,
+  locale,
+  articles,
+  spotlightArticles,
+  radioArticles,
+  categoryLabels,
+}: Props) {
   const digest = dict.home.digest;
   const sections = dict.home.sections;
 
@@ -40,26 +49,38 @@ export function HomeDigestStrip({ dict, locale, articles, categoryLabels }: Prop
         articles={articles}
         locale={locale}
         categoryLabels={categoryLabels}
-        linkClass={linkClass}
+        linkClass={cn(
+          linkClass,
+          "border-r-2 border-black p-5 max-nav:border-r-0 max-nav:border-b-2",
+        )}
         featuredKicker={digest.featuredKicker}
         featuredTitle={digest.featuredTitle}
       />
 
       <div className="grid grid-cols-2 max-[640px]:grid-cols-1">
-        <a
-          href="#spotlight"
-          className={cn(
+        <DigestFeaturedStory
+          articles={spotlightArticles}
+          locale={locale}
+          categoryLabels={categoryLabels}
+          linkClass={cn(
             linkClass,
             "border-r-2 border-black p-5 max-[640px]:border-r-0 max-[640px]:border-b-2",
           )}
-        >
-          <p className={digestKickerClass}>{sections.spotlight.nav}</p>
-          <p className={digestTitleClass}>{digest.routineDesc}</p>
-        </a>
-        <a href="#radio" className={cn(linkClass, "p-5")}>
-          <p className={digestKickerClass}>{sections.radio.nav}</p>
-          <p className={digestTitleClass}>{digest.commuteDesc}</p>
-        </a>
+          fixedKicker={sections.spotlight.nav}
+          featuredKicker={sections.spotlight.nav}
+          featuredTitle={digest.routineDesc}
+          fallbackHref="#spotlight"
+        />
+        <DigestFeaturedStory
+          articles={radioArticles}
+          locale={locale}
+          categoryLabels={categoryLabels}
+          linkClass={cn(linkClass, "p-5")}
+          fixedKicker={sections.radio.nav}
+          featuredKicker={sections.radio.nav}
+          featuredTitle={digest.commuteDesc}
+          fallbackHref="#radio"
+        />
       </div>
     </section>
   );
