@@ -2,39 +2,33 @@
 
 import { useEffect, useRef, type RefObject } from "react";
 
-export const CAROUSEL_AUTOPLAY_MS = 10_000;
+export const CAROUSEL_AUTOPLAY_MS = 5_000;
 
 type Direction = "horizontal" | "vertical";
 
 export function advanceCarouselSlide(el: HTMLElement, direction: Direction) {
-  const cells = [...el.querySelectorAll<HTMLElement>("[data-carousel-cell]")];
-  if (cells.length <= 1) {
+  if (direction === "horizontal") {
+    const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
+    if (maxLeft <= 4) {
+      return;
+    }
+
+    const nextLeft = el.scrollLeft + el.clientWidth;
+    const targetLeft = nextLeft >= maxLeft - 4 ? 0 : nextLeft;
+    el.scrollTo({ left: targetLeft, behavior: "smooth" });
     return;
   }
 
-  const containerRect = el.getBoundingClientRect();
-  let currentIndex = 0;
-
-  for (let i = 0; i < cells.length; i++) {
-    const cellRect = cells[i].getBoundingClientRect();
-
-    if (direction === "horizontal") {
-      if (cellRect.left >= containerRect.left - 2) {
-        currentIndex = i;
-        break;
-      }
-    } else if (cellRect.top >= containerRect.top - 2) {
-      currentIndex = i;
-      break;
-    }
+  const maxTop = Math.max(0, el.scrollHeight - el.clientHeight);
+  if (maxTop <= 4) {
+    return;
   }
 
-  const nextIndex = currentIndex + 1 >= cells.length ? 0 : currentIndex + 1;
-  cells[nextIndex]?.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest",
-    inline: "start",
-  });
+  const firstCell = el.querySelector<HTMLElement>("[data-carousel-cell]");
+  const step = firstCell?.offsetHeight ?? el.clientHeight * 0.85;
+  const nextTop = el.scrollTop + step;
+  const targetTop = nextTop >= maxTop - 4 ? 0 : nextTop;
+  el.scrollTo({ top: targetTop, behavior: "smooth" });
 }
 
 type Options = {

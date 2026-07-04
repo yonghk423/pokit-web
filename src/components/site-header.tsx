@@ -41,13 +41,7 @@ export function SiteHeader({ locale, dict }: Props) {
           "grid min-h-[6.5rem] grid-cols-[1fr_auto_1fr] items-center py-6 max-nav:min-h-0 max-nav:grid-cols-1 max-nav:gap-4 max-nav:py-6",
         )}
       >
-        <button
-          className={cn(navLinkClass, "max-nav:hidden")}
-          type="button"
-          aria-label={dict.header.openMenu}
-        >
-          Menu
-        </button>
+        <div className="max-nav:hidden" aria-hidden="true" />
         <Link
           href={withLocale(locale, "/")}
           className="flex items-center justify-center gap-3"

@@ -7,9 +7,10 @@ import { digestKickerClass, digestTitleClass } from "@/components/home-digest-st
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { articlePath } from "@/lib/article-path";
+import { CAROUSEL_AUTOPLAY_MS } from "@/lib/use-carousel-autoplay";
 import type { ArticleCardData } from "@/sanity/types";
 
-const ROTATE_MS = 10_000;
+const ROTATE_MS = CAROUSEL_AUTOPLAY_MS;
 
 type Props = {
   articles: ArticleCardData[];
