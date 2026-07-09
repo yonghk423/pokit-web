@@ -2,6 +2,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { withLocale } from "@/lib/locale-path";
 import { homeSections } from "@/content/home";
+import { normalizeArticleCategory } from "@/content/categories";
 import { getArchiveSectionLabel, getCategoryLabel } from "@/lib/category-label";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
@@ -76,7 +77,13 @@ export async function getPaginatedArticles(
   } else if (category) {
     articlesQuery = ARTICLES_PAGINATED_BY_CATEGORY_QUERY;
     countQuery = ARTICLES_COUNT_BY_CATEGORY_QUERY;
-    queryParams = { start, end, category, locale, ...search };
+    queryParams = {
+      start,
+      end,
+      category: normalizeArticleCategory(category),
+      locale,
+      ...search,
+    };
   }
 
   const [articles, total] = await Promise.all([
@@ -140,10 +147,11 @@ export async function getRelatedArticles(
     return null;
   }
 
+  const normalizedCategory = normalizeArticleCategory(category);
   const designRoutineSlugSet = new Set<string>(homeSections.design.spaceRoutineSlugs ?? []);
   const inDesignSpace =
-    category === "Design" ||
-    (category === "Routine" && designRoutineSlugSet.has(slug));
+    normalizedCategory === "Space" ||
+    (normalizedCategory === "Routine" && designRoutineSlugSet.has(slug));
 
   const { RELATED_BY_CATEGORY_QUERY, RELATED_DESIGN_SPACE_QUERY } = await import(
     "@/sanity/lib/queries"
@@ -158,7 +166,7 @@ export async function getRelatedArticles(
           routineSlugs: [...designRoutineSlugSet],
           locale,
         }
-      : { slug, category, limit: 4, locale },
+      : { slug, category: normalizedCategory, limit: 4, locale },
     sanityFetchOptions,
   );
 
@@ -170,9 +178,9 @@ export async function getRelatedArticles(
     articles,
     label: inDesignSpace
       ? getArchiveSectionLabel(homeSections.design.archiveSection!, dict)
-      : getCategoryLabel(category, dict),
+      : getCategoryLabel(normalizedCategory, dict),
     viewAllHref: inDesignSpace
       ? articlesArchiveHref(locale, 1, undefined, undefined, homeSections.design.archiveSection)
-      : articlesArchiveHref(locale, 1, category),
+      : articlesArchiveHref(locale, 1, normalizedCategory),
   };
 }

@@ -74,14 +74,14 @@ export const ARTICLES_RECENT_BY_CATEGORY_QUERY = `*[_type == "article" && define
 }`;
 
 export const ARTICLES_DESIGN_SPACE_POOL_QUERY = `*[_type == "article" && defined(slug.current) && (
-  category == "Design" ||
+  category == "Space" ||
   (category == "Routine" && slug.current in $routineSlugs)
 )] | order(publishedAt desc)[0...$limit]{
   ${articleCardFields}
 }`;
 
 const designSpaceFilter = `(
-  category == "Design" ||
+  category == "Space" ||
   (category == "Routine" && slug.current in $routineSlugs)
 )`;
 

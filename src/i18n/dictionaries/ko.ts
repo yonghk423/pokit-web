@@ -148,10 +148,10 @@ const dictionary: Dictionary = {
     backHome: "← 홈으로",
   },
   categories: {
-    Affairs: "이번 주",
+    Weekly: "이번 주",
     Routine: "루틴",
-    Radio: "이동·휴식",
-    Design: "공간",
+    Commute: "이동·휴식",
+    Space: "공간",
     Wellness: "웰니스",
     design: "공간",
   },

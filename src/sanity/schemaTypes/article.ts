@@ -1,5 +1,7 @@
 import { defineField, defineType } from "sanity";
 
+import { articleCategoryOptions } from "@/content/categories";
+
 export const article = defineType({
   name: "article",
   title: "Article",
@@ -45,6 +47,10 @@ export const article = defineType({
       name: "category",
       title: "Category",
       type: "string",
+      options: {
+        list: articleCategoryOptions(),
+        layout: "dropdown",
+      },
       validation: (rule) => rule.required(),
     }),
     defineField({

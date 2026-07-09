@@ -1,3 +1,5 @@
+import type { ArticleCategoryId } from "@/content/categories";
+
 export const sectionOrder = [
   "affairs",
   "spotlight",
@@ -12,15 +14,15 @@ export type HomeSectionId = (typeof sectionOrder)[number];
 export const homeSections = {
   affairs: {
     id: "affairs",
-    archiveCategory: "Affairs",
+    archiveCategory: "Weekly" satisfies ArticleCategoryId,
   },
   spotlight: {
     id: "spotlight",
-    archiveCategory: "Routine",
+    archiveCategory: "Routine" satisfies ArticleCategoryId,
   },
   radio: {
     id: "radio",
-    archiveCategory: "Radio",
+    archiveCategory: "Commute" satisfies ArticleCategoryId,
   },
   design: {
     id: "design",
@@ -37,7 +39,7 @@ export const homeSections = {
   },
   wellness: {
     id: "wellness",
-    archiveCategory: "Wellness",
+    archiveCategory: "Wellness" satisfies ArticleCategoryId,
   },
 } as const satisfies Record<
   HomeSectionId,

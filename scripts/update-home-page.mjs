@@ -34,18 +34,18 @@ const SPACE_ROUTINE_SLUGS = new Set([
 
 /** 섹션 주제 = article.category 와 일치해야 함 */
 const HOME_PAGE_BY_SLUG = {
-  featuredArticle: { slug: "screen-free-sunday-morning", category: "Affairs" },
+  featuredArticle: { slug: "screen-free-sunday-morning", category: "Weekly" },
   leadStories: [
-    { slug: "weekly-review-ten-minutes", category: "Affairs" },
-    { slug: "monday-morning-no-meetings", category: "Affairs" },
-    { slug: "friday-evening-shutdown", category: "Affairs" },
-    { slug: "deep-work-morning-block", category: "Affairs" },
-    { slug: "sunday-night-weekly-plan", category: "Affairs" },
-    { slug: "friday-three-wins", category: "Affairs" },
-    { slug: "weekly-focus-one-word", category: "Affairs" },
-    { slug: "calendar-tomorrow-tonight", category: "Affairs" },
-    { slug: "thursday-three-priorities", category: "Affairs" },
-    { slug: "morning-inbox-fifteen", category: "Affairs" },
+    { slug: "weekly-review-ten-minutes", category: "Weekly" },
+    { slug: "monday-morning-no-meetings", category: "Weekly" },
+    { slug: "friday-evening-shutdown", category: "Weekly" },
+    { slug: "deep-work-morning-block", category: "Weekly" },
+    { slug: "sunday-night-weekly-plan", category: "Weekly" },
+    { slug: "friday-three-wins", category: "Weekly" },
+    { slug: "weekly-focus-one-word", category: "Weekly" },
+    { slug: "calendar-tomorrow-tonight", category: "Weekly" },
+    { slug: "thursday-three-priorities", category: "Weekly" },
+    { slug: "morning-inbox-fifteen", category: "Weekly" },
   ],
   spotlightRow: [
     { slug: "10", category: "Routine" },
@@ -62,32 +62,32 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "afternoon-no-caffeine", category: "Routine" },
   ],
   radioArticles: [
-    { slug: "podcast-walking-commute", category: "Radio" },
-    { slug: "silent-commute-challenge", category: "Radio" },
-    { slug: "morning-playlist-one-song", category: "Radio" },
-    { slug: "ambient-hour-deep-work", category: "Radio" },
-    { slug: "one-album-weekend-listen", category: "Radio" },
-    { slug: "ten-minute-silence-before-bed", category: "Radio" },
-    { slug: "bus-window-ten-minutes", category: "Radio" },
-    { slug: "commute-podcast-queue", category: "Radio" },
-    { slug: "voice-memo-walk-home", category: "Radio" },
-    { slug: "thursday-drive-no-audio", category: "Radio" },
-    { slug: "weekly-news-digest-only", category: "Radio" },
-    { slug: "platform-breath-three", category: "Radio" },
+    { slug: "podcast-walking-commute", category: "Commute" },
+    { slug: "silent-commute-challenge", category: "Commute" },
+    { slug: "morning-playlist-one-song", category: "Commute" },
+    { slug: "ambient-hour-deep-work", category: "Commute" },
+    { slug: "one-album-weekend-listen", category: "Commute" },
+    { slug: "ten-minute-silence-before-bed", category: "Commute" },
+    { slug: "bus-window-ten-minutes", category: "Commute" },
+    { slug: "commute-podcast-queue", category: "Commute" },
+    { slug: "voice-memo-walk-home", category: "Commute" },
+    { slug: "thursday-drive-no-audio", category: "Commute" },
+    { slug: "weekly-news-digest-only", category: "Commute" },
+    { slug: "platform-breath-three", category: "Commute" },
   ],
   designAwards: [
     { slug: "minimal-desk-design", category: "Routine" },
     { slug: "kitchen-dish-minimal", category: "Routine" },
-    { slug: "one-object-desk-joy", category: "Design" },
-    { slug: "mirror-catches-morning-light", category: "Design" },
-    { slug: "kitchen-counter-nightly", category: "Design" },
-    { slug: "bedside-table-two-items", category: "Design" },
-    { slug: "one-plant-desk-corner", category: "Design" },
-    { slug: "whiteboard-weekly-three", category: "Design" },
-    { slug: "entryway-drop-zone", category: "Design" },
-    { slug: "drawer-one-tray-system", category: "Design" },
-    { slug: "shoe-rack-by-door", category: "Design" },
-    { slug: "bookshelf-top-clear", category: "Design" },
+    { slug: "one-object-desk-joy", category: "Space" },
+    { slug: "mirror-catches-morning-light", category: "Space" },
+    { slug: "kitchen-counter-nightly", category: "Space" },
+    { slug: "bedside-table-two-items", category: "Space" },
+    { slug: "one-plant-desk-corner", category: "Space" },
+    { slug: "whiteboard-weekly-three", category: "Space" },
+    { slug: "entryway-drop-zone", category: "Space" },
+    { slug: "drawer-one-tray-system", category: "Space" },
+    { slug: "shoe-rack-by-door", category: "Space" },
+    { slug: "bookshelf-top-clear", category: "Space" },
   ],
   cityGuides: [
     { slug: "bedtime-stretch-five", category: "Wellness" },
@@ -168,11 +168,11 @@ async function resolveLayout(layout) {
       article.category === "Routine" && SPACE_ROUTINE_SLUGS.has(entry.slug);
 
     if (layout.designAwards.some((d) => d.slug === entry.slug)) {
-      if (article.category === "Design" || isSpaceRoutine) {
+      if (article.category === "Space" || isSpaceRoutine) {
         continue;
       }
       throw new Error(
-        `Space section: ${entry.slug} must be Design or a space Routine slug`,
+        `Space section: ${entry.slug} must be Space or a space Routine slug`,
       );
     }
 
@@ -225,14 +225,14 @@ async function main() {
   }`);
 
   console.log("Home Page updated by section:\n");
-  console.log("Affairs (한 주를 여는 이야기):");
+  console.log("Weekly (한 주를 여는 이야기):");
   console.log("  featured:", result.featuredArticle?.slug, result.featuredArticle?.category);
   result.leadStories?.forEach((a) => console.log("  lead:", a.slug, a.category));
 
   console.log("\nRoutine (지금 시작하기 좋은 루틴):");
   result.spotlightRow?.forEach((a) => console.log(" ", a.slug, a.category));
 
-  console.log("\nRadio (이동과 쉬는 시간):");
+  console.log("\nCommute (이동과 쉬는 시간):");
   result.radioArticles?.forEach((a) => console.log(" ", a.slug, a.category));
 
   console.log("\n공간 (공간을 다시 짜는 이야기):");

@@ -47,4 +47,4 @@ require('dotenv').config({ path: '.env.local' });
 ## Article 스키마 참고
 
 - slug: 영문 소문자·숫자·하이픈만 (`src/sanity/schemaTypes/article.ts`)
-- Category: `Affairs` | `Routine` | `Radio` | `Design` | `Wellness`
+- Category: `Weekly` | `Routine` | `Commute` | `Space` | `Wellness`

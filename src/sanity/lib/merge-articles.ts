@@ -66,7 +66,7 @@ export function mergeArticlesForCategory(
   return mergeArticles(filterByCategory(curated, category), pool, limit);
 }
 
-/** Design + selected Routine stories about space, desk, and home. */
+/** Space + selected Routine stories about space, desk, and home. */
 export function mergeArticlesForSpacePool(
   curated: ArticleCardData[],
   allArticles: ArticleCardData[],
@@ -75,7 +75,7 @@ export function mergeArticlesForSpacePool(
 ): ArticleCardData[] {
   const routineSlugSet = new Set(routineSlugs);
   const isInSpacePool = (article: ArticleCardData) =>
-    article.category === "Design" ||
+    article.category === "Space" ||
     (article.category === "Routine" && routineSlugSet.has(article.slug));
 
   const pool = buildArticlePool(allArticles.filter(isInSpacePool));

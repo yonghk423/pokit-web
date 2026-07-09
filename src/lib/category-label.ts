@@ -1,20 +1,24 @@
+import {
+  articleCategoryIds,
+  isArticleCategoryId,
+  normalizeArticleCategory,
+} from "@/content/categories";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { homeSections } from "@/content/home";
 
-const CATEGORY_KEYS = ["Affairs", "Routine", "Radio", "Design", "Wellness"] as const;
-
 /** Sanity CMS category → localized label */
 export function getCategoryLabel(category: string, dict: Dictionary) {
-  if (CATEGORY_KEYS.includes(category as (typeof CATEGORY_KEYS)[number])) {
-    return dict.categories[category as keyof typeof dict.categories];
+  const normalized = normalizeArticleCategory(category);
+  if (isArticleCategoryId(normalized)) {
+    return dict.categories[normalized];
   }
   return category;
 }
 
 export function getArchiveSectionLabel(section: string, dict: Dictionary) {
   if (section === "design") {
-    return dict.categories.design;
+    return dict.categories.Space;
   }
   return section;
 }
@@ -47,5 +51,7 @@ export function getCategories(dict: Dictionary) {
     label: dict.home.sections[key].nav,
   }));
 }
+
+export { articleCategoryIds };
 
 export type { Locale };

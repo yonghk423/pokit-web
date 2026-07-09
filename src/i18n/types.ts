@@ -119,10 +119,10 @@ export type Dictionary = {
     backHome: string;
   };
   categories: {
-    Affairs: string;
+    Weekly: string;
     Routine: string;
-    Radio: string;
-    Design: string;
+    Commute: string;
+    Space: string;
     Wellness: string;
     design: string;
   };

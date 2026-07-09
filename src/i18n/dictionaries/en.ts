@@ -148,10 +148,10 @@ const dictionary: Dictionary = {
     backHome: "← Back to home",
   },
   categories: {
-    Affairs: "This week",
+    Weekly: "This week",
     Routine: "Routines",
-    Radio: "Commute & rest",
-    Design: "Space",
+    Commute: "Commute & rest",
+    Space: "Space",
     Wellness: "Wellness",
     design: "Space",
   },
