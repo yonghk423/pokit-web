@@ -120,6 +120,8 @@ const dictionary: Dictionary = {
       sent: "You can finish saving in the app",
       fallback: "Track routines and organize your day in the POKIT app.",
       download: "Download on the App Store",
+      qrAria: "POKIT App Store QR code",
+      qrHint: "Scan with your phone camera to install",
     },
   },
   appDownload: {
@@ -127,7 +129,7 @@ const dictionary: Dictionary = {
     title: "Track routines and organize your day in the POKIT app.",
     download: "Download on the App Store",
     qrAria: "POKIT App Store QR code",
-    qrHint: "Scan with your iPhone camera to install",
+    qrHint: "Scan with your phone camera to install",
   },
   notFound: {
     title: "Page not found",

@@ -91,6 +91,8 @@ export type Dictionary = {
       sent: string;
       fallback: string;
       download: string;
+      qrAria: string;
+      qrHint: string;
     };
   };
   appDownload: {

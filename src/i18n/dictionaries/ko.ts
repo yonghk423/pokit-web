@@ -120,6 +120,8 @@ const dictionary: Dictionary = {
       sent: "앱에서 이어서 담을 수 있어요",
       fallback: "POKIT 앱에서 루틴을 기록하고, 하루를 정리하세요.",
       download: "App Store에서 다운로드",
+      qrAria: "POKIT 앱 App Store QR 코드",
+      qrHint: "휴대폰 카메라로 스캔해서 설치",
     },
   },
   appDownload: {
@@ -127,7 +129,7 @@ const dictionary: Dictionary = {
     title: "POKIT 앱에서 루틴을 기록하고, 하루를 정리하세요.",
     download: "App Store에서 다운로드",
     qrAria: "POKIT 앱 App Store QR 코드",
-    qrHint: "iPhone 카메라로 스캔해서 설치",
+    qrHint: "휴대폰 카메라로 스캔해서 설치",
   },
   notFound: {
     title: "페이지를 찾을 수 없습니다",

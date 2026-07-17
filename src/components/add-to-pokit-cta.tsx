@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 
 import { appStoreUrl } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
-import { cn, monoContainer } from "@/lib/cn";
+import { cn } from "@/lib/cn";
 import {
   buildAddRoutinePayload,
   sendToPokitApp,
@@ -19,11 +20,12 @@ type Props = {
   className?: string;
 };
 
-type CtaState = "idle" | "sent" | "fallback";
+type CtaState = "idle" | "sent";
 
 export function AddToPokitCta({ article, locale, copy, className }: Props) {
   const [state, setState] = useState<CtaState>("idle");
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const storeUrl = appStoreUrl(locale);
 
   useEffect(() => {
     return () => {
@@ -39,10 +41,7 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
       setState("sent");
       if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
       resetTimerRef.current = setTimeout(() => setState("idle"), 4000);
-      return;
     }
-
-    setState("fallback");
   }, [article, locale]);
 
   return (
@@ -79,19 +78,34 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
         </p>
       )}
 
-      {state === "fallback" && (
-        <div className="mt-6 border-2 border-black bg-beige px-5 py-5">
-          <p className="m-0 font-sans text-[0.92rem] leading-[1.6] text-ink">
-            {copy.fallback}
-          </p>
-          <a
-            href={appStoreUrl(locale)}
-            className="mt-5 inline-flex min-h-11 items-center justify-center border-2 border-black bg-brand px-5 font-sans text-[0.75rem] font-extrabold tracking-[0.06em] text-ink uppercase hover:brutal-shadow"
-          >
-            {copy.download}
-          </a>
+      <div className="mt-6 border-2 border-black bg-beige px-5 py-5">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 flex-1">
+            <p className="m-0 font-sans text-[0.92rem] leading-[1.6] text-ink">
+              {copy.fallback}
+            </p>
+            <a
+              href={storeUrl}
+              className="mt-5 hidden min-h-11 items-center justify-center border-2 border-black bg-brand px-5 font-sans text-[0.75rem] font-extrabold tracking-[0.06em] text-ink uppercase hover:brutal-shadow max-nav:inline-flex"
+            >
+              {copy.download}
+            </a>
+          </div>
+          <div className="flex shrink-0 flex-col items-center gap-2 self-center border-2 border-black bg-panel p-4 max-nav:hidden">
+            <QRCodeSVG
+              value={storeUrl}
+              size={112}
+              bgColor="#fbf8ff"
+              fgColor="#181a2e"
+              role="img"
+              aria-label={copy.qrAria}
+            />
+            <p className="m-0 max-w-[8.5rem] text-center font-sans text-[0.68rem] font-bold leading-[1.35] tracking-[0.04em] text-ink normal-case">
+              {copy.qrHint}
+            </p>
+          </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }
