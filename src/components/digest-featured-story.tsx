@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { digestKickerClass, digestTitleClass } from "@/components/home-digest-strip-styles";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
@@ -93,9 +94,16 @@ export function DigestFeaturedStory({
   return (
     <Link href={articlePath(locale, article.slug)} className={linkClass}>
       <p className={digestKickerClass}>{kicker}</p>
-      <p key={article.slug} className={digestTitleClass}>
-        {article.title}
-      </p>
+      <ArticleDisplayTitle
+        key={article.slug}
+        title={article.title}
+        locale={locale}
+        category={article.category}
+        description={article.description}
+        as="p"
+        className={digestTitleClass}
+        tone="onDark"
+      />
     </Link>
   );
 }

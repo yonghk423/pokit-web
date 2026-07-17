@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { articlePath } from "@/lib/article-path";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/i18n/config";
@@ -127,7 +128,12 @@ export function ArticleCard({
               {article.kicker}
             </p>
           )}
-          <h3
+          <ArticleDisplayTitle
+            title={article.title}
+            locale={locale}
+            category={article.category}
+            description={article.description}
+            as="h3"
             className={cn(
               "m-0 mt-[0.28rem] font-bold tracking-[-0.025em] group-hover/card:text-indigo",
               variant === "feature" &&
@@ -137,9 +143,7 @@ export function ArticleCard({
               (variant === "vertical" || !variant) &&
               "text-[1.24rem] leading-[1.18]",
             )}
-          >
-            {article.title}
-          </h3>
+          />
           {article.description && variant === "feature" && (
             <p className="mt-[0.7rem] mb-0 max-w-[43rem] text-base leading-[1.55] text-muted max-[640px]:text-[0.92rem] max-[640px]:leading-normal">
               {article.description}

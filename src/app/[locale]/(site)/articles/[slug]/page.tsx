@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
+import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedArticles } from "@/components/related-articles";
 import { site } from "@/config/site";
@@ -130,9 +131,14 @@ export default async function ArticlePage({ params }: Props) {
               {article.kicker}
             </p>
           )}
-          <h1 className="m-0 font-sans text-[clamp(1.75rem,3.25vw,2.65rem)] font-extrabold leading-[1.1] tracking-[-0.03em]">
-            {article.title}
-          </h1>
+          <ArticleDisplayTitle
+            title={article.title}
+            locale={locale}
+            category={article.category}
+            description={article.description}
+            as="h1"
+            className="m-0 font-sans text-[clamp(1.75rem,3.25vw,2.65rem)] font-extrabold leading-[1.1] tracking-[-0.03em]"
+          />
           {article.description && (
             <p className="mt-5 mb-0 max-w-[42rem] font-sans text-[1.05rem] leading-[1.65] text-muted">
               {article.description}

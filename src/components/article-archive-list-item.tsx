@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { articlePath } from "@/lib/article-path";
 import type { Locale } from "@/i18n/config";
 import { formatPublishedLabel } from "@/lib/format-published";
@@ -33,9 +34,14 @@ export function ArticleArchiveListItem({ article, locale }: Props) {
           )}
         </div>
         <div>
-          <h2 className="m-0 text-[clamp(1.15rem,2.2vw,1.45rem)] font-bold leading-[1.25] tracking-[-0.025em] group-hover:text-indigo">
-            {article.title}
-          </h2>
+          <ArticleDisplayTitle
+            title={article.title}
+            locale={locale}
+            category={article.category}
+            description={article.description}
+            as="h2"
+            className="m-0 text-[clamp(1.15rem,2.2vw,1.45rem)] font-bold leading-[1.25] tracking-[-0.025em] group-hover:text-indigo"
+          />
           {article.description && (
             <p className="mt-3 mb-0 max-w-[46rem] font-sans text-[0.92rem] leading-[1.6] text-muted">
               {article.description}
