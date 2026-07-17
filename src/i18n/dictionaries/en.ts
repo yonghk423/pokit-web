@@ -36,22 +36,22 @@ const dictionary: Dictionary = {
       commuteDesc: "Stories for time in motion and pause",
     },
     sections: {
-      affairs: {
+      weekly: {
         nav: "This week",
         kicker: "This week",
         title: "Stories to open your week",
       },
-      spotlight: {
+      routine: {
         nav: "Routines",
         kicker: "Routines",
         title: "Routines worth starting now",
       },
-      radio: {
+      commute: {
         nav: "Commute & rest",
         kicker: "Commute & rest",
         title: "Time in motion and time to pause",
       },
-      design: {
+      space: {
         nav: "Space",
         kicker: "Space",
         title: "Stories for reshaping your space",

@@ -12,8 +12,8 @@ type Props = {
   dict: Dictionary;
   locale: Locale;
   articles: ArticleCardData[];
-  spotlightArticles: ArticleCardData[];
-  radioArticles: ArticleCardData[];
+  routineArticles: ArticleCardData[];
+  commuteArticles: ArticleCardData[];
   categoryLabels: Dictionary["categories"];
 };
 
@@ -21,8 +21,8 @@ export function HomeDigestStrip({
   dict,
   locale,
   articles,
-  spotlightArticles,
-  radioArticles,
+  routineArticles,
+  commuteArticles,
   categoryLabels,
 }: Props) {
   const digest = dict.home.digest;
@@ -59,27 +59,27 @@ export function HomeDigestStrip({
 
       <div className="grid grid-cols-2 max-[640px]:grid-cols-1">
         <DigestFeaturedStory
-          articles={spotlightArticles}
+          articles={routineArticles}
           locale={locale}
           categoryLabels={categoryLabels}
           linkClass={cn(
             linkClass,
             "border-r-2 border-black p-5 max-[640px]:border-r-0 max-[640px]:border-b-2",
           )}
-          fixedKicker={sections.spotlight.nav}
-          featuredKicker={sections.spotlight.nav}
+          fixedKicker={sections.routine.nav}
+          featuredKicker={sections.routine.nav}
           featuredTitle={digest.routineDesc}
-          fallbackHref="#spotlight"
+          fallbackHref="#routine"
         />
         <DigestFeaturedStory
-          articles={radioArticles}
+          articles={commuteArticles}
           locale={locale}
           categoryLabels={categoryLabels}
           linkClass={cn(linkClass, "p-5")}
-          fixedKicker={sections.radio.nav}
-          featuredKicker={sections.radio.nav}
+          fixedKicker={sections.commute.nav}
+          featuredKicker={sections.commute.nav}
           featuredTitle={digest.commuteDesc}
-          fallbackHref="#radio"
+          fallbackHref="#commute"
         />
       </div>
     </section>

@@ -34,7 +34,7 @@ const SPACE_ROUTINE_SLUGS = new Set([
 
 /** 섹션 주제 = article.category 와 일치해야 함 */
 const HOME_PAGE_BY_SLUG = {
-  featuredArticle: { slug: "screen-free-sunday-morning", category: "Weekly" },
+  featuredArticle: { slug: "calendar-two-empty-blocks", category: "Weekly" },
   leadStories: [
     { slug: "weekly-review-ten-minutes", category: "Weekly" },
     { slug: "monday-morning-no-meetings", category: "Weekly" },
@@ -48,6 +48,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "morning-inbox-fifteen", category: "Weekly" },
   ],
   spotlightRow: [
+    { slug: "fridge-photo-before-grocery", category: "Routine" },
     { slug: "10", category: "Routine" },
     { slug: "25-5", category: "Routine" },
     { slug: "balanced-eating-out", category: "Routine" },
@@ -62,6 +63,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "afternoon-no-caffeine", category: "Routine" },
   ],
   radioArticles: [
+    { slug: "exit-station-by-scenery", category: "Commute" },
     { slug: "podcast-walking-commute", category: "Commute" },
     { slug: "silent-commute-challenge", category: "Commute" },
     { slug: "morning-playlist-one-song", category: "Commute" },
@@ -76,6 +78,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "platform-breath-three", category: "Commute" },
   ],
   designAwards: [
+    { slug: "remotes-one-drawer-only", category: "Space" },
     { slug: "minimal-desk-design", category: "Routine" },
     { slug: "kitchen-dish-minimal", category: "Routine" },
     { slug: "one-object-desk-joy", category: "Space" },
@@ -90,6 +93,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "bookshelf-top-clear", category: "Space" },
   ],
   cityGuides: [
+    { slug: "toe-spread-two-minutes", category: "Wellness" },
     { slug: "bedtime-stretch-five", category: "Wellness" },
     { slug: "after-dinner-walk-ten", category: "Wellness" },
     { slug: "park-bench-lunch-reset", category: "Wellness" },

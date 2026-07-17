@@ -39,7 +39,7 @@ export function DigestFeaturedStory({
   linkClass,
   featuredKicker,
   featuredTitle,
-  fallbackHref = "#affairs",
+  fallbackHref = "#weekly",
   fixedKicker,
 }: Props) {
   const [index, setIndex] = useState(0);

@@ -1,10 +1,10 @@
 import type { ArticleCategoryId } from "@/content/categories";
 
 export const sectionOrder = [
-  "affairs",
-  "spotlight",
-  "radio",
-  "design",
+  "weekly",
+  "routine",
+  "commute",
+  "space",
   "wellness",
 ] as const;
 
@@ -12,21 +12,21 @@ export type HomeSectionId = (typeof sectionOrder)[number];
 
 /** Locale-independent home section wiring (Sanity categories, archive filters). */
 export const homeSections = {
-  affairs: {
-    id: "affairs",
+  weekly: {
+    id: "weekly",
     archiveCategory: "Weekly" satisfies ArticleCategoryId,
   },
-  spotlight: {
-    id: "spotlight",
+  routine: {
+    id: "routine",
     archiveCategory: "Routine" satisfies ArticleCategoryId,
   },
-  radio: {
-    id: "radio",
+  commute: {
+    id: "commute",
     archiveCategory: "Commute" satisfies ArticleCategoryId,
   },
-  design: {
-    id: "design",
-    archiveSection: "design",
+  space: {
+    id: "space",
+    archiveSection: "space",
     spaceRoutineSlugs: [
       "minimal-desk-design",
       "kitchen-dish-minimal",

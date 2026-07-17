@@ -17,14 +17,14 @@ export function getCategoryLabel(category: string, dict: Dictionary) {
 }
 
 export function getArchiveSectionLabel(section: string, dict: Dictionary) {
-  if (section === "design") {
+  if (section === homeSections.space.archiveSection) {
     return dict.categories.Space;
   }
   return section;
 }
 
 export function isArchiveSection(section: string) {
-  return section === homeSections.design.archiveSection;
+  return section === homeSections.space.archiveSection;
 }
 
 export function getArchiveHeading(

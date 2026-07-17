@@ -36,22 +36,22 @@ const dictionary: Dictionary = {
       commuteDesc: "이동과 쉬는 시간에 읽기",
     },
     sections: {
-      affairs: {
+      weekly: {
         nav: "이번 주",
         kicker: "이번 주",
         title: "한 주를 여는 이야기",
       },
-      spotlight: {
+      routine: {
         nav: "루틴",
         kicker: "루틴",
         title: "지금 시작하기 좋은 루틴",
       },
-      radio: {
+      commute: {
         nav: "이동·휴식",
         kicker: "이동·휴식",
         title: "이동과 쉬는 시간",
       },
-      design: {
+      space: {
         nav: "공간",
         kicker: "공간",
         title: "공간을 다시 짜는 이야기",

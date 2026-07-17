@@ -72,34 +72,34 @@ export default async function Home({ params }: Props) {
   const locale: Locale = rawLocale;
   const dict = await getDictionary(locale);
   const {
-    affairsHero,
-    affairsRail,
+    weeklyHero,
+    weeklyRail,
     spotlightRowSection,
-    spotlightCarousel,
+    routineCarousel,
     radioLatestSection,
-    radioCarousel,
+    commuteCarousel,
     designAwardsSection,
-    designCarousel,
+    spaceCarousel,
     cityGuidesSection,
-    cityCarousel,
+    wellnessCarousel,
   } = await getHomePageWithCarousels(locale, dict);
 
-  const affairs = dict.home.sections.affairs;
-  const spotlight = dict.home.sections.spotlight;
-  const radio = dict.home.sections.radio;
-  const design = dict.home.sections.design;
+  const weekly = dict.home.sections.weekly;
+  const routine = dict.home.sections.routine;
+  const commute = dict.home.sections.commute;
+  const space = dict.home.sections.space;
   const wellness = dict.home.sections.wellness;
   const categoryLabels = dict.categories;
 
-  const hasTopStories = affairsHero.length > 0 || affairsRail.length > 0;
-  const affairsStoriesAria = dict.home.storiesAria(affairs.nav);
+  const hasTopStories = weeklyHero.length > 0 || weeklyRail.length > 0;
+  const weeklyStoriesAria = dict.home.storiesAria(weekly.nav);
   const digestArticles = buildDigestArticlePool(
-    affairsHero,
-    affairsRail,
-    spotlightCarousel,
-    radioCarousel,
-    designCarousel,
-    cityCarousel,
+    weeklyHero,
+    weeklyRail,
+    routineCarousel,
+    commuteCarousel,
+    spaceCarousel,
+    wellnessCarousel,
   );
 
   return (
@@ -116,43 +116,43 @@ export default async function Home({ params }: Props) {
           dict={dict}
           locale={locale}
           articles={digestArticles}
-          spotlightArticles={spotlightCarousel}
-          radioArticles={radioCarousel}
+          routineArticles={routineCarousel}
+          commuteArticles={commuteCarousel}
           categoryLabels={categoryLabels}
         />
 
         {hasTopStories && (
-          <section id="affairs" className={cn(monoContainer, sectionSpacing)}>
+          <section id="weekly" className={cn(monoContainer, sectionSpacing)}>
             <SectionHeading
-              kicker={affairs.kicker}
-              title={affairs.title}
-              viewAllHref={articlesArchiveHref(locale, 1, homeSections.affairs.archiveCategory)}
+              kicker={weekly.kicker}
+              title={weekly.title}
+              viewAllHref={articlesArchiveHref(locale, 1, homeSections.weekly.archiveCategory)}
               viewAllLabel={dict.sectionHeading.viewAll}
             />
             <div className="grid grid-cols-[minmax(0,1.55fr)_minmax(0,0.95fr)] items-start gap-[1.4rem] max-nav:grid-cols-1">
-              {affairsHero.length > 0 && (
+              {weeklyHero.length > 0 && (
                 <div className="min-w-0 border-r-2 border-black pr-[1.4rem] max-nav:border-r-0 max-nav:pr-0">
                   <FeaturedHeadlineCarousel
-                    articles={affairsHero}
+                    articles={weeklyHero}
                     locale={locale}
                     categoryLabels={categoryLabels}
-                    ariaLabel={affairsStoriesAria}
-                    prevAria={dict.home.carouselPrev(affairsStoriesAria)}
-                    nextAria={dict.home.carouselNext(affairsStoriesAria)}
+                    ariaLabel={weeklyStoriesAria}
+                    prevAria={dict.home.carouselPrev(weeklyStoriesAria)}
+                    nextAria={dict.home.carouselNext(weeklyStoriesAria)}
                     shuffle
                     autoPlay
                   />
                 </div>
               )}
-              {affairsRail.length > 0 && (
+              {weeklyRail.length > 0 && (
                 <div className="min-w-0">
                   <ArticleSectionCarousel
-                    articles={affairsRail}
+                    articles={weeklyRail}
                     locale={locale}
                     categoryLabels={categoryLabels}
                     variant="compact"
                     layout="rail"
-                    ariaLabel={dict.home.storiesAria(affairs.nav)}
+                    ariaLabel={dict.home.storiesAria(weekly.nav)}
                     shuffle
                     autoPlay
                   />
@@ -162,87 +162,87 @@ export default async function Home({ params }: Props) {
           </section>
         )}
 
-        {spotlightCarousel.length > 0 && (
-          <section id="spotlight" className={cn(monoContainer, sectionSpacing)}>
+        {routineCarousel.length > 0 && (
+          <section id="routine" className={cn(monoContainer, sectionSpacing)}>
             <SectionHeading
-              kicker={spotlightRowSection?.kicker ?? spotlight.kicker}
-              title={spotlightRowSection?.title ?? spotlight.title}
+              kicker={spotlightRowSection?.kicker ?? routine.kicker}
+              title={spotlightRowSection?.title ?? routine.title}
               viewAllHref={articlesArchiveHref(
                 locale,
                 1,
-                homeSections.spotlight.archiveCategory,
+                homeSections.routine.archiveCategory,
               )}
               viewAllLabel={dict.sectionHeading.viewAll}
             />
             <ArticleSectionCarousel
-              articles={spotlightCarousel}
+              articles={routineCarousel}
               locale={locale}
               categoryLabels={categoryLabels}
               variant="vertical"
               layout="grid"
               columns={4}
-              ariaLabel={dict.home.storiesAria(spotlight.nav)}
+              ariaLabel={dict.home.storiesAria(routine.nav)}
               shuffle
               autoPlay
             />
           </section>
         )}
 
-        <section id="radio" className={cn(monoContainer, sectionSpacing)}>
+        <section id="commute" className={cn(monoContainer, sectionSpacing)}>
           <SectionHeading
-            kicker={radioLatestSection?.kicker ?? radio.kicker}
-            title={radioLatestSection?.title ?? radio.title}
-            viewAllHref={articlesArchiveHref(locale, 1, homeSections.radio.archiveCategory)}
+            kicker={radioLatestSection?.kicker ?? commute.kicker}
+            title={radioLatestSection?.title ?? commute.title}
+            viewAllHref={articlesArchiveHref(locale, 1, homeSections.commute.archiveCategory)}
             viewAllLabel={dict.sectionHeading.viewAll}
           />
-          {radioCarousel.length > 0 ? (
+          {commuteCarousel.length > 0 ? (
             <ArticleSectionCarousel
-              articles={radioCarousel}
+              articles={commuteCarousel}
               locale={locale}
               categoryLabels={categoryLabels}
               variant="vertical"
               layout="grid"
               columns={4}
-              ariaLabel={dict.home.storiesAria(radio.nav)}
+              ariaLabel={dict.home.storiesAria(commute.nav)}
               shuffle
               autoPlay
             />
           ) : (
             <p className="m-0 border-t-2 border-black py-6 font-sans text-[0.9rem] text-muted">
-              {dict.home.radioEmpty(radio.nav)}
+              {dict.home.radioEmpty(commute.nav)}
             </p>
           )}
         </section>
 
-        {designCarousel.length > 0 && (
-          <section id="design" className={cn(monoContainer, sectionSpacing)}>
+        {spaceCarousel.length > 0 && (
+          <section id="space" className={cn(monoContainer, sectionSpacing)}>
             <SectionHeading
-              kicker={designAwardsSection?.kicker ?? design.kicker}
-              title={designAwardsSection?.title ?? design.title}
+              kicker={designAwardsSection?.kicker ?? space.kicker}
+              title={designAwardsSection?.title ?? space.title}
               viewAllHref={articlesArchiveHref(
                 locale,
                 1,
                 undefined,
                 undefined,
-                homeSections.design.archiveSection,
+                homeSections.space.archiveSection,
               )}
               viewAllLabel={dict.sectionHeading.viewAll}
             />
             <ArticleSectionCarousel
-              articles={designCarousel}
+              articles={spaceCarousel}
               locale={locale}
               categoryLabels={categoryLabels}
               variant="vertical"
               layout="grid"
               columns={4}
-              ariaLabel={dict.home.storiesAria(design.nav)}
+              ariaLabel={dict.home.storiesAria(space.nav)}
               shuffle
               autoPlay
             />
           </section>
         )}
 
-        {cityCarousel.length > 0 && (
+        {wellnessCarousel.length > 0 && (
           <section
             id="wellness"
             className="mt-16 border-y-2 border-black bg-wash py-14"
@@ -255,7 +255,7 @@ export default async function Home({ params }: Props) {
                 viewAllLabel={dict.sectionHeading.viewAll}
               />
               <ArticleSectionCarousel
-                articles={cityCarousel}
+                articles={wellnessCarousel}
                 locale={locale}
                 categoryLabels={categoryLabels}
                 variant="vertical"

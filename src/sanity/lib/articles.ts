@@ -38,7 +38,7 @@ function searchQueryParams(q?: string) {
 }
 
 const designSpaceParams = {
-  routineSlugs: [...(homeSections.design.spaceRoutineSlugs ?? [])],
+  routineSlugs: [...(homeSections.space.spaceRoutineSlugs ?? [])],
 };
 
 export async function getPaginatedArticles(
@@ -70,7 +70,7 @@ export async function getPaginatedArticles(
   let countQuery = ARTICLES_COUNT_QUERY;
   let queryParams: Record<string, unknown> = { start, end, locale, ...search };
 
-  if (section === "design") {
+  if (section === homeSections.space.archiveSection) {
     articlesQuery = ARTICLES_DESIGN_SPACE_PAGINATED_QUERY;
     countQuery = ARTICLES_DESIGN_SPACE_COUNT_QUERY;
     queryParams = { start, end, locale, ...search, ...designSpaceParams };
@@ -148,7 +148,7 @@ export async function getRelatedArticles(
   }
 
   const normalizedCategory = normalizeArticleCategory(category);
-  const designRoutineSlugSet = new Set<string>(homeSections.design.spaceRoutineSlugs ?? []);
+  const designRoutineSlugSet = new Set<string>(homeSections.space.spaceRoutineSlugs ?? []);
   const inDesignSpace =
     normalizedCategory === "Space" ||
     (normalizedCategory === "Routine" && designRoutineSlugSet.has(slug));
@@ -177,10 +177,10 @@ export async function getRelatedArticles(
   return {
     articles,
     label: inDesignSpace
-      ? getArchiveSectionLabel(homeSections.design.archiveSection!, dict)
+      ? getArchiveSectionLabel(homeSections.space.archiveSection!, dict)
       : getCategoryLabel(normalizedCategory, dict),
     viewAllHref: inDesignSpace
-      ? articlesArchiveHref(locale, 1, undefined, undefined, homeSections.design.archiveSection)
+      ? articlesArchiveHref(locale, 1, undefined, undefined, homeSections.space.archiveSection)
       : articlesArchiveHref(locale, 1, normalizedCategory),
   };
 }
