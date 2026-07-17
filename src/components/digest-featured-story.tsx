@@ -32,6 +32,21 @@ function pickNextIndex(length: number, current: number) {
   return next;
 }
 
+function newestIndex(articles: readonly ArticleCardData[]) {
+  let best = 0;
+  let bestTime = Number.NEGATIVE_INFINITY;
+
+  for (let i = 0; i < articles.length; i++) {
+    const time = articles[i]?.publishedAt ? Date.parse(articles[i].publishedAt!) : 0;
+    if (time > bestTime) {
+      bestTime = time;
+      best = i;
+    }
+  }
+
+  return best;
+}
+
 export function DigestFeaturedStory({
   articles,
   locale,
@@ -47,7 +62,8 @@ export function DigestFeaturedStory({
   useEffect(() => {
     if (articles.length === 0) return;
 
-    setIndex(Math.floor(Math.random() * articles.length));
+    // First paint after mount: always start on the newest story.
+    setIndex(newestIndex(articles));
 
     if (articles.length <= 1) return;
 

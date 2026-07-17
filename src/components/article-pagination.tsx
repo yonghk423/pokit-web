@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
-import { articlesArchiveHref } from "@/sanity/lib/articles";
+import { articlesArchiveHref, type ArchiveSort } from "@/sanity/lib/articles";
 
 type Props = {
   locale: Locale;
@@ -12,6 +12,7 @@ type Props = {
   category?: string;
   section?: string;
   q?: string;
+  sort?: ArchiveSort;
 };
 
 export function ArticlePagination({
@@ -22,6 +23,7 @@ export function ArticlePagination({
   category,
   section,
   q,
+  sort = "newest",
 }: Props) {
   if (totalPages <= 1) {
     return null;
@@ -36,7 +38,7 @@ export function ArticlePagination({
     >
       {page > 1 ? (
         <Link
-          href={articlesArchiveHref(locale, page - 1, category, q, section)}
+          href={articlesArchiveHref(locale, page - 1, category, q, section, sort)}
           scroll={false}
           className="border-2 border-black bg-panel px-4 py-2 font-bold text-ink hover:bg-wash"
         >
@@ -60,7 +62,7 @@ export function ArticlePagination({
               </span>
             ) : (
               <Link
-                href={articlesArchiveHref(locale, pageNumber, category, q, section)}
+                href={articlesArchiveHref(locale, pageNumber, category, q, section, sort)}
                 scroll={false}
                 className="inline-flex h-10 min-w-10 items-center justify-center border-2 border-black bg-panel px-2 font-bold text-ink hover:bg-wash"
               >
@@ -73,7 +75,7 @@ export function ArticlePagination({
 
       {page < totalPages ? (
         <Link
-          href={articlesArchiveHref(locale, page + 1, category, q, section)}
+          href={articlesArchiveHref(locale, page + 1, category, q, section, sort)}
           scroll={false}
           className="border-2 border-black bg-panel px-4 py-2 font-bold text-ink hover:bg-wash"
         >

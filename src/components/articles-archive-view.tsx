@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSyncExternalStore } from "react";
 
 import { ArticleArchiveListItem } from "@/components/article-archive-list-item";
@@ -7,6 +8,7 @@ import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
+import type { ArchiveSort } from "@/sanity/lib/articles";
 import type { ArticleCardData } from "@/sanity/types";
 
 const STORAGE_KEY = "pokit-archive-view";
@@ -15,10 +17,12 @@ const STORAGE_EVENT = "pokit-archive-view-change";
 type ViewMode = "grid" | "list";
 
 type ArchiveViewLabels = {
-  viewLabel: string;
   viewModeAria: string;
   viewGrid: string;
   viewList: string;
+  sortAria: string;
+  sortNewest: string;
+  sortOldest: string;
 };
 
 type Props = {
@@ -26,6 +30,9 @@ type Props = {
   locale: Locale;
   categoryLabels: Dictionary["categories"];
   labels: ArchiveViewLabels;
+  sort: ArchiveSort;
+  newestHref: string;
+  oldestHref: string;
 };
 
 function getSnapshot(): ViewMode {
@@ -72,46 +79,85 @@ function ListIcon() {
   );
 }
 
-export function ArticlesArchiveView({ articles, locale, categoryLabels, labels }: Props) {
+const toggleBtnClass =
+  "inline-flex items-center gap-2 border-0 bg-transparent px-4 py-2 font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted no-underline";
+
+export function ArticlesArchiveView({
+  articles,
+  locale,
+  categoryLabels,
+  labels,
+  sort,
+  newestHref,
+  oldestHref,
+}: Props) {
   const view = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
     <>
-      <div className="mb-8 flex items-center justify-between gap-6">
-        <p className="m-0 label-caps">
-          {labels.viewLabel}
-        </p>
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
         <div
-          className="inline-flex border-2 border-black"
+          className="flex items-center gap-4 font-sans text-[0.78rem] font-bold tracking-[0.04em]"
           role="group"
-          aria-label={labels.viewModeAria}
+          aria-label={labels.sortAria}
         >
-          <button
-            type="button"
+          <Link
+            href={newestHref}
+            scroll={false}
             className={cn(
-              "inline-flex items-center gap-2 border-0 bg-transparent px-4 py-2 font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
-              view === "grid" && "bg-ink text-panel",
-              view !== "grid" && "hover:bg-wash hover:text-ink",
+              "text-muted no-underline hover:text-ink",
+              sort === "newest" && "text-ink underline underline-offset-[0.2em]",
             )}
-            aria-pressed={view === "grid"}
-            onClick={() => selectView("grid")}
+            aria-current={sort === "newest" ? "page" : undefined}
           >
-            <GridIcon />
-            {labels.viewGrid}
-          </button>
-          <button
-            type="button"
+            {labels.sortNewest}
+          </Link>
+          <Link
+            href={oldestHref}
+            scroll={false}
             className={cn(
-              "inline-flex items-center gap-2 border-0 border-l-2 border-black bg-transparent px-4 py-2 font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted",
-              view === "list" && "bg-ink text-panel",
-              view !== "list" && "hover:bg-wash hover:text-ink",
+              "text-muted no-underline hover:text-ink",
+              sort === "oldest" && "text-ink underline underline-offset-[0.2em]",
             )}
-            aria-pressed={view === "list"}
-            onClick={() => selectView("list")}
+            aria-current={sort === "oldest" ? "page" : undefined}
           >
-            <ListIcon />
-            {labels.viewList}
-          </button>
+            {labels.sortOldest}
+          </Link>
+        </div>
+        <div className="flex items-center gap-3">
+          <div
+            className="inline-flex border-2 border-black"
+            role="group"
+            aria-label={labels.viewModeAria}
+          >
+            <button
+              type="button"
+              className={cn(
+                toggleBtnClass,
+                view === "grid" && "bg-ink text-panel",
+                view !== "grid" && "hover:bg-wash hover:text-ink",
+              )}
+              aria-pressed={view === "grid"}
+              onClick={() => selectView("grid")}
+            >
+              <GridIcon />
+              {labels.viewGrid}
+            </button>
+            <button
+              type="button"
+              className={cn(
+                toggleBtnClass,
+                "border-l-2 border-black",
+                view === "list" && "bg-ink text-panel",
+                view !== "list" && "hover:bg-wash hover:text-ink",
+              )}
+              aria-pressed={view === "list"}
+              onClick={() => selectView("list")}
+            >
+              <ListIcon />
+              {labels.viewList}
+            </button>
+          </div>
         </div>
       </div>
 

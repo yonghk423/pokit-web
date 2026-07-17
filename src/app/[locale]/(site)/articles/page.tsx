@@ -15,13 +15,20 @@ import {
   ARTICLES_PER_PAGE,
   articlesArchiveHref,
   getPaginatedArticles,
+  parseArchiveSort,
 } from "@/sanity/lib/articles";
 
 export const revalidate = false;
 
 type Props = {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ page?: string; category?: string; section?: string; q?: string }>;
+  searchParams: Promise<{
+    page?: string;
+    category?: string;
+    section?: string;
+    q?: string;
+    sort?: string;
+  }>;
 };
 
 function parsePage(raw?: string) {
@@ -42,10 +49,11 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     return {};
   }
 
-  const { page: rawPage, category, section, q } = await searchParams;
+  const { page: rawPage, category, section, q, sort: rawSort } = await searchParams;
   const page = parsePage(rawPage);
   const searchTerm = q?.trim();
   const archiveSection = section && isArchiveSection(section) ? section : undefined;
+  const sort = parseArchiveSort(rawSort);
   const dict = await getDictionary(rawLocale);
   const heading = getArchiveHeading(dict, category, archiveSection);
   const pageSuffix = page > 1 ? dict.archive.pageSuffix(page, searchTerm) : searchTerm ? ` · "${searchTerm}"` : "";
@@ -57,10 +65,14 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       : category
         ? dict.archive.descriptionCategory(getCategoryLabel(category, dict))
         : dict.archive.descriptionAll;
-  const path = articlesArchiveHref(rawLocale, page, category, searchTerm, archiveSection).replace(
-    `/${rawLocale}`,
-    "",
-  );
+  const path = articlesArchiveHref(
+    rawLocale,
+    page,
+    category,
+    searchTerm,
+    archiveSection,
+    sort,
+  ).replace(`/${rawLocale}`, "");
 
   return {
     title,
@@ -91,10 +103,11 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
   const locale: Locale = rawLocale;
   const dict = await getDictionary(rawLocale);
-  const { page: rawPage, category, section, q } = await searchParams;
+  const { page: rawPage, category, section, q, sort: rawSort } = await searchParams;
   const page = parsePage(rawPage);
   const searchTerm = q?.trim();
   const archiveSection = section && isArchiveSection(section) ? section : undefined;
+  const sort = parseArchiveSort(rawSort);
 
   if (section && !archiveSection) {
     notFound();
@@ -106,6 +119,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
     category,
     searchTerm,
     archiveSection,
+    sort,
   );
 
   if (total > 0 && page > totalPages) {
@@ -115,6 +129,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
   const rangeStart = total === 0 ? 0 : (page - 1) * ARTICLES_PER_PAGE + 1;
   const rangeEnd = Math.min(page * ARTICLES_PER_PAGE, total);
   const heading = getArchiveHeading(dict, category, archiveSection);
+  const sortLabel = sort === "oldest" ? dict.archive.sortOldest : dict.archive.sortNewest;
 
   return (
     <main>
@@ -134,7 +149,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
                 dict.archive.searchNoResults(searchTerm)
               )
             ) : total > 0 ? (
-              dict.archive.totalRange(total, rangeStart, rangeEnd)
+              dict.archive.totalRange(total, rangeStart, rangeEnd, sortLabel)
             ) : (
               dict.archive.empty
             )}
@@ -145,10 +160,11 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             q={searchTerm}
             category={category}
             section={archiveSection}
+            sort={sort}
           />
           {(category || archiveSection) && (
             <p className="mt-4 mb-0 font-sans text-[0.88rem] [&_a]:border-b-2 [&_a]:border-indigo [&_a:hover]:text-indigo">
-              <Link href={articlesArchiveHref(locale, 1, undefined, searchTerm)}>
+              <Link href={articlesArchiveHref(locale, 1, undefined, searchTerm, undefined, sort)}>
                 {dict.archive.clearFilters}
               </Link>
             </p>
@@ -161,11 +177,30 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
               articles={articles}
               locale={locale}
               categoryLabels={dict.categories}
+              sort={sort}
+              newestHref={articlesArchiveHref(
+                locale,
+                1,
+                category,
+                searchTerm,
+                archiveSection,
+                "newest",
+              )}
+              oldestHref={articlesArchiveHref(
+                locale,
+                1,
+                category,
+                searchTerm,
+                archiveSection,
+                "oldest",
+              )}
               labels={{
-                viewLabel: dict.archive.viewLabel,
                 viewModeAria: dict.archive.viewModeAria,
                 viewGrid: dict.archive.viewGrid,
                 viewList: dict.archive.viewList,
+                sortAria: dict.archive.sortAria,
+                sortNewest: dict.archive.sortNewest,
+                sortOldest: dict.archive.sortOldest,
               }}
             />
             <ArticlePagination
@@ -176,6 +211,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
               category={category}
               section={archiveSection}
               q={searchTerm}
+              sort={sort}
             />
           </>
         ) : (

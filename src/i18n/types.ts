@@ -58,7 +58,7 @@ export type Dictionary = {
     clearFilters: string;
     searchResults: (term: string, total: number, start: number, end: number) => string;
     searchNoResults: (term: string) => string;
-    totalRange: (total: number, start: number, end: number) => string;
+    totalRange: (total: number, start: number, end: number, sortLabel: string) => string;
     empty: string;
     noSearchMatch: string;
     studioHint: string;
@@ -75,6 +75,9 @@ export type Dictionary = {
     viewLabel: string;
     viewGrid: string;
     viewList: string;
+    sortAria: string;
+    sortNewest: string;
+    sortOldest: string;
   };
   article: {
     backHome: string;

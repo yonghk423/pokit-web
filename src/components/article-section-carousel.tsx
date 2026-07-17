@@ -6,7 +6,7 @@ import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
-import { shuffleArticles } from "@/lib/shuffle-articles";
+import { shuffleArticlesKeepingNewest } from "@/lib/shuffle-articles";
 import { useCarouselAutoplay } from "@/lib/use-carousel-autoplay";
 import type { ArticleCardData } from "@/sanity/types";
 
@@ -45,7 +45,7 @@ export function ArticleSectionCarousel({
   const isVertical = layout === "rail";
 
   useEffect(() => {
-    setDisplayArticles(shuffle ? shuffleArticles(articles) : articles);
+    setDisplayArticles(shuffle ? shuffleArticlesKeepingNewest(articles) : articles);
   }, [articles, shuffle]);
 
   const updateControls = useCallback(() => {

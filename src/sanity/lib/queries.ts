@@ -87,17 +87,28 @@ const designSpaceFilter = `(
 
 export const ARTICLES_DESIGN_SPACE_COUNT_QUERY = `count(*[_type == "article" && defined(slug.current) && ${designSpaceFilter} && ${searchFilter}])`;
 
-export const ARTICLES_DESIGN_SPACE_PAGINATED_QUERY = `*[_type == "article" && defined(slug.current) && ${designSpaceFilter} && ${searchFilter}] | order(publishedAt desc) [$start...$end]{
+export function articlesDesignSpacePaginatedQuery(order: "asc" | "desc") {
+  return `*[_type == "article" && defined(slug.current) && ${designSpaceFilter} && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
   ${articleCardFields}
 }`;
+}
 
-export const ARTICLES_PAGINATED_QUERY = `*[_type == "article" && defined(slug.current) && ${searchFilter}] | order(publishedAt desc) [$start...$end]{
+export function articlesPaginatedQuery(order: "asc" | "desc") {
+  return `*[_type == "article" && defined(slug.current) && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
   ${articleCardFields}
 }`;
+}
 
-export const ARTICLES_PAGINATED_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category && ${searchFilter}] | order(publishedAt desc) [$start...$end]{
+export function articlesPaginatedByCategoryQuery(order: "asc" | "desc") {
+  return `*[_type == "article" && defined(slug.current) && category == $category && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
   ${articleCardFields}
 }`;
+}
+
+/** @deprecated Prefer articlesPaginatedQuery("desc") — kept for any leftover imports */
+export const ARTICLES_DESIGN_SPACE_PAGINATED_QUERY = articlesDesignSpacePaginatedQuery("desc");
+export const ARTICLES_PAGINATED_QUERY = articlesPaginatedQuery("desc");
+export const ARTICLES_PAGINATED_BY_CATEGORY_QUERY = articlesPaginatedByCategoryQuery("desc");
 
 export const RELATED_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category && slug.current != $slug] | order(publishedAt desc)[0...$limit]{
   ${articleCardFields}

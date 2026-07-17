@@ -139,6 +139,7 @@ export default async function Home({ params }: Props) {
                     ariaLabel={weeklyStoriesAria}
                     prevAria={dict.home.carouselPrev(weeklyStoriesAria)}
                     nextAria={dict.home.carouselNext(weeklyStoriesAria)}
+                    shuffle
                     autoPlay
                   />
                 </div>
@@ -152,6 +153,7 @@ export default async function Home({ params }: Props) {
                     variant="compact"
                     layout="rail"
                     ariaLabel={dict.home.storiesAria(weekly.nav)}
+                    shuffle
                     autoPlay
                   />
                 </div>
@@ -180,6 +182,7 @@ export default async function Home({ params }: Props) {
               layout="grid"
               columns={4}
               ariaLabel={dict.home.storiesAria(routine.nav)}
+              shuffle
               autoPlay
             />
           </section>
@@ -201,6 +204,7 @@ export default async function Home({ params }: Props) {
               layout="grid"
               columns={4}
               ariaLabel={dict.home.storiesAria(commute.nav)}
+              shuffle
               autoPlay
             />
           ) : (
@@ -232,6 +236,7 @@ export default async function Home({ params }: Props) {
               layout="grid"
               columns={4}
               ariaLabel={dict.home.storiesAria(space.nav)}
+              shuffle
               autoPlay
             />
           </section>
@@ -257,6 +262,7 @@ export default async function Home({ params }: Props) {
                 layout="grid"
                 columns={4}
                 ariaLabel={dict.home.storiesAria(wellness.nav)}
+                shuffle
                 autoPlay
               />
             </div>

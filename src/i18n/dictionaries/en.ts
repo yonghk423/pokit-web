@@ -81,19 +81,19 @@ const dictionary: Dictionary = {
     searchResults: (term, total, start, end) =>
       `"${term}" — ${total} results · showing ${start}–${end}`,
     searchNoResults: (term) => `No stories match "${term}".`,
-    totalRange: (total, start, end) =>
-      `${total} stories · showing ${start}–${end} (newest first)`,
+    totalRange: (total, start, end, sortLabel) =>
+      `${total} stories · showing ${start}–${end} (${sortLabel})`,
     empty: "No stories have been published yet.",
     noSearchMatch: "Try a different search term or clear your search.",
     studioHint: "Stories published in Sanity Studio will appear here.",
     backHome: "← Back to home",
     pageSuffix: (page, search) =>
       search ? ` (page ${page} · "${search}")` : ` (page ${page})`,
-    descriptionAll: "Browse every story published on POKIT, newest first.",
+    descriptionAll: "Browse every story published on POKIT.",
     descriptionCategory: (label) =>
-      `${label} stories on POKIT, sorted by newest.`,
+      `${label} stories on POKIT.`,
     descriptionSection: (label) =>
-      `${label} stories on POKIT, sorted by newest.`,
+      `${label} stories on POKIT.`,
     descriptionSearch: (term) =>
       `Results for "${term}" — stories published on POKIT.`,
     paginationAria: "Story archive pages",
@@ -103,6 +103,9 @@ const dictionary: Dictionary = {
     viewLabel: "View",
     viewGrid: "Grid",
     viewList: "List",
+    sortAria: "Sort order",
+    sortNewest: "Newest",
+    sortOldest: "Oldest",
   },
   article: {
     backHome: "← Back to POKIT",

@@ -81,19 +81,19 @@ const dictionary: Dictionary = {
     searchResults: (term, total, start, end) =>
       `"${term}" 검색 결과 ${total}편 · ${start}–${end}번째`,
     searchNoResults: (term) => `"${term}"에 맞는 이야기가 없습니다.`,
-    totalRange: (total, start, end) =>
-      `총 ${total}편 · ${start}–${end}번째 (최신순)`,
+    totalRange: (total, start, end, sortLabel) =>
+      `총 ${total}편 · ${start}–${end}번째 (${sortLabel})`,
     empty: "아직 발행된 이야기가 없습니다.",
     noSearchMatch: "다른 검색어를 시도하거나 검색을 초기화해 보세요.",
     studioHint: "Sanity Studio에서 이야기를 발행하면 여기에 표시됩니다.",
     backHome: "← 홈으로",
     pageSuffix: (page, search) =>
       search ? ` (${page}페이지 · "${search}")` : ` (${page}페이지)`,
-    descriptionAll: "POKIT에 발행된 모든 이야기를 최신순으로 확인하세요.",
+    descriptionAll: "POKIT에 발행된 모든 이야기를 확인하세요.",
     descriptionCategory: (label) =>
-      `${label} 이야기 — POKIT에서 최신순으로 확인하세요.`,
+      `${label} 이야기 — POKIT에서 확인하세요.`,
     descriptionSection: (label) =>
-      `${label} 이야기 — POKIT에서 최신순으로 확인하세요.`,
+      `${label} 이야기 — POKIT에서 확인하세요.`,
     descriptionSearch: (term) =>
       `"${term}" 검색 결과 — POKIT에 발행된 이야기를 확인하세요.`,
     paginationAria: "이야기 목록 페이지",
@@ -103,6 +103,9 @@ const dictionary: Dictionary = {
     viewLabel: "보기",
     viewGrid: "갤러리",
     viewList: "리스트",
+    sortAria: "정렬",
+    sortNewest: "최신순",
+    sortOldest: "오래된순",
   },
   article: {
     backHome: "← Back to POKIT",

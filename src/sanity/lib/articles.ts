@@ -11,13 +11,19 @@ import {
   ARTICLES_COUNT_BY_CATEGORY_QUERY,
   ARTICLES_COUNT_QUERY,
   ARTICLES_DESIGN_SPACE_COUNT_QUERY,
-  ARTICLES_DESIGN_SPACE_PAGINATED_QUERY,
-  ARTICLES_PAGINATED_BY_CATEGORY_QUERY,
-  ARTICLES_PAGINATED_QUERY,
+  articlesDesignSpacePaginatedQuery,
+  articlesPaginatedByCategoryQuery,
+  articlesPaginatedQuery,
 } from "@/sanity/lib/queries";
 import type { ArticleCardData } from "@/sanity/types";
 
 export const ARTICLES_PER_PAGE = 12;
+
+export type ArchiveSort = "newest" | "oldest";
+
+export function parseArchiveSort(raw?: string): ArchiveSort {
+  return raw === "oldest" ? "oldest" : "newest";
+}
 
 export type PaginatedArticles = {
   articles: ArticleCardData[];
@@ -27,6 +33,7 @@ export type PaginatedArticles = {
   category?: string;
   section?: string;
   q?: string;
+  sort: ArchiveSort;
 };
 
 function searchQueryParams(q?: string) {
@@ -41,12 +48,17 @@ const designSpaceParams = {
   routineSlugs: [...(homeSections.space.spaceRoutineSlugs ?? [])],
 };
 
+function publishedOrder(sort: ArchiveSort): "asc" | "desc" {
+  return sort === "oldest" ? "asc" : "desc";
+}
+
 export async function getPaginatedArticles(
   page: number,
   locale: Locale,
   category?: string,
   q?: string,
   section?: string,
+  sort: ArchiveSort = "newest",
 ): Promise<PaginatedArticles> {
   const empty: PaginatedArticles = {
     articles: [],
@@ -56,6 +68,7 @@ export async function getPaginatedArticles(
     category,
     section,
     q: q?.trim() || undefined,
+    sort,
   };
 
   if (!isSanityConfigured() || !client) {
@@ -65,17 +78,18 @@ export async function getPaginatedArticles(
   const start = (page - 1) * ARTICLES_PER_PAGE;
   const end = start + ARTICLES_PER_PAGE;
   const search = searchQueryParams(q);
+  const order = publishedOrder(sort);
 
-  let articlesQuery = ARTICLES_PAGINATED_QUERY;
+  let articlesQuery = articlesPaginatedQuery(order);
   let countQuery = ARTICLES_COUNT_QUERY;
   let queryParams: Record<string, unknown> = { start, end, locale, ...search };
 
   if (section === homeSections.space.archiveSection) {
-    articlesQuery = ARTICLES_DESIGN_SPACE_PAGINATED_QUERY;
+    articlesQuery = articlesDesignSpacePaginatedQuery(order);
     countQuery = ARTICLES_DESIGN_SPACE_COUNT_QUERY;
     queryParams = { start, end, locale, ...search, ...designSpaceParams };
   } else if (category) {
-    articlesQuery = ARTICLES_PAGINATED_BY_CATEGORY_QUERY;
+    articlesQuery = articlesPaginatedByCategoryQuery(order);
     countQuery = ARTICLES_COUNT_BY_CATEGORY_QUERY;
     queryParams = {
       start,
@@ -101,6 +115,7 @@ export async function getPaginatedArticles(
     category,
     section,
     q: search.q || undefined,
+    sort,
   };
 }
 
@@ -110,6 +125,7 @@ export function articlesArchiveHref(
   category?: string,
   q?: string,
   section?: string,
+  sort: ArchiveSort = "newest",
 ) {
   const params = new URLSearchParams();
   const term = q?.trim();
@@ -121,6 +137,9 @@ export function articlesArchiveHref(
   }
   if (term) {
     params.set("q", term);
+  }
+  if (sort === "oldest") {
+    params.set("sort", "oldest");
   }
   if (page > 1) {
     params.set("page", String(page));
