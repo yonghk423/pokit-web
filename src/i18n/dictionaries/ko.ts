@@ -2,12 +2,12 @@ import type { Dictionary } from "@/i18n/types";
 
 const dictionary: Dictionary = {
   meta: {
-    siteTitle: "POKIT — 일상 웰니스 가이드",
+    siteTitle: "POKIT — 일상 웰니스 루틴",
     siteDescription:
-      "일상의 작은 루틴으로 웰니스를 만드는 가이드와 앱. POKIT에서 루틴·웰니스 이야기를 만나보세요.",
+      "일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요.",
   },
   header: {
-    tagline: "Daily pocket intelligence for better routines",
+    tagline: "일상 루틴과 웰니스를 위한 포켓 가이드",
     openMenu: "메뉴 열기",
     homeAria: "POKIT 홈",
     allStories: "모든 이야기",
@@ -16,7 +16,7 @@ const dictionary: Dictionary = {
     categoriesAria: "카테고리",
   },
   footer: {
-    tagline: "Global affairs for your body, desk and day.",
+    tagline: "일상 루틴과 웰니스로 하루를 가꿉니다.",
     sections: "섹션",
     information: "Information",
     allStories: "모든 이야기",
@@ -24,47 +24,47 @@ const dictionary: Dictionary = {
     rights: "All rights reserved.",
   },
   home: {
-    inboxTagline: "Daily inbox intelligence from POKIT",
+    inboxTagline: "일상 루틴·웰니스 인텔리전스 by POKIT",
     digest: {
       ariaLabel: "홈 요약",
       brandKicker: "POKIT",
-      brandTagline: "일상 루틴 가이드",
+      brandTagline: "일상 웰니스 루틴 가이드",
       featuredKicker: "이번 주",
       featuredTitle: "책상 앞에서 잃어버린 몸의 리듬을 되찾는 방법",
-      routineDesc: "지금 시작하기 좋은 루틴",
-      commuteDesc: "이동과 쉬는 시간에 읽기",
+      routineDesc: "일상에서 시작하기 좋은 루틴",
+      commuteDesc: "이동과 쉬는 시간의 일상 루틴",
     },
     sections: {
       weekly: {
         nav: "이번 주",
         kicker: "이번 주",
-        title: "한 주를 여는 이야기",
+        title: "일상을 여는 이야기",
       },
       routine: {
         nav: "루틴",
         kicker: "루틴",
-        title: "지금 시작하기 좋은 루틴",
+        title: "일상에서 시작하기 좋은 루틴",
       },
       commute: {
         nav: "이동·휴식",
         kicker: "이동·휴식",
-        title: "이동과 쉬는 시간",
+        title: "일상 속 이동과 쉬는 시간",
       },
       space: {
         nav: "공간",
         kicker: "공간",
-        title: "공간을 다시 짜는 이야기",
+        title: "일상의 공간을 다시 짜는 이야기",
       },
       wellness: {
         nav: "웰니스",
         kicker: "웰니스",
-        title: "바쁜 하루, 몸을 위한 10분",
+        title: "일상 웰니스, 몸을 위한 10분",
       },
     },
     storiesAria: (label) => `${label} 이야기`,
     radioEmpty: (sectionNav) =>
       `Home Page → ${sectionNav}에서 이야기 3개를 연결해주세요.`,
-    viewAllStories: "모든 이야기 한 번에 보기 →",
+    viewAllStories: "일상·루틴·웰니스 이야기 모두 보기 →",
     carouselPrev: (label) => `${label} 이전`,
     carouselNext: (label) => `${label} 다음`,
   },
@@ -88,13 +88,14 @@ const dictionary: Dictionary = {
     backHome: "← 홈으로",
     pageSuffix: (page, search) =>
       search ? ` (${page}페이지 · "${search}")` : ` (${page}페이지)`,
-    descriptionAll: "POKIT에 발행된 모든 이야기를 확인하세요.",
+    descriptionAll:
+      "일상 루틴과 웰니스 가이드 — POKIT에 발행된 모든 이야기를 확인하세요.",
     descriptionCategory: (label) =>
-      `${label} 이야기 — POKIT에서 확인하세요.`,
+      `${label} — 일상 속 루틴과 웰니스 이야기 | POKIT`,
     descriptionSection: (label) =>
-      `${label} 이야기 — POKIT에서 확인하세요.`,
+      `${label} — 일상 루틴·웰니스 이야기 | POKIT`,
     descriptionSearch: (term) =>
-      `"${term}" 검색 결과 — POKIT에 발행된 이야기를 확인하세요.`,
+      `"${term}" 검색 결과 — 일상·루틴·웰니스 이야기를 POKIT에서 확인하세요.`,
     paginationAria: "이야기 목록 페이지",
     prev: "← 이전",
     next: "다음 →",
@@ -117,15 +118,15 @@ const dictionary: Dictionary = {
       title: "이 루틴을 앱에 담아 보세요",
       button: "POKIT에 담기",
       sent: "앱에서 이어서 담을 수 있어요",
-      fallback: "POKIT 앱에서 루틴을 기록하고, 하루를 정리하세요.",
+      fallback: "POKIT 앱에서 일상 루틴을 기록하고, 웰니스를 지켜 보세요.",
       download: "App Store에서 다운로드",
       qrAria: "POKIT 앱 App Store QR 코드",
       qrHint: "휴대폰 카메라로 스캔해서 설치",
     },
   },
   appDownload: {
-    kicker: "Want more stories like these in your pocket?",
-    title: "POKIT 앱에서 루틴을 기록하고, 하루를 정리하세요.",
+    kicker: "일상 루틴과 웰니스를 주머니에",
+    title: "POKIT 앱에서 일상 루틴을 기록하고, 웰니스를 지켜 보세요.",
     download: "App Store에서 다운로드",
     qrAria: "POKIT 앱 App Store QR 코드",
     qrHint: "휴대폰 카메라로 스캔해서 설치",

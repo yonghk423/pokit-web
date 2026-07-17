@@ -2,12 +2,12 @@ import type { Dictionary } from "@/i18n/types";
 
 const dictionary: Dictionary = {
   meta: {
-    siteTitle: "POKIT — Everyday wellness guides",
+    siteTitle: "POKIT — Daily wellness routines",
     siteDescription:
-      "Guides and an app for building wellness through small daily routines. Discover routine and wellness stories on POKIT.",
+      "Guides and an app for building wellness through small daily routines. Explore daily life, routine, and wellness stories on POKIT.",
   },
   header: {
-    tagline: "Daily pocket intelligence for better routines",
+    tagline: "A pocket guide for daily routines and wellness",
     openMenu: "Open menu",
     homeAria: "POKIT home",
     allStories: "All stories",
@@ -16,7 +16,7 @@ const dictionary: Dictionary = {
     categoriesAria: "Categories",
   },
   footer: {
-    tagline: "Global affairs for your body, desk and day.",
+    tagline: "Shape your day with daily routines and wellness.",
     sections: "Sections",
     information: "Information",
     allStories: "All stories",
@@ -24,47 +24,47 @@ const dictionary: Dictionary = {
     rights: "All rights reserved.",
   },
   home: {
-    inboxTagline: "Daily inbox intelligence from POKIT",
+    inboxTagline: "Daily routine & wellness intelligence by POKIT",
     digest: {
       ariaLabel: "Home digest",
       brandKicker: "POKIT",
-      brandTagline: "Your daily routine guide",
+      brandTagline: "Daily wellness routine guides",
       featuredKicker: "This week",
       featuredTitle: "How to reclaim your body's rhythm at your desk",
-      routineDesc: "Routines worth starting now",
-      commuteDesc: "Stories for time in motion and pause",
+      routineDesc: "Daily routines worth starting now",
+      commuteDesc: "Daily routines for time in motion and pause",
     },
     sections: {
       weekly: {
         nav: "This week",
         kicker: "This week",
-        title: "Stories to open your week",
+        title: "Stories to open your daily week",
       },
       routine: {
         nav: "Routines",
         kicker: "Routines",
-        title: "Routines worth starting now",
+        title: "Daily routines worth starting now",
       },
       commute: {
         nav: "Commute & rest",
         kicker: "Commute & rest",
-        title: "Time in motion and time to pause",
+        title: "Daily moments in motion and pause",
       },
       space: {
         nav: "Space",
         kicker: "Space",
-        title: "Stories for reshaping your space",
+        title: "Reshape the spaces in your daily life",
       },
       wellness: {
         nav: "Wellness",
         kicker: "Wellness",
-        title: "Ten minutes for your body on a busy day",
+        title: "Daily wellness: ten minutes for your body",
       },
     },
     storiesAria: (label) => `${label} stories`,
     radioEmpty: (sectionNav) =>
       `Connect 3 stories in Home Page → ${sectionNav}.`,
-    viewAllStories: "Browse all stories →",
+    viewAllStories: "Browse all daily routine & wellness stories →",
     carouselPrev: (label) => `Previous: ${label}`,
     carouselNext: (label) => `Next: ${label}`,
   },
@@ -88,13 +88,14 @@ const dictionary: Dictionary = {
     backHome: "← Back to home",
     pageSuffix: (page, search) =>
       search ? ` (page ${page} · "${search}")` : ` (page ${page})`,
-    descriptionAll: "Browse every story published on POKIT.",
+    descriptionAll:
+      "Daily routines and wellness guides — browse every story on POKIT.",
     descriptionCategory: (label) =>
-      `${label} stories on POKIT.`,
+      `${label} — daily routine and wellness stories on POKIT.`,
     descriptionSection: (label) =>
-      `${label} stories on POKIT.`,
+      `${label} — daily routine and wellness stories on POKIT.`,
     descriptionSearch: (term) =>
-      `Results for "${term}" — stories published on POKIT.`,
+      `Results for "${term}" — daily routine and wellness stories on POKIT.`,
     paginationAria: "Story archive pages",
     prev: "← Previous",
     next: "Next →",
@@ -117,15 +118,15 @@ const dictionary: Dictionary = {
       title: "Save this routine to your app",
       button: "Add to POKIT",
       sent: "You can finish saving in the app",
-      fallback: "Track routines and organize your day in the POKIT app.",
+      fallback: "Track daily routines and protect your wellness in the POKIT app.",
       download: "Download on the App Store",
       qrAria: "POKIT App Store QR code",
       qrHint: "Scan with your phone camera to install",
     },
   },
   appDownload: {
-    kicker: "Want more stories like these in your pocket?",
-    title: "Track routines and organize your day in the POKIT app.",
+    kicker: "Carry daily routines and wellness in your pocket",
+    title: "Track daily routines and protect your wellness in the POKIT app.",
     download: "Download on the App Store",
     qrAria: "POKIT App Store QR code",
     qrHint: "Scan with your phone camera to install",
