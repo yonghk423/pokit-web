@@ -6,12 +6,18 @@ import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 import { isLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { cn, monoContainer, narrowContainer } from "@/lib/cn";
-import { localeAlternates, withLocale } from "@/lib/locale-path";
+import { cn, narrowContainer } from "@/lib/cn";
+import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+const OG_IMAGE = {
+  url: "/pokitstory.png",
+  width: 512,
+  height: 512,
+} as const;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params;
@@ -20,11 +26,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const dict = await getDictionary(rawLocale);
+  const alternates = localeAlternates(rawLocale, "/support");
 
   return {
     title: dict.support.title,
     description: dict.support.description,
-    alternates: localeAlternates(rawLocale, "/support"),
+    alternates,
+    openGraph: {
+      title: dict.support.title,
+      description: dict.support.description,
+      url: alternates.canonical,
+      siteName: site.name,
+      locale: localeOpenGraph(rawLocale),
+      type: "website",
+      images: [OG_IMAGE],
+    },
+    twitter: {
+      card: "summary",
+      title: dict.support.title,
+      description: dict.support.description,
+      images: [OG_IMAGE.url],
+    },
   };
 }
 

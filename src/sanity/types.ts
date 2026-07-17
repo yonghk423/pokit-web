@@ -12,6 +12,7 @@ export type ArticleCardData = {
   coverImage?: SanityImageSource | null;
   coverImageLqip?: string | null;
   publishedAt?: string;
+  _updatedAt?: string;
   hasEnglishTranslation?: boolean;
 };
 

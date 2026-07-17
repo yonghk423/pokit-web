@@ -65,23 +65,34 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       : category
         ? dict.archive.descriptionCategory(getCategoryLabel(category, dict))
         : dict.archive.descriptionAll;
-  const path = articlesArchiveHref(
-    rawLocale,
-    page,
-    category,
-    searchTerm,
-    archiveSection,
-    sort,
-  ).replace(`/${rawLocale}`, "");
+
+  const isSearchResult = Boolean(searchTerm);
+  const isPaginated = page > 1;
+  const shouldLimitIndexing = isSearchResult || isPaginated;
+
+  const canonicalPath = isSearchResult
+    ? "/articles"
+    : articlesArchiveHref(
+        rawLocale,
+        1,
+        category,
+        undefined,
+        archiveSection,
+        sort,
+      ).replace(`/${rawLocale}`, "");
+
+  const alternates = localeAlternates(rawLocale, canonicalPath);
 
   return {
     title,
     description,
-    alternates: localeAlternates(rawLocale, path),
+    alternates,
+    robots: shouldLimitIndexing ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${site.name}`,
       description,
-      url: localeAlternates(rawLocale, path).canonical,
+      url: alternates.canonical,
+      siteName: site.name,
       locale: localeOpenGraph(rawLocale),
       type: "website",
       images: [ARCHIVE_OG_IMAGE],

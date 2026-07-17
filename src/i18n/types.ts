@@ -25,7 +25,6 @@ export type Dictionary = {
     sections: string;
     information: string;
     allStories: string;
-    privacy: string;
     support: string;
     rights: string;
   };
@@ -107,13 +106,6 @@ export type Dictionary = {
     description: string;
     home: string;
     allStories: string;
-  };
-  privacy: {
-    title: string;
-    description: string;
-    body: string;
-    contact: string;
-    backHome: string;
   };
   support: {
     title: string;

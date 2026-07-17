@@ -1,6 +1,12 @@
 import { site } from "@/config/site";
 import type { Locale } from "@/i18n/config";
-import { localeToHtmlLang, localeToIntl, localeToOgLocale, locales } from "@/i18n/config";
+import {
+  defaultLocale,
+  localeToHtmlLang,
+  localeToIntl,
+  localeToOgLocale,
+  locales,
+} from "@/i18n/config";
 
 export function withLocale(locale: Locale, path: string) {
   const normalized = path.startsWith("/") ? path : `/${path}`;
@@ -20,16 +26,34 @@ export function switchLocalePath(pathname: string, target: Locale) {
   return withLocale(target, pathname);
 }
 
-export function localeAlternates(locale: Locale, path: string) {
+type LocaleAlternatesOptions = {
+  /** Locales that have a real equivalent page. Defaults to all site locales. */
+  availableLocales?: readonly Locale[];
+};
+
+export function localeAlternates(
+  locale: Locale,
+  path: string,
+  options?: LocaleAlternatesOptions,
+) {
+  const available =
+    options?.availableLocales && options.availableLocales.length > 0
+      ? options.availableLocales
+      : locales;
   const localized = (value: Locale) => `${site.siteUrl}${withLocale(value, path)}`;
+  const canonicalLocale = available.includes(locale) ? locale : available[0];
+
+  const languages: Record<string, string> = {};
+  for (const value of available) {
+    languages[value] = localized(value);
+  }
+  languages["x-default"] = available.includes(defaultLocale)
+    ? localized(defaultLocale)
+    : localized(available[0]);
 
   return {
-    canonical: localized(locale),
-    languages: {
-      ko: localized("ko"),
-      en: localized("en"),
-      "x-default": localized("en"),
-    },
+    canonical: localized(canonicalLocale),
+    languages,
   };
 }
 

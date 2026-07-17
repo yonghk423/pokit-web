@@ -2,6 +2,7 @@ import { site } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import { localeToIntl } from "@/i18n/config";
 import { articlePath } from "@/lib/article-path";
+import { withLocale } from "@/lib/locale-path";
 
 const publisher = {
   "@type": "Organization" as const,
@@ -31,6 +32,7 @@ export function articleJsonLd(params: {
   title: string;
   description?: string;
   publishedAt?: string;
+  modifiedAt?: string;
   imageUrl?: string;
 }) {
   const url = `${site.siteUrl}${articlePath(params.locale, params.slug)}`;
@@ -41,6 +43,7 @@ export function articleJsonLd(params: {
     headline: params.title,
     description: params.description,
     datePublished: params.publishedAt,
+    dateModified: params.modifiedAt ?? params.publishedAt,
     inLanguage: localeToIntl(params.locale),
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -50,5 +53,21 @@ export function articleJsonLd(params: {
     image: params.imageUrl,
     author: publisher,
     publisher,
+  };
+}
+
+export function breadcrumbJsonLd(
+  items: { name: string; path: string }[],
+  locale: Locale,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${site.siteUrl}${withLocale(locale, item.path)}`,
+    })),
   };
 }

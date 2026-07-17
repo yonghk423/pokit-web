@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { site } from "@/config/site";
-import { fontVariables } from "@/lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,14 +17,11 @@ export const metadata: Metadata = {
   },
 };
 
+/** Pass-through: `<html>` / `<body>` live in `[locale]` and `studio` layouts for correct `lang`. */
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html suppressHydrationWarning className={fontVariables}>
-      <body>{children}</body>
-    </html>
-  );
+  return children;
 }

@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 
-import { SetHtmlLang } from "@/components/set-html-lang";
 import { isLocale, locales, type Locale } from "@/i18n/config";
+import { fontVariables } from "@/lib/fonts";
+import { localeToHtmlLang } from "@/lib/locale-path";
 
 type Props = {
   children: React.ReactNode;
@@ -22,9 +23,12 @@ export default async function LocaleLayout({ children, params }: Props) {
   const locale: Locale = rawLocale;
 
   return (
-    <>
-      <SetHtmlLang locale={locale} />
-      {children}
-    </>
+    <html
+      lang={localeToHtmlLang(locale)}
+      suppressHydrationWarning
+      className={fontVariables}
+    >
+      <body>{children}</body>
+    </html>
   );
 }

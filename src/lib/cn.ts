@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 export const monoContainer =
   "mx-auto w-full max-w-[min(82rem,calc(100vw-2rem))] px-4";
 
-/** Narrow reading column — article body, support, privacy. */
+/** Narrow reading column — article body, support. */
 export const narrowContainer =
   "mx-auto w-full max-w-[42rem] px-4";
 

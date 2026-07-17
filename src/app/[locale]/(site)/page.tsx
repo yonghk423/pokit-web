@@ -8,6 +8,7 @@ import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carouse
 import { HomeDigestStrip } from "@/components/home-digest-strip";
 import { JsonLd } from "@/components/json-ld";
 import { SectionHeading } from "@/components/section-heading";
+import { site } from "@/config/site";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -36,14 +37,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const dict = await getDictionary(rawLocale);
 
+  const alternates = localeAlternates(rawLocale, "/");
+
   return {
     title: dict.meta.siteTitle,
     description: dict.meta.siteDescription,
-    alternates: localeAlternates(rawLocale, "/"),
+    alternates,
     openGraph: {
       title: dict.meta.siteTitle,
       description: dict.meta.siteDescription,
-      url: localeAlternates(rawLocale, "/").canonical,
+      url: alternates.canonical,
+      siteName: site.name,
       locale: localeOpenGraph(rawLocale),
       type: "website",
       images: [

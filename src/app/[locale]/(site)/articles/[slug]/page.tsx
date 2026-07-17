@@ -7,12 +7,13 @@ import { notFound } from "next/navigation";
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedArticles } from "@/components/related-articles";
+import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { articlePath } from "@/lib/article-path";
 import { formatPublishedLabel } from "@/lib/format-published";
 import { cn, monoContainer } from "@/lib/cn";
-import { articleJsonLd } from "@/lib/json-ld";
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 import { shouldShowPokitCta, toPokitRoutineArticle } from "@/lib/pokit-bridge";
 import { getArticleBySlug } from "@/sanity/lib/article";
@@ -29,6 +30,15 @@ export const dynamicParams = true;
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
+
+function articleAvailableLocales(hasEnglishTranslation: boolean | undefined): readonly Locale[] {
+  return hasEnglishTranslation === false ? (["ko"] as const) : locales;
+}
+
+function articleMetaDescription(title: string, description?: string) {
+  const trimmed = description?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : title;
+}
 
 export async function generateStaticParams() {
   if (!isSanityConfigured() || !client) {
@@ -70,18 +80,32 @@ export default async function ArticlePage({ params }: Props) {
 
   const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
   const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
+  const description = articleMetaDescription(article.title, article.description);
+  const jsonLdLocale =
+    article.hasEnglishTranslation === false ? ("ko" as const) : locale;
 
   return (
     <>
       <JsonLd
         data={articleJsonLd({
-          locale,
+          locale: jsonLdLocale,
           slug,
           title: article.title,
-          description: article.description,
+          description,
           publishedAt: article.publishedAt,
+          modifiedAt: article._updatedAt,
           imageUrl: jsonLdImage ?? undefined,
         })}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd(
+          [
+            { name: site.name, path: "/" },
+            { name: dict.header.allStories, path: "/articles" },
+            { name: article.title, path: `/articles/${slug}` },
+          ],
+          jsonLdLocale,
+        )}
       />
       <main className={cn(monoContainer, "py-12 pb-20")}>
         <Link
@@ -178,17 +202,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const coverImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
   const path = articlePath(rawLocale, slug).replace(`/${rawLocale}`, "");
+  const availableLocales = articleAvailableLocales(article.hasEnglishTranslation);
+  const alternates = localeAlternates(rawLocale, path, { availableLocales });
+  const description = articleMetaDescription(article.title, article.description);
+  const isKoreanOnlyOnEn =
+    rawLocale === "en" && article.hasEnglishTranslation === false;
 
   return {
     title: article.title,
-    description: article.description,
-    alternates: localeAlternates(rawLocale, path),
+    description,
+    alternates,
+    robots: isKoreanOnlyOnEn ? { index: false, follow: true } : undefined,
     openGraph: {
       title: article.title,
-      description: article.description,
+      description,
       type: "article",
+      siteName: site.name,
+      url: alternates.canonical,
       publishedTime: article.publishedAt,
-      locale: localeOpenGraph(rawLocale),
+      modifiedTime: article._updatedAt,
+      locale: localeOpenGraph(
+        availableLocales.includes(rawLocale) ? rawLocale : availableLocales[0],
+      ),
       images: coverImage
         ? [{ url: coverImage, alt: article.imageAlt }]
         : undefined,
@@ -196,7 +231,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: article.title,
-      description: article.description,
+      description,
       images: coverImage ? [coverImage] : undefined,
     },
   };

@@ -18,6 +18,7 @@ const articleCardFields = `
   coverImage,
   "coverImageLqip": coverImage.asset->metadata.lqip,
   publishedAt,
+  "_updatedAt": _updatedAt,
   "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0
 `;
 

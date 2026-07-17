@@ -20,7 +20,6 @@ const dictionary: Dictionary = {
     sections: "Sections",
     information: "Information",
     allStories: "All stories",
-    privacy: "Privacy Policy",
     support: "Support",
     rights: "All rights reserved.",
   },
@@ -136,13 +135,6 @@ const dictionary: Dictionary = {
     description: "The address may have changed or the page may have been removed.",
     home: "Home",
     allStories: "All stories",
-  },
-  privacy: {
-    title: "Privacy Policy",
-    description: "POKIT Privacy Policy",
-    body: "We are rebuilding this site. This policy will be updated before the official launch.",
-    contact: "Contact",
-    backHome: "← Back to home",
   },
   support: {
     title: "Support",

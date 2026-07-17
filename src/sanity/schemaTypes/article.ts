@@ -58,6 +58,10 @@ export const article = defineType({
       title: "Description",
       type: "text",
       rows: 3,
+      description:
+        "검색 결과·SNS 미리보기용 요약. 비우면 제목이 대신 사용됩니다.",
+      validation: (rule) =>
+        rule.warning("검색·SNS 미리보기에 쓰이니 가능하면 작성하세요."),
     }),
     defineField({
       name: "coverImage",

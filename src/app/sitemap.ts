@@ -12,7 +12,7 @@ import { SITEMAP_ARTICLES_QUERY } from "@/sanity/lib/queries";
 export const revalidate = false;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticPaths = ["", "/articles", "/privacy", "/support"] as const;
+  const staticPaths = ["", "/articles", "/support"] as const;
 
   const staticPages: MetadataRoute.Sitemap = locales.flatMap((locale) =>
     staticPaths.map((path) => ({

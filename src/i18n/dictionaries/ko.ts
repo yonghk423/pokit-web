@@ -20,7 +20,6 @@ const dictionary: Dictionary = {
     sections: "섹션",
     information: "Information",
     allStories: "모든 이야기",
-    privacy: "개인정보 처리방침",
     support: "지원",
     rights: "All rights reserved.",
   },
@@ -136,13 +135,6 @@ const dictionary: Dictionary = {
     description: "주소가 바뀌었거나 삭제된 페이지일 수 있습니다.",
     home: "홈으로",
     allStories: "모든 이야기",
-  },
-  privacy: {
-    title: "개인정보 처리방침",
-    description: "POKIT 개인정보 처리방침",
-    body: "사이트를 새로 구성하는 중입니다. 정식 오픈 전에 이 내용을 업데이트해 주세요.",
-    contact: "문의",
-    backHome: "← 홈으로",
   },
   support: {
     title: "지원",

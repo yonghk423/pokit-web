@@ -42,7 +42,7 @@ export function HomeDigestStrip({
     >
       <div className="border-r-2 border-black p-5 max-nav:border-r-0 max-nav:border-b-2">
         <p className={digestKickerClass}>{digest.brandKicker}</p>
-        <p className={digestTitleClass}>{digest.brandTagline}</p>
+        <h1 className={digestTitleClass}>{digest.brandTagline}</h1>
       </div>
 
       <DigestFeaturedStory
