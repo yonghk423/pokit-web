@@ -20,12 +20,18 @@ function dedupeArticles(articles: ArticleCardData[]) {
   return merged;
 }
 
-/** Pool backfill: cover image first, then original order. */
+/** Pool backfill: cover image first, then newest publishedAt. */
 export function buildArticlePool(...groups: ArticleCardData[][]) {
   return dedupeArticles(groups.flat()).sort((a, b) => {
     const aHas = hasCoverImage(a) ? 0 : 1;
     const bHas = hasCoverImage(b) ? 0 : 1;
-    return aHas - bHas;
+    if (aHas !== bHas) {
+      return aHas - bHas;
+    }
+
+    const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0;
+    const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0;
+    return bTime - aTime;
   });
 }
 

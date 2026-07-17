@@ -6,16 +6,23 @@ import {
 } from "@/lib/revalidate-sanity";
 
 export async function POST(request: NextRequest) {
-  const secret = request.nextUrl.searchParams.get("secret");
+  const configuredSecret = process.env.SANITY_REVALIDATE_SECRET;
 
-  if (!process.env.SANITY_REVALIDATE_SECRET) {
+  if (!configuredSecret) {
     return NextResponse.json(
       { message: "SANITY_REVALIDATE_SECRET is not configured" },
       { status: 500 },
     );
   }
 
-  if (secret !== process.env.SANITY_REVALIDATE_SECRET) {
+  const querySecret = request.nextUrl.searchParams.get("secret");
+  const authHeader = request.headers.get("authorization");
+  const bearerSecret = authHeader?.startsWith("Bearer ")
+    ? authHeader.slice("Bearer ".length).trim()
+    : null;
+  const secret = querySecret || bearerSecret;
+
+  if (secret !== configuredSecret) {
     return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
   }
 

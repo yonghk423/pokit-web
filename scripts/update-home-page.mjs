@@ -244,6 +244,43 @@ async function main() {
 
   console.log("\nWellness (바쁜 하루, 몸을 위한 10분):");
   result.cityGuides?.forEach((a) => console.log(" ", a.slug, a.category));
+
+  const siteUrl = (process.env.REVALIDATE_SITE_URL || "https://pokitstory.com").replace(
+    /\/$/,
+    "",
+  );
+  const secret = process.env.SANITY_REVALIDATE_SECRET;
+  if (!secret) {
+    console.warn(
+      "\nSkipped site revalidate: set SANITY_REVALIDATE_SECRET in .env.local (and Vercel).",
+    );
+    return;
+  }
+
+  const slugs = [
+    layout.featuredArticle?.slug,
+    ...(layout.leadStories ?? []).map((e) => e.slug),
+    ...(layout.spotlightRow ?? []).map((e) => e.slug),
+    ...(layout.radioArticles ?? []).map((e) => e.slug),
+    ...(layout.designAwards ?? []).map((e) => e.slug),
+    ...(layout.cityGuides ?? []).map((e) => e.slug),
+  ].filter(Boolean);
+
+  const revalidateUrl = `${siteUrl}/api/revalidate?secret=${encodeURIComponent(secret)}`;
+  const revalidateRes = await fetch(revalidateUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(slugs.map((slug) => ({ slug: { current: slug } }))),
+  });
+  const revalidateBody = await revalidateRes.text();
+  if (!revalidateRes.ok) {
+    console.warn("\nSite revalidate failed:", revalidateRes.status, revalidateBody);
+    console.warn(
+      "Add the same SANITY_REVALIDATE_SECRET to Vercel, or run: node scripts/revalidate-site.mjs",
+    );
+    return;
+  }
+  console.log("\nSite cache revalidated.");
 }
 
 main().catch((err) => {
