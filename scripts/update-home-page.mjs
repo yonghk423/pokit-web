@@ -34,8 +34,9 @@ const SPACE_ROUTINE_SLUGS = new Set([
 
 /** 섹션 주제 = article.category 와 일치해야 함 */
 const HOME_PAGE_BY_SLUG = {
-  featuredArticle: { slug: "calendar-two-empty-blocks", category: "Weekly" },
+  featuredArticle: { slug: "monday-energy-budget-twenty", category: "Weekly" },
   leadStories: [
+    { slug: "monday-energy-budget-twenty", category: "Weekly" },
     { slug: "weekly-review-ten-minutes", category: "Weekly" },
     { slug: "monday-morning-no-meetings", category: "Weekly" },
     { slug: "friday-evening-shutdown", category: "Weekly" },
@@ -48,6 +49,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "morning-inbox-fifteen", category: "Weekly" },
   ],
   spotlightRow: [
+    { slug: "doorway-change-clothes-three", category: "Routine" },
     { slug: "fridge-photo-before-grocery", category: "Routine" },
     { slug: "10", category: "Routine" },
     { slug: "25-5", category: "Routine" },
@@ -63,6 +65,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "afternoon-no-caffeine", category: "Routine" },
   ],
   radioArticles: [
+    { slug: "alight-one-stop-early-walk", category: "Commute" },
     { slug: "exit-station-by-scenery", category: "Commute" },
     { slug: "podcast-walking-commute", category: "Commute" },
     { slug: "silent-commute-challenge", category: "Commute" },
@@ -78,6 +81,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "platform-breath-three", category: "Commute" },
   ],
   designAwards: [
+    { slug: "sofa-blanket-basket-one", category: "Space" },
     { slug: "remotes-one-drawer-only", category: "Space" },
     { slug: "minimal-desk-design", category: "Routine" },
     { slug: "kitchen-dish-minimal", category: "Routine" },
@@ -93,6 +97,7 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "bookshelf-top-clear", category: "Space" },
   ],
   cityGuides: [
+    { slug: "jaw-release-two-minutes", category: "Wellness" },
     { slug: "toe-spread-two-minutes", category: "Wellness" },
     { slug: "bedtime-stretch-five", category: "Wellness" },
     { slug: "after-dinner-walk-ten", category: "Wellness" },
@@ -112,19 +117,27 @@ const HOME_PAGE_BY_SLUG = {
 const SECTION_HEADINGS = {
   spotlightRowSection: {
     kicker: "루틴",
-    title: "지금 시작하기 좋은 루틴",
+    title: "일상에서 시작하기 좋은 루틴",
+    kickerEn: "Routines",
+    titleEn: "Daily routines worth starting now",
   },
   radioLatestSection: {
     kicker: "이동·휴식",
-    title: "이동과 쉬는 시간",
+    title: "일상 속 이동과 쉬는 시간",
+    kickerEn: "Commute & rest",
+    titleEn: "Daily moments in motion and pause",
   },
   designAwardsSection: {
     kicker: "공간",
-    title: "공간을 다시 짜는 이야기",
+    title: "일상의 공간을 다시 짜는 이야기",
+    kickerEn: "Space",
+    titleEn: "Reshape the spaces in your daily life",
   },
   cityGuidesSection: {
     kicker: "웰니스",
-    title: "바쁜 하루, 몸을 위한 10분",
+    title: "일상 웰니스, 몸을 위한 10분",
+    kickerEn: "Wellness",
+    titleEn: "Daily wellness: ten minutes for your body",
   },
 };
 
