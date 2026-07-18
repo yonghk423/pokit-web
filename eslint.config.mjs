@@ -11,8 +11,16 @@ const eslintConfig = defineConfig([
     ".next/**",
     "out/**",
     "build/**",
+    "dist/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Client-only init (shuffle / in-app detect) intentionally syncs after mount
+      // to avoid SSR hydration mismatches.
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

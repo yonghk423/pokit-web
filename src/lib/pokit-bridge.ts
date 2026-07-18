@@ -151,8 +151,9 @@ export function sendToPokitApp(
 
 export const DEFAULT_DURATION_MINUTES = 10;
 
-export function shouldShowPokitCta(_article: ArticleDocument) {
-  return true;
+/** Whether the Add-to-Pokit CTA should render for this article. */
+export function shouldShowPokitCta(article: ArticleDocument) {
+  return Boolean(article?.slug);
 }
 
 export function toPokitRoutineArticle(article: ArticleDocument): PokitRoutineArticle {

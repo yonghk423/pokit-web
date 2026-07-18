@@ -5,7 +5,6 @@ import {
   defaultLocale,
   isLocale,
   LOCALE_COOKIE,
-  locales,
   type Locale,
 } from "@/i18n/config";
 

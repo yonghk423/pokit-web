@@ -5,7 +5,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
-import { cn } from "@/lib/cn";
 import { shuffleArticlesKeepingNewest } from "@/lib/shuffle-articles";
 import { useCarouselAutoplay } from "@/lib/use-carousel-autoplay";
 import type { ArticleCardData } from "@/sanity/types";
