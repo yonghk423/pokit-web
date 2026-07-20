@@ -134,6 +134,9 @@ export default async function Home({ params }: Props) {
             kicker={dict.home.wellnessBriefing.kicker}
             sourceLabel={dict.home.wellnessBriefing.sourceLabel}
             readSourceLabel={dict.home.wellnessBriefing.readSourceLabel}
+            maxItems={3}
+            viewAllHref={withLocale(locale, "/briefing")}
+            viewAllLabel={dict.home.wellnessBriefing.viewAll}
           />
         )}
 

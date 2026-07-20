@@ -70,6 +70,11 @@ export function SiteFooter({ locale, dict }: Props) {
               </Link>
             </li>
             <li>
+              <Link href={withLocale(locale, "/briefing")} className="text-[0.82rem] text-muted hover:text-indigo">
+                {dict.footer.briefing}
+              </Link>
+            </li>
+            <li>
               <Link href={withLocale(locale, "/support")} className="text-[0.82rem] text-muted hover:text-indigo">
                 {dict.footer.support}
               </Link>

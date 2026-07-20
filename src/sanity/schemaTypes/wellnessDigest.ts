@@ -86,6 +86,33 @@ export const wellnessDigest = defineType({
       rows: 2,
     }),
     defineField({
+      name: "editorNote",
+      title: "에디터 노트 (POKIT 관점)",
+      type: "text",
+      rows: 4,
+      description:
+        "원문 요약과 별도로, 왜 일상·루틴에 중요한지 POKIT 시각으로 짧게 씁니다. SEO·고유 콘텐츠용.",
+    }),
+    defineField({
+      name: "editorNoteEn",
+      title: "Editor note (English)",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
+      name: "relatedArticles",
+      title: "관련 이야기 (내부 링크)",
+      type: "array",
+      description: "브리핑과 연결할 POKIT Article 2~4개.",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "article" }],
+        }),
+      ],
+      validation: (rule) => rule.max(4),
+    }),
+    defineField({
       name: "items",
       title: "소식 목록",
       type: "array",

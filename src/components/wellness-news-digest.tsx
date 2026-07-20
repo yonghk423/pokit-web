@@ -1,5 +1,8 @@
+import Link from "next/link";
+
 import { SectionHeading } from "@/components/section-heading";
 import type { Locale } from "@/i18n/config";
+import { articlePath } from "@/lib/article-path";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import type { WellnessDigestData } from "@/sanity/types";
 
@@ -9,6 +12,16 @@ type Props = {
   kicker: string;
   sourceLabel: string;
   readSourceLabel: string;
+  /** Home teaser: limit items and optionally link to full briefing. */
+  maxItems?: number;
+  viewAllHref?: string;
+  viewAllLabel?: string;
+  /** Show editor note + related articles (full briefing pages). */
+  showExtras?: boolean;
+  editorNoteLabel?: string;
+  relatedLabel?: string;
+  /** Use h1 for page title on dedicated briefing routes. */
+  titleAs?: "h1" | "h2";
 };
 
 function formatWeekLabel(weekOf: string | undefined, locale: Locale) {
@@ -28,10 +41,20 @@ export function WellnessNewsDigest({
   kicker,
   sourceLabel,
   readSourceLabel,
+  maxItems,
+  viewAllHref,
+  viewAllLabel,
+  showExtras = false,
+  editorNoteLabel,
+  relatedLabel,
+  titleAs = "h2",
 }: Props) {
   if (!digest.items.length) return null;
 
   const weekLabel = formatWeekLabel(digest.weekOf, locale);
+  const items =
+    typeof maxItems === "number" ? digest.items.slice(0, maxItems) : digest.items;
+  const related = digest.relatedArticles?.filter((a) => a?.slug) ?? [];
 
   return (
     <section
@@ -39,7 +62,21 @@ export function WellnessNewsDigest({
       className={cn(monoContainer, sectionSpacing)}
       aria-label={digest.title}
     >
-      <SectionHeading kicker={kicker} title={digest.title} />
+      {titleAs === "h1" ? (
+        <header className="mb-8 border-t-4 border-black pt-5">
+          <p className="m-0 label-caps text-green">{kicker}</p>
+          <h1 className="m-0 mt-1 text-[clamp(1.85rem,3.5vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.03em]">
+            {digest.title}
+          </h1>
+        </header>
+      ) : (
+        <SectionHeading
+          kicker={kicker}
+          title={digest.title}
+          viewAllHref={viewAllHref}
+          viewAllLabel={viewAllLabel}
+        />
+      )}
       {(digest.intro || weekLabel) && (
         <p className="m-0 mb-6 max-w-2xl font-sans text-[0.95rem] leading-relaxed text-muted">
           {digest.intro}
@@ -49,8 +86,18 @@ export function WellnessNewsDigest({
           ) : null}
         </p>
       )}
+      {showExtras && digest.editorNote && (
+        <aside className="mb-8 border-2 border-black bg-wash px-5 py-4">
+          {editorNoteLabel && (
+            <p className="m-0 label-caps text-green">{editorNoteLabel}</p>
+          )}
+          <p className="m-0 mt-2 font-sans text-[0.95rem] leading-relaxed">
+            {digest.editorNote}
+          </p>
+        </aside>
+      )}
       <ol className="m-0 list-none border-t-2 border-black p-0">
-        {digest.items.map((item, index) => (
+        {items.map((item, index) => (
           <li
             key={`${item.sourceUrl}-${index}`}
             className="border-b-2 border-black py-5 first:pt-5"
@@ -84,6 +131,27 @@ export function WellnessNewsDigest({
           </li>
         ))}
       </ol>
+      {showExtras && related.length > 0 && (
+        <div className="mt-10 border-t-2 border-black pt-6">
+          {relatedLabel && (
+            <h2 className="m-0 mb-4 text-[1.15rem] font-extrabold tracking-[-0.02em]">
+              {relatedLabel}
+            </h2>
+          )}
+          <ul className="m-0 grid list-none gap-2 p-0">
+            {related.map((article) => (
+              <li key={article.slug}>
+                <Link
+                  href={articlePath(locale, article.slug)}
+                  className="font-sans text-[0.95rem] font-bold underline decoration-2 underline-offset-2 hover:bg-wash"
+                >
+                  {article.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }

@@ -71,3 +71,40 @@ export function breadcrumbJsonLd(
     })),
   };
 }
+
+export function briefingCollectionJsonLd(params: {
+  locale: Locale;
+  path: string;
+  name: string;
+  description: string;
+  items: { headline: string; summary: string; sourceUrl: string }[];
+  datePublished?: string;
+}) {
+  const url = `${site.siteUrl}${withLocale(params.locale, params.path)}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: params.name,
+    description: params.description,
+    url,
+    inLanguage: localeToIntl(params.locale),
+    datePublished: params.datePublished,
+    isPartOf: {
+      "@type": "WebSite",
+      name: site.name,
+      url: site.siteUrl,
+    },
+    publisher,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: params.items.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.headline,
+        description: item.summary,
+        url: item.sourceUrl,
+      })),
+    },
+  };
+}

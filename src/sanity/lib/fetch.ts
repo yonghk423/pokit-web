@@ -9,6 +9,9 @@ import {
   ARTICLES_RECENT_BY_CATEGORY_QUERY,
   HOME_PAGE_QUERY,
   LATEST_WELLNESS_DIGEST_QUERY,
+  SITEMAP_DIGESTS_QUERY,
+  WELLNESS_DIGEST_BY_WEEK_QUERY,
+  WELLNESS_DIGEST_LIST_QUERY,
 } from "@/sanity/lib/queries";
 import {
   mergeArticlesForCategory,
@@ -19,6 +22,7 @@ import type {
   HomePageContent,
   SectionHeading,
   WellnessDigestData,
+  WellnessDigestListItem,
 } from "@/sanity/types";
 
 function sectionDefaults(dict: Dictionary) {
@@ -190,6 +194,32 @@ async function fetchHomeCarouselPools(locale: Locale) {
   return { weeklyPool, routinePool, commutePool, wellnessPool, spacePool };
 }
 
+function normalizeWellnessDigest(
+  digest: WellnessDigestData | null,
+): WellnessDigestData | null {
+  if (!digest?.title || !Array.isArray(digest.items) || digest.items.length === 0) {
+    return null;
+  }
+
+  const items = digest.items.filter(
+    (item) =>
+      item?.headline && item?.summary && item?.sourceName && item?.sourceUrl,
+  );
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  return {
+    weekOf: digest.weekOf,
+    title: digest.title,
+    intro: digest.intro || undefined,
+    editorNote: digest.editorNote || undefined,
+    items,
+    relatedArticles: digest.relatedArticles?.filter(Boolean) ?? [],
+  };
+}
+
 export async function getLatestWellnessDigest(
   locale: Locale,
 ): Promise<WellnessDigestData | null> {
@@ -203,26 +233,70 @@ export async function getLatestWellnessDigest(
       { locale },
       sanityFetchOptions,
     );
-
-    if (!digest?.title || !Array.isArray(digest.items) || digest.items.length === 0) {
-      return null;
-    }
-
-    return {
-      weekOf: digest.weekOf,
-      title: digest.title,
-      intro: digest.intro || undefined,
-      items: digest.items.filter(
-        (item) =>
-          item?.headline &&
-          item?.summary &&
-          item?.sourceName &&
-          item?.sourceUrl,
-      ),
-    };
+    return normalizeWellnessDigest(digest);
   } catch (error) {
     console.warn("Failed to fetch wellness digest from Sanity:", error);
     return null;
+  }
+}
+
+export async function getWellnessDigestByWeek(
+  locale: Locale,
+  weekOf: string,
+): Promise<WellnessDigestData | null> {
+  if (!isSanityConfigured() || !client) {
+    return null;
+  }
+
+  try {
+    const digest = await client.fetch<WellnessDigestData | null>(
+      WELLNESS_DIGEST_BY_WEEK_QUERY,
+      { locale, weekOf },
+      sanityFetchOptions,
+    );
+    return normalizeWellnessDigest(digest);
+  } catch (error) {
+    console.warn("Failed to fetch wellness digest by week from Sanity:", error);
+    return null;
+  }
+}
+
+export async function listWellnessDigests(
+  locale: Locale,
+): Promise<WellnessDigestListItem[]> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    const digests = await client.fetch<WellnessDigestListItem[]>(
+      WELLNESS_DIGEST_LIST_QUERY,
+      { locale },
+      sanityFetchOptions,
+    );
+    return (digests ?? []).filter((d) => d?.weekOf && d?.title);
+  } catch (error) {
+    console.warn("Failed to list wellness digests from Sanity:", error);
+    return [];
+  }
+}
+
+export async function listWellnessDigestWeeksForSitemap(): Promise<
+  { weekOf: string; _updatedAt?: string }[]
+> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    return await client.fetch(
+      SITEMAP_DIGESTS_QUERY,
+      {},
+      sanityFetchOptions,
+    );
+  } catch (error) {
+    console.warn("Failed to fetch digest weeks for sitemap:", error);
+    return [];
   }
 }
 

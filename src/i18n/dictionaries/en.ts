@@ -21,6 +21,7 @@ const dictionary: Dictionary = {
     information: "Information",
     allStories: "All stories",
     support: "Support",
+    briefing: "Wellness briefing",
     rights: "All rights reserved.",
   },
   home: {
@@ -65,6 +66,7 @@ const dictionary: Dictionary = {
       kicker: "Weekly briefing",
       sourceLabel: "Source",
       readSourceLabel: "Read source",
+      viewAll: "Full briefing",
     },
     storiesAria: (label) => `${label} stories`,
     radioEmpty: (sectionNav) =>
@@ -149,6 +151,30 @@ const dictionary: Dictionary = {
     email: "Email",
     sendMail: "Send email",
     backHome: "← Back to home",
+  },
+  briefing: {
+    nav: "Wellness briefing",
+    kicker: "Weekly briefing",
+    hubTitle: "Wellness briefing",
+    hubDescription:
+      "POKIT summarizes public-health and wellness updates and ties them to daily routines. Read the original at the source.",
+    weekTitle: (weekLabel) => `Wellness briefing · ${weekLabel}`,
+    weekDescription: (title) =>
+      `${title} — a weekly curation through a daily-routine lens | POKIT`,
+    sourceLabel: "Source",
+    readSourceLabel: "Read source",
+    editorNoteLabel: "POKIT note",
+    relatedLabel: "Related stories",
+    archiveTitle: "Past briefings",
+    empty: "No briefings published yet.",
+    backToHub: "← All briefings",
+    viewFull: "View full",
+    metaDescriptionFromItems: (headlines) => {
+      const joined = headlines.slice(0, 3).join(" · ");
+      return joined
+        ? `${joined} — POKIT weekly wellness briefing`
+        : "Weekly wellness updates, summarized for daily routines — POKIT";
+    },
   },
   categories: {
     Weekly: "This week",

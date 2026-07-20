@@ -51,7 +51,14 @@ export type WellnessDigestData = {
   weekOf?: string;
   title: string;
   intro?: string;
+  editorNote?: string;
   items: WellnessDigestItem[];
+  relatedArticles?: ArticleCardData[];
+};
+
+export type WellnessDigestListItem = {
+  weekOf: string;
+  title: string;
 };
 
 export type HomePageContent = {

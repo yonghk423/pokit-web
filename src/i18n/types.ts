@@ -26,6 +26,7 @@ export type Dictionary = {
     information: string;
     allStories: string;
     support: string;
+    briefing: string;
     rights: string;
   };
   home: {
@@ -44,6 +45,7 @@ export type Dictionary = {
       kicker: string;
       sourceLabel: string;
       readSourceLabel: string;
+      viewAll: string;
     };
     storiesAria: (label: string) => string;
     radioEmpty: (sectionNav: string) => string;
@@ -119,6 +121,23 @@ export type Dictionary = {
     email: string;
     sendMail: string;
     backHome: string;
+  };
+  briefing: {
+    nav: string;
+    kicker: string;
+    hubTitle: string;
+    hubDescription: string;
+    weekTitle: (weekLabel: string) => string;
+    weekDescription: (title: string) => string;
+    sourceLabel: string;
+    readSourceLabel: string;
+    editorNoteLabel: string;
+    relatedLabel: string;
+    archiveTitle: string;
+    empty: string;
+    backToHub: string;
+    viewFull: string;
+    metaDescriptionFromItems: (headlines: string[]) => string;
   };
   categories: {
     Weekly: string;
