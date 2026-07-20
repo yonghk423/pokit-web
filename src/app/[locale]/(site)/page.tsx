@@ -8,6 +8,7 @@ import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carouse
 import { HomeDigestStrip } from "@/components/home-digest-strip";
 import { JsonLd } from "@/components/json-ld";
 import { SectionHeading } from "@/components/section-heading";
+import { WellnessNewsDigest } from "@/components/wellness-news-digest";
 import { site } from "@/config/site";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
@@ -86,6 +87,7 @@ export default async function Home({ params }: Props) {
     spaceCarousel,
     cityGuidesSection,
     wellnessCarousel,
+    wellnessDigest,
   } = await getHomePageWithCarousels(locale, dict);
 
   const weekly = dict.home.sections.weekly;
@@ -124,6 +126,16 @@ export default async function Home({ params }: Props) {
           commuteArticles={commuteCarousel}
           categoryLabels={categoryLabels}
         />
+
+        {wellnessDigest && wellnessDigest.items.length > 0 && (
+          <WellnessNewsDigest
+            digest={wellnessDigest}
+            locale={locale}
+            kicker={dict.home.wellnessBriefing.kicker}
+            sourceLabel={dict.home.wellnessBriefing.sourceLabel}
+            readSourceLabel={dict.home.wellnessBriefing.readSourceLabel}
+          />
+        )}
 
         {hasTopStories && (
           <section id="weekly" className={cn(monoContainer, sectionSpacing)}>

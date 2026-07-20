@@ -48,6 +48,18 @@ export const HOME_PAGE_QUERY = `*[_type == "homePage"][0]{
   cityGuides[]->{${articleCardFields}}
 }`;
 
+export const LATEST_WELLNESS_DIGEST_QUERY = `*[_type == "wellnessDigest" && defined(weekOf)] | order(weekOf desc)[0]{
+  weekOf,
+  "title": select($locale == "en" => coalesce(titleEn, title), title),
+  "intro": select($locale == "en" => coalesce(introEn, intro), intro),
+  "items": items[]{
+    "headline": select($locale == "en" => coalesce(headlineEn, headline), headline),
+    "summary": select($locale == "en" => coalesce(summaryEn, summary), summary),
+    "sourceName": select($locale == "en" => coalesce(sourceNameEn, sourceName), sourceName),
+    sourceUrl
+  }
+}`;
+
 export const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   ${articleCardFields},
   "body": select($locale == "en" => coalesce(bodyEn, body), body),

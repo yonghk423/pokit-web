@@ -61,6 +61,11 @@ const dictionary: Dictionary = {
         title: "Daily wellness: ten minutes for your body",
       },
     },
+    wellnessBriefing: {
+      kicker: "Weekly briefing",
+      sourceLabel: "Source",
+      readSourceLabel: "Read source",
+    },
     storiesAria: (label) => `${label} stories`,
     radioEmpty: (sectionNav) =>
       `Connect 3 stories in Home Page → ${sectionNav}.`,

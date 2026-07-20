@@ -40,6 +40,11 @@ export type Dictionary = {
       commuteDesc: string;
     };
     sections: Record<HomeSectionId, HomeSectionCopy>;
+    wellnessBriefing: {
+      kicker: string;
+      sourceLabel: string;
+      readSourceLabel: string;
+    };
     storiesAria: (label: string) => string;
     radioEmpty: (sectionNav: string) => string;
     viewAllStories: string;

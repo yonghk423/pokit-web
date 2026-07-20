@@ -12,7 +12,7 @@ type Props = {
 export function SectionHeading({
   kicker,
   title,
-  viewAllHref = "/articles",
+  viewAllHref,
   viewAllLabel = "더보기",
 }: Props) {
   return (

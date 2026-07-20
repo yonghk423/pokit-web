@@ -40,6 +40,20 @@ export type SectionHeading = {
   title: string;
 };
 
+export type WellnessDigestItem = {
+  headline: string;
+  summary: string;
+  sourceName: string;
+  sourceUrl: string;
+};
+
+export type WellnessDigestData = {
+  weekOf?: string;
+  title: string;
+  intro?: string;
+  items: WellnessDigestItem[];
+};
+
 export type HomePageContent = {
   featuredArticle: ArticleCardData | null;
   leadStories: ArticleCardData[];
