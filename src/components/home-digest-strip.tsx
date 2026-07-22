@@ -29,22 +29,11 @@ export function HomeDigestStrip({ dict, locale, digest }: Props) {
 
   return (
     <div className={cn(monoContainer, "mt-6")}>
-      <header className="mb-0 flex flex-wrap items-end justify-between gap-4 border-t-4 border-black pt-5">
-        <div className="min-w-0">
-          <p className="m-0 label-caps text-green">{briefing.kicker}</p>
-          <h2 className="m-0 mt-1 text-[clamp(1.65rem,3vw,2.35rem)] font-extrabold leading-[1.1] tracking-[-0.03em]">
-            {title}
-          </h2>
-        </div>
-        <Link
-          href={briefingHref}
-          className={cn(
-            "shrink-0 border-2 border-black bg-panel px-4 py-2 font-sans text-[0.78rem] font-bold tracking-[0.04em] whitespace-nowrap hover:bg-wash",
-            "max-[640px]:text-[0.75rem]",
-          )}
-        >
-          {briefing.viewAll} →
-        </Link>
+      <header className="mb-0 border-t-4 border-black pt-5">
+        <p className="m-0 label-caps text-green">{briefing.kicker}</p>
+        <h2 className="m-0 mt-1 text-[clamp(1.65rem,3vw,2.35rem)] font-extrabold leading-[1.1] tracking-[-0.03em]">
+          {title}
+        </h2>
       </header>
 
       <section
