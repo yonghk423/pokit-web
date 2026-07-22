@@ -70,6 +70,8 @@ export type HomePageContent = {
   radioArticles: ArticleCardData[];
   designAwardsSection: SectionHeading | null;
   designAwards: ArticleCardData[];
+  sleepStoriesSection: SectionHeading | null;
+  sleepStories: ArticleCardData[];
   cityGuidesSection: SectionHeading | null;
   cityGuides: ArticleCardData[];
 };

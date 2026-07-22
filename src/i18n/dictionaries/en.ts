@@ -56,6 +56,11 @@ const dictionary: Dictionary = {
         kicker: "Space",
         title: "Reshape the spaces in your daily life",
       },
+      sleep: {
+        nav: "Sleep & night",
+        kicker: "Sleep & night",
+        title: "Evening routines that close the day",
+      },
       wellness: {
         nav: "Wellness",
         kicker: "Wellness",
@@ -181,6 +186,7 @@ const dictionary: Dictionary = {
     Routine: "Routines",
     Commute: "Commute & rest",
     Space: "Space",
+    Sleep: "Sleep & night",
     Wellness: "Wellness",
     design: "Space",
   },

@@ -44,6 +44,8 @@ export const HOME_PAGE_QUERY = `*[_type == "homePage"][0]{
   radioArticles[]->{${articleCardFields}},
   designAwardsSection${sectionHeadingProjection},
   designAwards[]->{${articleCardFields}},
+  sleepStoriesSection${sectionHeadingProjection},
+  sleepStories[]->{${articleCardFields}},
   cityGuidesSection${sectionHeadingProjection},
   cityGuides[]->{${articleCardFields}}
 }`;

@@ -39,6 +39,10 @@ function sectionDefaults(dict: Dictionary) {
       kicker: dict.home.sections.space.kicker,
       title: dict.home.sections.space.title,
     },
+    sleep: {
+      kicker: dict.home.sections.sleep.kicker,
+      title: dict.home.sections.sleep.title,
+    },
     wellness: {
       kicker: dict.home.sections.wellness.kicker,
       title: dict.home.sections.wellness.title,
@@ -65,6 +69,8 @@ const emptyHomeContent = (): HomePageContent => ({
   radioArticles: [],
   designAwardsSection: null,
   designAwards: [],
+  sleepStoriesSection: null,
+  sleepStories: [],
   cityGuidesSection: null,
   cityGuides: [],
 });
@@ -111,6 +117,11 @@ export async function getHomePageContent(
         defaults.space,
       ),
       designAwards: content.designAwards?.filter(Boolean) ?? [],
+      sleepStoriesSection: withSectionDefaults(
+        content.sleepStoriesSection,
+        defaults.sleep,
+      ),
+      sleepStories: content.sleepStories?.filter(Boolean) ?? [],
       cityGuidesSection: withSectionDefaults(
         content.cityGuidesSection,
         defaults.wellness,
@@ -129,6 +140,7 @@ export type HomePageCarousels = {
   routineCarousel: ArticleCardData[];
   commuteCarousel: ArticleCardData[];
   spaceCarousel: ArticleCardData[];
+  sleepCarousel: ArticleCardData[];
   wellnessCarousel: ArticleCardData[];
   wellnessDigest: WellnessDigestData | null;
 };
@@ -146,7 +158,7 @@ async function fetchHomeCarouselPools(locale: Locale) {
 
   const routineSlugs = [...(homeSections.space.spaceRoutineSlugs ?? [])];
 
-  const [weeklyPool, routinePool, commutePool, wellnessPool, spacePool] =
+  const [weeklyPool, routinePool, commutePool, sleepPool, wellnessPool, spacePool] =
     await Promise.all([
       client.fetch<ArticleCardData[]>(
         ARTICLES_RECENT_BY_CATEGORY_QUERY,
@@ -178,6 +190,15 @@ async function fetchHomeCarouselPools(locale: Locale) {
       client.fetch<ArticleCardData[]>(
         ARTICLES_RECENT_BY_CATEGORY_QUERY,
         {
+          category: homeSections.sleep.archiveCategory!,
+          limit: CAROUSEL_POOL_LIMIT,
+          locale,
+        },
+        sanityFetchOptions,
+      ),
+      client.fetch<ArticleCardData[]>(
+        ARTICLES_RECENT_BY_CATEGORY_QUERY,
+        {
           category: homeSections.wellness.archiveCategory!,
           limit: CAROUSEL_POOL_LIMIT,
           locale,
@@ -191,7 +212,14 @@ async function fetchHomeCarouselPools(locale: Locale) {
       ),
     ]);
 
-  return { weeklyPool, routinePool, commutePool, wellnessPool, spacePool };
+  return {
+    weeklyPool,
+    routinePool,
+    commutePool,
+    sleepPool,
+    wellnessPool,
+    spacePool,
+  };
 }
 
 function normalizeWellnessDigest(
@@ -314,6 +342,7 @@ export async function getHomePageWithCarousels(
       routineCarousel: home.spotlightRow,
       commuteCarousel: home.radioArticles,
       spaceCarousel: home.designAwards,
+      sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
       wellnessDigest: null,
     };
@@ -328,8 +357,14 @@ export async function getHomePageWithCarousels(
       throw new Error("Sanity client unavailable");
     }
 
-    const { weeklyPool, routinePool, commutePool, wellnessPool, spacePool } =
-      pools;
+    const {
+      weeklyPool,
+      routinePool,
+      commutePool,
+      sleepPool,
+      wellnessPool,
+      spacePool,
+    } = pools;
 
     return {
       ...home,
@@ -363,6 +398,12 @@ export async function getHomePageWithCarousels(
         homeSections.space.spaceRoutineSlugs ?? [],
         12,
       ),
+      sleepCarousel: mergeArticlesForCategory(
+        home.sleepStories,
+        sleepPool,
+        homeSections.sleep.archiveCategory!,
+        12,
+      ),
       wellnessCarousel: mergeArticlesForCategory(
         home.cityGuides,
         wellnessPool,
@@ -381,6 +422,7 @@ export async function getHomePageWithCarousels(
       routineCarousel: home.spotlightRow,
       commuteCarousel: home.radioArticles,
       spaceCarousel: home.designAwards,
+      sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
       wellnessDigest,
     };

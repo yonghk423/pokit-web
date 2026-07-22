@@ -112,6 +112,12 @@ const HOME_PAGE_BY_SLUG = {
     { slug: "calf-stretch-in-bed", category: "Wellness" },
     { slug: "chamomile-bedtime-cup", category: "Wellness" },
   ],
+  sleepStories: [
+    { slug: "phone-charge-outside-bedroom", category: "Sleep" },
+    { slug: "dim-lights-thirty-before-bed", category: "Sleep" },
+    { slug: "tomorrow-outfit-on-chair", category: "Sleep" },
+    { slug: "bedside-one-line-notebook", category: "Sleep" },
+  ],
 };
 
 const SECTION_HEADINGS = {
@@ -133,6 +139,12 @@ const SECTION_HEADINGS = {
     kickerEn: "Space",
     titleEn: "Reshape the spaces in your daily life",
   },
+  sleepStoriesSection: {
+    kicker: "잠·저녁",
+    title: "하루를 닫는 저녁 루틴",
+    kickerEn: "Sleep & night",
+    titleEn: "Evening routines that close the day",
+  },
   cityGuidesSection: {
     kicker: "웰니스",
     title: "일상 웰니스, 몸을 위한 10분",
@@ -149,6 +161,7 @@ function collectEntries(layout) {
     "spotlightRow",
     "radioArticles",
     "designAwards",
+    "sleepStories",
     "cityGuides",
   ]) {
     for (const entry of layout[key] ?? []) {
@@ -219,6 +232,9 @@ async function resolveLayout(layout) {
     designAwards: layout.designAwards.map((entry, i) =>
       ref(bySlug.get(entry.slug)._id, `design${i + 1}`),
     ),
+    sleepStories: layout.sleepStories.map((entry, i) =>
+      ref(bySlug.get(entry.slug)._id, `sleep${i + 1}`),
+    ),
     cityGuides: layout.cityGuides.map((entry, i) =>
       ref(bySlug.get(entry.slug)._id, `city${i + 1}`),
     ),
@@ -238,6 +254,7 @@ async function main() {
     spotlightRow[]->{ "slug": slug.current, category },
     radioArticles[]->{ "slug": slug.current, category },
     designAwards[]->{ "slug": slug.current, category },
+    sleepStories[]->{ "slug": slug.current, category },
     cityGuides[]->{ "slug": slug.current, category }
   }`);
 
@@ -254,6 +271,9 @@ async function main() {
 
   console.log("\n공간 (공간을 다시 짜는 이야기):");
   result.designAwards?.forEach((a) => console.log(" ", a.slug, a.category));
+
+  console.log("\n잠·저녁 (하루를 닫는 저녁 루틴):");
+  result.sleepStories?.forEach((a) => console.log(" ", a.slug, a.category));
 
   console.log("\nWellness (바쁜 하루, 몸을 위한 10분):");
   result.cityGuides?.forEach((a) => console.log(" ", a.slug, a.category));
@@ -276,6 +296,7 @@ async function main() {
     ...(layout.spotlightRow ?? []).map((e) => e.slug),
     ...(layout.radioArticles ?? []).map((e) => e.slug),
     ...(layout.designAwards ?? []).map((e) => e.slug),
+    ...(layout.sleepStories ?? []).map((e) => e.slug),
     ...(layout.cityGuides ?? []).map((e) => e.slug),
   ].filter(Boolean);
 

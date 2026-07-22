@@ -5,6 +5,7 @@ export const sectionOrder = [
   "routine",
   "commute",
   "space",
+  "sleep",
   "wellness",
 ] as const;
 
@@ -36,6 +37,10 @@ export const homeSections = {
       "evening-phone-basket",
       "desk-stretch-5min",
     ],
+  },
+  sleep: {
+    id: "sleep",
+    archiveCategory: "Sleep" satisfies ArticleCategoryId,
   },
   wellness: {
     id: "wellness",

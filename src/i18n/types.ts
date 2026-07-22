@@ -139,11 +139,12 @@ export type Dictionary = {
     viewFull: string;
     metaDescriptionFromItems: (headlines: string[]) => string;
   };
-  categories: {
+    categories: {
     Weekly: string;
     Routine: string;
     Commute: string;
     Space: string;
+    Sleep: string;
     Wellness: string;
     design: string;
   };

@@ -4,6 +4,7 @@ export const articleCategoryIds = [
   "Routine",
   "Commute",
   "Space",
+  "Sleep",
   "Wellness",
 ] as const;
 
@@ -14,6 +15,7 @@ export const articleCategories = {
   Routine: { categoryKey: "routine" },
   Commute: { categoryKey: "commute_rest" },
   Space: { categoryKey: "space" },
+  Sleep: { categoryKey: "sleep_night" },
   Wellness: { categoryKey: "wellness" },
 } as const satisfies Record<ArticleCategoryId, { categoryKey: string }>;
 

@@ -79,6 +79,11 @@ export function brandTagsForArticle(
         tags.push("daily");
         if (/\broutine\b|\bhabit\b/i.test(text)) tags.push("routine");
         break;
+      case "Sleep":
+        tags.push("routine");
+        if (/\bwellness\b|\bsleep\b|\brest\b/i.test(text)) tags.push("wellness");
+        else tags.push("daily");
+        break;
       case "Commute":
         tags.push("daily");
         if (/\bwellness\b|\bbreath\b|\bwalk\b/i.test(text)) tags.push("wellness");
@@ -110,6 +115,11 @@ export function brandTagsForArticle(
     case "Space":
       tags.push("일상");
       if (/루틴|정리|습관/.test(text)) tags.push("루틴");
+      break;
+    case "Sleep":
+      tags.push("루틴");
+      if (/웰니스|수면|잠|휴식/.test(text)) tags.push("웰니스");
+      else tags.push("일상");
       break;
     case "Commute":
       tags.push("일상");

@@ -8,13 +8,11 @@ import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carouse
 import { HomeDigestStrip } from "@/components/home-digest-strip";
 import { JsonLd } from "@/components/json-ld";
 import { SectionHeading } from "@/components/section-heading";
-import { WellnessNewsDigest } from "@/components/wellness-news-digest";
 import { site } from "@/config/site";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
-import { buildDigestArticlePool } from "@/lib/digest-articles";
 import { websiteJsonLd } from "@/lib/json-ld";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
@@ -85,6 +83,8 @@ export default async function Home({ params }: Props) {
     commuteCarousel,
     designAwardsSection,
     spaceCarousel,
+    sleepStoriesSection,
+    sleepCarousel,
     cityGuidesSection,
     wellnessCarousel,
     wellnessDigest,
@@ -94,19 +94,12 @@ export default async function Home({ params }: Props) {
   const routine = dict.home.sections.routine;
   const commute = dict.home.sections.commute;
   const space = dict.home.sections.space;
+  const sleep = dict.home.sections.sleep;
   const wellness = dict.home.sections.wellness;
   const categoryLabels = dict.categories;
 
   const hasTopStories = weeklyHero.length > 0 || weeklyRail.length > 0;
   const weeklyStoriesAria = dict.home.storiesAria(weekly.nav);
-  const digestArticles = buildDigestArticlePool(
-    weeklyHero,
-    weeklyRail,
-    routineCarousel,
-    commuteCarousel,
-    spaceCarousel,
-    wellnessCarousel,
-  );
 
   return (
     <>
@@ -121,24 +114,8 @@ export default async function Home({ params }: Props) {
         <HomeDigestStrip
           dict={dict}
           locale={locale}
-          articles={digestArticles}
-          routineArticles={routineCarousel}
-          commuteArticles={commuteCarousel}
-          categoryLabels={categoryLabels}
+          digest={wellnessDigest}
         />
-
-        {wellnessDigest && wellnessDigest.items.length > 0 && (
-          <WellnessNewsDigest
-            digest={wellnessDigest}
-            locale={locale}
-            kicker={dict.home.wellnessBriefing.kicker}
-            sourceLabel={dict.home.wellnessBriefing.sourceLabel}
-            readSourceLabel={dict.home.wellnessBriefing.readSourceLabel}
-            maxItems={3}
-            viewAllHref={withLocale(locale, "/briefing")}
-            viewAllLabel={dict.home.wellnessBriefing.viewAll}
-          />
-        )}
 
         {hasTopStories && (
           <section id="weekly" className={cn(monoContainer, sectionSpacing)}>
@@ -255,6 +232,32 @@ export default async function Home({ params }: Props) {
               layout="grid"
               columns={4}
               ariaLabel={dict.home.storiesAria(space.nav)}
+              shuffle
+              autoPlay
+            />
+          </section>
+        )}
+
+        {sleepCarousel.length > 0 && (
+          <section id="sleep" className={cn(monoContainer, sectionSpacing)}>
+            <SectionHeading
+              kicker={sleepStoriesSection?.kicker ?? sleep.kicker}
+              title={sleepStoriesSection?.title ?? sleep.title}
+              viewAllHref={articlesArchiveHref(
+                locale,
+                1,
+                homeSections.sleep.archiveCategory,
+              )}
+              viewAllLabel={dict.sectionHeading.viewAll}
+            />
+            <ArticleSectionCarousel
+              articles={sleepCarousel}
+              locale={locale}
+              categoryLabels={categoryLabels}
+              variant="vertical"
+              layout="grid"
+              columns={4}
+              ariaLabel={dict.home.storiesAria(sleep.nav)}
               shuffle
               autoPlay
             />
