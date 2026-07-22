@@ -27,6 +27,7 @@ export type Dictionary = {
     allStories: string;
     support: string;
     briefing: string;
+    newArrivals: string;
     rights: string;
   };
   home: {
@@ -139,7 +140,24 @@ export type Dictionary = {
     viewFull: string;
     metaDescriptionFromItems: (headlines: string[]) => string;
   };
-    categories: {
+  newArrivals: {
+    nav: string;
+    kicker: string;
+    hubTitle: string;
+    hubDescription: string;
+    weekTitle: (weekLabel: string) => string;
+    weekDescription: (title: string) => string;
+    sourceLabel: string;
+    readSourceLabel: string;
+    productLabel: string;
+    archiveTitle: string;
+    empty: string;
+    backToHub: string;
+    viewFull: string;
+    viewAll: string;
+    metaDescriptionFromItems: (names: string[]) => string;
+  };
+  categories: {
     Weekly: string;
     Routine: string;
     Commute: string;

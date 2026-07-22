@@ -7,6 +7,7 @@ import { ArticleSectionCarousel } from "@/components/article-section-carousel";
 import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
 import { HomeDigestStrip } from "@/components/home-digest-strip";
 import { JsonLd } from "@/components/json-ld";
+import { NewArrivalsSection } from "@/components/new-arrivals-section";
 import { SectionHeading } from "@/components/section-heading";
 import { site } from "@/config/site";
 import { homeSections } from "@/content/home";
@@ -15,6 +16,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import { websiteJsonLd } from "@/lib/json-ld";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
+import { newArrivalsPath } from "@/lib/new-arrivals-path";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 import { getHomePageWithCarousels } from "@/sanity/lib/fetch";
 
@@ -88,9 +90,11 @@ export default async function Home({ params }: Props) {
     cityGuidesSection,
     wellnessCarousel,
     wellnessDigest,
+    newArrivals,
   } = await getHomePageWithCarousels(locale, dict);
 
   const weekly = dict.home.sections.weekly;
+  const newArrivalsSection = dict.home.sections.newArrivals;
   const routine = dict.home.sections.routine;
   const commute = dict.home.sections.commute;
   const space = dict.home.sections.space;
@@ -156,6 +160,18 @@ export default async function Home({ params }: Props) {
               )}
             </div>
           </section>
+        )}
+
+        {newArrivals && newArrivals.items.length > 0 && (
+          <NewArrivalsSection
+            roundup={newArrivals}
+            locale={locale}
+            kicker={newArrivalsSection.kicker}
+            sectionTitle={newArrivalsSection.title}
+            maxItems={2}
+            viewAllHref={newArrivalsPath(locale)}
+            viewAllLabel={dict.newArrivals.viewAll}
+          />
         )}
 
         {routineCarousel.length > 0 && (

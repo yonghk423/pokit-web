@@ -2,6 +2,7 @@ import type { ArticleCategoryId } from "@/content/categories";
 
 export const sectionOrder = [
   "weekly",
+  "newArrivals",
   "routine",
   "commute",
   "space",
@@ -16,6 +17,9 @@ export const homeSections = {
   weekly: {
     id: "weekly",
     archiveCategory: "Weekly" satisfies ArticleCategoryId,
+  },
+  newArrivals: {
+    id: "new-arrivals",
   },
   routine: {
     id: "routine",
@@ -33,8 +37,6 @@ export const homeSections = {
       "kitchen-dish-minimal",
       "home-workout-session",
       "afternoon-focus-reset",
-      "phone-outside-bedroom",
-      "evening-phone-basket",
       "desk-stretch-5min",
     ],
   },

@@ -22,6 +22,7 @@ const dictionary: Dictionary = {
     allStories: "All stories",
     support: "Support",
     briefing: "Wellness briefing",
+    newArrivals: "Routine tools",
     rights: "All rights reserved.",
   },
   home: {
@@ -40,6 +41,11 @@ const dictionary: Dictionary = {
         nav: "This week",
         kicker: "This week",
         title: "Stories to open your daily week",
+      },
+      newArrivals: {
+        nav: "Tools",
+        kicker: "Routine tools",
+        title: "Tools that lift productivity & wellness",
       },
       routine: {
         nav: "Routines",
@@ -179,6 +185,30 @@ const dictionary: Dictionary = {
       return joined
         ? `${joined} — POKIT weekly wellness briefing`
         : "Weekly wellness updates, summarized for daily routines — POKIT";
+    },
+  },
+  newArrivals: {
+    nav: "Routine tools",
+    kicker: "Routine tools",
+    hubTitle: "Routine tools",
+    hubDescription:
+      "Recommended tools for productivity, health, and wellness — tied to real daily scenes, not a new-product dump.",
+    weekTitle: (weekLabel) => `Routine tools · ${weekLabel}`,
+    weekDescription: (title) =>
+      `${title} — tools that support better daily routines | POKIT`,
+    sourceLabel: "Why",
+    readSourceLabel: "View source",
+    productLabel: "Reference link",
+    archiveTitle: "Past routine tools",
+    empty: "No routine tools lists published yet.",
+    backToHub: "← All routine tools",
+    viewFull: "View full",
+    viewAll: "All tools",
+    metaDescriptionFromItems: (names) => {
+      const joined = names.slice(0, 3).join(" · ");
+      return joined
+        ? `${joined} — POKIT routine tool picks`
+        : "Tools for productivity and wellness — POKIT";
     },
   },
   categories: {

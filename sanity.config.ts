@@ -25,6 +25,7 @@ export default defineConfig({
             S.divider(),
             S.documentTypeListItem("article").title("Article"),
             S.documentTypeListItem("wellnessDigest").title("Wellness Digest"),
+            S.documentTypeListItem("newArrivals").title("루틴 도구"),
           ]),
     }),
   ],

@@ -61,6 +61,32 @@ export type WellnessDigestListItem = {
   title: string;
 };
 
+export type NewArrivalsItem = {
+  name: string;
+  slug: string;
+  summary: string;
+  image?: SanityImageSource | null;
+  imageAlt?: string;
+  imageLqip?: string | null;
+};
+
+export type RoutineToolDetail = NewArrivalsItem & {
+  body?: PortableTextBlock[];
+  weekOf?: string;
+};
+
+export type NewArrivalsData = {
+  weekOf?: string;
+  title: string;
+  intro?: string;
+  items: NewArrivalsItem[];
+};
+
+export type NewArrivalsListItem = {
+  weekOf: string;
+  title: string;
+};
+
 export type HomePageContent = {
   featuredArticle: ArticleCardData | null;
   leadStories: ArticleCardData[];

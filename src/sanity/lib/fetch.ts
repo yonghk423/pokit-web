@@ -8,8 +8,15 @@ import {
   ARTICLES_DESIGN_SPACE_POOL_QUERY,
   ARTICLES_RECENT_BY_CATEGORY_QUERY,
   HOME_PAGE_QUERY,
+  LATEST_NEW_ARRIVALS_QUERY,
   LATEST_WELLNESS_DIGEST_QUERY,
+  NEW_ARRIVALS_BY_WEEK_QUERY,
+  NEW_ARRIVALS_LIST_QUERY,
+  ROUTINE_TOOL_BY_SLUG_QUERY,
+  ROUTINE_TOOL_SLUGS_QUERY,
   SITEMAP_DIGESTS_QUERY,
+  SITEMAP_NEW_ARRIVALS_QUERY,
+  SITEMAP_ROUTINE_TOOLS_QUERY,
   WELLNESS_DIGEST_BY_WEEK_QUERY,
   WELLNESS_DIGEST_LIST_QUERY,
 } from "@/sanity/lib/queries";
@@ -20,6 +27,9 @@ import {
 import type {
   ArticleCardData,
   HomePageContent,
+  NewArrivalsData,
+  NewArrivalsListItem,
+  RoutineToolDetail,
   SectionHeading,
   WellnessDigestData,
   WellnessDigestListItem,
@@ -143,6 +153,7 @@ export type HomePageCarousels = {
   sleepCarousel: ArticleCardData[];
   wellnessCarousel: ArticleCardData[];
   wellnessDigest: WellnessDigestData | null;
+  newArrivals: NewArrivalsData | null;
 };
 
 export type HomePageWithCarousels = HomePageContent & HomePageCarousels;
@@ -328,6 +339,186 @@ export async function listWellnessDigestWeeksForSitemap(): Promise<
   }
 }
 
+function normalizeNewArrivals(
+  roundup: NewArrivalsData | null,
+): NewArrivalsData | null {
+  if (!roundup?.title || !Array.isArray(roundup.items) || roundup.items.length === 0) {
+    return null;
+  }
+
+  const items = roundup.items.filter(
+    (item) => item?.name && item?.summary && item?.slug,
+  );
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  return {
+    weekOf: roundup.weekOf,
+    title: roundup.title,
+    intro: roundup.intro || undefined,
+    items,
+  };
+}
+
+const newArrivalsFetchOptions = {
+  ...sanityFetchOptions,
+  useCdn: false as const,
+};
+
+export async function getLatestNewArrivals(
+  locale: Locale,
+): Promise<NewArrivalsData | null> {
+  if (!isSanityConfigured() || !client) {
+    return null;
+  }
+
+  try {
+    const roundup = await client.fetch<NewArrivalsData | null>(
+      LATEST_NEW_ARRIVALS_QUERY,
+      { locale },
+      newArrivalsFetchOptions,
+    );
+    return normalizeNewArrivals(roundup);
+  } catch (error) {
+    console.warn("Failed to fetch new arrivals from Sanity:", error);
+    return null;
+  }
+}
+
+export async function getNewArrivalsByWeek(
+  locale: Locale,
+  weekOf: string,
+): Promise<NewArrivalsData | null> {
+  if (!isSanityConfigured() || !client) {
+    return null;
+  }
+
+  try {
+    const roundup = await client.fetch<NewArrivalsData | null>(
+      NEW_ARRIVALS_BY_WEEK_QUERY,
+      { locale, weekOf },
+      newArrivalsFetchOptions,
+    );
+    return normalizeNewArrivals(roundup);
+  } catch (error) {
+    console.warn("Failed to fetch new arrivals by week from Sanity:", error);
+    return null;
+  }
+}
+
+export async function listNewArrivals(
+  locale: Locale,
+): Promise<NewArrivalsListItem[]> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    const items = await client.fetch<NewArrivalsListItem[]>(
+      NEW_ARRIVALS_LIST_QUERY,
+      { locale },
+      newArrivalsFetchOptions,
+    );
+    return (items ?? []).filter((d) => d?.weekOf && d?.title);
+  } catch (error) {
+    console.warn("Failed to list new arrivals from Sanity:", error);
+    return [];
+  }
+}
+
+export async function listNewArrivalsWeeksForSitemap(): Promise<
+  { weekOf: string; _updatedAt?: string }[]
+> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    return await client.fetch(
+      SITEMAP_NEW_ARRIVALS_QUERY,
+      {},
+      newArrivalsFetchOptions,
+    );
+  } catch (error) {
+    console.warn("Failed to fetch new arrivals weeks for sitemap:", error);
+    return [];
+  }
+}
+
+export async function getRoutineToolBySlug(
+  locale: Locale,
+  slug: string,
+): Promise<RoutineToolDetail | null> {
+  if (!isSanityConfigured() || !client) {
+    return null;
+  }
+
+  try {
+    const result = await client.fetch<{
+      weekOf?: string;
+      item: RoutineToolDetail | null;
+    } | null>(
+      ROUTINE_TOOL_BY_SLUG_QUERY,
+      { locale, slug },
+      newArrivalsFetchOptions,
+    );
+    if (!result?.item?.name || !result.item.slug || !result.item.body?.length) {
+      return null;
+    }
+    return {
+      ...result.item,
+      weekOf: result.weekOf,
+    };
+  } catch (error) {
+    console.warn("Failed to fetch routine tool by slug:", error);
+    return null;
+  }
+}
+
+export async function listRoutineToolSlugs(): Promise<string[]> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    const slugs = await client.fetch<string[]>(
+      ROUTINE_TOOL_SLUGS_QUERY,
+      {},
+      newArrivalsFetchOptions,
+    );
+    return (slugs ?? []).filter(Boolean);
+  } catch (error) {
+    console.warn("Failed to list routine tool slugs:", error);
+    return [];
+  }
+}
+
+export async function listRoutineToolsForSitemap(): Promise<
+  { slug: string; _updatedAt?: string }[]
+> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    const docs = await client.fetch<
+      { _updatedAt?: string; slugs?: string[] }[]
+    >(SITEMAP_ROUTINE_TOOLS_QUERY, {}, newArrivalsFetchOptions);
+    const out: { slug: string; _updatedAt?: string }[] = [];
+    for (const doc of docs ?? []) {
+      for (const slug of doc.slugs ?? []) {
+        if (slug) out.push({ slug, _updatedAt: doc._updatedAt });
+      }
+    }
+    return out;
+  } catch (error) {
+    console.warn("Failed to list routine tools for sitemap:", error);
+    return [];
+  }
+}
+
 export async function getHomePageWithCarousels(
   locale: Locale,
   dict: Dictionary,
@@ -345,13 +536,15 @@ export async function getHomePageWithCarousels(
       sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
       wellnessDigest: null,
+      newArrivals: null,
     };
   }
 
   try {
-    const [pools, wellnessDigest] = await Promise.all([
+    const [pools, wellnessDigest, newArrivals] = await Promise.all([
       fetchHomeCarouselPools(locale),
       getLatestWellnessDigest(locale),
+      getLatestNewArrivals(locale),
     ]);
     if (!pools) {
       throw new Error("Sanity client unavailable");
@@ -411,10 +604,14 @@ export async function getHomePageWithCarousels(
         12,
       ),
       wellnessDigest,
+      newArrivals,
     };
   } catch (error) {
     console.warn("Failed to fetch carousel articles from Sanity:", error);
-    const wellnessDigest = await getLatestWellnessDigest(locale);
+    const [wellnessDigest, newArrivals] = await Promise.all([
+      getLatestWellnessDigest(locale),
+      getLatestNewArrivals(locale),
+    ]);
     return {
       ...home,
       weeklyHero: home.featuredArticle ? [home.featuredArticle] : [],
@@ -425,6 +622,7 @@ export async function getHomePageWithCarousels(
       sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
       wellnessDigest,
+      newArrivals,
     };
   }
 }

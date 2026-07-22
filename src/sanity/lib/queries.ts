@@ -82,6 +82,57 @@ export const SITEMAP_DIGESTS_QUERY = `*[_type == "wellnessDigest" && defined(wee
   "_updatedAt": _updatedAt
 }`;
 
+const newArrivalsItemCardFields = `
+  "name": select($locale == "en" => coalesce(nameEn, name), name),
+  "slug": slug.current,
+  "summary": select($locale == "en" => coalesce(summaryEn, summary), summary),
+  image,
+  "imageAlt": select($locale == "en" => coalesce(imageAltEn, imageAlt, nameEn, name), coalesce(imageAlt, name)),
+  "imageLqip": image.asset->metadata.lqip
+`;
+
+const newArrivalsFields = `
+  weekOf,
+  "title": select($locale == "en" => coalesce(titleEn, title), title),
+  "intro": select($locale == "en" => coalesce(introEn, intro), intro),
+  "items": items[]{
+    ${newArrivalsItemCardFields}
+  }
+`;
+
+export const LATEST_NEW_ARRIVALS_QUERY = `*[_type == "newArrivals" && defined(weekOf)] | order(weekOf desc)[0]{
+  ${newArrivalsFields}
+}`;
+
+export const NEW_ARRIVALS_BY_WEEK_QUERY = `*[_type == "newArrivals" && weekOf == $weekOf][0]{
+  ${newArrivalsFields}
+}`;
+
+export const NEW_ARRIVALS_LIST_QUERY = `*[_type == "newArrivals" && defined(weekOf)] | order(weekOf desc){
+  weekOf,
+  "title": select($locale == "en" => coalesce(titleEn, title), title)
+}`;
+
+export const SITEMAP_NEW_ARRIVALS_QUERY = `*[_type == "newArrivals" && defined(weekOf)] | order(weekOf desc){
+  weekOf,
+  "_updatedAt": _updatedAt
+}`;
+
+export const ROUTINE_TOOL_BY_SLUG_QUERY = `*[_type == "newArrivals" && count(items[slug.current == $slug]) > 0] | order(weekOf desc)[0]{
+  weekOf,
+  "item": items[slug.current == $slug][0]{
+    ${newArrivalsItemCardFields},
+    "body": select($locale == "en" => coalesce(bodyEn, body), body)
+  }
+}`;
+
+export const ROUTINE_TOOL_SLUGS_QUERY = `array::unique(*[_type == "newArrivals"].items[defined(slug.current)].slug.current)`;
+
+export const SITEMAP_ROUTINE_TOOLS_QUERY = `*[_type == "newArrivals" && defined(weekOf)]{
+  "_updatedAt": _updatedAt,
+  "slugs": items[defined(slug.current)].slug.current
+}`;
+
 export const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   ${articleCardFields},
   "body": select($locale == "en" => coalesce(bodyEn, body), body),

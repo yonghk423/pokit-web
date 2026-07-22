@@ -4,6 +4,8 @@ import { site } from "@/config/site";
 import { locales } from "@/i18n/config";
 import { articlePath } from "@/lib/article-path";
 import { briefingWeekPath } from "@/lib/briefing-path";
+import { newArrivalsWeekPath } from "@/lib/new-arrivals-path";
+import { routineToolPath } from "@/lib/routine-tool-path";
 import { withLocale } from "@/lib/locale-path";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
@@ -11,24 +13,37 @@ import { sanityFetchOptions } from "@/sanity/lib/cache";
 import {
   SITEMAP_ARTICLES_QUERY,
   SITEMAP_DIGESTS_QUERY,
+  SITEMAP_NEW_ARRIVALS_QUERY,
+  SITEMAP_ROUTINE_TOOLS_QUERY,
 } from "@/sanity/lib/queries";
 
 export const revalidate = false;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const staticPaths = ["", "/articles", "/briefing", "/support"] as const;
+  const staticPaths = [
+    "",
+    "/articles",
+    "/briefing",
+    "/new-arrivals",
+    "/support",
+  ] as const;
 
   const staticPages: MetadataRoute.Sitemap = locales.flatMap((locale) =>
     staticPaths.map((path) => ({
       url: `${site.siteUrl}${withLocale(locale, path)}`,
       changeFrequency:
-        path === "" || path === "/articles" || path === "/briefing"
+        path === "" ||
+        path === "/articles" ||
+        path === "/briefing" ||
+        path === "/new-arrivals"
           ? "weekly"
           : "monthly",
       priority:
         path === ""
           ? 1
-          : path === "/articles" || path === "/briefing"
+          : path === "/articles" ||
+              path === "/briefing" ||
+              path === "/new-arrivals"
             ? 0.9
             : 0.5,
     })),
@@ -38,12 +53,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return staticPages;
   }
 
-  const [articles, digests] = await Promise.all([
+  const [articles, digests, newArrivals, tools] = await Promise.all([
     client.fetch<
       { slug: string; publishedAt?: string; hasEnglishTranslation?: boolean }[]
     >(SITEMAP_ARTICLES_QUERY, {}, sanityFetchOptions),
     client.fetch<{ weekOf: string; _updatedAt?: string }[]>(
       SITEMAP_DIGESTS_QUERY,
+      {},
+      sanityFetchOptions,
+    ),
+    client.fetch<{ weekOf: string; _updatedAt?: string }[]>(
+      SITEMAP_NEW_ARRIVALS_QUERY,
+      {},
+      sanityFetchOptions,
+    ),
+    client.fetch<{ _updatedAt?: string; slugs?: string[] }[]>(
+      SITEMAP_ROUTINE_TOOLS_QUERY,
       {},
       sanityFetchOptions,
     ),
@@ -75,5 +100,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })),
     );
 
-  return [...staticPages, ...articlePages, ...digestPages];
+  const newArrivalsPages: MetadataRoute.Sitemap = (newArrivals ?? [])
+    .filter(({ weekOf }) => weekOf)
+    .flatMap(({ weekOf, _updatedAt }) =>
+      locales.map((locale) => ({
+        url: `${site.siteUrl}${newArrivalsWeekPath(locale, weekOf)}`,
+        lastModified: _updatedAt ? new Date(_updatedAt) : undefined,
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      })),
+    );
+
+  const toolPages: MetadataRoute.Sitemap = (tools ?? []).flatMap(
+    ({ _updatedAt, slugs }) =>
+      (slugs ?? [])
+        .filter(Boolean)
+        .flatMap((slug) =>
+          locales.map((locale) => ({
+            url: `${site.siteUrl}${routineToolPath(locale, slug)}`,
+            lastModified: _updatedAt ? new Date(_updatedAt) : undefined,
+            changeFrequency: "weekly" as const,
+            priority: 0.8,
+          })),
+        ),
+  );
+
+  return [
+    ...staticPages,
+    ...articlePages,
+    ...digestPages,
+    ...newArrivalsPages,
+    ...toolPages,
+  ];
 }

@@ -55,12 +55,16 @@ export function revalidateSanityContent(slugs: string[] = []) {
     paths.add(`/${locale}`);
     paths.add(`/${locale}/articles`);
     paths.add(`/${locale}/briefing`);
+    paths.add(`/${locale}/new-arrivals`);
+    paths.add(`/${locale}/tools`);
 
     for (const slug of slugs) {
       paths.add(`/${locale}/articles/${encodeURIComponent(slug)}`);
+      paths.add(`/${locale}/tools/${encodeURIComponent(slug)}`);
       // weekOf dates (YYYY-MM-DD) also arrive as "slugs" from some webhooks
       if (/^\d{4}-\d{2}-\d{2}$/.test(slug)) {
         paths.add(`/${locale}/briefing/${slug}`);
+        paths.add(`/${locale}/new-arrivals/${slug}`);
       }
     }
   }

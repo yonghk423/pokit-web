@@ -22,6 +22,7 @@ const dictionary: Dictionary = {
     allStories: "모든 이야기",
     support: "지원",
     briefing: "웰니스 브리핑",
+    newArrivals: "루틴 도구",
     rights: "All rights reserved.",
   },
   home: {
@@ -40,6 +41,11 @@ const dictionary: Dictionary = {
         nav: "이번 주",
         kicker: "이번 주",
         title: "일상을 여는 이야기",
+      },
+      newArrivals: {
+        nav: "루틴 도구",
+        kicker: "루틴 도구",
+        title: "생산성·웰니스를 돕는 도구",
       },
       routine: {
         nav: "루틴",
@@ -179,6 +185,30 @@ const dictionary: Dictionary = {
       return joined
         ? `${joined} — POKIT 주간 웰니스 브리핑`
         : "공공·국제 웰니스 소식을 일상 루틴으로 연결하는 POKIT 주간 브리핑";
+    },
+  },
+  newArrivals: {
+    nav: "루틴 도구",
+    kicker: "루틴 도구",
+    hubTitle: "루틴 도구",
+    hubDescription:
+      "생산성·건강·웰니스를 높이는 도구를 장면과 함께 추천합니다. 신상 나열이 아니라, 실제로 루틴에 붙이는 방법입니다.",
+    weekTitle: (weekLabel) => `${weekLabel} 루틴 도구`,
+    weekDescription: (title) =>
+      `${title} — 일상 루틴을 돕는 도구 추천 | POKIT`,
+    sourceLabel: "근거",
+    readSourceLabel: "출처 보기",
+    productLabel: "참고 링크",
+    archiveTitle: "지난 루틴 도구",
+    empty: "아직 발행된 루틴 도구 리스트가 없습니다.",
+    backToHub: "← 루틴 도구 목록",
+    viewFull: "전체 보기",
+    viewAll: "도구 전체",
+    metaDescriptionFromItems: (names) => {
+      const joined = names.slice(0, 3).join(" · ");
+      return joined
+        ? `${joined} — POKIT 루틴 도구 추천`
+        : "생산성·웰니스를 돕는 도구를 추천하는 POKIT 루틴 도구";
     },
   },
   categories: {
