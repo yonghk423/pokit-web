@@ -27,7 +27,7 @@ export function SiteFooter({ locale, dict }: Props) {
       >
         <div className="flex items-start gap-4">
           <Image
-            src="/pokitstory.png"
+            src="/pokit5.png"
             alt=""
             width={44}
             height={44}

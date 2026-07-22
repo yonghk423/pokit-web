@@ -37,7 +37,7 @@ function parsePage(raw?: string) {
 }
 
 const ARCHIVE_OG_IMAGE = {
-  url: "/pokitstory.png",
+  url: "/pokit5.png",
   alt: site.name,
   width: 512,
   height: 512,

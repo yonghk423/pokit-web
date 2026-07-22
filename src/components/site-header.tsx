@@ -48,7 +48,7 @@ export function SiteHeader({ locale, dict }: Props) {
           aria-label={dict.header.homeAria}
         >
           <Image
-            src="/pokitstory.png"
+            src="/pokit5.png"
             alt=""
             width={34}
             height={34}
