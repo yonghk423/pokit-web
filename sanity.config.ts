@@ -9,7 +9,8 @@ export default defineConfig({
   title: "POKIT",
   projectId: projectId || "placeholder",
   dataset,
-  basePath: "/studio",
+  // Next embed: /studio. Hosted `sanity deploy`: override with SANITY_STUDIO_BASEPATH=/
+  basePath: process.env.SANITY_STUDIO_BASEPATH || "/studio",
   plugins: [
     structureTool({
       structure: (S) =>
