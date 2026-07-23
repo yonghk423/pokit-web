@@ -115,12 +115,6 @@ export default async function Home({ params }: Props) {
           </p>
         </section>
 
-        <HomeDigestStrip
-          dict={dict}
-          locale={locale}
-          digest={wellnessDigest}
-        />
-
         {hasTopStories && (
           <section id="weekly" className={cn(monoContainer, sectionSpacing)}>
             <SectionHeading
@@ -315,6 +309,12 @@ export default async function Home({ params }: Props) {
         >
           <Link href={withLocale(locale, "/articles")}>{dict.home.viewAllStories}</Link>
         </section>
+
+        <HomeDigestStrip
+          dict={dict}
+          locale={locale}
+          digest={wellnessDigest}
+        />
 
         <AppDownload locale={locale} copy={dict.appDownload} />
       </main>
