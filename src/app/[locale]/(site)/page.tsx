@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { AppDownload } from "@/components/app-download";
 import { ArticleSectionCarousel } from "@/components/article-section-carousel";
 import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
-import { HomeDigestStrip } from "@/components/home-digest-strip";
 import { JsonLd } from "@/components/json-ld";
 import { NewArrivalsSection } from "@/components/new-arrivals-section";
 import { SectionHeading } from "@/components/section-heading";
@@ -89,7 +88,6 @@ export default async function Home({ params }: Props) {
     sleepCarousel,
     cityGuidesSection,
     wellnessCarousel,
-    wellnessDigest,
     newArrivals,
   } = await getHomePageWithCarousels(locale, dict);
 
@@ -309,12 +307,6 @@ export default async function Home({ params }: Props) {
         >
           <Link href={withLocale(locale, "/articles")}>{dict.home.viewAllStories}</Link>
         </section>
-
-        <HomeDigestStrip
-          dict={dict}
-          locale={locale}
-          digest={wellnessDigest}
-        />
 
         <AppDownload locale={locale} copy={dict.appDownload} />
       </main>

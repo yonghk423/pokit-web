@@ -152,7 +152,6 @@ export type HomePageCarousels = {
   spaceCarousel: ArticleCardData[];
   sleepCarousel: ArticleCardData[];
   wellnessCarousel: ArticleCardData[];
-  wellnessDigest: WellnessDigestData | null;
   newArrivals: NewArrivalsData | null;
 };
 
@@ -535,15 +534,13 @@ export async function getHomePageWithCarousels(
       spaceCarousel: home.designAwards,
       sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
-      wellnessDigest: null,
       newArrivals: null,
     };
   }
 
   try {
-    const [pools, wellnessDigest, newArrivals] = await Promise.all([
+    const [pools, newArrivals] = await Promise.all([
       fetchHomeCarouselPools(locale),
-      getLatestWellnessDigest(locale),
       getLatestNewArrivals(locale),
     ]);
     if (!pools) {
@@ -603,15 +600,11 @@ export async function getHomePageWithCarousels(
         homeSections.wellness.archiveCategory!,
         12,
       ),
-      wellnessDigest,
       newArrivals,
     };
   } catch (error) {
     console.warn("Failed to fetch carousel articles from Sanity:", error);
-    const [wellnessDigest, newArrivals] = await Promise.all([
-      getLatestWellnessDigest(locale),
-      getLatestNewArrivals(locale),
-    ]);
+    const newArrivals = await getLatestNewArrivals(locale);
     return {
       ...home,
       weeklyHero: home.featuredArticle ? [home.featuredArticle] : [],
@@ -621,7 +614,6 @@ export async function getHomePageWithCarousels(
       spaceCarousel: home.designAwards,
       sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
-      wellnessDigest,
       newArrivals,
     };
   }

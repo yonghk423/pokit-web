@@ -27,15 +27,6 @@ const dictionary: Dictionary = {
   },
   home: {
     inboxTagline: "일상 루틴·웰니스 인텔리전스 by POKIT",
-    digest: {
-      ariaLabel: "홈 요약",
-      brandKicker: "POKIT",
-      brandTagline: "일상 웰니스 루틴 가이드",
-      featuredKicker: "이번 주",
-      featuredTitle: "책상 앞에서 잃어버린 몸의 리듬을 되찾는 방법",
-      routineDesc: "일상에서 시작하기 좋은 루틴",
-      commuteDesc: "이동과 쉬는 시간의 일상 루틴",
-    },
     sections: {
       weekly: {
         nav: "이번 주",
@@ -72,12 +63,6 @@ const dictionary: Dictionary = {
         kicker: "웰니스",
         title: "일상 웰니스, 몸을 위한 10분",
       },
-    },
-    wellnessBriefing: {
-      kicker: "주간 브리핑",
-      sourceLabel: "출처",
-      readSourceLabel: "원문 보기",
-      viewAll: "브리핑 전체",
     },
     storiesAria: (label) => `${label} 이야기`,
     radioEmpty: (sectionNav) =>

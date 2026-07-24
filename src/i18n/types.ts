@@ -32,22 +32,7 @@ export type Dictionary = {
   };
   home: {
     inboxTagline: string;
-    digest: {
-      ariaLabel: string;
-      brandKicker: string;
-      brandTagline: string;
-      featuredKicker: string;
-      featuredTitle: string;
-      routineDesc: string;
-      commuteDesc: string;
-    };
     sections: Record<HomeSectionId, HomeSectionCopy>;
-    wellnessBriefing: {
-      kicker: string;
-      sourceLabel: string;
-      readSourceLabel: string;
-      viewAll: string;
-    };
     storiesAria: (label: string) => string;
     radioEmpty: (sectionNav: string) => string;
     viewAllStories: string;

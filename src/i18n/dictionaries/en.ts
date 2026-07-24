@@ -27,15 +27,6 @@ const dictionary: Dictionary = {
   },
   home: {
     inboxTagline: "Daily routine & wellness intelligence by POKIT",
-    digest: {
-      ariaLabel: "Home digest",
-      brandKicker: "POKIT",
-      brandTagline: "Daily wellness routine guides",
-      featuredKicker: "This week",
-      featuredTitle: "How to reclaim your body's rhythm at your desk",
-      routineDesc: "Daily routines worth starting now",
-      commuteDesc: "Daily routines for time in motion and pause",
-    },
     sections: {
       weekly: {
         nav: "This week",
@@ -72,12 +63,6 @@ const dictionary: Dictionary = {
         kicker: "Wellness",
         title: "Daily wellness: ten minutes for your body",
       },
-    },
-    wellnessBriefing: {
-      kicker: "Weekly briefing",
-      sourceLabel: "Source",
-      readSourceLabel: "Read source",
-      viewAll: "Full briefing",
     },
     storiesAria: (label) => `${label} stories`,
     radioEmpty: (sectionNav) =>
