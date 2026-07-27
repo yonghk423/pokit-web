@@ -9,6 +9,13 @@ export const metadata: Metadata = {
     default: site.name,
     template: `%s | ${site.name}`,
   },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   verification: {
     google: "8seF3--uVP-BHV8H6FqZXTdkKXNxWqocHU5lou2eLUI",
   },

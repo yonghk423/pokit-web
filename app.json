@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "44eb87f2-9e10-4532-9ff2-56bfdb14c597"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.yonghee.pokitweb",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
+  }
+}
