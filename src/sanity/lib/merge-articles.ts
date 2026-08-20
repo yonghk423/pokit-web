@@ -20,48 +20,38 @@ function dedupeArticles(articles: ArticleCardData[]) {
   return merged;
 }
 
-/** Pool backfill: cover image first, then newest publishedAt. */
+function publishedAtTime(article: ArticleCardData) {
+  return article.publishedAt ? Date.parse(article.publishedAt) : 0;
+}
+
+/** Newest publishedAt first. Cover image is only a tiebreaker. */
 export function buildArticlePool(...groups: ArticleCardData[][]) {
   return dedupeArticles(groups.flat()).sort((a, b) => {
-    const aHas = hasCoverImage(a) ? 0 : 1;
-    const bHas = hasCoverImage(b) ? 0 : 1;
-    if (aHas !== bHas) {
-      return aHas - bHas;
+    const byDate = publishedAtTime(b) - publishedAtTime(a);
+    if (byDate !== 0) {
+      return byDate;
     }
 
-    const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0;
-    const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0;
-    return bTime - aTime;
+    const aHas = hasCoverImage(a) ? 0 : 1;
+    const bHas = hasCoverImage(b) ? 0 : 1;
+    return aHas - bHas;
   });
 }
 
+/** Union curated + pool, then keep newest-first order within the limit. */
 export function mergeArticles(
   featured: ArticleCardData[],
   pool: ArticleCardData[],
   limit = 12,
 ): ArticleCardData[] {
-  const seen = new Set<string>();
-  const merged: ArticleCardData[] = [];
-
-  for (const article of [...featured, ...pool]) {
-    if (seen.has(article.slug)) {
-      continue;
-    }
-    seen.add(article.slug);
-    merged.push(article);
-    if (merged.length >= limit) {
-      break;
-    }
-  }
-
-  return merged;
+  return buildArticlePool(featured, pool).slice(0, limit);
 }
 
 function filterByCategory(articles: ArticleCardData[], category: string) {
   return articles.filter((article) => article.category === category);
 }
 
-/** Curated picks + same-category backfill only (no cross-section mixing). */
+/** Same-category articles only, newest first (no cross-section mixing). */
 export function mergeArticlesForCategory(
   curated: ArticleCardData[],
   allArticles: ArticleCardData[],
@@ -72,7 +62,7 @@ export function mergeArticlesForCategory(
   return mergeArticles(filterByCategory(curated, category), pool, limit);
 }
 
-/** Space + selected Routine stories about space, desk, and home. */
+/** Space + selected Routine stories about space, desk, and home. Newest first. */
 export function mergeArticlesForSpacePool(
   curated: ArticleCardData[],
   allArticles: ArticleCardData[],

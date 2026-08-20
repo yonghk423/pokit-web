@@ -1,0 +1,29 @@
+---
+description: 홈 섹션 글 정렬·캐시·배포 (최신글 상단, revalidate vs redeploy)
+alwaysApply: true
+---
+
+# 홈 섹션 · Sanity 반영
+
+## 홈에 글이 보이는 방식
+
+- 홈 캐러셀은 `getHomePageWithCarousels` → `merge-articles.ts`로 채운다.
+- **최종 순서는 `publishedAt` 최신순**이다. Studio `homePage` 고정 목록은 후보일 뿐, 순서를 강제하지 않는다.
+- 섹션마다 최신 글이 **맨 앞**에 와야 한다. curated-first / 커버 우선으로 최신글을 뒤로 밀지 않는다.
+- 관련 파일: `src/sanity/lib/merge-articles.ts`, `src/sanity/lib/fetch.ts`, `src/app/[locale]/(site)/page.tsx`
+
+## 캐시 vs 배포
+
+| 변경 | 필요한 것 |
+|------|-----------|
+| Sanity에서 글 추가·수정·이미지·publish만 | **재배포 불필요**. `/api/revalidate` (Sanity webhook 또는 secret POST) |
+| `merge-articles`·fetch·홈 UI 등 **코드** 변경 | **Vercel 배포 필요**. revalidate만으로는 안 바뀜 |
+
+- 프로덕션은 `revalidate: false` + `SANITY_CACHE_TAG` 온디맨드 갱신.
+- 글 안 보이면 순서: ① publish 여부 ② 커버 이미지 ③ revalidate ④ (코드 고쳤으면) 배포.
+
+## 글 추가 후 체크
+
+1. draft가 아니라 **published**인지
+2. 홈은 최신순으로 자동 합쳐지므로, 보이려면 publish + revalidate면 충분
+3. 정렬/노출 로직를 바꿨으면 사용자에게 **배포가 필요하다**고 명시

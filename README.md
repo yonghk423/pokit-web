@@ -37,36 +37,6 @@ npx sanity cors add https://www.pokitstory.com
 
 4. Studio(`/studio`)에서 **Home Page** singleton과 **Article** 문서 생성·발행
 
-## CI / CD
-
-### CI (GitHub Actions)
-
-`.github/workflows/ci.yml`이 `main` / `develop`의 push·PR에서 다음을 실행합니다.
-
-1. `npm ci`
-2. `npm run lint`
-3. `npm run typecheck`
-4. `npm run build`
-
-PR에서 빨간 X가 뜨면 merge 전에 고쳐야 합니다. GitHub → Settings → Branches에서 **Require status checks**에 `Lint & Build`를 켜면 게이트로 쓸 수 있습니다.
-
-### CD (Vercel)
-
-1. [vercel.com](https://vercel.com)에서 이 GitHub 레포를 Import
-2. Framework: Next.js (자동 감지)
-3. Environment Variables는 선택 사항 (`src/sanity/env.ts` 기본값으로도 동작)
-4. 연결 후:
-   - PR → **Preview** 배포
-   - `main`(또는 Production Branch) → **Production** 배포
-
-Sanity CORS에 프로덕션·프리뷰 도메인을 추가하세요 (`npx sanity cors add ...`).
-
-## Vercel 배포
-
-Sanity project ID는 `src/sanity/env.ts` 기본값으로 동작합니다. Vercel Environment Variables는 선택 사항입니다(덮어쓰기용).
-
-배포 후 홈에 기사 섹션과 `cdn.sanity.io` 이미지가 보여야 합니다.
-
 ## 구조
 
 | 경로 | 설명 |
