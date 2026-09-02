@@ -23,6 +23,7 @@ const dictionary: Dictionary = {
     support: "Support",
     briefing: "Wellness briefing",
     newArrivals: "Routine tools",
+    app: "App",
     rights: "All rights reserved.",
   },
   home: {
@@ -134,6 +135,58 @@ const dictionary: Dictionary = {
     qrAria: "POKIT App Store QR code",
     qrHint: "Scan with your phone camera to install",
   },
+  appPage: {
+    metaTitle: "POKIT App",
+    metaDescription:
+      "Set your day bounds, then keep routines, tasks, memos, and history in one place. Start your daily rhythm with the POKIT app.",
+    kicker: "App",
+    title: "Your day, in a pocket. POKIT",
+    lead: "Pick when your day starts and ends, and today gets simpler. Keep routines, tasks, memos, and your streak in one app.",
+    download: "Get it on the App Store",
+    featuresHeading: "Open the app, and this is how you'll use it",
+    features: [
+      {
+        id: "routines",
+        title: "Today's routines, start here",
+        body: "When you first open the app, you set when your day starts and ends. Then today's routines live on one screen. Mark what matters, check them off, and add more right there if you need to.",
+        imageAlt: "POKIT app Today screen with the daily routine list",
+      },
+      {
+        id: "memo",
+        title: "Notes you can see on the lock screen",
+        body: "Pin a memo you'll want to see often. Write it in the app, and it shows up when you wake your phone.",
+        imageAlt: "POKIT quick memo on the iPhone lock screen",
+      },
+      {
+        id: "notes",
+        title: "Today's note, write the day down",
+        body: "Keep what happened today, checklists, and short thoughts in one place. Mix sentences, tasks, and bullets however you like.",
+        imageAlt: "POKIT app Today note screen",
+      },
+      {
+        id: "todos",
+        title: "Tasks, in order of what matters",
+        body: "Add a time and priority, and you're done. Tap to check off, or long-press when something's finished.",
+        imageAlt: "POKIT to-do list screen",
+      },
+      {
+        id: "history",
+        title: "Look back at what you kept up",
+        body: "See how this week or month went at a glance. You'll also spot the routines you actually stick with.",
+        imageAlt: "POKIT monthly history and completion screen",
+      },
+      {
+        id: "library",
+        title: "Keep the books you're reading",
+        body: "Split what you're reading from what you've finished. It sits nicely next to your reading routine.",
+        imageAlt: "POKIT My Library screen",
+      },
+    ],
+    galleryHeading: "Want a quick look?",
+    galleryLead: "From routines to history, here are the screens you'll use most.",
+    ctaKicker: "Start now",
+    ctaTitle: "Install POKIT and fill in today, bit by bit.",
+  },
   notFound: {
     title: "Page not found",
     description: "The address may have changed or the page may have been removed.",
@@ -212,6 +265,7 @@ const dictionary: Dictionary = {
     label: "Language",
     ko: "한국어",
     en: "English",
+    ja: "日本語",
   },
   dates: {
     intl: "en-US",

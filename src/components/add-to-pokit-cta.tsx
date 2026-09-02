@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 
+import { AppStoreBadge } from "@/components/app-store-badge";
 import { appStoreUrl } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
@@ -93,12 +94,9 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
               <p className="m-0 font-sans text-[0.92rem] leading-[1.6] text-ink">
                 {copy.fallback}
               </p>
-              <a
-                href={storeUrl}
-                className="mt-5 hidden min-h-11 items-center justify-center border-2 border-black bg-brand px-5 font-sans text-[0.75rem] font-extrabold tracking-[0.06em] text-ink uppercase hover:brutal-shadow max-nav:inline-flex"
-              >
-                {copy.download}
-              </a>
+              <div className="mt-5 hidden max-nav:block">
+                <AppStoreBadge locale={locale} label={copy.download} />
+              </div>
             </div>
             <div className="flex shrink-0 flex-col items-center gap-2 self-center border-2 border-black bg-panel p-4 max-nav:hidden">
               <QRCodeSVG

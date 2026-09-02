@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/json-ld";
 import { NewArrivalsSection } from "@/components/new-arrivals-section";
 import { site } from "@/config/site";
-import { isLocale, locales, type Locale } from "@/i18n/config";
+import { isLocale, locales, localeToIntl, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { cn, monoContainer } from "@/lib/cn";
 import { briefingCollectionJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
@@ -34,7 +34,7 @@ const OG_IMAGE = {
 function formatWeekLabel(weekOf: string, locale: Locale) {
   const date = new Date(`${weekOf}T12:00:00`);
   if (Number.isNaN(date.getTime())) return weekOf;
-  return new Intl.DateTimeFormat(locale === "ko" ? "ko-KR" : "en-US", {
+  return new Intl.DateTimeFormat(localeToIntl(locale), {
     year: "numeric",
     month: "long",
     day: "numeric",

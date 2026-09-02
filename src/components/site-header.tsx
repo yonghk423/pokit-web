@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
-import { appStoreUrl, site } from "@/config/site";
+import { site } from "@/config/site";
 import { getCategories } from "@/lib/category-label";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
@@ -63,15 +63,9 @@ export function SiteHeader({ locale, dict }: Props) {
           <Link href={withLocale(locale, "/articles")} className={navLinkClass}>
             {dict.header.allStories}
           </Link>
-          <a
-            href={appStoreUrl(locale)}
-            className={cn(navLinkClass, "hidden max-nav:inline")}
-          >
+          <Link href={withLocale(locale, "/app")} className={navLinkClass}>
             {dict.header.app}
-          </a>
-          <a href={`${withLocale(locale, "/")}#app`} className={cn(navLinkClass, "max-nav:hidden")}>
-            {dict.header.app}
-          </a>
+          </Link>
           <SupportEmailLink className={navLinkClass}>{dict.header.contact}</SupportEmailLink>
         </div>
       </div>

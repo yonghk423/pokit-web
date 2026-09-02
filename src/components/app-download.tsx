@@ -2,6 +2,7 @@
 
 import { QRCodeSVG } from "qrcode.react";
 
+import { AppStoreBadge } from "@/components/app-store-badge";
 import { appStoreUrl } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
@@ -28,14 +29,11 @@ export function AppDownload({ locale, copy }: Props) {
         <h2 className="mt-4 mb-0 text-[clamp(1.6rem,3vw,2.5rem)] font-extrabold leading-[1.1] tracking-[-0.03em]">
           {copy.title}
         </h2>
+        <div className="mt-6">
+          <AppStoreBadge locale={locale} label={copy.download} />
+        </div>
       </div>
       <div className="flex flex-col items-center gap-4">
-        <a
-          href={appStoreUrl(locale)}
-          className="hidden min-h-12 items-center justify-center border-2 border-black bg-brand px-6 font-sans text-[0.78rem] font-extrabold tracking-[0.08em] text-ink uppercase hover:brutal-shadow max-nav:inline-flex"
-        >
-          {copy.download}
-        </a>
         <div className="flex flex-col items-center gap-3 border-2 border-black bg-panel p-5 max-nav:hidden">
           <QRCodeSVG
             value={appStoreUrl(locale)}

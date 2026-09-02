@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { SectionHeading } from "@/components/section-heading";
 import type { Locale } from "@/i18n/config";
+import { localeToIntl } from "@/i18n/config";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import { routineToolPath } from "@/lib/routine-tool-path";
 import { isSanityConfigured } from "@/sanity/env";
@@ -26,7 +27,7 @@ function formatWeekLabel(weekOf: string | undefined, locale: Locale) {
   if (!weekOf) return undefined;
   const date = new Date(`${weekOf}T12:00:00`);
   if (Number.isNaN(date.getTime())) return weekOf;
-  return new Intl.DateTimeFormat(locale === "ko" ? "ko-KR" : "en-US", {
+  return new Intl.DateTimeFormat(localeToIntl(locale), {
     year: "numeric",
     month: "short",
     day: "numeric",

@@ -28,6 +28,7 @@ export type Dictionary = {
     support: string;
     briefing: string;
     newArrivals: string;
+    app: string;
     rights: string;
   };
   home: {
@@ -94,6 +95,25 @@ export type Dictionary = {
     qrAria: string;
     qrHint: string;
   };
+  appPage: {
+    metaTitle: string;
+    metaDescription: string;
+    kicker: string;
+    title: string;
+    lead: string;
+    download: string;
+    featuresHeading: string;
+    features: {
+      id: string;
+      title: string;
+      body: string;
+      imageAlt: string;
+    }[];
+    galleryHeading: string;
+    galleryLead: string;
+    ctaKicker: string;
+    ctaTitle: string;
+  };
   notFound: {
     title: string;
     description: string;
@@ -158,6 +178,7 @@ export type Dictionary = {
     label: string;
     ko: string;
     en: string;
+    ja: string;
   };
   dates: {
     intl: string;

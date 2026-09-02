@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import type { Locale } from "@/i18n/config";
+import { locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { switchLocalePath } from "@/lib/locale-path";
 import { cn } from "@/lib/cn";
@@ -25,29 +25,27 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
       )}
       aria-label={labels.label}
     >
-      <Link
-        href={switchLocalePath(pathname, "ko")}
-        className={cn(
-          "px-1 py-0.5",
-          locale === "ko" ? "bg-wash text-ink" : "text-muted hover:bg-beige hover:text-ink",
-        )}
-        aria-current={locale === "ko" ? "true" : undefined}
-      >
-        {labels.ko}
-      </Link>
-      <span className="text-muted" aria-hidden="true">
-        /
-      </span>
-      <Link
-        href={switchLocalePath(pathname, "en")}
-        className={cn(
-          "px-1 py-0.5",
-          locale === "en" ? "bg-wash text-ink" : "text-muted hover:bg-beige hover:text-ink",
-        )}
-        aria-current={locale === "en" ? "true" : undefined}
-      >
-        {labels.en}
-      </Link>
+      {locales.map((value, index) => (
+        <span key={value} className="inline-flex items-center gap-1">
+          {index > 0 && (
+            <span className="text-muted" aria-hidden="true">
+              /
+            </span>
+          )}
+          <Link
+            href={switchLocalePath(pathname, value)}
+            className={cn(
+              "px-1 py-0.5",
+              locale === value
+                ? "bg-wash text-ink"
+                : "text-muted hover:bg-beige hover:text-ink",
+            )}
+            aria-current={locale === value ? "true" : undefined}
+          >
+            {labels[value]}
+          </Link>
+        </span>
+      ))}
     </div>
   );
 }

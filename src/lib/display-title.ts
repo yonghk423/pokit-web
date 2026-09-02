@@ -100,6 +100,44 @@ export function brandTagsForArticle(
     return unique(tags);
   }
 
+  if (locale === "ja") {
+    const tags: string[] = [];
+    switch (category) {
+      case "Wellness":
+        tags.push("ウェルネス");
+        if (/ルーチン|習慣|分/.test(text)) tags.push("ルーチン");
+        else tags.push("日常");
+        break;
+      case "Routine":
+        tags.push("ルーチン");
+        if (/ウェルネス|体|睡眠|ストレッチ|呼吸/.test(text)) tags.push("ウェルネス");
+        else tags.push("日常");
+        break;
+      case "Space":
+        tags.push("日常");
+        if (/ルーチン|整理|習慣/.test(text)) tags.push("ルーチン");
+        break;
+      case "Sleep":
+        tags.push("ルーチン");
+        if (/ウェルネス|睡眠|休み|休憩/.test(text)) tags.push("ウェルネス");
+        else tags.push("日常");
+        break;
+      case "Commute":
+        tags.push("日常");
+        if (/ウェルネス|息|歩き|ストレッチ/.test(text)) tags.push("ウェルネス");
+        else if (/ルーチン|習慣/.test(text)) tags.push("ルーチン");
+        break;
+      case "Weekly":
+        tags.push("日常");
+        if (/ルーチン|習慣|振り返|計画/.test(text)) tags.push("ルーチン");
+        break;
+      default:
+        tags.push("日常");
+        break;
+    }
+    return unique(tags);
+  }
+
   const tags: string[] = [];
   switch (category) {
     case "Wellness":

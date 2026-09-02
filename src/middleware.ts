@@ -20,10 +20,16 @@ function detectLocale(request: NextRequest): Locale {
   if (country === "KR") {
     return "ko";
   }
+  if (country === "JP") {
+    return "ja";
+  }
 
   const accept = request.headers.get("accept-language") ?? "";
   if (/\bko\b/i.test(accept)) {
     return "ko";
+  }
+  if (/\bja\b/i.test(accept)) {
+    return "ja";
   }
 
   return defaultLocale;

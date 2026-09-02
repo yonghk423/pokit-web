@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/articles",
     "/briefing",
     "/new-arrivals",
+    "/app",
     "/support",
   ] as const;
 
@@ -35,7 +36,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         path === "" ||
         path === "/articles" ||
         path === "/briefing" ||
-        path === "/new-arrivals"
+        path === "/new-arrivals" ||
+        path === "/app"
           ? "weekly"
           : "monthly",
       priority:
@@ -43,7 +45,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           ? 1
           : path === "/articles" ||
               path === "/briefing" ||
-              path === "/new-arrivals"
+              path === "/new-arrivals" ||
+              path === "/app"
             ? 0.9
             : 0.5,
     })),
@@ -79,7 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .flatMap(({ slug, publishedAt, hasEnglishTranslation }) => {
       const localesForArticle = hasEnglishTranslation
         ? locales
-        : (["ko"] as const);
+        : (["ko", "ja"] as const);
 
       return localesForArticle.map((locale) => ({
         url: `${site.siteUrl}${articlePath(locale, slug)}`,

@@ -80,6 +80,11 @@ export function SiteFooter({ locale, dict }: Props) {
               </Link>
             </li>
             <li>
+              <Link href={withLocale(locale, "/app")} className="text-[0.82rem] text-muted hover:text-indigo">
+                {dict.footer.app}
+              </Link>
+            </li>
+            <li>
               <Link href={withLocale(locale, "/support")} className="text-[0.82rem] text-muted hover:text-indigo">
                 {dict.footer.support}
               </Link>

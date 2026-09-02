@@ -33,7 +33,7 @@ type Props = {
 };
 
 function articleAvailableLocales(hasEnglishTranslation: boolean | undefined): readonly Locale[] {
-  return hasEnglishTranslation === false ? (["ko"] as const) : locales;
+  return hasEnglishTranslation === false ? (["ko", "ja"] as const) : locales;
 }
 
 function articleMetaDescription(title: string, description?: string) {
@@ -77,13 +77,18 @@ export default async function ArticlePage({ params }: Props) {
 
   const related = await getRelatedArticles(slug, article.category, locale, dict);
   const showKoreanOnlyBanner =
-    locale === "en" && article.hasEnglishTranslation === false;
+    (locale === "en" && article.hasEnglishTranslation === false) ||
+    locale === "ja";
 
   const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
   const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
   const description = articleMetaDescription(article.title, article.description);
   const jsonLdLocale =
-    article.hasEnglishTranslation === false ? ("ko" as const) : locale;
+    locale === "en" && article.hasEnglishTranslation === false
+      ? ("ko" as const)
+      : locale === "ja"
+        ? ("ko" as const)
+        : locale;
 
   return (
     <>
