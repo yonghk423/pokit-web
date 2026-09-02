@@ -18,6 +18,8 @@ type Props = {
 };
 
 const AUTOPLAY_MS = 4500;
+const APP_SCREEN_BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzOSIgaGVpZ2h0PSI4NCIgdmlld0JveD0iMCAwIDM5IDg0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cmVjdCB3aWR0aD0iMzkiIGhlaWdodD0iODQiIGZpbGw9IiNmM2YxZWYiLz48L3N2Zz4=";
 
 const controlBtnClass =
   "size-10 shrink-0 cursor-pointer border-2 border-black bg-panel font-sans text-base font-bold leading-none text-ink hover:bg-wash hover:brutal-shadow disabled:cursor-not-allowed disabled:bg-beige disabled:text-muted";
@@ -158,6 +160,8 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
                     alt={item.alt}
                     width={390}
                     height={844}
+                    placeholder="blur"
+                    blurDataURL={APP_SCREEN_BLUR_DATA_URL}
                     className="h-auto w-full"
                     sizes="(max-width: 640px) 52vw, 240px"
                     draggable={false}

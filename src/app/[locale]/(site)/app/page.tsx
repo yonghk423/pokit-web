@@ -22,6 +22,9 @@ const OG_IMAGE = {
   height: 512,
 } as const;
 
+const APP_SCREEN_BLUR_DATA_URL =
+  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzOSIgaGVpZ2h0PSI4NCIgdmlld0JveD0iMCAwIDM5IDg0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cmVjdCB3aWR0aD0iMzkiIGhlaWdodD0iODQiIGZpbGw9IiNmM2YxZWYiLz48L3N2Zz4=";
+
 type FeatureVisual = {
   primary: string;
   secondary?: string;
@@ -29,13 +32,13 @@ type FeatureVisual = {
 
 /** Screenshots that already have an English (and JA) localized asset under /app/en. */
 const LOCALIZED_APP_IMAGES = new Set([
-  "routines.png",
-  "todos.png",
-  "memo-editor.png",
-  "lock-screen-memo.png",
-  "today-note.png",
-  "library.png",
-  "history.png",
+  "routines.webp",
+  "todos.webp",
+  "memo-editor.webp",
+  "lock-screen-memo.webp",
+  "today-note.webp",
+  "library.webp",
+  "history.webp",
 ]);
 
 function appImage(locale: Locale, fileName: string) {
@@ -55,47 +58,44 @@ function localizeVisual(locale: Locale, visual: FeatureVisual): FeatureVisual {
 }
 
 const FEATURE_VISUALS: Record<string, FeatureVisual> = {
-  routines: { primary: "routines.png", secondary: "first-launch.png" },
-  memo: { primary: "lock-screen-memo.png", secondary: "memo-editor.png" },
-  notes: { primary: "today-note.png" },
-  todos: { primary: "todos.png" },
-  history: { primary: "history.png" },
-  library: { primary: "library.png" },
+  routines: { primary: "routines.webp", secondary: "first-launch.webp" },
+  memo: { primary: "lock-screen-memo.webp", secondary: "memo-editor.webp" },
+  notes: { primary: "today-note.webp" },
+  todos: { primary: "todos.webp" },
+  history: { primary: "history.webp" },
+  library: { primary: "library.webp" },
 };
 
 const HERO_PHONES = [
   {
-    file: "todos.png",
+    file: "todos.webp",
     featureId: "todos",
-    priority: false,
     offset: "translate-y-6 nav:translate-y-10",
     frameClassName: "max-w-[10rem] -rotate-6 nav:max-w-[13rem]",
   },
   {
-    file: "routines.png",
+    file: "routines.webp",
     featureId: "routines",
-    priority: true,
     offset: "z-20",
     frameClassName: "max-w-[11.5rem] nav:max-w-64",
   },
   {
-    file: "history.png",
+    file: "history.webp",
     featureId: "history",
-    priority: false,
     offset: "translate-y-8 nav:translate-y-12",
     frameClassName: "max-w-[10rem] rotate-6 nav:max-w-[13rem]",
   },
 ] as const;
 
 const GALLERY = [
-  { file: "first-launch.png", featureId: "routines" },
-  { file: "routines.png", featureId: "routines" },
-  { file: "memo-editor.png", featureId: "memo" },
-  { file: "lock-screen-memo.png", featureId: "memo" },
-  { file: "todos.png", featureId: "todos" },
-  { file: "today-note.png", featureId: "notes" },
-  { file: "history.png", featureId: "history" },
-  { file: "library.png", featureId: "library" },
+  { file: "first-launch.webp", featureId: "routines" },
+  { file: "routines.webp", featureId: "routines" },
+  { file: "memo-editor.webp", featureId: "memo" },
+  { file: "lock-screen-memo.webp", featureId: "memo" },
+  { file: "todos.webp", featureId: "todos" },
+  { file: "today-note.webp", featureId: "notes" },
+  { file: "history.webp", featureId: "history" },
+  { file: "library.webp", featureId: "library" },
 ] as const;
 
 const FEATURE_TONES = [
@@ -111,12 +111,14 @@ function PhoneFrame({
   src,
   alt,
   priority = false,
+  eager = false,
   elevated = false,
   className,
 }: {
   src: string;
   alt: string;
   priority?: boolean;
+  eager?: boolean;
   elevated?: boolean;
   className?: string;
 }) {
@@ -134,6 +136,10 @@ function PhoneFrame({
         width={390}
         height={844}
         priority={priority}
+        loading={eager ? "eager" : undefined}
+        fetchPriority={eager ? "high" : undefined}
+        placeholder="blur"
+        blurDataURL={APP_SCREEN_BLUR_DATA_URL}
         className="h-auto w-full"
         sizes="(max-width: 640px) 45vw, 240px"
       />
@@ -212,8 +218,9 @@ function HeroPhoneCluster({
               <PhoneFrame
                 src={src}
                 alt={feature?.imageAlt ?? copy.title}
-                priority={phone.priority}
-                elevated={phone.file === "routines.png"}
+                priority
+                eager
+                elevated={phone.file === "routines.webp"}
                 className={cn("w-full", phone.frameClassName)}
               />
             </div>
