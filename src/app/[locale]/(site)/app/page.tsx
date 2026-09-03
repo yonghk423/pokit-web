@@ -32,6 +32,7 @@ type FeatureVisual = {
 
 /** Screenshots that already have an English (and JA) localized asset under /app/en. */
 const LOCALIZED_APP_IMAGES = new Set([
+  "first-launch.webp",
   "routines.webp",
   "todos.webp",
   "memo-editor.webp",
