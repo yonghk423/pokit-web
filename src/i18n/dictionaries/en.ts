@@ -141,7 +141,7 @@ const dictionary: Dictionary = {
       "Set your day bounds, then keep routines, tasks, memos, and history in one place. Start your daily rhythm with the POKIT app.",
     kicker: "App",
     title: "Your day, in a pocket. POKIT",
-    lead: "Pick when your day starts and ends, and today gets simpler. Keep routines, tasks, memos, and your streak in one app.",
+    lead: "Keep routines, tasks, memos, and your streak in one app.",
     download: "Get it on the App Store",
     featuresHeading: "Open the app, and this is how you'll use it",
     features: [
@@ -160,7 +160,7 @@ const dictionary: Dictionary = {
       {
         id: "notes",
         title: "Today's note, write the day down",
-        body: "Keep what happened today, checklists, and short thoughts in one place. Mix sentences, tasks, and bullets however you like.",
+        body: "Keep what happened today, short thoughts, and to-dos in one place. Write in sentences, or keep a short list. Either works.",
         imageAlt: "POKIT app Today note screen",
       },
       {

@@ -141,7 +141,7 @@ const dictionary: Dictionary = {
       "하루의 시작과 끝을 정하고, 루틴·할 일·메모·기록을 한곳에서. POKIT 앱으로 일상을 가볍게 가꿔 보세요.",
     kicker: "App",
     title: "하루를 담는 포켓, POKIT",
-    lead: "하루가 몇 시부터 시작하고 몇 시에 끝나는지만 정해 두면, 오늘이 훨씬 단순해져요. 루틴이랑 할 일, 메모, 기록까지 앱 하나에 담아 두세요.",
+    lead: "루틴이랑 할 일, 메모, 기록까지 앱 하나에 담아 두세요.",
     download: "App Store에서 받기",
     featuresHeading: "앱을 열면, 이렇게 쓰게 될 거예요",
     features: [
@@ -160,7 +160,7 @@ const dictionary: Dictionary = {
       {
         id: "notes",
         title: "오늘 노트, 하루를 적어 두기",
-        body: "오늘 있었던 일, 체크리스트, 짧은 생각을 한곳에 적어 둘 수 있어요. 문장도, 할 일도, bullet도 섞어서 쓰면 됩니다.",
+        body: "오늘 있었던 일, 짧은 생각, 해야 할 일을 한곳에 적어 둘 수 있어요. 문장으로 적어도 되고, 짧게 목록으로 정리해도 됩니다.",
         imageAlt: "POKIT 앱 오늘 노트 화면",
       },
       {
