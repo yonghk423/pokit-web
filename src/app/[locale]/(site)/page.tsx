@@ -275,7 +275,7 @@ export default async function Home({ params }: Props) {
         {wellnessCarousel.length > 0 && (
           <section
             id="wellness"
-            className="mt-16 border-y-2 border-black bg-wash py-14"
+            className="mt-16 border-y-2 border-black bg-beige py-14"
           >
             <div className={monoContainer}>
               <SectionHeading

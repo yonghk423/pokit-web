@@ -133,7 +133,8 @@ const dictionary: Dictionary = {
     title: "Track daily routines and protect your wellness in the POKIT app.",
     download: "Download on the App Store",
     qrAria: "POKIT App Store QR code",
-    qrHint: "Scan with your phone camera to install",
+    qrTitle: "Scan this now",
+    qrHint: "Point your camera here to install",
   },
   appPage: {
     metaTitle: "POKIT App",
@@ -141,7 +142,7 @@ const dictionary: Dictionary = {
       "Set your day bounds, then keep routines, tasks, memos, and history in one place. Start your daily rhythm with the POKIT app.",
     kicker: "App",
     title: "Your day, in a pocket. POKIT",
-    lead: "Keep routines, tasks, memos, and your streak in one app.",
+    lead: "Routines, memos, and your day log. Keep today's everyday life in one app.",
     download: "Get it on the App Store",
     featuresHeading: "Open the app, and this is how you'll use it",
     features: [
@@ -178,7 +179,7 @@ const dictionary: Dictionary = {
       {
         id: "library",
         title: "Keep the books you're reading",
-        body: "Split what you're reading from what you've finished. It sits nicely next to your reading routine.",
+        body: "Books get their own space too. Split what you're reading from what you've finished, so today's book is easy to find.",
         imageAlt: "POKIT My Library screen",
       },
     ],

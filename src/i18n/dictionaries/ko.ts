@@ -133,7 +133,8 @@ const dictionary: Dictionary = {
     title: "POKIT 앱에서 일상 루틴을 기록하고, 웰니스를 지켜 보세요.",
     download: "App Store에서 다운로드",
     qrAria: "POKIT 앱 App Store QR 코드",
-    qrHint: "휴대폰 카메라로 스캔해서 설치",
+    qrTitle: "지금 스캔해 보세요",
+    qrHint: "카메라로 비추면 바로 설치돼요",
   },
   appPage: {
     metaTitle: "POKIT 앱",
@@ -141,7 +142,7 @@ const dictionary: Dictionary = {
       "하루의 시작과 끝을 정하고, 루틴·할 일·메모·기록을 한곳에서. POKIT 앱으로 일상을 가볍게 가꿔 보세요.",
     kicker: "App",
     title: "하루를 담는 포켓, POKIT",
-    lead: "루틴이랑 할 일, 메모, 기록까지 앱 하나에 담아 두세요.",
+    lead: "루틴, 메모, 기록. 오늘 하루의 일상을 앱 하나에 담아 두세요.",
     download: "App Store에서 받기",
     featuresHeading: "앱을 열면, 이렇게 쓰게 될 거예요",
     features: [
@@ -178,7 +179,7 @@ const dictionary: Dictionary = {
       {
         id: "library",
         title: "읽고 있는 책 모아두기",
-        body: "읽는 중인 책이랑 다 읽은 책을 나눠 모아두세요. 독서 루틴이랑 같이 두면 더 잘 이어져요.",
+        body: "책도 따로 모아 두는 공간이 있어요. 읽는 중인 책과 다 읽은 책을 나눠 두면, 지금 펼칠 책만 금방 찾을 수 있어요.",
         imageAlt: "POKIT 앱 내 서재 화면",
       },
     ],

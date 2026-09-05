@@ -93,6 +93,7 @@ export type Dictionary = {
     title: string;
     download: string;
     qrAria: string;
+    qrTitle: string;
     qrHint: string;
   };
   appPage: {
