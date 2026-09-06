@@ -25,11 +25,22 @@ require('dotenv').config({ path: '.env.local' });
 
 또는 `npx sanity documents create` / `documents delete` (임시 JSON, repo 미추가).
 
+### 이미지 (필수)
+
+- **커버·본문·루틴 도구 이미지 업로드는 사용자가 Studio에서만 한다.**
+- 에이전트는 Sanity에 **이미지를 올리지 않는다.** 금지 예:
+  - `client.assets.upload` / MCP `dataset_assets_upload` / `generate_image`로 에셋 생성
+  - Unsplash·외부 URL을 받아 asset으로 넣고 `coverImage` / `image`에 연결
+  - AI 이미지 생성 후 Sanity 업로드
+- 글·도구를 API로 만들 때는 **텍스트 필드만** 넣고, 이미지는 비운 채 두거나 기존 asset 참조만 유지한다.
+- 이미지가 비어 있으면 사용자에게 **Studio에서 직접 업로드**하라고 안내한다.
+
 ### 금지
 
 - Article bulk import용 **새 `.mjs` / `.ts` 스크립트를 `scripts/`에 생성·커밋**
 - `package.json`에 `push-articles` 같은 npm script 추가
 - 사용자가 “N개 글 추가”를 요청했다고 **프로젝트 구조를 바꾸는 것**
+- 위 **이미지 업로드** (사용자가 Studio에 넣는 것이 유일한 경로)
 
 ## 홈 페이지 연결 (유일한 persisted 스크립트)
 
