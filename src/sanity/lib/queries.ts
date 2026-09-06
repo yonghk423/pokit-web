@@ -1,27 +1,27 @@
 /**
  * Locale field resolution:
  * - en → En, then ko
- * - ja → Ja, then En, then ko (until full JP coverage)
+ * - ja → Ja, then ko (do not fall back to English on /ja)
  * - ko → ko
  */
 const localizedString = (field: string) =>
   `select(
     $locale == "en" => coalesce(${field}En, ${field}),
-    $locale == "ja" => coalesce(${field}Ja, ${field}En, ${field}),
+    $locale == "ja" => coalesce(${field}Ja, ${field}),
     ${field}
   )`;
 
 const localizedTextSearch = (field: string) =>
   `select(
     $locale == "en" => coalesce(${field}En, ${field}) match $pattern,
-    $locale == "ja" => coalesce(${field}Ja, ${field}En, ${field}) match $pattern,
+    $locale == "ja" => coalesce(${field}Ja, ${field}) match $pattern,
     ${field} match $pattern
   )`;
 
 const localizedPortableText = (field: string) =>
   `select(
     $locale == "en" => coalesce(${field}En, ${field}),
-    $locale == "ja" => coalesce(${field}Ja, ${field}En, ${field}),
+    $locale == "ja" => coalesce(${field}Ja, ${field}),
     ${field}
   )`;
 
@@ -34,7 +34,7 @@ const articleCardFields = `
   category,
   "imageAlt": select(
     $locale == "en" => coalesce(coverImageAltEn, coverImageAlt, coverImage.alt, coalesce(titleEn, title)),
-    $locale == "ja" => coalesce(coverImageAltJa, coverImageAltEn, coverImageAlt, coverImage.alt, coalesce(titleJa, titleEn, title)),
+    $locale == "ja" => coalesce(coverImageAltJa, coverImageAlt, coverImage.alt, coalesce(titleJa, title)),
     coalesce(coverImageAlt, coverImage.alt, title)
   ),
   coverImage,
@@ -112,7 +112,7 @@ const newArrivalsItemCardFields = `
   image,
   "imageAlt": select(
     $locale == "en" => coalesce(imageAltEn, imageAlt, nameEn, name),
-    $locale == "ja" => coalesce(imageAltJa, imageAltEn, imageAlt, nameJa, nameEn, name),
+    $locale == "ja" => coalesce(imageAltJa, imageAlt, nameJa, name),
     coalesce(imageAlt, name)
   ),
   "imageLqip": image.asset->metadata.lqip,
