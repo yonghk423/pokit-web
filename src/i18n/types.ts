@@ -162,6 +162,7 @@ export type Dictionary = {
     viewFull: string;
     viewAll: string;
     metaDescriptionFromItems: (names: string[]) => string;
+    localeFallbackBanner: string;
   };
   categories: {
     Weekly: string;

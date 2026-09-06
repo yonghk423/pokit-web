@@ -78,7 +78,7 @@ export default async function ArticlePage({ params }: Props) {
   const related = await getRelatedArticles(slug, article.category, locale, dict);
   const showKoreanOnlyBanner =
     (locale === "en" && article.hasEnglishTranslation === false) ||
-    locale === "ja";
+    (locale === "ja" && article.hasJapaneseTranslation === false);
 
   const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
   const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
@@ -86,7 +86,7 @@ export default async function ArticlePage({ params }: Props) {
   const jsonLdLocale =
     locale === "en" && article.hasEnglishTranslation === false
       ? ("ko" as const)
-      : locale === "ja"
+      : locale === "ja" && article.hasJapaneseTranslation === false
         ? ("ko" as const)
         : locale;
 

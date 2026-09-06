@@ -249,6 +249,8 @@ const dictionary: Dictionary = {
         ? `${joined} — POKIT 루틴 도구 추천`
         : "생산성·웰니스를 돕는 도구를 추천하는 POKIT 루틴 도구";
     },
+    localeFallbackBanner:
+      "이 페이지의 일본어 번역은 아직 없습니다. 영어가 있으면 영어를, 없으면 한국어를 표시합니다.",
   },
   categories: {
     Weekly: "이번 주",

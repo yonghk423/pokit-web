@@ -1,8 +1,29 @@
+/**
+ * Locale field resolution:
+ * - en → En, then ko
+ * - ja → Ja, then En, then ko (until full JP coverage)
+ * - ko → ko
+ */
 const localizedString = (field: string) =>
-  `select($locale == "en" => coalesce(${field}En, ${field}), ${field})`;
+  `select(
+    $locale == "en" => coalesce(${field}En, ${field}),
+    $locale == "ja" => coalesce(${field}Ja, ${field}En, ${field}),
+    ${field}
+  )`;
 
 const localizedTextSearch = (field: string) =>
-  `select($locale == "en" => coalesce(${field}En, ${field}) match $pattern, ${field} match $pattern)`;
+  `select(
+    $locale == "en" => coalesce(${field}En, ${field}) match $pattern,
+    $locale == "ja" => coalesce(${field}Ja, ${field}En, ${field}) match $pattern,
+    ${field} match $pattern
+  )`;
+
+const localizedPortableText = (field: string) =>
+  `select(
+    $locale == "en" => coalesce(${field}En, ${field}),
+    $locale == "ja" => coalesce(${field}Ja, ${field}En, ${field}),
+    ${field}
+  )`;
 
 const articleCardFields = `
   "slug": slug.current,
@@ -13,18 +34,20 @@ const articleCardFields = `
   category,
   "imageAlt": select(
     $locale == "en" => coalesce(coverImageAltEn, coverImageAlt, coverImage.alt, coalesce(titleEn, title)),
+    $locale == "ja" => coalesce(coverImageAltJa, coverImageAltEn, coverImageAlt, coverImage.alt, coalesce(titleJa, titleEn, title)),
     coalesce(coverImageAlt, coverImage.alt, title)
   ),
   coverImage,
   "coverImageLqip": coverImage.asset->metadata.lqip,
   publishedAt,
   "_updatedAt": _updatedAt,
-  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0
+  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0,
+  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0
 `;
 
 const sectionHeadingProjection = `{
-  "kicker": select($locale == "en" => coalesce(kickerEn, kicker), kicker),
-  "title": select($locale == "en" => coalesce(titleEn, title), title)
+  "kicker": ${localizedString("kicker")},
+  "title": ${localizedString("title")}
 }`;
 
 const searchFilter = `(
@@ -52,13 +75,13 @@ export const HOME_PAGE_QUERY = `*[_type == "homePage"][0]{
 
 const wellnessDigestFields = `
   weekOf,
-  "title": select($locale == "en" => coalesce(titleEn, title), title),
-  "intro": select($locale == "en" => coalesce(introEn, intro), intro),
-  "editorNote": select($locale == "en" => coalesce(editorNoteEn, editorNote), editorNote),
+  "title": ${localizedString("title")},
+  "intro": ${localizedString("intro")},
+  "editorNote": ${localizedString("editorNote")},
   "items": items[]{
-    "headline": select($locale == "en" => coalesce(headlineEn, headline), headline),
-    "summary": select($locale == "en" => coalesce(summaryEn, summary), summary),
-    "sourceName": select($locale == "en" => coalesce(sourceNameEn, sourceName), sourceName),
+    "headline": ${localizedString("headline")},
+    "summary": ${localizedString("summary")},
+    "sourceName": ${localizedString("sourceName")},
     sourceUrl
   },
   "relatedArticles": relatedArticles[]->{${articleCardFields}}
@@ -74,7 +97,7 @@ export const WELLNESS_DIGEST_BY_WEEK_QUERY = `*[_type == "wellnessDigest" && wee
 
 export const WELLNESS_DIGEST_LIST_QUERY = `*[_type == "wellnessDigest" && defined(weekOf)] | order(weekOf desc){
   weekOf,
-  "title": select($locale == "en" => coalesce(titleEn, title), title)
+  "title": ${localizedString("title")}
 }`;
 
 export const SITEMAP_DIGESTS_QUERY = `*[_type == "wellnessDigest" && defined(weekOf)] | order(weekOf desc){
@@ -83,18 +106,24 @@ export const SITEMAP_DIGESTS_QUERY = `*[_type == "wellnessDigest" && defined(wee
 }`;
 
 const newArrivalsItemCardFields = `
-  "name": select($locale == "en" => coalesce(nameEn, name), name),
+  "name": ${localizedString("name")},
   "slug": slug.current,
-  "summary": select($locale == "en" => coalesce(summaryEn, summary), summary),
+  "summary": ${localizedString("summary")},
   image,
-  "imageAlt": select($locale == "en" => coalesce(imageAltEn, imageAlt, nameEn, name), coalesce(imageAlt, name)),
-  "imageLqip": image.asset->metadata.lqip
+  "imageAlt": select(
+    $locale == "en" => coalesce(imageAltEn, imageAlt, nameEn, name),
+    $locale == "ja" => coalesce(imageAltJa, imageAltEn, imageAlt, nameJa, nameEn, name),
+    coalesce(imageAlt, name)
+  ),
+  "imageLqip": image.asset->metadata.lqip,
+  "hasEnglishTranslation": defined(nameEn) && length(nameEn) > 0,
+  "hasJapaneseTranslation": defined(nameJa) && length(nameJa) > 0
 `;
 
 const newArrivalsFields = `
   weekOf,
-  "title": select($locale == "en" => coalesce(titleEn, title), title),
-  "intro": select($locale == "en" => coalesce(introEn, intro), intro),
+  "title": ${localizedString("title")},
+  "intro": ${localizedString("intro")},
   "items": items[]{
     ${newArrivalsItemCardFields}
   }
@@ -110,7 +139,7 @@ export const NEW_ARRIVALS_BY_WEEK_QUERY = `*[_type == "newArrivals" && weekOf ==
 
 export const NEW_ARRIVALS_LIST_QUERY = `*[_type == "newArrivals" && defined(weekOf)] | order(weekOf desc){
   weekOf,
-  "title": select($locale == "en" => coalesce(titleEn, title), title)
+  "title": ${localizedString("title")}
 }`;
 
 export const SITEMAP_NEW_ARRIVALS_QUERY = `*[_type == "newArrivals" && defined(weekOf)] | order(weekOf desc){
@@ -122,7 +151,7 @@ export const ROUTINE_TOOL_BY_SLUG_QUERY = `*[_type == "newArrivals" && count(ite
   weekOf,
   "item": items[slug.current == $slug][0]{
     ${newArrivalsItemCardFields},
-    "body": select($locale == "en" => coalesce(bodyEn, body), body)
+    "body": ${localizedPortableText("body")}
   }
 }`;
 
@@ -135,7 +164,7 @@ export const SITEMAP_ROUTINE_TOOLS_QUERY = `*[_type == "newArrivals" && defined(
 
 export const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   ${articleCardFields},
-  "body": select($locale == "en" => coalesce(bodyEn, body), body),
+  "body": ${localizedPortableText("body")},
   publishedAt,
   durationMinutes,
   categoryKey

@@ -23,6 +23,16 @@ const sectionHeadingFields = [
     title: "섹션 제목 (English)",
     type: "string",
   }),
+  defineField({
+    name: "kickerJa",
+    title: "소제목 (Japanese)",
+    type: "string",
+  }),
+  defineField({
+    name: "titleJa",
+    title: "섹션 제목 (Japanese)",
+    type: "string",
+  }),
 ];
 
 export const homePage = defineType({

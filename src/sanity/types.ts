@@ -14,6 +14,7 @@ export type ArticleCardData = {
   publishedAt?: string;
   _updatedAt?: string;
   hasEnglishTranslation?: boolean;
+  hasJapaneseTranslation?: boolean;
 };
 
 export type ArticleDocument = ArticleCardData & {
@@ -68,6 +69,8 @@ export type NewArrivalsItem = {
   image?: SanityImageSource | null;
   imageAlt?: string;
   imageLqip?: string | null;
+  hasEnglishTranslation?: boolean;
+  hasJapaneseTranslation?: boolean;
 };
 
 export type RoutineToolDetail = NewArrivalsItem & {

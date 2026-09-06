@@ -13,6 +13,11 @@ const digestItemFields = [
     type: "string",
   }),
   defineField({
+    name: "headlineJa",
+    title: "Title (Japanese)",
+    type: "string",
+  }),
+  defineField({
     name: "summary",
     title: "요약 (내 문장)",
     type: "text",
@@ -27,6 +32,12 @@ const digestItemFields = [
     rows: 3,
   }),
   defineField({
+    name: "summaryJa",
+    title: "Summary (Japanese)",
+    type: "text",
+    rows: 3,
+  }),
+  defineField({
     name: "sourceName",
     title: "출처명",
     type: "string",
@@ -36,6 +47,11 @@ const digestItemFields = [
   defineField({
     name: "sourceNameEn",
     title: "Source name (English)",
+    type: "string",
+  }),
+  defineField({
+    name: "sourceNameJa",
+    title: "Source name (Japanese)",
     type: "string",
   }),
   defineField({
@@ -74,6 +90,12 @@ export const wellnessDigest = defineType({
       initialValue: "This week’s wellness briefing",
     }),
     defineField({
+      name: "titleJa",
+      title: "Digest title (Japanese)",
+      type: "string",
+      initialValue: "今週のウェルネスブリーフィング",
+    }),
+    defineField({
       name: "intro",
       title: "인트로 (선택)",
       type: "text",
@@ -82,6 +104,12 @@ export const wellnessDigest = defineType({
     defineField({
       name: "introEn",
       title: "Intro (English)",
+      type: "text",
+      rows: 2,
+    }),
+    defineField({
+      name: "introJa",
+      title: "Intro (Japanese)",
       type: "text",
       rows: 2,
     }),
@@ -96,6 +124,12 @@ export const wellnessDigest = defineType({
     defineField({
       name: "editorNoteEn",
       title: "Editor note (English)",
+      type: "text",
+      rows: 4,
+    }),
+    defineField({
+      name: "editorNoteJa",
+      title: "Editor note (Japanese)",
       type: "text",
       rows: 4,
     }),

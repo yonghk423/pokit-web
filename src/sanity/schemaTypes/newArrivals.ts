@@ -14,6 +14,11 @@ const toolItemFields = [
     type: "string",
   }),
   defineField({
+    name: "nameJa",
+    title: "Tool name (Japanese)",
+    type: "string",
+  }),
+  defineField({
     name: "slug",
     title: "Slug",
     type: "slug",
@@ -36,6 +41,12 @@ const toolItemFields = [
     rows: 6,
   }),
   defineField({
+    name: "summaryJa",
+    title: "Card summary (Japanese)",
+    type: "text",
+    rows: 6,
+  }),
+  defineField({
     name: "body",
     title: "상세 본문",
     type: "array",
@@ -46,6 +57,12 @@ const toolItemFields = [
   defineField({
     name: "bodyEn",
     title: "Detail body (English)",
+    type: "array",
+    of: [{ type: "block" }],
+  }),
+  defineField({
+    name: "bodyJa",
+    title: "Detail body (Japanese)",
     type: "array",
     of: [{ type: "block" }],
   }),
@@ -64,6 +81,11 @@ const toolItemFields = [
   defineField({
     name: "imageAltEn",
     title: "Image alt (English)",
+    type: "string",
+  }),
+  defineField({
+    name: "imageAltJa",
+    title: "Image alt (Japanese)",
     type: "string",
   }),
 ];
@@ -95,6 +117,12 @@ export const newArrivals = defineType({
       initialValue: "This week’s routine tools",
     }),
     defineField({
+      name: "titleJa",
+      title: "Title (Japanese)",
+      type: "string",
+      initialValue: "今週のルーチン道具",
+    }),
+    defineField({
       name: "intro",
       title: "인트로 (선택)",
       type: "text",
@@ -103,6 +131,12 @@ export const newArrivals = defineType({
     defineField({
       name: "introEn",
       title: "Intro (English)",
+      type: "text",
+      rows: 2,
+    }),
+    defineField({
+      name: "introJa",
+      title: "Intro (Japanese)",
       type: "text",
       rows: 2,
     }),

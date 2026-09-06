@@ -13,6 +13,12 @@ export const article = defineType({
       description: "Optional English translation for global visitors.",
       options: { collapsible: true, collapsed: true },
     },
+    {
+      name: "japanese",
+      title: "Japanese",
+      description: "Optional Japanese translation for /ja visitors.",
+      options: { collapsible: true, collapsed: true },
+    },
   ],
   fields: [
     defineField({
@@ -143,6 +149,38 @@ export const article = defineType({
       type: "array",
       of: [{ type: "block" }],
       fieldset: "english",
+    }),
+    defineField({
+      name: "titleJa",
+      title: "Title (Japanese)",
+      type: "string",
+      fieldset: "japanese",
+    }),
+    defineField({
+      name: "kickerJa",
+      title: "Kicker (Japanese)",
+      type: "string",
+      fieldset: "japanese",
+    }),
+    defineField({
+      name: "descriptionJa",
+      title: "Description (Japanese)",
+      type: "text",
+      rows: 3,
+      fieldset: "japanese",
+    }),
+    defineField({
+      name: "coverImageAltJa",
+      title: "Cover image alt text (Japanese)",
+      type: "string",
+      fieldset: "japanese",
+    }),
+    defineField({
+      name: "bodyJa",
+      title: "Body (Japanese)",
+      type: "array",
+      of: [{ type: "block" }],
+      fieldset: "japanese",
     }),
   ],
   preview: {

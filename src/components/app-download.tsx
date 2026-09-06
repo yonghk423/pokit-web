@@ -30,7 +30,7 @@ export function AppDownload({ locale, copy }: Props) {
           <p className="m-0 inline-flex border border-white/35 bg-white/10 px-2.5 py-1 label-caps text-brand-soft">
             {copy.kicker}
           </p>
-          <h2 className="mt-5 mb-0 text-[clamp(1.55rem,3vw,2.35rem)] font-extrabold leading-[1.12] tracking-[-0.035em]">
+          <h2 className="mt-5 mb-0 text-[clamp(1.25rem,2.4vw,1.75rem)] font-extrabold leading-[1.2] tracking-[-0.03em]">
             {copy.title}
           </h2>
           <div className="mt-8">

@@ -124,7 +124,19 @@ export default async function RoutineToolPage({ params }: Props) {
         </p>
 
         <p className="m-0 label-caps text-green">{dict.newArrivals.kicker}</p>
-        <h1 className="m-0 mt-2 text-[clamp(1.85rem,3.5vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.03em]">
+        {locale === "ja" && tool.hasJapaneseTranslation === false ? (
+          <p className="mt-4 mb-0 border-2 border-black bg-beige px-4 py-3 font-sans text-[0.9rem] leading-relaxed text-ink">
+            {dict.newArrivals.localeFallbackBanner}
+          </p>
+        ) : null}
+        <h1
+          className={cn(
+            "mb-0 text-[clamp(1.85rem,3.5vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.03em]",
+            locale === "ja" && tool.hasJapaneseTranslation === false
+              ? "mt-5"
+              : "mt-2",
+          )}
+        >
           {tool.name}
         </h1>
         <p className="m-0 mt-4 max-w-2xl font-sans text-[1.05rem] leading-relaxed text-muted">

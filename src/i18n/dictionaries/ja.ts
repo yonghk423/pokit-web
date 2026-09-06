@@ -114,7 +114,7 @@ const dictionary: Dictionary = {
   article: {
     backHome: "← Back to POKIT",
     koreanOnlyBanner:
-      "この記事の日本語版はまだありません。韓国語の原文を表示しています。",
+      "このページの日本語版はまだありません。英語版がある場合は英語を、なければ韓国語の原文を表示しています。",
     relatedStories: (label) => `${label}のストーリー`,
     viewMore: "もっと見る →",
     addToPokit: {
@@ -249,6 +249,8 @@ const dictionary: Dictionary = {
         ? `${joined}。POKITルーチン道具のおすすめ`
         : "生産性とウェルネスを支える道具をおすすめするPOKITルーチン道具";
     },
+    localeFallbackBanner:
+      "このページの日本語版はまだありません。英語版がある場合は英語を、なければ韓国語を表示しています。",
   },
   categories: {
     Weekly: "今週",

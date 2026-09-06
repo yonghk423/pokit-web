@@ -249,6 +249,8 @@ const dictionary: Dictionary = {
         ? `${joined} — POKIT routine tool picks`
         : "Tools for productivity and wellness — POKIT";
     },
+    localeFallbackBanner:
+      "A Japanese translation is not ready yet. We show English when available, otherwise Korean.",
   },
   categories: {
     Weekly: "This week",
