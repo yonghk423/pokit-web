@@ -279,7 +279,7 @@ async function main() {
   console.log("\nWellness (바쁜 하루, 몸을 위한 10분):");
   result.cityGuides?.forEach((a) => console.log(" ", a.slug, a.category));
 
-  const siteUrl = (process.env.REVALIDATE_SITE_URL || "https://pokitstory.com").replace(
+  const siteUrl = (process.env.REVALIDATE_SITE_URL || "https://www.pokitstory.com").replace(
     /\/$/,
     "",
   );

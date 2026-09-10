@@ -3,7 +3,7 @@
  *
  * Requires in .env.local:
  *   SANITY_REVALIDATE_SECRET
- *   REVALIDATE_SITE_URL (default https://pokitstory.com)
+ *   REVALIDATE_SITE_URL (default https://www.pokitstory.com)
  *
  * Usage:
  *   node scripts/revalidate-site.mjs
@@ -14,7 +14,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 
 const secret = process.env.SANITY_REVALIDATE_SECRET;
-const siteUrl = (process.env.REVALIDATE_SITE_URL || "https://pokitstory.com").replace(
+const siteUrl = (process.env.REVALIDATE_SITE_URL || "https://www.pokitstory.com").replace(
   /\/$/,
   "",
 );

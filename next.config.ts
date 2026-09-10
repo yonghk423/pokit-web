@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     root: process.cwd(),
   },
   images: {
+    formats: ["image/avif", "image/webp"],
+    /** Phone frames render ~160–256 CSS px; keep small widths in the candidate set. */
+    imageSizes: [96, 128, 256, 384, 640],
     remotePatterns: [
       {
         protocol: "https",

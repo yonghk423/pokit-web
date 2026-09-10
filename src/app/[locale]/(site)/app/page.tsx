@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
@@ -9,6 +9,11 @@ import { JsonLd } from "@/components/json-ld";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import {
+  APP_SCREEN_SHELL,
+  appScreen,
+  type AppScreenFile,
+} from "@/lib/app-screens";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
 
@@ -22,38 +27,19 @@ const OG_IMAGE = {
   height: 512,
 } as const;
 
-const APP_SCREEN_BLUR_DATA_URL =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzOSIgaGVpZ2h0PSI4NCIgdmlld0JveD0iMCAwIDM5IDg0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cmVjdCB3aWR0aD0iMzkiIGhlaWdodD0iODQiIGZpbGw9IiNmM2YxZWYiLz48L3N2Zz4=";
-
 type FeatureVisual = {
-  primary: string;
-  secondary?: string;
+  primary: AppScreenFile;
+  secondary?: AppScreenFile;
 };
 
-/** Screenshots that already have an English (and JA) localized asset under /app/en. */
-const LOCALIZED_APP_IMAGES = new Set([
-  "first-launch.webp",
-  "routines.webp",
-  "todos.webp",
-  "memo-editor.webp",
-  "lock-screen-memo.webp",
-  "today-note.webp",
-  "library.webp",
-  "history.webp",
-]);
-
-function appImage(locale: Locale, fileName: string) {
-  if (locale !== "ko" && LOCALIZED_APP_IMAGES.has(fileName)) {
-    return `/app/en/${fileName}`;
-  }
-  return `/app/${fileName}`;
-}
-
-function localizeVisual(locale: Locale, visual: FeatureVisual): FeatureVisual {
+function localizeVisual(
+  locale: Locale,
+  visual: FeatureVisual,
+): { primary: StaticImageData; secondary?: StaticImageData } {
   return {
-    primary: appImage(locale, visual.primary),
+    primary: appScreen(locale, visual.primary),
     secondary: visual.secondary
-      ? appImage(locale, visual.secondary)
+      ? appScreen(locale, visual.secondary)
       : undefined,
   };
 }
@@ -69,19 +55,19 @@ const FEATURE_VISUALS: Record<string, FeatureVisual> = {
 
 const HERO_PHONES = [
   {
-    file: "todos.webp",
+    file: "todos.webp" as const,
     featureId: "todos",
     offset: "translate-y-6 nav:translate-y-10",
     frameClassName: "max-w-[10rem] -rotate-6 nav:max-w-[13rem]",
   },
   {
-    file: "routines.webp",
+    file: "routines.webp" as const,
     featureId: "routines",
     offset: "z-20",
     frameClassName: "max-w-[11.5rem] nav:max-w-64",
   },
   {
-    file: "history.webp",
+    file: "history.webp" as const,
     featureId: "history",
     offset: "translate-y-8 nav:translate-y-12",
     frameClassName: "max-w-[10rem] rotate-6 nav:max-w-[13rem]",
@@ -89,14 +75,14 @@ const HERO_PHONES = [
 ] as const;
 
 const GALLERY = [
-  { file: "first-launch.webp", featureId: "routines" },
-  { file: "routines.webp", featureId: "routines" },
-  { file: "memo-editor.webp", featureId: "memo" },
-  { file: "lock-screen-memo.webp", featureId: "memo" },
-  { file: "todos.webp", featureId: "todos" },
-  { file: "today-note.webp", featureId: "notes" },
-  { file: "history.webp", featureId: "history" },
-  { file: "library.webp", featureId: "library" },
+  { file: "first-launch.webp" as const, featureId: "routines" },
+  { file: "routines.webp" as const, featureId: "routines" },
+  { file: "memo-editor.webp" as const, featureId: "memo" },
+  { file: "lock-screen-memo.webp" as const, featureId: "memo" },
+  { file: "todos.webp" as const, featureId: "todos" },
+  { file: "today-note.webp" as const, featureId: "notes" },
+  { file: "history.webp" as const, featureId: "history" },
+  { file: "library.webp" as const, featureId: "library" },
 ] as const;
 
 const FEATURE_TONES = [
@@ -116,7 +102,7 @@ function PhoneFrame({
   elevated = false,
   className,
 }: {
-  src: string;
+  src: StaticImageData;
   alt: string;
   priority?: boolean;
   eager?: boolean;
@@ -126,23 +112,23 @@ function PhoneFrame({
   return (
     <div
       className={cn(
-        "overflow-hidden border-2 border-black bg-panel",
+        "overflow-hidden border-2 border-black",
         elevated ? "brutal-shadow-mint" : "brutal-shadow",
         className,
       )}
+      style={{ backgroundColor: APP_SCREEN_SHELL }}
     >
       <Image
         src={src}
         alt={alt}
-        width={390}
-        height={844}
+        sizes="(max-width: 640px) 45vw, 240px"
+        quality={75}
         priority={priority}
         loading={eager ? "eager" : undefined}
         fetchPriority={eager ? "high" : undefined}
         placeholder="blur"
-        blurDataURL={APP_SCREEN_BLUR_DATA_URL}
         className="h-auto w-full"
-        sizes="(max-width: 640px) 45vw, 240px"
+        style={{ backgroundColor: APP_SCREEN_SHELL }}
       />
     </div>
   );
@@ -153,11 +139,13 @@ function FeatureVisualCluster({
   alt,
   secondaryAlt,
   secondaryFirst = false,
+  priority = false,
 }: {
-  visual: FeatureVisual;
+  visual: { primary: StaticImageData; secondary?: StaticImageData };
   alt: string;
   secondaryAlt?: string;
   secondaryFirst?: boolean;
+  priority?: boolean;
 }) {
   if (!visual.secondary) {
     return (
@@ -165,6 +153,8 @@ function FeatureVisualCluster({
         src={visual.primary}
         alt={alt}
         elevated
+        priority={priority}
+        eager={priority}
         className="mx-auto w-full max-w-52 nav:max-w-64"
       />
     );
@@ -183,12 +173,16 @@ function FeatureVisualCluster({
         src={left.src}
         alt={left.alt}
         elevated={left.elevated}
+        priority={priority}
+        eager={priority}
         className="w-[48%] -rotate-2"
       />
       <PhoneFrame
         src={right.src}
         alt={right.alt}
         elevated={right.elevated}
+        priority={priority}
+        eager={priority}
         className="w-[48%] rotate-2"
       />
     </div>
@@ -208,25 +202,25 @@ function HeroPhoneCluster({
     <div className="relative mx-auto w-full max-w-md nav:max-w-xl">
       <div className="relative px-2 pb-2 pt-6 nav:px-4 nav:pt-8">
         <div className="relative grid grid-cols-3 items-end gap-2 nav:gap-4">
-        {HERO_PHONES.map((phone) => {
-          const feature = featureById[phone.featureId];
-          const src = appImage(locale, phone.file);
-          return (
-            <div
-              key={phone.file}
-              className={cn("flex justify-center", phone.offset)}
-            >
-              <PhoneFrame
-                src={src}
-                alt={feature?.imageAlt ?? copy.title}
-                priority
-                eager
-                elevated={phone.file === "routines.webp"}
-                className={cn("w-full", phone.frameClassName)}
-              />
-            </div>
-          );
-        })}
+          {HERO_PHONES.map((phone) => {
+            const feature = featureById[phone.featureId];
+            const src = appScreen(locale, phone.file);
+            return (
+              <div
+                key={phone.file}
+                className={cn("flex justify-center", phone.offset)}
+              >
+                <PhoneFrame
+                  src={src}
+                  alt={feature?.imageAlt ?? copy.title}
+                  priority
+                  eager
+                  elevated={phone.file === "routines.webp"}
+                  className={cn("w-full", phone.frameClassName)}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -305,8 +299,20 @@ export default async function AppIntroPage({ params }: Props) {
     downloadUrl: storeUrl,
   };
 
+  const heroSrcs = HERO_PHONES.map((phone) => appScreen(locale, phone.file).src);
+
   return (
     <main className="overflow-x-clip">
+      {heroSrcs.map((href) => (
+        <link
+          key={href}
+          rel="preload"
+          as="image"
+          href={href}
+          type="image/webp"
+          fetchPriority="high"
+        />
+      ))}
       <JsonLd data={softwareJsonLd} />
 
       <section className="relative isolate border-b-2 border-black bg-indigo text-white">
@@ -393,6 +399,7 @@ export default async function AppIntroPage({ params }: Props) {
                   <FeatureVisualCluster
                     visual={localizeVisual(locale, visual)}
                     alt={feature.imageAlt}
+                    priority={index === 0}
                     secondaryFirst={
                       feature.id === "routines" || feature.id === "memo"
                     }
@@ -431,7 +438,7 @@ export default async function AppIntroPage({ params }: Props) {
           items={GALLERY.map((item) => {
             const feature = featureById[item.featureId];
             return {
-              src: appImage(locale, item.file),
+              src: appScreen(locale, item.file),
               title: feature?.title ?? copy.galleryHeading,
               alt: feature?.imageAlt ?? copy.galleryHeading,
             };

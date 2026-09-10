@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { APP_SCREEN_SHELL } from "@/lib/app-screens";
 import { cn } from "@/lib/cn";
 
 export type AppGalleryItem = {
-  src: string;
+  src: StaticImageData;
   title: string;
   alt: string;
 };
@@ -18,8 +19,6 @@ type Props = {
 };
 
 const AUTOPLAY_MS = 4500;
-const APP_SCREEN_BLUR_DATA_URL =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzOSIgaGVpZ2h0PSI4NCIgdmlld0JveD0iMCAwIDM5IDg0IiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cmVjdCB3aWR0aD0iMzkiIGhlaWdodD0iODQiIGZpbGw9IiNmM2YxZWYiLz48L3N2Zz4=";
 
 const controlBtnClass =
   "size-10 shrink-0 cursor-pointer border-2 border-black bg-panel font-sans text-base font-bold leading-none text-ink hover:bg-wash hover:brutal-shadow disabled:cursor-not-allowed disabled:bg-beige disabled:text-muted";
@@ -143,27 +142,27 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
             const isActive = index === activeIndex;
             return (
               <div
-                key={item.src}
+                key={item.src.src}
                 data-gallery-cell
                 className="w-52 shrink-0 snap-center nav:w-60"
               >
                 <div
                   className={cn(
-                    "overflow-hidden border-2 border-black bg-panel transition-all duration-500 ease-out",
+                    "overflow-hidden border-2 border-black transition-all duration-500 ease-out",
                     isActive
                       ? "scale-100 opacity-100 brutal-shadow-mint"
                       : "scale-[0.9] opacity-55 brutal-shadow",
                   )}
+                  style={{ backgroundColor: APP_SCREEN_SHELL }}
                 >
                   <Image
                     src={item.src}
                     alt={item.alt}
-                    width={390}
-                    height={844}
-                    placeholder="blur"
-                    blurDataURL={APP_SCREEN_BLUR_DATA_URL}
-                    className="h-auto w-full"
                     sizes="(max-width: 640px) 52vw, 240px"
+                    quality={75}
+                    placeholder="blur"
+                    className="h-auto w-full"
+                    style={{ backgroundColor: APP_SCREEN_SHELL }}
                     draggable={false}
                   />
                 </div>
@@ -191,7 +190,7 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
           <div className="flex items-center gap-2">
             {items.map((item, index) => (
               <button
-                key={item.src}
+                key={item.src.src}
                 type="button"
                 aria-label={item.title}
                 aria-current={index === activeIndex ? "true" : undefined}

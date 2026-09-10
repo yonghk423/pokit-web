@@ -37,6 +37,73 @@
 
 ---
 
+## 2026-09 · `/app` Next.js 이미지 파이프라인
+
+### 문제
+배포에서 스크린샷이 늦게 채워지고, string `public/` 경로 + 수동 blur만으로는 Next 이미지 최적화의 이점을 거의 못 씀. 원본 WebP도 **1320×2868**로 표시 폭(~240px CSS, 2x≈480~512) 대비 과대.
+
+### 조치
+1. 표시 폭 기준 **폭 780** WebP로 재인코딩해 `src/assets/app-screens`(·`en/`)에 둠
+2. `import` static `StaticImageData` → 빌드 타임 blur LQIP + `next/image` srcset (AVIF/WebP)
+3. `next.config` `formats: ['image/avif','image/webp']`, `imageSizes: [96,128,256,384,640]`
+4. `quality={75}`, `sizes="(max-width: 640px) 45vw, 240px"`(갤러리 52vw), 히어로 `priority` + `<link rel="preload" fetchPriority="high">`
+5. 폰 프레임 배경은 앱 크림톤 `#f0ebe3` 유지 (CDN 지연 시 흰 셸 완화)
+
+### 결과 (public 1320px WebP → assets 780px WebP)
+
+| 에셋 | KO | EN |
+|---|---|---|
+| first-launch | 68KB → 35KB (~48%↓) | 70KB → 41KB (~42%↓) |
+| routines | 62KB → 33KB (~47%↓) | 67KB → 35KB (~48%↓) |
+| todos | 50KB → 26KB (~48%↓) | 65KB → 33KB (~49%↓) |
+| memo-editor | 44KB → 23KB (~47%↓) | 60KB → 31KB (~49%↓) |
+| lock-screen-memo | 43KB → 21KB (~51%↓) | 47KB → 23KB (~52%↓) |
+| today-note | 47KB → 25KB (~46%↓) | 57KB → 28KB (~50%↓) |
+| library | 102KB → 53KB (~48%↓) | 99KB → 45KB (~54%↓) |
+| history | 60KB → 34KB (~43%↓) | 62KB → 34KB (~44%↓) |
+| **합계 (8장)** | **476KB → 251KB (~47%↓)** | **527KB → 270KB (~49%↓)** |
+
+해상도: 1320×2868 → 780×1695.
+
+참고 (1차 PNG→WebP, 동일 시리즈 lock-screen): 3955KB → 43KB (~99%↓).  
+1차+2차 누적 예: lock-screen PNG 약 4MB → 최종 assets 약 21KB.
+
+런타임: `next/image`가 `sizes`에 맞춰 더 작은 후보(최대 640 imageSize)와 AVIF를 고를 수 있어, 네트워크 전송량은 위 파일 크기보다 더 작아질 수 있음. (배포 Lighthouse 수치 측정 시 이 칸에 추가)
+
+### 관련 파일
+- `src/assets/app-screens/**`
+- `src/lib/app-screens.ts`
+- `src/app/[locale]/(site)/app/page.tsx`
+- `src/components/app-screen-gallery.tsx`
+- `next.config.ts`
+
+### 이력서용 한 줄 (초안)
+- `/app` 스크린샷을 표시 폭(780)에 맞게 재인코딩하고 Next.js static import + `next/image` srcset·AVIF로 연결해, WebP 8장 합계 기준 약 47~49% 추가 용량 절감(예: KO 476KB→251KB). 이전에 PNG→WebP로 lock-screen 약 99% 절감한 파이프라인 위에 올린 2차 최적화
+
+### 나중에 채울 성능 칸 (배포 후 측정)
+- Lighthouse(모바일) `/app`: LCP / FCP 전후
+- Network: 히어로 3장 전송 바이트·Content-Type(AVIF 여부)
+- 체감: 흰 셸 노출 시간
+
+---
+
+## 2026-09 · `/app` 흰 셸 플리커 보강 (선행 UX)
+
+### 문제
+배포 환경에서 WebP·blur 적용 후에도 폰 프레임이 잠깐 흰색으로 보임.
+원인: 셸/`bg-panel`(#fbf8ff)이 앱 스크린샷 크림톤보다 밝아, CDN·디코딩 지연 동안 흰 레이아웃처럼 보임.
+
+### 조치
+1. 폰 프레임·이미지 배경을 앱 UI 크림톤(`#f0ebe3`)으로 통일
+2. 히어로 preload / 첫 피처 priority (이후 static import 파이프라인으로 이관)
+
+### 관련 파일
+- `src/lib/app-screens.ts`
+- `src/app/[locale]/(site)/app/page.tsx`
+- `src/components/app-screen-gallery.tsx`
+
+---
+
 ## (템플릿) YYYY-MM · 제목
 
 ### 문제
