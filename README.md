@@ -1,61 +1,33 @@
-# pokit-web
+# POKIT
 
-Next.js + Sanity CMS 매거진 사이트.
+일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱입니다.
 
-## 실행
+웹에서는 한 주의 리듬, 출퇴근·공간·수면·몸 풀기 같은 장면을 짧은 이야기로 전하고, iOS 앱에서는 루틴·할 일·메모·기록을 한곳에서 이어 갑니다. 글에서 읽은 루틴은 앱으로 담을 수 있습니다.
 
-```bash
-npm install
-npm run dev
-```
+- 웹: [www.pokitstory.com](https://www.pokitstory.com)
+- 앱: [App Store](https://apps.apple.com/app/id6762331629)
 
-- 사이트: http://localhost:3000
-- Studio: http://localhost:3000/studio
+## 무엇이 있나요
 
-## Sanity 초기 설정
+### 매거진 웹
 
-1. [sanity.io](https://www.sanity.io) 계정 생성
-2. 프로젝트 루트에서:
+한국어·영어·일본어로 읽을 수 있는 일상 웰니스 매거진입니다.
 
-```bash
-npx sanity@latest init
-```
-
-기존 Next.js 프로젝트에 연동 → Studio embed `/studio`.
-
-Sanity project ID는 `src/sanity/env.ts`에 기본값으로 설정되어 있습니다. 로컬에서 덮어쓰려면 `.env.local`을 사용하세요.
-
-또는 [sanity.io/manage](https://www.sanity.io/manage)에서 프로젝트를 확인할 수 있습니다.
-
-3. CORS 허용:
-
-```bash
-npx sanity cors add http://localhost:3000
-npx sanity cors add https://pokitstory.com
-npx sanity cors add https://www.pokitstory.com
-```
-
-4. Studio(`/studio`)에서 **Home Page** singleton과 **Article** 문서 생성·발행
-
-## 구조
-
-| 경로 | 설명 |
+| 섹션 | 내용 |
 |------|------|
-| `/` | 홈 (Sanity homePage 또는 fallback) |
-| `/articles/[slug]` | 기사 상세 |
-| `/studio` | Sanity Studio (embedded) |
-| `/privacy`, `/support` | 정책·지원 |
+| 이번 주 | 한 주 리듬과 짧은 계획 |
+| 루틴 | 아침·낮에 반복하기 좋은 습관 |
+| 이동·휴식 | 출근·환승·이동 중 짧은 회복 |
+| 공간 | 자리·가방·책상 배치 |
+| 잠·저녁 | 하루를 닫는 취침 경계 |
+| 웰니스 | 몸 풀기와 가벼운 활동 |
+| 웰니스 브리핑 | 주간 건강·웰니스 요약 |
+| 루틴 도구 | 생산성·웰니스에 도움이 되는 도구 소개 |
 
-| 코드 | 설명 |
-|------|------|
-| `sanity.config.ts` | Studio 설정 |
-| `src/sanity/schemaTypes/` | article, homePage 스키마 |
-| `src/sanity/lib/fetch.ts` | 홈 콘텐츠 fetch |
-| `src/config/site.ts` | 사이트 이름·URL |
+### POKIT 앱 (iOS)
 
-## 수정 위치
+- 하루의 시작과 끝을 정하고 오늘의 루틴을 한 화면에 모읍니다.
+- 잠금화면 메모, 오늘 노트, 할 일, 히스토리, 서재를 지원합니다.
+- 웹 기사에서 앱으로 루틴을 바로 담을 수 있습니다.
 
-- **사이트 이름·URL**: `src/config/site.ts`
-- **홈 레이아웃**: `src/app/page.tsx`
-- **스타일**: `src/app/globals.css`
-- **콘텐츠 스키마**: `src/sanity/schemaTypes/`
+문의: pokit.app.help@gmail.com
