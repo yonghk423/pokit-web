@@ -127,7 +127,10 @@ export type Dictionary = {
     intro: string;
     email: string;
     sendMail: string;
+    contactCta: string;
+    contactHint: string;
     backHome: string;
+    help: string;
   };
   briefing: {
     nav: string;
