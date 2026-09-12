@@ -3,6 +3,7 @@ import type { StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
+import { AppPageReadyGate } from "@/components/app-page-ready";
 import { PhoneFrame } from "@/components/app-phone-frame";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
 import { AppStoreBadge } from "@/components/app-store-badge";
@@ -90,6 +91,8 @@ const FEATURE_TONES = [
   "bg-green-soft",
   "bg-brand-soft",
 ] as const;
+
+const HERO_READY_COUNT = HERO_PHONES.length;
 
 function FeatureVisualCluster({
   visual,
@@ -272,6 +275,7 @@ export default async function AppIntroPage({ params }: Props) {
       ))}
       <JsonLd data={softwareJsonLd} />
 
+      <AppPageReadyGate expected={HERO_READY_COUNT} label="Loading">
       <section className="relative isolate border-b-2 border-black bg-indigo text-white">
         <div className="pointer-events-none absolute -top-28 left-1/2 h-56 w-56 translate-x-[-130%] rounded-full bg-brand/40 blur-3xl" />
         <div className="pointer-events-none absolute -right-10 top-10 h-64 w-64 rounded-full bg-tertiary-light/40 blur-3xl" />
@@ -307,6 +311,7 @@ export default async function AppIntroPage({ params }: Props) {
           />
         </div>
       </section>
+      </AppPageReadyGate>
 
       <section className={cn(monoContainer, sectionSpacing)} aria-label={copy.featuresHeading}>
         <div className="grid gap-7">
