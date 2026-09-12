@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
+import { PhoneFrame } from "@/components/app-phone-frame";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { JsonLd } from "@/components/json-ld";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import {
-  APP_SCREEN_SHELL,
-  appScreen,
-  type AppScreenFile,
-} from "@/lib/app-screens";
+import { appScreen, type AppScreenFile } from "@/lib/app-screens";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
 
@@ -93,46 +90,6 @@ const FEATURE_TONES = [
   "bg-green-soft",
   "bg-brand-soft",
 ] as const;
-
-function PhoneFrame({
-  src,
-  alt,
-  priority = false,
-  eager = false,
-  elevated = false,
-  className,
-}: {
-  src: StaticImageData;
-  alt: string;
-  priority?: boolean;
-  eager?: boolean;
-  elevated?: boolean;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "overflow-hidden border-2 border-black",
-        elevated ? "brutal-shadow-mint" : "brutal-shadow",
-        className,
-      )}
-      style={{ backgroundColor: APP_SCREEN_SHELL }}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        sizes="(max-width: 640px) 45vw, 240px"
-        quality={75}
-        priority={priority}
-        loading={eager ? "eager" : undefined}
-        fetchPriority={eager ? "high" : undefined}
-        placeholder="blur"
-        className="h-auto w-full"
-        style={{ backgroundColor: APP_SCREEN_SHELL }}
-      />
-    </div>
-  );
-}
 
 function FeatureVisualCluster({
   visual,
@@ -351,15 +308,8 @@ export default async function AppIntroPage({ params }: Props) {
         </div>
       </section>
 
-      <section className={cn(monoContainer, sectionSpacing)} aria-labelledby="app-features">
-        <h2
-          id="app-features"
-          className="m-0 text-[clamp(1.6rem,3vw,2.35rem)] font-extrabold leading-[1.08] tracking-[-0.03em]"
-        >
-          {copy.featuresHeading}
-        </h2>
-
-        <div className="mt-10 grid gap-7">
+      <section className={cn(monoContainer, sectionSpacing)} aria-label={copy.featuresHeading}>
+        <div className="grid gap-7">
           {copy.features.map((feature, index) => {
             const visual = FEATURE_VISUALS[feature.id];
             if (!visual) return null;
