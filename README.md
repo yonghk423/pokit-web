@@ -5,7 +5,7 @@
 웹에서는 한 주의 리듬, 출퇴근·공간·수면·몸 풀기 같은 장면을 짧은 이야기로 전하고, iOS 앱에서는 루틴·할 일·메모·기록을 한곳에서 이어 갑니다. 글에서 읽은 루틴은 앱으로 담을 수 있습니다.
 
 - 웹: [www.pokitstory.com](https://www.pokitstory.com)
-- 앱: [App Store](https://apps.apple.com/app/id6762331629)
+- 앱: [App Store](https://apps.apple.com/kr/app/id6762331629)
 
 ## 무엇이 있나요
 
