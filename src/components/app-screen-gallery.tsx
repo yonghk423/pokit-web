@@ -1,8 +1,9 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { AppScreenImage } from "@/components/app-phone-frame";
 import { APP_SCREEN_SHELL } from "@/lib/app-screens";
 import { cn } from "@/lib/cn";
 
@@ -155,15 +156,10 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
                   )}
                   style={{ backgroundColor: APP_SCREEN_SHELL }}
                 >
-                  <Image
+                  <AppScreenImage
                     src={item.src}
                     alt={item.alt}
                     sizes="(max-width: 640px) 52vw, 240px"
-                    quality={75}
-                    placeholder="blur"
-                    className="h-auto w-full"
-                    style={{ backgroundColor: APP_SCREEN_SHELL }}
-                    draggable={false}
                   />
                 </div>
               </div>
@@ -173,7 +169,7 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
       </div>
 
       <div className="mt-8 flex flex-col items-center gap-5">
-        <p className="m-0 max-w-md text-center text-[clamp(1rem,2vw,1.15rem)] font-extrabold leading-snug tracking-[-0.02em]">
+        <p className="m-0 max-w-lg text-center text-[clamp(1.15rem,2.4vw,1.4rem)] font-extrabold leading-snug tracking-[-0.02em]">
           {activeItem.title}
         </p>
 

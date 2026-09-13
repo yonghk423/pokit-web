@@ -3,7 +3,6 @@ import type { StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
-import { AppPageReadyGate } from "@/components/app-page-ready";
 import { PhoneFrame } from "@/components/app-phone-frame";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
 import { AppStoreBadge } from "@/components/app-store-badge";
@@ -92,8 +91,6 @@ const FEATURE_TONES = [
   "bg-brand-soft",
 ] as const;
 
-const HERO_READY_COUNT = HERO_PHONES.length;
-
 function FeatureVisualCluster({
   visual,
   alt,
@@ -162,7 +159,7 @@ function HeroPhoneCluster({
     <div className="relative mx-auto w-full max-w-md nav:max-w-xl">
       <div className="relative px-2 pb-2 pt-6 nav:px-4 nav:pt-8">
         <div className="relative grid grid-cols-3 items-end gap-2 nav:gap-4">
-          {HERO_PHONES.map((phone) => {
+          {HERO_PHONES.map((phone, index) => {
             const feature = featureById[phone.featureId];
             const src = appScreen(locale, phone.file);
             return (
@@ -170,14 +167,23 @@ function HeroPhoneCluster({
                 key={phone.file}
                 className={cn("flex justify-center", phone.offset)}
               >
-                <PhoneFrame
-                  src={src}
-                  alt={feature?.imageAlt ?? copy.title}
-                  priority
-                  eager
-                  elevated={phone.file === "routines.webp"}
-                  className={cn("w-full", phone.frameClassName)}
-                />
+                <div
+                  className={cn(
+                    "app-hero-phone w-full",
+                    index === 0 && "app-hero-phone-1",
+                    index === 1 && "app-hero-phone-2",
+                    index === 2 && "app-hero-phone-3",
+                  )}
+                >
+                  <PhoneFrame
+                    src={src}
+                    alt={feature?.imageAlt ?? copy.title}
+                    priority
+                    eager
+                    elevated={phone.file === "routines.webp"}
+                    className={cn("w-full", phone.frameClassName)}
+                  />
+                </div>
               </div>
             );
           })}
@@ -275,43 +281,41 @@ export default async function AppIntroPage({ params }: Props) {
       ))}
       <JsonLd data={softwareJsonLd} />
 
-      <AppPageReadyGate expected={HERO_READY_COUNT} label="Loading">
       <section className="relative isolate border-b-2 border-black bg-indigo text-white">
-        <div className="pointer-events-none absolute -top-28 left-1/2 h-56 w-56 translate-x-[-130%] rounded-full bg-brand/40 blur-3xl" />
-        <div className="pointer-events-none absolute -right-10 top-10 h-64 w-64 rounded-full bg-tertiary-light/40 blur-3xl" />
-        <div
-          className={cn(
-            monoContainer,
-            "relative grid grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-center gap-12 py-18 max-nav:grid-cols-1 max-nav:gap-12 max-nav:py-12",
-          )}
-        >
-          <div className="relative z-10">
-            <h1 className="m-0 text-[clamp(2.3rem,5vw,4rem)] font-extrabold leading-[1.02] tracking-[-0.045em]">
-              {site.name}
-            </h1>
-            <p className="mt-3 mb-0 text-[clamp(1.3rem,2.8vw,1.95rem)] font-extrabold leading-[1.2] tracking-[-0.02em] text-brand-soft">
-              {copy.title}
-            </p>
-            <p className="mt-6 mb-0 max-w-2xl text-[1.06rem] leading-relaxed text-white/90">
-              {copy.lead}
-            </p>
+          <div className="app-hero-glow pointer-events-none absolute -top-28 left-1/2 h-56 w-56 translate-x-[-130%] rounded-full bg-brand/40 blur-3xl" />
+          <div className="app-hero-glow pointer-events-none absolute -right-10 top-10 h-64 w-64 rounded-full bg-tertiary-light/40 blur-3xl" />
+          <div
+            className={cn(
+              monoContainer,
+              "relative grid grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-center gap-12 py-20 max-nav:grid-cols-1 max-nav:gap-12 max-nav:py-14",
+            )}
+          >
+            <div className="relative z-10">
+              <h1 className="app-hero-rise app-hero-rise-1 m-0 text-[clamp(2.85rem,7vw,5.1rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
+                {site.name}
+              </h1>
+              <p className="app-hero-rise app-hero-rise-2 mt-4 mb-0 text-[clamp(1.55rem,3.6vw,2.45rem)] font-extrabold leading-[1.15] tracking-[-0.03em] text-brand-soft">
+                {copy.title}
+              </p>
+              <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 max-w-2xl text-[1.2rem] leading-[1.7] text-white/90">
+                {copy.lead}
+              </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <AppStoreBadge locale={locale} label={copy.download} />
-              <span className="inline-flex min-h-12 items-center border-2 border-white/70 bg-white/10 px-4 text-[0.78rem] font-bold tracking-wider text-white uppercase">
-                {trustLine}
-              </span>
+              <div className="app-hero-rise app-hero-rise-4 mt-10 flex flex-wrap items-center gap-3">
+                <AppStoreBadge locale={locale} label={copy.download} />
+                <span className="inline-flex min-h-12 items-center border-2 border-white/70 bg-white/10 px-4 text-[0.86rem] font-bold tracking-wider text-white uppercase">
+                  {trustLine}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <HeroPhoneCluster
-            locale={locale}
-            copy={copy}
-            featureById={featureById}
-          />
-        </div>
-      </section>
-      </AppPageReadyGate>
+            <HeroPhoneCluster
+              locale={locale}
+              copy={copy}
+              featureById={featureById}
+            />
+          </div>
+        </section>
 
       <section className={cn(monoContainer, sectionSpacing)} aria-label={copy.featuresHeading}>
         <div className="grid gap-7">
@@ -325,7 +329,7 @@ export default async function AppIntroPage({ params }: Props) {
               <article
                 key={feature.id}
                 className={cn(
-                  "relative overflow-hidden border-2 border-black p-6 brutal-shadow transition-transform duration-150 hover:-translate-y-0.5 nav:p-8",
+                  "relative overflow-hidden border-2 border-black p-6 brutal-shadow nav:p-8",
                   tone,
                 )}
               >
@@ -336,15 +340,15 @@ export default async function AppIntroPage({ params }: Props) {
                   )}
                 >
                   <div>
-                    <p className="m-0 text-[0.72rem] font-extrabold tracking-wider uppercase opacity-75">
+                    <p className="m-0 text-[0.8rem] font-extrabold tracking-wider uppercase opacity-75">
                       0{index + 1}
                     </p>
-                    <h3 className="mt-2 mb-0 text-[clamp(1.28rem,2.4vw,1.74rem)] font-extrabold leading-[1.15] tracking-[-0.02em]">
+                    <h3 className="mt-3 mb-0 text-[clamp(1.55rem,3.1vw,2.2rem)] font-extrabold leading-[1.12] tracking-[-0.03em]">
                       {feature.title}
                     </h3>
                     <p
                       className={cn(
-                        "mt-4 mb-0 max-w-md text-[1.02rem] leading-relaxed",
+                        "mt-5 mb-0 max-w-xl text-[1.14rem] leading-[1.7]",
                         tone === "bg-indigo text-white" ? "text-white/90" : "text-muted",
                       )}
                     >
@@ -385,7 +389,7 @@ export default async function AppIntroPage({ params }: Props) {
         <p className="m-0 label-caps text-muted">{copy.galleryHeading}</p>
         <h2
           id="app-gallery"
-          className="mt-3 mb-2 text-[clamp(1.4rem,2.8vw,2rem)] font-extrabold leading-[1.15] tracking-[-0.03em]"
+          className="mt-3 mb-2 text-[clamp(1.7rem,3.5vw,2.5rem)] font-extrabold leading-[1.12] tracking-[-0.03em]"
         >
           {copy.galleryLead}
         </h2>

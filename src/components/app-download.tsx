@@ -26,11 +26,11 @@ export function AppDownload({ locale, copy }: Props) {
         <div className="pointer-events-none absolute -left-16 top-[-30%] h-56 w-56 rounded-full bg-brand/35 blur-3xl" />
         <div className="pointer-events-none absolute -right-10 bottom-[-40%] h-64 w-64 rounded-full bg-tertiary-light/30 blur-3xl" />
 
-        <div className="relative z-10 max-w-lg">
+        <div className="relative z-10 max-w-xl">
           <p className="m-0 inline-flex border border-white/35 bg-white/10 px-2.5 py-1 label-caps text-brand-soft">
             {copy.kicker}
           </p>
-          <h2 className="mt-4 mb-0 text-[clamp(1.2rem,2.2vw,1.6rem)] font-extrabold leading-tight tracking-[-0.03em]">
+          <h2 className="mt-4 mb-0 text-[clamp(1.45rem,2.8vw,2.05rem)] font-extrabold leading-tight tracking-[-0.03em]">
             {copy.title}
           </h2>
           <div className="mt-6">

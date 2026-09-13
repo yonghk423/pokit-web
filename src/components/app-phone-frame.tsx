@@ -1,11 +1,50 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useRef } from "react";
+import { useState } from "react";
 
-import { useAppScreenReady } from "@/components/app-page-ready";
 import { APP_SCREEN_SHELL } from "@/lib/app-screens";
 import { cn } from "@/lib/cn";
+
+type ScreenImageProps = {
+  src: StaticImageData;
+  alt: string;
+  sizes: string;
+  priority?: boolean;
+  eager?: boolean;
+  className?: string;
+};
+
+export function AppScreenImage({
+  src,
+  alt,
+  sizes,
+  priority = false,
+  eager = false,
+  className,
+}: ScreenImageProps) {
+  const [ready, setReady] = useState(false);
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      sizes={sizes}
+      quality={75}
+      priority={priority}
+      loading={eager || priority ? "eager" : undefined}
+      fetchPriority={eager || priority ? "high" : undefined}
+      placeholder="blur"
+      onLoad={() => setReady(true)}
+      className={cn(
+        "h-auto w-full origin-center transition-[filter,transform] duration-500 ease-out",
+        ready ? "scale-100 blur-0" : "scale-[1.14] blur-2xl",
+        className,
+      )}
+      style={{ backgroundColor: APP_SCREEN_SHELL }}
+    />
+  );
+}
 
 type Props = {
   src: StaticImageData;
@@ -24,15 +63,6 @@ export function PhoneFrame({
   elevated = false,
   className,
 }: Props) {
-  const markReady = useAppScreenReady();
-  const done = useRef(false);
-
-  const finish = () => {
-    if (done.current || !markReady) return;
-    done.current = true;
-    markReady();
-  };
-
   return (
     <div
       className={cn(
@@ -42,19 +72,12 @@ export function PhoneFrame({
       )}
       style={{ backgroundColor: APP_SCREEN_SHELL }}
     >
-      <Image
+      <AppScreenImage
         src={src}
         alt={alt}
         sizes="(max-width: 640px) 45vw, 240px"
-        quality={75}
         priority={priority}
-        loading={eager || priority ? "eager" : undefined}
-        fetchPriority={eager || priority ? "high" : undefined}
-        placeholder="blur"
-        onLoad={finish}
-        onError={finish}
-        className="h-auto w-full"
-        style={{ backgroundColor: APP_SCREEN_SHELL }}
+        eager={eager}
       />
     </div>
   );
