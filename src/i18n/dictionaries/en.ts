@@ -27,7 +27,7 @@ const dictionary: Dictionary = {
     rights: "All rights reserved.",
   },
   home: {
-    inboxTagline: "Daily routine & wellness intelligence by POKIT",
+    inboxTagline: "Daily routine & wellness by POKIT",
     sections: {
       weekly: {
         nav: "This week",

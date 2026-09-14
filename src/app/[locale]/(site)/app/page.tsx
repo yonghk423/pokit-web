@@ -54,6 +54,11 @@ const HERO = [
   { file: "first-launch.webp" as const, featureId: "routines" },
   { file: "todos.webp" as const, featureId: "todos" },
   { file: "history.webp" as const, featureId: "history" },
+  { file: "today-note.webp" as const, featureId: "notes" },
+  { file: "routines.webp" as const, featureId: "routines" },
+  { file: "library.webp" as const, featureId: "library" },
+  { file: "memo-editor.webp" as const, featureId: "memo" },
+  { file: "lock-screen-memo.webp" as const, featureId: "memo" },
 ] as const;
 
 const GALLERY = [
@@ -222,21 +227,54 @@ export default async function AppIntroPage({ params }: Props) {
       ))}
       <JsonLd data={softwareJsonLd} />
 
-      <section className="relative isolate overflow-hidden bg-indigo text-white">
+      <section className="relative isolate h-[calc(100svh-5rem)] overflow-hidden bg-indigo text-white">
+        <div className="absolute inset-0" aria-hidden="true">
+          <div className="absolute left-1/2 top-1/2 w-[58%] min-w-[28rem] origin-center -translate-x-[6%] -translate-y-1/2 rotate-[30deg]">
+            <div className="grid grid-cols-4 gap-6">
+              {HERO.map((phone, index) => {
+                const feature = featureById[phone.featureId];
+                const leftEdge = index === 0 || index === 4;
+                return (
+                  <div
+                    key={phone.file}
+                    className="app-hero-phone w-full"
+                    style={{ animationDelay: `${180 + index * 70}ms` }}
+                  >
+                    <div className={leftEdge ? "translate-y-16 nav:translate-y-24" : undefined}>
+                      <PhoneFrame
+                        src={appScreen(locale, phone.file)}
+                        alt={feature?.imageAlt ?? copy.title}
+                        priority={index < 2}
+                        eager
+                        finish="soft"
+                        sizes="(max-width: 640px) 55vw, 28vw"
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[min(40rem,62%)] bg-linear-to-r from-indigo from-55% via-indigo/95 to-transparent"
+          aria-hidden="true"
+        />
         <div
           className={cn(
             monoContainer,
-            "relative grid min-h-[calc(100svh-5rem)] items-center gap-12 py-16 max-nav:grid-cols-1 nav:grid-cols-2 nav:gap-10 nav:py-20",
+            "relative z-10 flex h-full items-center py-16 nav:py-20",
           )}
         >
-          <div className="relative z-10">
+          <div className="max-w-[32rem] -translate-y-10 nav:-translate-y-14">
             <h1 className="app-hero-rise app-hero-rise-1 m-0 text-[clamp(3.25rem,8vw,5.8rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
               {site.name}
             </h1>
             <p className="app-hero-rise app-hero-rise-2 mt-5 mb-0 text-[clamp(1.75rem,4vw,2.7rem)] font-semibold leading-[1.2] tracking-[-0.03em] text-white/92">
               {copy.title}
             </p>
-            <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 max-w-xl whitespace-pre-line text-[1.22rem] leading-[1.75] text-white/72">
+            <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 whitespace-pre-line text-[1.22rem] leading-[1.75] text-white/72">
               {copy.lead}
             </p>
 
@@ -246,36 +284,6 @@ export default async function AppIntroPage({ params }: Props) {
                 {trustLine}
               </span>
             </div>
-          </div>
-
-          <div className="relative flex min-h-[20rem] items-center justify-center overflow-visible px-6 py-8 nav:min-h-[26rem] nav:px-8 nav:py-10">
-            {HERO.map((phone, index) => {
-              const feature = featureById[phone.featureId];
-              const offsets = [
-                "z-10 -translate-x-2 translate-y-5 -rotate-[8deg] nav:-translate-x-3",
-                "z-30 translate-y-0",
-                "z-20 translate-x-2 translate-y-6 rotate-[8deg] nav:translate-x-3",
-              ];
-              return (
-                <div
-                  key={phone.file}
-                  className={cn(
-                    "app-hero-phone w-[28%] max-w-[9.5rem] shrink-0 nav:w-[30%] nav:max-w-[12rem]",
-                    offsets[index],
-                  )}
-                  style={{ animationDelay: `${180 + index * 90}ms` }}
-                >
-                  <PhoneFrame
-                    src={appScreen(locale, phone.file)}
-                    alt={feature?.imageAlt ?? copy.title}
-                    priority={index === 1}
-                    eager
-                    finish="soft"
-                    className="w-full"
-                  />
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>

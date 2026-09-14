@@ -27,7 +27,7 @@ const dictionary: Dictionary = {
     rights: "All rights reserved.",
   },
   home: {
-    inboxTagline: "日常ルーチン・ウェルネスインテリジェンス by POKIT",
+    inboxTagline: "日常ルーチン・ウェルネス by POKIT",
     sections: {
       weekly: {
         nav: "今週",
