@@ -11,9 +11,11 @@ import { cn, monoContainer } from "@/lib/cn";
 type Props = {
   locale: Locale;
   copy: Dictionary["appDownload"];
+  size?: "default" | "large";
 };
 
-export function AppDownload({ locale, copy }: Props) {
+export function AppDownload({ locale, copy, size = "default" }: Props) {
+  const large = size === "large";
   return (
     <section id="app" className={cn(monoContainer, "mt-12")}>
       <div
@@ -26,13 +28,35 @@ export function AppDownload({ locale, copy }: Props) {
         <div className="pointer-events-none absolute -left-16 top-[-30%] h-56 w-56 rounded-full bg-brand/35 blur-3xl" />
         <div className="pointer-events-none absolute -right-10 bottom-[-40%] h-64 w-64 rounded-full bg-tertiary-light/30 blur-3xl" />
 
-        <div className="relative z-10 max-w-xl">
-          <p className="m-0 inline-flex border border-white/35 bg-white/10 px-2.5 py-1 label-caps text-brand-soft">
+        <div className={cn("relative z-10", large ? "max-w-2xl" : "max-w-xl")}>
+          <p
+            className={cn(
+              "m-0 inline-flex border border-white/35 bg-white/10 px-2.5 py-1 label-caps text-brand-soft",
+              large && "text-[0.95rem]",
+            )}
+          >
             {copy.kicker}
           </p>
-          <h2 className="mt-4 mb-0 text-[clamp(1.45rem,2.8vw,2.05rem)] font-extrabold leading-tight tracking-[-0.03em]">
+          <h2
+            className={cn(
+              "mt-4 mb-0 font-extrabold leading-tight tracking-[-0.03em]",
+              large
+                ? "text-[clamp(1.85rem,3.4vw,2.55rem)]"
+                : "text-[clamp(1.45rem,2.8vw,2.05rem)]",
+            )}
+          >
             {copy.title}
           </h2>
+          {copy.body ? (
+            <p
+              className={cn(
+                "mt-5 mb-0 whitespace-pre-line leading-[1.7] text-white/88",
+                large ? "text-[1.25rem]" : "text-[1.05rem]",
+              )}
+            >
+              {copy.body}
+            </p>
+          ) : null}
           <div className="mt-6">
             <AppStoreBadge locale={locale} label={copy.download} />
           </div>
@@ -53,7 +77,12 @@ export function AppDownload({ locale, copy }: Props) {
                 aria-label={copy.qrAria}
               />
             </div>
-            <p className="m-0 px-0.5 text-center font-sans text-[0.68rem] font-bold leading-snug tracking-[-0.01em] text-ink normal-case">
+            <p
+              className={cn(
+                "m-0 whitespace-pre-line px-0.5 text-center font-sans font-bold leading-snug tracking-[-0.01em] text-ink normal-case",
+                large ? "text-[0.78rem]" : "text-[0.68rem]",
+              )}
+            >
               {copy.qrHint}
             </p>
           </div>

@@ -291,19 +291,19 @@ export default async function AppIntroPage({ params }: Props) {
             )}
           >
             <div className="relative z-10">
-              <h1 className="app-hero-rise app-hero-rise-1 m-0 text-[clamp(2.85rem,7vw,5.1rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
+              <h1 className="app-hero-rise app-hero-rise-1 m-0 text-[clamp(3.25rem,8vw,5.8rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
                 {site.name}
               </h1>
-              <p className="app-hero-rise app-hero-rise-2 mt-4 mb-0 text-[clamp(1.55rem,3.6vw,2.45rem)] font-extrabold leading-[1.15] tracking-[-0.03em] text-brand-soft">
+              <p className="app-hero-rise app-hero-rise-2 mt-4 mb-0 text-[clamp(1.9rem,4.4vw,2.9rem)] font-extrabold leading-[1.15] tracking-[-0.03em] text-brand-soft">
                 {copy.title}
               </p>
-              <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 max-w-2xl text-[1.2rem] leading-[1.7] text-white/90">
+              <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 max-w-2xl whitespace-pre-line text-[1.4rem] leading-[1.7] text-white/90">
                 {copy.lead}
               </p>
 
               <div className="app-hero-rise app-hero-rise-4 mt-10 flex flex-wrap items-center gap-3">
                 <AppStoreBadge locale={locale} label={copy.download} />
-                <span className="inline-flex min-h-12 items-center border-2 border-white/70 bg-white/10 px-4 text-[0.86rem] font-bold tracking-wider text-white uppercase">
+                <span className="inline-flex min-h-12 items-center border-2 border-white/70 bg-white/10 px-4 text-[1rem] font-bold tracking-wider text-white uppercase">
                   {trustLine}
                 </span>
               </div>
@@ -340,15 +340,15 @@ export default async function AppIntroPage({ params }: Props) {
                   )}
                 >
                   <div>
-                    <p className="m-0 text-[0.8rem] font-extrabold tracking-wider uppercase opacity-75">
+                    <p className="m-0 text-[0.95rem] font-extrabold tracking-wider uppercase opacity-75">
                       0{index + 1}
                     </p>
-                    <h3 className="mt-3 mb-0 text-[clamp(1.55rem,3.1vw,2.2rem)] font-extrabold leading-[1.12] tracking-[-0.03em]">
+                    <h3 className="mt-3 mb-0 text-[clamp(1.9rem,3.8vw,2.7rem)] font-extrabold leading-[1.12] tracking-[-0.03em]">
                       {feature.title}
                     </h3>
                     <p
                       className={cn(
-                        "mt-5 mb-0 max-w-xl text-[1.14rem] leading-[1.7]",
+                        "mt-5 mb-0 max-w-2xl whitespace-pre-line text-[1.32rem] leading-[1.7]",
                         tone === "bg-indigo text-white" ? "text-white/90" : "text-muted",
                       )}
                     >
@@ -386,13 +386,18 @@ export default async function AppIntroPage({ params }: Props) {
       </section>
 
       <section className={cn(monoContainer, sectionSpacing, "pb-4")} aria-labelledby="app-gallery">
-        <p className="m-0 label-caps text-muted">{copy.galleryHeading}</p>
+        <p className="m-0 text-[1.05rem] font-extrabold tracking-wider uppercase text-muted">
+          {copy.galleryHeading}
+        </p>
         <h2
           id="app-gallery"
-          className="mt-3 mb-2 text-[clamp(1.7rem,3.5vw,2.5rem)] font-extrabold leading-[1.12] tracking-[-0.03em]"
+          className="mt-3 mb-0 text-[clamp(2.05rem,4.2vw,3rem)] font-extrabold leading-[1.12] tracking-[-0.03em]"
         >
           {copy.galleryLead}
         </h2>
+        <p className="mt-4 mb-6 max-w-2xl whitespace-pre-line text-[1.32rem] leading-[1.7] text-muted">
+          {copy.galleryBody}
+        </p>
         <AppScreenGallery
           items={GALLERY.map((item) => {
             const feature = featureById[item.featureId];
@@ -410,11 +415,14 @@ export default async function AppIntroPage({ params }: Props) {
       <div className={cn(monoContainer, "pb-16")}>
         <AppDownload
           locale={locale}
+          size="large"
           copy={{
             ...dict.appDownload,
             kicker: copy.ctaKicker,
             title: copy.ctaTitle,
+            body: copy.ctaBody,
             download: copy.download,
+            qrHint: copy.ctaQrHint,
           }}
         />
       </div>

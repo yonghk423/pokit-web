@@ -91,6 +91,7 @@ export type Dictionary = {
   appDownload: {
     kicker: string;
     title: string;
+    body?: string;
     download: string;
     qrAria: string;
     qrTitle: string;
@@ -112,8 +113,11 @@ export type Dictionary = {
     }[];
     galleryHeading: string;
     galleryLead: string;
+    galleryBody: string;
     ctaKicker: string;
     ctaTitle: string;
+    ctaBody: string;
+    ctaQrHint: string;
   };
   notFound: {
     title: string;
