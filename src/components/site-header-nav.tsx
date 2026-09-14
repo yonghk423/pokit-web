@@ -15,7 +15,9 @@ import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
 const navLinkClass =
-  "bg-transparent p-1 font-sans text-[0.75rem] font-semibold tracking-[0.08em] uppercase no-underline";
+  "bg-transparent p-1 font-sans text-[0.75rem] tracking-[0.08em] uppercase no-underline";
+const navLinkActiveClass = "font-extrabold text-[#163a7a]";
+const navLinkIdleClass = "font-semibold text-muted hover:text-ink";
 
 type Props = {
   locale: Locale;
@@ -110,7 +112,7 @@ export function SiteHeaderNav({
             href={articlesHref}
             className={cn(
               navLinkClass,
-              articlesActive ? "text-indigo" : "text-muted hover:text-ink",
+              articlesActive ? navLinkActiveClass : navLinkIdleClass,
             )}
             aria-current={articlesActive ? "page" : undefined}
           >
@@ -120,14 +122,14 @@ export function SiteHeaderNav({
             href={appHref}
             className={cn(
               navLinkClass,
-              appActive ? "text-indigo" : "text-muted hover:text-ink",
+              appActive ? navLinkActiveClass : navLinkIdleClass,
             )}
             aria-current={appActive ? "page" : undefined}
           >
             {app}
           </Link>
           <SupportEmailLink
-            className={cn(navLinkClass, "text-muted hover:text-ink active:text-indigo")}
+            className={cn(navLinkClass, navLinkIdleClass, "active:font-extrabold active:text-[#163a7a]")}
           >
             {contact}
           </SupportEmailLink>
@@ -170,8 +172,8 @@ export function SiteHeaderNav({
                   className={cn(
                     "inline-flex items-center px-3.5 py-2 text-[0.92rem] font-semibold tracking-[0.01em]",
                     active
-                      ? "text-indigo"
-                      : "text-muted hover:text-ink",
+                      ? "font-extrabold text-[#163a7a]"
+                      : "font-semibold text-muted hover:text-ink",
                   )}
                   aria-current={active ? "page" : undefined}
                 >
