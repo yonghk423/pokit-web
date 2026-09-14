@@ -12,34 +12,55 @@ type Props = {
   locale: Locale;
   copy: Dictionary["appDownload"];
   size?: "default" | "large";
+  variant?: "brutal" | "editorial";
 };
 
-export function AppDownload({ locale, copy, size = "default" }: Props) {
+export function AppDownload({
+  locale,
+  copy,
+  size = "default",
+  variant = "brutal",
+}: Props) {
   const large = size === "large";
+  const editorial = variant === "editorial";
   return (
-    <section id="app" className={cn(monoContainer, "mt-12")}>
+    <section
+      id="app"
+      className={cn(editorial ? "mt-0" : cn(monoContainer, "mt-12"))}
+    >
       <div
         className={cn(
-          "relative isolate overflow-hidden border-2 border-black bg-indigo text-white brutal-shadow",
-          "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-8 py-11",
-          "max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10",
+          "relative isolate overflow-hidden bg-indigo text-white",
+          editorial
+            ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-20 max-nav:grid-cols-1 max-nav:gap-10 max-nav:px-6 max-nav:py-16"
+            : cn(
+                "border-2 border-black brutal-shadow",
+                "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-8 py-11",
+                "max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10",
+              ),
         )}
       >
-        <div className="pointer-events-none absolute -left-16 top-[-30%] h-56 w-56 rounded-full bg-brand/35 blur-3xl" />
-        <div className="pointer-events-none absolute -right-10 bottom-[-40%] h-64 w-64 rounded-full bg-tertiary-light/30 blur-3xl" />
+        <div className="pointer-events-none absolute -left-16 top-[-30%] h-56 w-56 rounded-full bg-brand/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 bottom-[-40%] h-64 w-64 rounded-full bg-tertiary-light/20 blur-3xl" />
 
         <div className={cn("relative z-10", large ? "max-w-2xl" : "max-w-xl")}>
           <p
             className={cn(
-              "m-0 inline-flex border border-white/35 bg-white/10 px-2.5 py-1 label-caps text-brand-soft",
-              large && "text-[0.95rem]",
+              "m-0 inline-flex text-brand-soft",
+              editorial
+                ? "px-0 text-[0.82rem] font-semibold tracking-[0.16em] uppercase"
+                : cn(
+                    "border border-white/35 bg-white/10 px-2.5 py-1 label-caps",
+                    large && "text-[0.95rem]",
+                  ),
             )}
           >
             {copy.kicker}
           </p>
           <h2
             className={cn(
-              "mt-4 mb-0 font-extrabold leading-tight tracking-[-0.03em]",
+              "mt-4 mb-0 leading-tight tracking-[-0.03em]",
+              editorial ? "font-semibold" : "font-extrabold",
               large
                 ? "text-[clamp(1.85rem,3.4vw,2.55rem)]"
                 : "text-[clamp(1.45rem,2.8vw,2.05rem)]",
@@ -63,11 +84,23 @@ export function AppDownload({ locale, copy, size = "default" }: Props) {
         </div>
 
         <div className="relative z-10 justify-self-end max-nav:hidden">
-          <div className="flex aspect-square w-44 flex-col items-center justify-between border-2 border-black bg-panel px-3 py-3 text-ink brutal-shadow-mint">
+          <div
+            className={cn(
+              "flex aspect-square w-44 flex-col items-center justify-between bg-panel px-3 py-3 text-ink",
+              editorial
+                ? "rounded-[1.6rem] shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)]"
+                : "border-2 border-black brutal-shadow-mint",
+            )}
+          >
             <p className="m-0 text-center label-caps text-green">
               {copy.qrTitle}
             </p>
-            <div className="border-2 border-black bg-white p-1.5">
+            <div
+              className={cn(
+                "bg-white p-1.5",
+                editorial ? "rounded-xl" : "border-2 border-black",
+              )}
+            >
               <QRCodeSVG
                 value={appStoreUrl(locale)}
                 size={108}

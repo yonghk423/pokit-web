@@ -52,6 +52,9 @@ type Props = {
   priority?: boolean;
   eager?: boolean;
   elevated?: boolean;
+  finish?: "brutal" | "soft";
+  fit?: "auto" | "cover";
+  sizes?: string;
   className?: string;
 };
 
@@ -61,13 +64,23 @@ export function PhoneFrame({
   priority = false,
   eager = false,
   elevated = false,
+  finish = "brutal",
+  fit = "auto",
+  sizes = "(max-width: 640px) 45vw, 240px",
   className,
 }: Props) {
+  const cover = fit === "cover";
   return (
     <div
       className={cn(
-        "overflow-hidden border-2 border-black",
-        elevated ? "brutal-shadow-mint" : "brutal-shadow",
+        "overflow-hidden",
+        finish === "soft"
+          ? "rounded-[2.05rem] shadow-[0_28px_56px_-20px_rgba(24,26,46,0.38)] ring-1 ring-black/8"
+          : cn(
+              "border-2 border-black",
+              elevated ? "brutal-shadow-mint" : "brutal-shadow",
+            ),
+        cover && "h-full w-full",
         className,
       )}
       style={{ backgroundColor: APP_SCREEN_SHELL }}
@@ -75,9 +88,10 @@ export function PhoneFrame({
       <AppScreenImage
         src={src}
         alt={alt}
-        sizes="(max-width: 640px) 45vw, 240px"
+        sizes={sizes}
         priority={priority}
         eager={eager}
+        className={cover ? "h-full w-full object-cover" : undefined}
       />
     </div>
   );

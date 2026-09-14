@@ -11,7 +11,7 @@ import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { appScreen, type AppScreenFile } from "@/lib/app-screens";
-import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
+import { cn, monoContainer } from "@/lib/cn";
 import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
 
 type Props = {
@@ -50,25 +50,10 @@ const FEATURE_VISUALS: Record<string, FeatureVisual> = {
   library: { primary: "library.webp" },
 };
 
-const HERO_PHONES = [
-  {
-    file: "todos.webp" as const,
-    featureId: "todos",
-    offset: "translate-y-6 nav:translate-y-10",
-    frameClassName: "max-w-[10rem] -rotate-6 nav:max-w-[13rem]",
-  },
-  {
-    file: "routines.webp" as const,
-    featureId: "routines",
-    offset: "z-20",
-    frameClassName: "max-w-[11.5rem] nav:max-w-64",
-  },
-  {
-    file: "history.webp" as const,
-    featureId: "history",
-    offset: "translate-y-8 nav:translate-y-12",
-    frameClassName: "max-w-[10rem] rotate-6 nav:max-w-[13rem]",
-  },
+const HERO = [
+  { file: "first-launch.webp" as const, featureId: "routines" },
+  { file: "todos.webp" as const, featureId: "todos" },
+  { file: "history.webp" as const, featureId: "history" },
 ] as const;
 
 const GALLERY = [
@@ -83,12 +68,12 @@ const GALLERY = [
 ] as const;
 
 const FEATURE_TONES = [
-  "bg-indigo text-white",
-  "bg-panel",
-  "bg-pink-soft",
-  "bg-beige",
-  "bg-green-soft",
-  "bg-brand-soft",
+  "bg-[#f3f0e8]",
+  "bg-white",
+  "bg-[#eef3f1]",
+  "bg-white",
+  "bg-[#f3f0e8]",
+  "bg-[#eef3f1]",
 ] as const;
 
 function FeatureVisualCluster({
@@ -110,6 +95,7 @@ function FeatureVisualCluster({
         src={visual.primary}
         alt={alt}
         elevated
+        finish="soft"
         priority={priority}
         eager={priority}
         className="mx-auto w-full max-w-52 nav:max-w-64"
@@ -130,65 +116,20 @@ function FeatureVisualCluster({
         src={left.src}
         alt={left.alt}
         elevated={left.elevated}
+        finish="soft"
         priority={priority}
         eager={priority}
-        className="w-[48%] -rotate-2"
+        className="w-[48%] -rotate-1"
       />
       <PhoneFrame
         src={right.src}
         alt={right.alt}
         elevated={right.elevated}
+        finish="soft"
         priority={priority}
         eager={priority}
-        className="w-[48%] rotate-2"
+        className="w-[48%] rotate-1"
       />
-    </div>
-  );
-}
-
-function HeroPhoneCluster({
-  locale,
-  copy,
-  featureById,
-}: {
-  locale: Locale;
-  copy: { title: string };
-  featureById: Record<string, { imageAlt: string } | undefined>;
-}) {
-  return (
-    <div className="relative mx-auto w-full max-w-md nav:max-w-xl">
-      <div className="relative px-2 pb-2 pt-6 nav:px-4 nav:pt-8">
-        <div className="relative grid grid-cols-3 items-end gap-2 nav:gap-4">
-          {HERO_PHONES.map((phone, index) => {
-            const feature = featureById[phone.featureId];
-            const src = appScreen(locale, phone.file);
-            return (
-              <div
-                key={phone.file}
-                className={cn("flex justify-center", phone.offset)}
-              >
-                <div
-                  className={cn(
-                    "app-hero-phone w-full",
-                    index === 0 && "app-hero-phone-1",
-                    index === 1 && "app-hero-phone-2",
-                    index === 2 && "app-hero-phone-3",
-                  )}
-                >
-                  <PhoneFrame
-                    src={src}
-                    alt={feature?.imageAlt ?? copy.title}
-                    priority
-                    eager
-                    elevated={phone.file === "routines.webp"}
-                    className={cn("w-full", phone.frameClassName)}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 }
@@ -265,7 +206,7 @@ export default async function AppIntroPage({ params }: Props) {
     downloadUrl: storeUrl,
   };
 
-  const heroSrcs = HERO_PHONES.map((phone) => appScreen(locale, phone.file).src);
+  const heroSrcs = HERO.map((phone) => appScreen(locale, phone.file).src);
 
   return (
     <main className="overflow-x-clip">
@@ -281,45 +222,66 @@ export default async function AppIntroPage({ params }: Props) {
       ))}
       <JsonLd data={softwareJsonLd} />
 
-      <section className="relative isolate border-b-2 border-black bg-indigo text-white">
-          <div className="app-hero-glow pointer-events-none absolute -top-28 left-1/2 h-56 w-56 translate-x-[-130%] rounded-full bg-brand/40 blur-3xl" />
-          <div className="app-hero-glow pointer-events-none absolute -right-10 top-10 h-64 w-64 rounded-full bg-tertiary-light/40 blur-3xl" />
-          <div
-            className={cn(
-              monoContainer,
-              "relative grid grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-center gap-12 py-20 max-nav:grid-cols-1 max-nav:gap-12 max-nav:py-14",
-            )}
-          >
-            <div className="relative z-10">
-              <h1 className="app-hero-rise app-hero-rise-1 m-0 text-[clamp(3.25rem,8vw,5.8rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
-                {site.name}
-              </h1>
-              <p className="app-hero-rise app-hero-rise-2 mt-4 mb-0 text-[clamp(1.9rem,4.4vw,2.9rem)] font-extrabold leading-[1.15] tracking-[-0.03em] text-brand-soft">
-                {copy.title}
-              </p>
-              <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 max-w-2xl whitespace-pre-line text-[1.4rem] leading-[1.7] text-white/90">
-                {copy.lead}
-              </p>
+      <section className="relative isolate overflow-hidden bg-indigo text-white">
+        <div
+          className={cn(
+            monoContainer,
+            "relative grid min-h-[calc(100svh-5rem)] items-center gap-12 py-16 max-nav:grid-cols-1 nav:grid-cols-2 nav:gap-10 nav:py-20",
+          )}
+        >
+          <div className="relative z-10">
+            <h1 className="app-hero-rise app-hero-rise-1 m-0 text-[clamp(3.25rem,8vw,5.8rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
+              {site.name}
+            </h1>
+            <p className="app-hero-rise app-hero-rise-2 mt-5 mb-0 text-[clamp(1.75rem,4vw,2.7rem)] font-semibold leading-[1.2] tracking-[-0.03em] text-white/92">
+              {copy.title}
+            </p>
+            <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 max-w-xl whitespace-pre-line text-[1.22rem] leading-[1.75] text-white/72">
+              {copy.lead}
+            </p>
 
-              <div className="app-hero-rise app-hero-rise-4 mt-10 flex flex-wrap items-center gap-3">
-                <AppStoreBadge locale={locale} label={copy.download} />
-                <span className="inline-flex min-h-12 items-center border-2 border-white/70 bg-white/10 px-4 text-[1rem] font-bold tracking-wider text-white uppercase">
-                  {trustLine}
-                </span>
-              </div>
+            <div className="app-hero-rise app-hero-rise-4 mt-10 flex flex-wrap items-center gap-5">
+              <AppStoreBadge locale={locale} label={copy.download} />
+              <span className="text-[0.98rem] font-medium tracking-[-0.01em] text-white/62">
+                {trustLine}
+              </span>
             </div>
-
-            <HeroPhoneCluster
-              locale={locale}
-              copy={copy}
-              featureById={featureById}
-            />
           </div>
-        </section>
 
-      <section className={cn(monoContainer, sectionSpacing)} aria-label={copy.featuresHeading}>
-        <div className="grid gap-7">
-          {copy.features.map((feature, index) => {
+          <div className="relative flex min-h-[20rem] items-center justify-center overflow-visible px-6 py-8 nav:min-h-[26rem] nav:px-8 nav:py-10">
+            {HERO.map((phone, index) => {
+              const feature = featureById[phone.featureId];
+              const offsets = [
+                "z-10 -translate-x-2 translate-y-5 -rotate-[8deg] nav:-translate-x-3",
+                "z-30 translate-y-0",
+                "z-20 translate-x-2 translate-y-6 rotate-[8deg] nav:translate-x-3",
+              ];
+              return (
+                <div
+                  key={phone.file}
+                  className={cn(
+                    "app-hero-phone w-[28%] max-w-[9.5rem] shrink-0 nav:w-[30%] nav:max-w-[12rem]",
+                    offsets[index],
+                  )}
+                  style={{ animationDelay: `${180 + index * 90}ms` }}
+                >
+                  <PhoneFrame
+                    src={appScreen(locale, phone.file)}
+                    alt={feature?.imageAlt ?? copy.title}
+                    priority={index === 1}
+                    eager
+                    finish="soft"
+                    className="w-full"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section aria-label={copy.featuresHeading}>
+        {copy.features.map((feature, index) => {
             const visual = FEATURE_VISUALS[feature.id];
             if (!visual) return null;
             const reverse = index % 2 === 1;
@@ -328,30 +290,23 @@ export default async function AppIntroPage({ params }: Props) {
             return (
               <article
                 key={feature.id}
-                className={cn(
-                  "relative overflow-hidden border-2 border-black p-6 brutal-shadow nav:p-8",
-                  tone,
-                )}
+                className={cn("relative overflow-hidden", tone)}
               >
                 <div
                   className={cn(
-                    "relative z-10 flex flex-col items-center gap-8 nav:grid nav:grid-cols-2 nav:items-center nav:gap-12",
+                    monoContainer,
+                    "relative z-10 flex flex-col items-center gap-12 py-20 nav:grid nav:grid-cols-2 nav:items-center nav:gap-16 nav:py-24",
                     reverse && "nav:[&>div:first-child]:order-2",
                   )}
                 >
-                  <div>
-                    <p className="m-0 text-[0.95rem] font-extrabold tracking-wider uppercase opacity-75">
+                  <div className="w-full">
+                    <p className="m-0 text-[0.78rem] font-semibold tracking-[0.18em] uppercase text-green">
                       0{index + 1}
                     </p>
-                    <h3 className="mt-3 mb-0 text-[clamp(1.9rem,3.8vw,2.7rem)] font-extrabold leading-[1.12] tracking-[-0.03em]">
+                    <h3 className="mt-4 mb-0 text-[clamp(1.85rem,3.6vw,2.55rem)] font-semibold leading-[1.18] tracking-[-0.03em]">
                       {feature.title}
                     </h3>
-                    <p
-                      className={cn(
-                        "mt-5 mb-0 max-w-2xl whitespace-pre-line text-[1.32rem] leading-[1.7]",
-                        tone === "bg-indigo text-white" ? "text-white/90" : "text-muted",
-                      )}
-                    >
+                    <p className="mt-5 mb-0 max-w-xl whitespace-pre-line text-[1.18rem] leading-[1.75] text-muted">
                       {feature.body}
                     </p>
                   </div>
@@ -382,23 +337,25 @@ export default async function AppIntroPage({ params }: Props) {
               </article>
             );
           })}
-        </div>
       </section>
 
-      <section className={cn(monoContainer, sectionSpacing, "pb-4")} aria-labelledby="app-gallery">
-        <p className="m-0 text-[1.05rem] font-extrabold tracking-wider uppercase text-muted">
+      <section className="bg-white py-20 nav:py-24" aria-labelledby="app-gallery">
+        <div className={monoContainer}>
+        <p className="m-0 text-center text-[0.78rem] font-semibold tracking-[0.18em] uppercase text-green">
           {copy.galleryHeading}
         </p>
         <h2
           id="app-gallery"
-          className="mt-3 mb-0 text-[clamp(2.05rem,4.2vw,3rem)] font-extrabold leading-[1.12] tracking-[-0.03em]"
+          className="mx-auto mt-4 mb-0 max-w-3xl text-center text-[clamp(1.9rem,3.8vw,2.8rem)] font-semibold leading-[1.2] tracking-[-0.03em]"
         >
           {copy.galleryLead}
         </h2>
-        <p className="mt-4 mb-6 max-w-2xl whitespace-pre-line text-[1.32rem] leading-[1.7] text-muted">
+        <p className="mx-auto mt-5 mb-2 max-w-2xl text-center whitespace-pre-line text-[1.16rem] leading-[1.75] text-muted">
           {copy.galleryBody}
         </p>
+        </div>
         <AppScreenGallery
+          finish="soft"
           items={GALLERY.map((item) => {
             const feature = featureById[item.featureId];
             return {
@@ -412,10 +369,11 @@ export default async function AppIntroPage({ params }: Props) {
         />
       </section>
 
-      <div className={cn(monoContainer, "pb-16")}>
+      <div>
         <AppDownload
           locale={locale}
           size="large"
+          variant="editorial"
           copy={{
             ...dict.appDownload,
             kicker: copy.ctaKicker,

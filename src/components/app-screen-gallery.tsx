@@ -17,14 +17,25 @@ type Props = {
   items: AppGalleryItem[];
   prevAria: string;
   nextAria: string;
+  finish?: "brutal" | "soft";
 };
 
 const AUTOPLAY_MS = 4500;
 
-const controlBtnClass =
+const brutalControlBtnClass =
   "size-10 shrink-0 cursor-pointer border-2 border-black bg-panel font-sans text-base font-bold leading-none text-ink hover:bg-wash hover:brutal-shadow disabled:cursor-not-allowed disabled:bg-beige disabled:text-muted";
 
-export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
+const softControlBtnClass =
+  "size-11 shrink-0 cursor-pointer rounded-full bg-white/80 text-base font-medium leading-none text-ink shadow-[0_8px_24px_-12px_rgba(24,26,46,0.35)] ring-1 ring-black/6 transition-colors hover:bg-white disabled:cursor-not-allowed disabled:opacity-40";
+
+export function AppScreenGallery({
+  items,
+  prevAria,
+  nextAria,
+  finish = "brutal",
+}: Props) {
+  const soft = finish === "soft";
+  const controlBtnClass = soft ? softControlBtnClass : brutalControlBtnClass;
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(0);
@@ -149,10 +160,20 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
               >
                 <div
                   className={cn(
-                    "overflow-hidden border-2 border-black transition-all duration-500 ease-out",
-                    isActive
-                      ? "scale-100 opacity-100 brutal-shadow-mint"
-                      : "scale-[0.9] opacity-55 brutal-shadow",
+                    "overflow-hidden transition-all duration-500 ease-out",
+                    soft
+                      ? cn(
+                          "rounded-[2.05rem] ring-1 ring-black/8",
+                          isActive
+                            ? "scale-100 opacity-100 shadow-[0_28px_56px_-20px_rgba(24,26,46,0.38)]"
+                            : "scale-[0.92] opacity-50 shadow-[0_16px_32px_-18px_rgba(24,26,46,0.22)]",
+                        )
+                      : cn(
+                          "border-2 border-black",
+                          isActive
+                            ? "scale-100 opacity-100 brutal-shadow-mint"
+                            : "scale-[0.9] opacity-55 brutal-shadow",
+                        ),
                   )}
                   style={{ backgroundColor: APP_SCREEN_SHELL }}
                 >
@@ -169,7 +190,14 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
       </div>
 
       <div className="mt-8 flex flex-col items-center gap-5">
-        <p className="m-0 max-w-lg text-center text-[clamp(1.15rem,2.4vw,1.4rem)] font-extrabold leading-snug tracking-[-0.02em]">
+        <p
+          className={cn(
+            "m-0 max-w-lg text-center leading-snug tracking-[-0.02em]",
+            soft
+              ? "text-[clamp(1.05rem,2vw,1.28rem)] font-semibold text-muted"
+              : "text-[clamp(1.15rem,2.4vw,1.4rem)] font-extrabold",
+          )}
+        >
           {activeItem.title}
         </p>
 
@@ -192,10 +220,20 @@ export function AppScreenGallery({ items, prevAria, nextAria }: Props) {
                 aria-current={index === activeIndex ? "true" : undefined}
                 onClick={() => scrollToIndex(index)}
                 className={cn(
-                  "h-2.5 rounded-full border-2 border-black transition-all duration-300",
-                  index === activeIndex
-                    ? "w-8 bg-brand"
-                    : "w-2.5 bg-panel hover:bg-wash",
+                  "h-2 rounded-full transition-all duration-300",
+                  soft
+                    ? cn(
+                        "border-0",
+                        index === activeIndex
+                          ? "w-7 bg-ink"
+                          : "w-2 bg-ink/20 hover:bg-ink/35",
+                      )
+                    : cn(
+                        "h-2.5 border-2 border-black",
+                        index === activeIndex
+                          ? "w-8 bg-brand"
+                          : "w-2.5 bg-panel hover:bg-wash",
+                      ),
                 )}
               />
             ))}
