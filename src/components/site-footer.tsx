@@ -18,7 +18,7 @@ export function SiteFooter({ locale, dict }: Props) {
   const categories = getCategories(dict);
 
   return (
-    <footer className="mt-16 border-t-2 border-black bg-beige py-12 font-sans">
+    <footer className="mt-16 border-t border-ink/10 bg-[#f3f0e8] py-12 font-sans">
       <div
         className={cn(
           monoContainer,
@@ -31,7 +31,7 @@ export function SiteFooter({ locale, dict }: Props) {
             alt=""
             width={44}
             height={44}
-            className="border-2 border-black"
+            className="rounded-xl"
           />
           <div>
             <p className="m-0 font-extrabold tracking-[0.1em] text-ink!">
@@ -100,7 +100,7 @@ export function SiteFooter({ locale, dict }: Props) {
       <p
         className={cn(
           monoContainer,
-          "mt-10 border-t-2 border-black pt-6 text-[0.82rem] text-muted",
+          "mt-10 border-t border-ink/10 pt-6 text-[0.82rem] text-muted",
         )}
       >
         © {new Date().getFullYear()} {site.name}. {dict.footer.rights}

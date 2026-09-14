@@ -47,11 +47,11 @@ export function ArticleCard({
     : null;
 
   const mediaClass = cn(
-    "overflow-hidden bg-beige",
+    "overflow-hidden bg-[#f3f0e8]",
     variant === "feature" && "aspect-[16/10]",
-    variant === "vertical" && "aspect-[4/3] border-2 border-black",
+    variant === "vertical" && "aspect-[4/3] rounded-[1.05rem] border border-ink/12",
     variant === "compact" &&
-    "aspect-square border-2 border-black max-[640px]:aspect-[4/3]",
+    "aspect-square rounded-[1.05rem] border border-ink/12 max-[640px]:aspect-[4/3]",
     !imageUrl &&
     "grid place-items-center font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-indigo uppercase",
   );
@@ -62,15 +62,16 @@ export function ArticleCard({
         "min-w-0",
         variant === "compact" &&
         "grid grid-cols-[minmax(0,1fr)_8.6rem] gap-4 max-[640px]:grid-cols-1",
-        variant === "feature" && "border-2 border-black bg-panel",
-        inRail && "border-b-2 border-black py-4 first:pt-0",
+        variant === "feature" &&
+        "overflow-hidden rounded-[1.25rem] border border-ink/12 bg-white",
+        inRail && "border-b border-ink/12 py-4 first:pt-0",
       )}
     >
       <Link
         href={href}
         className={cn(
           "group/card block transition-colors hover:text-ink",
-          variant === "feature" && "hover:bg-wash",
+          variant === "feature" && "hover:bg-[#f3f0e8]",
           variant === "compact" && "contents",
         )}
         aria-label={article.title}

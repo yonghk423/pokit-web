@@ -25,7 +25,7 @@ export function RelatedArticles({
 }: Props) {
   return (
     <section
-      className={cn("mt-16 border-t-2 border-black pt-10", className)}
+      className={cn("mt-16 border-t border-ink/10 pt-10", className)}
       aria-label={heading}
     >
       <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -34,7 +34,7 @@ export function RelatedArticles({
         </h2>
         <Link
           href={related.viewAllHref}
-          className="shrink-0 border-2 border-black bg-panel px-4 py-2 font-sans text-[0.82rem] font-bold tracking-[0.02em] hover:bg-wash"
+          className="shrink-0 bg-indigo px-4 py-2 font-sans text-[0.82rem] font-semibold tracking-[0.02em] text-white hover:bg-ink"
         >
           {viewMoreLabel}
         </Link>

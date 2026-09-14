@@ -147,7 +147,7 @@ export default async function BriefingHubPage({ params }: Props) {
       )}
 
       {pastWeeks.length > 0 && (
-        <section className={cn(monoContainer, "border-t-2 border-black py-12 pb-16")}>
+        <section className={cn(monoContainer, "border-t border-ink/10 py-12 pb-16")}>
           <h2 className="m-0 mb-6 text-[1.25rem] font-extrabold tracking-[-0.02em]">
             {dict.briefing.archiveTitle}
           </h2>

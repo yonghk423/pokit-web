@@ -126,7 +126,7 @@ export function ArticlesArchiveView({
         </div>
         <div className="flex items-center gap-3">
           <div
-            className="inline-flex border-2 border-black"
+            className="inline-flex overflow-hidden rounded-lg border border-ink/15"
             role="group"
             aria-label={labels.viewModeAria}
           >
@@ -134,7 +134,7 @@ export function ArticlesArchiveView({
               type="button"
               className={cn(
                 toggleBtnClass,
-                view === "grid" && "bg-ink text-panel",
+                view === "grid" && "bg-indigo text-white",
                 view !== "grid" && "hover:bg-wash hover:text-ink",
               )}
               aria-pressed={view === "grid"}
@@ -147,8 +147,8 @@ export function ArticlesArchiveView({
               type="button"
               className={cn(
                 toggleBtnClass,
-                "border-l-2 border-black",
-                view === "list" && "bg-ink text-panel",
+                "border-l border-ink/15",
+                view === "list" && "bg-indigo text-white",
                 view !== "list" && "hover:bg-wash hover:text-ink",
               )}
               aria-pressed={view === "list"}
@@ -174,7 +174,7 @@ export function ArticlesArchiveView({
           ))}
         </div>
       ) : (
-        <ul className="m-0 list-none border-t-2 border-black p-0">
+        <ul className="m-0 list-none border-t border-ink/12 p-0">
           {articles.map((article) => (
             <ArticleArchiveListItem key={article.slug} article={article} locale={locale} />
           ))}

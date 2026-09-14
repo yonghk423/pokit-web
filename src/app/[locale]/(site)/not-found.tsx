@@ -27,13 +27,13 @@ export default async function SiteNotFound() {
       <div className="mt-10 flex flex-wrap items-center justify-center gap-4 font-sans text-[0.9rem]">
         <Link
           href={withLocale(locale, "/")}
-          className="border-2 border-black bg-green px-5 py-2 font-bold text-panel hover:brutal-shadow"
+          className="bg-indigo px-5 py-2 font-semibold text-white hover:bg-ink"
         >
           {dict.notFound.home}
         </Link>
         <Link
           href={withLocale(locale, "/articles")}
-          className="border-2 border-black bg-panel px-5 py-2 font-bold text-ink hover:bg-wash"
+          className="border border-ink/15 bg-white px-5 py-2 font-semibold text-ink hover:bg-indigo hover:text-white"
         >
           {dict.notFound.allStories}
         </Link>

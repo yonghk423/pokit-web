@@ -54,7 +54,7 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
   return (
     <section
       className={cn(
-        "mt-16 max-w-[42rem] border-t-2 border-black pt-10",
+        "mt-16 max-w-[42rem] border-t border-ink/10 pt-10",
         className,
       )}
       aria-label={copy.ariaLabel}
@@ -70,7 +70,7 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
             <button
               type="button"
               onClick={handleAdd}
-              className="inline-flex min-h-12 items-center justify-center border-2 border-black bg-green px-6 font-sans text-[0.78rem] font-extrabold tracking-[0.06em] text-white uppercase hover:brutal-shadow-mint"
+              className="inline-flex min-h-12 items-center justify-center bg-green px-6 font-sans text-[0.78rem] font-extrabold tracking-[0.06em] text-white uppercase hover:bg-ink"
             >
               {copy.button}
             </button>
@@ -78,7 +78,7 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
 
           {state === "sent" && (
             <p
-              className="mt-5 mb-0 border-2 border-black bg-wash px-4 py-3 font-sans text-[0.88rem] leading-[1.5] text-green"
+              className="mt-5 mb-0 rounded-xl border border-ink/12 bg-[#eef3f1] px-4 py-3 font-sans text-[0.88rem] leading-[1.5] text-green"
               role="status"
             >
               {copy.sent}
@@ -88,7 +88,7 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
       )}
 
       {!inApp && (
-        <div className="border-2 border-black bg-beige px-5 py-5">
+        <div className="rounded-xl border border-ink/12 bg-[#f3f0e8] px-5 py-5">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0 flex-1">
               <p className="m-0 font-sans text-[0.92rem] leading-[1.6] text-ink">
@@ -98,7 +98,7 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
                 <AppStoreBadge locale={locale} label={copy.download} />
               </div>
             </div>
-            <div className="flex shrink-0 flex-col items-center gap-2 self-center border-2 border-black bg-panel p-4 max-nav:hidden">
+            <div className="flex shrink-0 flex-col items-center gap-2 self-center rounded-xl border border-ink/12 bg-white p-4 max-nav:hidden">
               <QRCodeSVG
                 value={storeUrl}
                 size={112}

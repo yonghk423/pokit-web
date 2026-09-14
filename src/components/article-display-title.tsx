@@ -48,7 +48,7 @@ export function ArticleDisplayTitle({
                 "inline-flex items-center border px-1.5 py-[0.12rem] text-[0.62rem] font-bold leading-none tracking-[0.02em]",
                 tone === "onDark"
                   ? "border-panel/45 bg-panel/10 text-brand"
-                  : "border-black bg-wash text-ink",
+                  : "rounded-full border-ink/15 bg-[#eef3f1] text-ink",
               )}
             >
               {tag}

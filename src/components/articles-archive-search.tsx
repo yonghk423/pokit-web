@@ -30,7 +30,7 @@ export function ArticlesArchiveSearch({
       {category && <input type="hidden" name="category" value={category} />}
       {sort === "oldest" && <input type="hidden" name="sort" value="oldest" />}
       <label
-        className="mb-2 inline-block border-2 border-black bg-indigo px-2 py-1 label-caps text-panel"
+        className="mb-2 inline-block bg-indigo px-2 py-1 label-caps text-white"
         htmlFor="articles-search"
       >
         {dict.archive.search}
@@ -43,11 +43,11 @@ export function ArticlesArchiveSearch({
           defaultValue={trimmed ?? ""}
           placeholder={dict.archive.searchPlaceholder}
           autoComplete="off"
-          className="min-w-0 flex-1 border-2 border-black bg-panel px-4 py-3 font-[inherit] text-[0.92rem] focus:bg-wash focus:outline-none"
+          className="min-w-0 flex-1 border border-ink/15 bg-white px-4 py-3 font-[inherit] text-[0.92rem] focus:border-indigo focus:outline-none"
         />
         <button
           type="submit"
-          className="cursor-pointer border-2 border-black bg-ink px-5 py-3 font-[inherit] text-[0.88rem] font-bold text-panel hover:brutal-shadow"
+          className="cursor-pointer bg-indigo px-5 py-3 font-[inherit] text-[0.88rem] font-semibold text-white hover:bg-ink"
         >
           {dict.archive.searchSubmit}
         </button>

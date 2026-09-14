@@ -16,10 +16,10 @@ export function ArticleArchiveListItem({ article, locale }: Props) {
   const href = articlePath(locale, article.slug);
 
   return (
-    <li className="border-b-2 border-black last:border-b-0">
+    <li className="border-b border-ink/12 last:border-b-0">
       <Link
         href={href}
-        className="group grid grid-cols-[minmax(7.5rem,9.5rem)_minmax(0,1fr)] gap-x-8 gap-y-2 py-6 transition-colors hover:bg-wash max-archive:grid-cols-1"
+        className="group grid grid-cols-[minmax(7.5rem,9.5rem)_minmax(0,1fr)] gap-x-8 gap-y-2 py-6 transition-colors hover:bg-[#f3f0e8] max-archive:grid-cols-1"
       >
         <div className="flex flex-col gap-2">
           {publishedLabel && (

@@ -21,7 +21,7 @@ type Props = {
 };
 
 const carouselBtnClass =
-  "pointer-events-auto size-10 cursor-pointer border-2 border-black bg-panel font-sans text-base font-bold leading-none text-ink hover:bg-wash hover:brutal-shadow disabled:cursor-not-allowed disabled:bg-beige disabled:text-muted";
+  "pointer-events-auto size-10 cursor-pointer rounded-full border border-ink/15 bg-white font-sans text-base font-semibold leading-none text-ink hover:bg-indigo hover:text-white disabled:cursor-not-allowed disabled:opacity-35";
 
 export function FeaturedHeadlineCarousel({
   articles,

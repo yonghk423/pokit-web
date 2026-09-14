@@ -34,7 +34,7 @@ export function AppDownload({
           editorial
             ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-20 max-nav:grid-cols-1 max-nav:gap-10 max-nav:px-6 max-nav:py-16"
             : cn(
-                "border-2 border-black brutal-shadow",
+                "rounded-[1.25rem] border border-ink/10",
                 "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-8 py-11",
                 "max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10",
               ),
@@ -89,7 +89,7 @@ export function AppDownload({
               "flex aspect-square w-44 flex-col items-center justify-between bg-panel px-3 py-3 text-ink",
               editorial
                 ? "rounded-[1.6rem] shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)]"
-                : "border-2 border-black brutal-shadow-mint",
+                : "rounded-[1.25rem] border border-ink/12",
             )}
           >
             <p className="m-0 text-center label-caps text-green">
@@ -98,7 +98,7 @@ export function AppDownload({
             <div
               className={cn(
                 "bg-white p-1.5",
-                editorial ? "rounded-xl" : "border-2 border-black",
+                editorial ? "rounded-xl" : "rounded-lg border border-ink/12",
               )}
             >
               <QRCodeSVG

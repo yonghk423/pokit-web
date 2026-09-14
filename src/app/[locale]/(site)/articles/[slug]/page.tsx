@@ -116,14 +116,14 @@ export default async function ArticlePage({ params }: Props) {
       <main className={cn(monoContainer, "py-12 pb-20")}>
         <Link
           href={withLocale(locale, "/")}
-          className="mb-10 inline-block border-2 border-black bg-panel px-4 py-2 label-caps text-muted hover:bg-wash hover:text-ink"
+          className="mb-10 inline-block bg-indigo px-4 py-2 label-caps text-white hover:bg-ink"
         >
           {dict.article.backHome}
         </Link>
 
         {showKoreanOnlyBanner && (
           <p
-            className="mb-8 max-w-[42rem] border-2 border-black bg-pink-soft px-5 py-4 font-sans text-[0.88rem] leading-[1.6] text-ink"
+            className="mb-8 max-w-[42rem] border border-ink/12 bg-[#f8eee8] px-5 py-4 font-sans text-[0.88rem] leading-[1.6] text-ink"
             role="note"
           >
             {dict.article.koreanOnlyBanner}
@@ -158,7 +158,7 @@ export default async function ArticlePage({ params }: Props) {
           )}
         </header>
         {coverUrl && (
-          <figure className="mb-12 overflow-hidden border-2 border-black bg-beige">
+          <figure className="mb-12 overflow-hidden rounded-[1.25rem] border border-ink/12 bg-[#f3f0e8]">
             <Image
               src={coverUrl}
               alt={article.imageAlt}

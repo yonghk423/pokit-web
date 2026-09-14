@@ -125,7 +125,7 @@ export default async function RoutineToolPage({ params }: Props) {
 
         <p className="m-0 label-caps text-green">{dict.newArrivals.kicker}</p>
         {locale === "ja" && tool.hasJapaneseTranslation === false ? (
-          <p className="mt-4 mb-0 border-2 border-black bg-beige px-4 py-3 font-sans text-[0.9rem] leading-relaxed text-ink">
+          <p className="mt-4 mb-0 rounded-xl border border-ink/12 bg-[#f8eee8] px-4 py-3 font-sans text-[0.9rem] leading-relaxed text-ink">
             {dict.newArrivals.localeFallbackBanner}
           </p>
         ) : null}
@@ -145,7 +145,7 @@ export default async function RoutineToolPage({ params }: Props) {
 
         <figure
           className={cn(
-            "relative mt-8 aspect-[3/2] w-full overflow-hidden border-2 border-black bg-beige",
+            "relative mt-8 aspect-[3/2] w-full overflow-hidden rounded-[1.25rem] border border-ink/12 bg-[#f3f0e8]",
             !imageUrl &&
               "grid min-h-[14rem] place-items-center font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-indigo uppercase",
           )}

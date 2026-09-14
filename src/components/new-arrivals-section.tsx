@@ -56,7 +56,7 @@ function ToolCard({
       >
         <figure
           className={cn(
-            "relative aspect-[4/3] overflow-hidden border-2 border-black bg-beige",
+            "relative aspect-[4/3] overflow-hidden rounded-[1.05rem] border border-ink/12 bg-[#f3f0e8]",
             !imageUrl &&
               "grid place-items-center font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-indigo uppercase",
           )}
@@ -114,9 +114,9 @@ export function NewArrivalsSection({
       aria-label={headingTitle}
     >
       {titleAs === "h1" ? (
-        <header className="mb-8 border-t-4 border-black pt-5">
+        <header className="mb-8 border-t-2 border-indigo pt-5">
           <p className="m-0 label-caps text-green">{kicker}</p>
-          <h1 className="m-0 mt-1 text-[clamp(1.85rem,3.5vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.03em]">
+          <h1 className="m-0 mt-1 text-[clamp(1.85rem,3.5vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
             {headingTitle}
           </h1>
         </header>

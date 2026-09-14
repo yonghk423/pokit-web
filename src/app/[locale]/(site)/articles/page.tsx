@@ -145,7 +145,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
   return (
     <main>
       <section className={cn(monoContainer, "py-12 pb-16")}>
-        <header className="mb-10 border-b-4 border-black pb-6">
+        <header className="mb-10 border-b-2 border-indigo pb-6">
           <p className="m-0 mb-3 label-caps text-green">
             {dict.archive.label}
           </p>
@@ -226,12 +226,12 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             />
           </>
         ) : (
-          <p className="m-0 border-t-2 border-black py-6 font-sans text-[0.9rem] text-muted">
+          <p className="m-0 border-t border-ink/10 py-6 font-sans text-[0.9rem] text-muted">
             {searchTerm ? dict.archive.noSearchMatch : dict.archive.studioHint}
           </p>
         )}
 
-        <p className="mt-12 mb-0 border-t-2 border-black pt-8 font-sans text-[0.88rem] [&_a]:inline-block [&_a]:border-2 [&_a]:border-black [&_a]:bg-panel [&_a]:px-5 [&_a]:py-2 [&_a]:font-bold [&_a]:hover:bg-wash">
+        <p className="mt-12 mb-0 border-t border-ink/10 pt-8 font-sans text-[0.88rem] [&_a]:inline-block [&_a]:bg-indigo [&_a]:px-5 [&_a]:py-2 [&_a]:font-semibold [&_a]:text-white [&_a]:hover:bg-ink">
           <Link href={withLocale(locale, "/")}>{dict.archive.backHome}</Link>
         </p>
       </section>

@@ -107,7 +107,7 @@ export default async function Home({ params }: Props) {
     <>
       <JsonLd data={websiteJsonLd(dict.meta.siteDescription, locale)} />
       <main>
-        <section className="border-b-2 border-black bg-beige py-6 text-center">
+        <section className="border-b border-ink/10 bg-[#eef3f1] py-6 text-center">
           <p className="m-0 label-caps text-green">
             {dict.home.inboxTagline}
           </p>
@@ -123,7 +123,7 @@ export default async function Home({ params }: Props) {
             />
             <div className="grid grid-cols-[minmax(0,1.55fr)_minmax(0,0.95fr)] items-start gap-[1.4rem] max-nav:grid-cols-1">
               {weeklyHero.length > 0 && (
-                <div className="min-w-0 border-r-2 border-black pr-[1.4rem] max-nav:border-r-0 max-nav:pr-0">
+                <div className="min-w-0 border-r border-ink/12 pr-[1.4rem] max-nav:border-r-0 max-nav:pr-0">
                   <FeaturedHeadlineCarousel
                     articles={weeklyHero}
                     locale={locale}
@@ -212,7 +212,7 @@ export default async function Home({ params }: Props) {
               autoPlay
             />
           ) : (
-            <p className="m-0 border-t-2 border-black py-6 font-sans text-[0.9rem] text-muted">
+            <p className="m-0 border-t border-ink/12 py-6 font-sans text-[0.9rem] text-muted">
               {dict.home.radioEmpty(commute.nav)}
             </p>
           )}
@@ -275,7 +275,7 @@ export default async function Home({ params }: Props) {
         {wellnessCarousel.length > 0 && (
           <section
             id="wellness"
-            className="mt-16 border-y-2 border-black bg-beige py-14"
+            className="mt-16 border-y border-ink/10 bg-[#eef3f1] py-14"
           >
             <div className={monoContainer}>
               <SectionHeading
@@ -302,7 +302,7 @@ export default async function Home({ params }: Props) {
         <section
           className={cn(
             monoContainer,
-            "border-t-2 border-black py-12 text-center font-sans text-[0.92rem] [&_a]:inline-block [&_a]:border-2 [&_a]:border-black [&_a]:bg-panel [&_a]:px-6 [&_a]:py-3 [&_a]:font-bold [&_a]:hover:bg-wash",
+            "border-t border-ink/10 py-12 text-center font-sans text-[0.92rem] [&_a]:inline-flex [&_a]:items-center [&_a]:rounded-full [&_a]:bg-indigo [&_a]:px-6 [&_a]:py-3 [&_a]:font-semibold [&_a]:text-white [&_a]:hover:bg-ink",
           )}
         >
           <Link href={withLocale(locale, "/articles")}>{dict.home.viewAllStories}</Link>

@@ -64,7 +64,7 @@ export function WellnessNewsDigest({
       aria-label={digest.title}
     >
       {titleAs === "h1" ? (
-        <header className="mb-8 border-t-4 border-black pt-5">
+        <header className="mb-8 border-t-2 border-indigo pt-5">
           <p className="m-0 label-caps text-green">{kicker}</p>
           <h1 className="m-0 mt-1 text-[clamp(1.85rem,3.5vw,2.75rem)] font-extrabold leading-[1.08] tracking-[-0.03em]">
             {digest.title}
@@ -88,7 +88,7 @@ export function WellnessNewsDigest({
         </p>
       )}
       {showExtras && digest.editorNote && (
-        <aside className="mb-8 border-2 border-black bg-wash px-5 py-4">
+        <aside className="mb-8 rounded-xl border border-ink/12 bg-[#eef3f1] px-5 py-4">
           {editorNoteLabel && (
             <p className="m-0 label-caps text-green">{editorNoteLabel}</p>
           )}
@@ -97,11 +97,11 @@ export function WellnessNewsDigest({
           </p>
         </aside>
       )}
-      <ol className="m-0 list-none border-t-2 border-black p-0">
+      <ol className="m-0 list-none border-t border-ink/12 p-0">
         {items.map((item, index) => (
           <li
             key={`${item.sourceUrl}-${index}`}
-            className="border-b-2 border-black py-5 first:pt-5"
+            className="border-b border-ink/12 py-5 first:pt-5"
           >
             <div className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-3 max-[640px]:grid-cols-1 max-[640px]:gap-2">
               <span className="label-caps pt-1 text-green">
@@ -133,7 +133,7 @@ export function WellnessNewsDigest({
         ))}
       </ol>
       {showExtras && related.length > 0 && (
-        <div className="mt-10 border-t-2 border-black pt-6">
+        <div className="mt-10 border-t border-ink/10 pt-6">
           {relatedLabel && (
             <h2 className="m-0 mb-4 text-[1.15rem] font-extrabold tracking-[-0.02em]">
               {relatedLabel}

@@ -20,7 +20,7 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-1 border-2 border-black bg-panel px-2 py-1 font-sans text-[0.72rem] font-bold tracking-[0.06em] uppercase",
+        "inline-flex items-center gap-1 rounded-full bg-[#f3f0e8] px-2.5 py-1 font-sans text-[0.72rem] font-semibold tracking-[0.06em] uppercase",
         className,
       )}
       aria-label={labels.label}
@@ -37,8 +37,8 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
             className={cn(
               "px-1 py-0.5",
               locale === value
-                ? "bg-wash text-ink"
-                : "text-muted hover:bg-beige hover:text-ink",
+                ? "rounded-full bg-white px-1.5 text-ink"
+                : "text-muted hover:text-ink",
             )}
             aria-current={locale === value ? "true" : undefined}
           >

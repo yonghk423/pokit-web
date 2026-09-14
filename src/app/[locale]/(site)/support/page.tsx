@@ -40,7 +40,7 @@ function SupportBlockView({ block }: { block: SupportBlock }) {
         {block.items.map((item) => (
           <li
             key={item}
-            className="border-l-2 border-black pl-3 text-[1.02rem] leading-relaxed text-muted"
+            className="border-l-2 border-indigo pl-3 text-[1.02rem] leading-relaxed text-muted"
           >
             {item}
           </li>
@@ -51,7 +51,7 @@ function SupportBlockView({ block }: { block: SupportBlock }) {
 
   if (block.type === "faq") {
     return (
-      <article className="border-2 border-black bg-panel p-4">
+      <article className="rounded-xl border border-ink/12 bg-white p-4">
         <h3 className="m-0 text-[1.02rem] font-extrabold leading-snug tracking-[-0.02em]">
           {block.q}
         </h3>
@@ -61,7 +61,7 @@ function SupportBlockView({ block }: { block: SupportBlock }) {
   }
 
   return (
-    <article className="border-2 border-black bg-beige p-4">
+    <article className="rounded-xl border border-ink/12 bg-[#f3f0e8] p-4">
       <h3 className="m-0 text-[1.02rem] font-extrabold leading-snug tracking-[-0.02em]">
         {block.title}
       </h3>
@@ -135,21 +135,21 @@ export default async function SupportPage({ params }: Props) {
         <div className="mt-8 flex flex-wrap gap-3">
           <a
             href={storeUrl}
-            className="inline-flex min-h-12 items-center border-2 border-black bg-black px-5 font-sans text-[0.78rem] font-extrabold tracking-[0.06em] text-white uppercase hover:opacity-90"
+            className="inline-flex min-h-12 items-center bg-indigo px-5 font-sans text-[0.78rem] font-extrabold tracking-[0.06em] text-white uppercase hover:bg-ink"
           >
             {copy.appStore}
           </a>
           <SupportEmailLink variant="button">{dict.support.sendMail}</SupportEmailLink>
         </div>
 
-        <nav className="mt-10 border-2 border-black bg-beige p-4" aria-label={copy.tocLabel}>
+        <nav className="mt-10 rounded-xl border border-ink/12 bg-[#f3f0e8] p-4" aria-label={copy.tocLabel}>
           <p className="m-0 mb-3 label-caps text-ink">{copy.tocLabel}</p>
           <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
             {copy.sections.map((section) => (
               <li key={section.id}>
                 <a
                   href={`#${section.id}`}
-                  className="inline-flex border-2 border-black bg-panel px-2.5 py-1 text-[0.78rem] font-bold text-ink hover:bg-wash"
+                  className="inline-flex bg-white px-2.5 py-1 text-[0.78rem] font-bold text-ink hover:bg-indigo hover:text-white"
                 >
                   {section.title}
                 </a>
@@ -187,7 +187,7 @@ export default async function SupportPage({ params }: Props) {
 
         <Link
           href={withLocale(locale, "/")}
-          className="mt-12 inline-block border-2 border-black bg-panel px-5 py-2 font-sans font-bold text-ink hover:bg-wash"
+          className="mt-12 inline-block bg-indigo px-5 py-2 font-sans font-semibold text-white hover:bg-ink"
         >
           {dict.support.backHome}
         </Link>
