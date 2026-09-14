@@ -107,12 +107,6 @@ export default async function Home({ params }: Props) {
     <>
       <JsonLd data={websiteJsonLd(dict.meta.siteDescription, locale)} />
       <main>
-        <section className="border-b border-ink/10 bg-[#eef3f1] py-6 text-center">
-          <p className="m-0 label-caps text-green">
-            {dict.home.inboxTagline}
-          </p>
-        </section>
-
         {hasTopStories && (
           <section id="weekly" className={cn(monoContainer, sectionSpacing)}>
             <SectionHeading

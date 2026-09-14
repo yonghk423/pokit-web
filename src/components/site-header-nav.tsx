@@ -22,6 +22,7 @@ const navLinkIdleClass = "font-semibold text-muted hover:text-ink";
 type Props = {
   locale: Locale;
   tagline: string;
+  inboxTagline: string;
   homeAria: string;
   allStories: string;
   app: string;
@@ -38,6 +39,7 @@ function pathMatches(pathname: string, href: string) {
 export function SiteHeaderNav({
   locale,
   tagline,
+  inboxTagline,
   homeAria,
   allStories,
   app,
@@ -136,13 +138,17 @@ export function SiteHeaderNav({
         </div>
       </div>
 
-      <nav className="overflow-x-auto bg-wash" aria-label={categoriesAria}>
-        <ul
+      <nav
+        className="overflow-x-auto border-b border-ink/10 bg-[#eef3f1]"
+        aria-label={categoriesAria}
+      >
+        <div
           className={cn(
             monoContainer,
-            "m-0 flex min-h-14 list-none items-center gap-1 py-2 font-sans max-[640px]:justify-center max-[640px]:gap-0.5 max-[640px]:px-1 max-[640px]:whitespace-nowrap",
+            "grid min-h-14 grid-cols-[1fr_auto_1fr] items-center py-2 max-[900px]:grid-cols-1",
           )}
         >
+          <ul className="m-0 flex min-w-0 list-none items-center justify-start gap-5 overflow-x-auto p-0 font-sans whitespace-nowrap max-[640px]:gap-3">
           {categories.map((category) => {
             const section = Object.values(homeSections).find(
               (item) => item.id === category.id,
@@ -170,10 +176,10 @@ export function SiteHeaderNav({
                 <Link
                   href={`${homeHref}#${category.id}`}
                   className={cn(
-                    "inline-flex items-center px-3.5 py-2 text-[0.92rem] font-semibold tracking-[0.01em]",
+                    "inline-flex items-center py-2 text-[0.92rem] tracking-[0.02em]",
                     active
                       ? "font-extrabold text-[#163a7a]"
-                      : "font-semibold text-muted hover:text-ink",
+                      : "font-semibold text-ink/55 hover:text-ink",
                   )}
                   aria-current={active ? "page" : undefined}
                 >
@@ -182,7 +188,12 @@ export function SiteHeaderNav({
               </li>
             );
           })}
-        </ul>
+          </ul>
+          <p className="m-0 justify-self-center label-caps text-green max-[900px]:hidden">
+            {inboxTagline}
+          </p>
+          <div className="max-[900px]:hidden" aria-hidden="true" />
+        </div>
       </nav>
     </header>
   );
