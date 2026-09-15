@@ -116,7 +116,7 @@ function FeatureVisualCluster({
     : { src: visual.secondary, alt: secondaryAlt ?? alt, elevated: false };
 
   return (
-    <div className="mx-auto flex w-full max-w-md items-end justify-center gap-1 nav:max-w-lg nav:gap-2">
+    <div className="mx-auto flex w-full max-w-md items-center justify-center gap-4 nav:max-w-lg nav:gap-6">
       <PhoneFrame
         src={left.src}
         alt={left.alt}
@@ -124,7 +124,7 @@ function FeatureVisualCluster({
         finish="soft"
         priority={priority}
         eager={priority}
-        className="w-[48%] -rotate-1"
+        className="w-[48%]"
       />
       <PhoneFrame
         src={right.src}
@@ -133,7 +133,7 @@ function FeatureVisualCluster({
         finish="soft"
         priority={priority}
         eager={priority}
-        className="w-[48%] rotate-1"
+        className="w-[48%]"
       />
     </div>
   );
