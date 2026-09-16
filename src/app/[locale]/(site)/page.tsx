@@ -178,6 +178,7 @@ export default async function Home({ params }: Props) {
           locale={locale}
           categoryLabels={categoryLabels}
           closeLabel={dict.home.closePreview}
+          addToPokit={dict.article.addToPokit}
         >
           {(weeklyHero.length > 0 || feedArticles.length > 0) && (
             <HomeHero

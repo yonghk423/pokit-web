@@ -14,12 +14,14 @@ type ShellProps = {
   locale: Locale;
   categoryLabels: Dictionary["categories"];
   closeLabel: string;
+  addToPokit: Dictionary["article"]["addToPokit"];
   children: ReactNode;
 };
 
 function HomePreviewBody({
   categoryLabels,
   closeLabel,
+  addToPokit,
   children,
 }: Omit<ShellProps, "locale">) {
   const { active } = useArticlePreview();
@@ -31,6 +33,7 @@ function HomePreviewBody({
         <ArticlePreviewModal
           categoryLabels={categoryLabels}
           closeLabel={closeLabel}
+          addToPokit={addToPokit}
         />
       ) : null}
       {active?.kind === "tool" ? (
@@ -44,11 +47,16 @@ export function HomePreviewShell({
   locale,
   categoryLabels,
   closeLabel,
+  addToPokit,
   children,
 }: ShellProps) {
   return (
     <ArticlePreviewProvider locale={locale}>
-      <HomePreviewBody categoryLabels={categoryLabels} closeLabel={closeLabel}>
+      <HomePreviewBody
+        categoryLabels={categoryLabels}
+        closeLabel={closeLabel}
+        addToPokit={addToPokit}
+      >
         {children}
       </HomePreviewBody>
     </ArticlePreviewProvider>

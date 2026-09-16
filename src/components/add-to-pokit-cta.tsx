@@ -53,24 +53,21 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
 
   return (
     <section
-      className={cn(
-        "mt-16 max-w-[42rem] border-t border-ink/10 pt-10",
-        className,
-      )}
+      className={cn("mt-8 max-w-[42rem] border-t border-ink/10 pt-5", className)}
       aria-label={copy.ariaLabel}
     >
       {inApp && (
         <>
           <p className="m-0 label-caps text-green">POKIT</p>
-          <h2 className="mt-3 mb-0 font-sans text-[clamp(1.35rem,3vw,1.75rem)] font-extrabold leading-[1.15] tracking-[-0.02em]">
+          <h2 className="mt-1.5 mb-0 font-sans text-[1.05rem] font-extrabold leading-snug tracking-[-0.02em]">
             {copy.title}
           </h2>
 
-          <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="mt-3">
             <button
               type="button"
               onClick={handleAdd}
-              className="inline-flex min-h-12 items-center justify-center bg-green px-6 font-sans text-[0.78rem] font-extrabold tracking-[0.06em] text-white uppercase hover:bg-ink"
+              className="inline-flex min-h-9 items-center justify-center bg-green px-4 font-sans text-[0.72rem] font-extrabold tracking-[0.06em] text-white uppercase hover:bg-ink"
             >
               {copy.button}
             </button>
@@ -78,7 +75,7 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
 
           {state === "sent" && (
             <p
-              className="mt-5 mb-0 rounded-xl border border-ink/12 bg-[#eef3f1] px-4 py-3 font-sans text-[0.88rem] leading-[1.5] text-green"
+              className="mt-3 mb-0 rounded-lg border border-ink/12 bg-[#eef3f1] px-3 py-2 font-sans text-[0.8rem] leading-snug text-green"
               role="status"
             >
               {copy.sent}
@@ -88,26 +85,26 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
       )}
 
       {!inApp && (
-        <div className="rounded-xl border border-ink/12 bg-[#f3f0e8] px-5 py-5">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-lg border border-ink/12 bg-[#f3f0e8] px-3 py-2.5">
+          <div className="flex items-center gap-3">
             <div className="min-w-0 flex-1">
-              <p className="m-0 font-sans text-[0.92rem] leading-[1.6] text-ink">
+              <p className="m-0 font-sans text-[0.8rem] leading-snug text-ink">
                 {copy.fallback}
               </p>
-              <div className="mt-5 hidden max-nav:block">
+              <div className="mt-2.5 hidden max-nav:block">
                 <AppStoreBadge locale={locale} label={copy.download} />
               </div>
             </div>
-            <div className="flex shrink-0 flex-col items-center gap-2 self-center rounded-xl border border-ink/12 bg-white p-4 max-nav:hidden">
+            <div className="flex shrink-0 flex-col items-center gap-1 rounded-md border border-ink/10 bg-white px-2 py-1.5 max-nav:hidden">
               <QRCodeSVG
                 value={storeUrl}
-                size={112}
-                bgColor="#fbf8ff"
+                size={64}
+                bgColor="#ffffff"
                 fgColor="#181a2e"
                 role="img"
                 aria-label={copy.qrAria}
               />
-              <p className="m-0 max-w-[8.5rem] text-center font-sans text-[0.68rem] font-bold leading-[1.35] tracking-[0.04em] text-ink normal-case">
+              <p className="m-0 max-w-[4.75rem] text-center font-sans text-[0.58rem] font-semibold leading-tight text-ink/70 normal-case">
                 {copy.qrHint}
               </p>
             </div>

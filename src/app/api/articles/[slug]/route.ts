@@ -34,9 +34,12 @@ export async function GET(request: Request, { params }: Params) {
   return NextResponse.json({
     slug: article.slug,
     title: article.title,
+    titleKo: article.titleKo ?? article.title,
     description: article.description ?? null,
     kicker: article.kicker ?? null,
     category: article.category,
+    categoryKey: article.categoryKey ?? null,
+    durationMinutes: article.durationMinutes ?? null,
     imageAlt: article.imageAlt,
     publishedAt: article.publishedAt ?? null,
     body: article.body ?? null,

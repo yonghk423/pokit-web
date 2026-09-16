@@ -9,6 +9,7 @@ import {
   type CSSProperties,
 } from "react";
 
+import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import {
   useArticlePreview,
@@ -18,14 +19,21 @@ import { PreviewCoverImage } from "@/components/preview-cover-image";
 import { cn } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import { formatPublishedLabel } from "@/lib/format-published";
+import {
+  DEFAULT_DURATION_MINUTES,
+  toPokitRoutineArticle,
+} from "@/lib/pokit-bridge";
 import type { Dictionary } from "@/i18n/types";
 
 type PreviewArticle = {
   slug: string;
   title: string;
+  titleKo: string | null;
   description: string | null;
   kicker: string | null;
   category: string;
+  categoryKey: string | null;
+  durationMinutes: number | null;
   imageAlt: string;
   publishedAt: string | null;
   body: PortableTextBlock[] | null;
@@ -36,6 +44,7 @@ type PreviewArticle = {
 type Props = {
   categoryLabels: Dictionary["categories"];
   closeLabel: string;
+  addToPokit: Dictionary["article"]["addToPokit"];
 };
 
 function originStyle(origin: ArticlePreviewOrigin): CSSProperties {
@@ -63,6 +72,7 @@ function rectStyle(rect: DOMRect): CSSProperties {
 export function ArticlePreviewModal({
   categoryLabels,
   closeLabel,
+  addToPokit,
 }: Props) {
   const { locale, active, close } = useArticlePreview();
   const titleId = useId();
@@ -316,6 +326,28 @@ export function ArticlePreviewModal({
                 <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
                   <PortableText value={detail.body} />
                 </div>
+              ) : null}
+
+              {detail?.slug ? (
+                <AddToPokitCta
+                  article={toPokitRoutineArticle({
+                    slug: detail.slug,
+                    title: detail.title,
+                    titleKo: detail.titleKo ?? detail.title,
+                    description: detail.description ?? undefined,
+                    category: detail.category,
+                    categoryKey: detail.categoryKey ?? undefined,
+                    durationMinutes:
+                      detail.durationMinutes && detail.durationMinutes > 0
+                        ? detail.durationMinutes
+                        : DEFAULT_DURATION_MINUTES,
+                    publishedAt: detail.publishedAt ?? undefined,
+                    imageAlt: detail.imageAlt,
+                  })}
+                  locale={locale}
+                  copy={addToPokit}
+                  className="mt-6 max-w-none pt-4 pb-1"
+                />
               ) : null}
             </div>
           </div>
