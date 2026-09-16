@@ -53,58 +53,60 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
 
   return (
     <section
-      className={cn("mt-8 max-w-[42rem] border-t border-ink/10 pt-5", className)}
+      className={cn("mt-5 max-w-[42rem]", className)}
       aria-label={copy.ariaLabel}
     >
       {inApp && (
-        <>
-          <p className="m-0 label-caps text-green">POKIT</p>
-          <h2 className="mt-1.5 mb-0 font-sans text-[1.05rem] font-extrabold leading-snug tracking-[-0.02em]">
+        <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3.5 py-3">
+          <p className="m-0 font-sans text-[0.68rem] font-semibold tracking-[0.08em] text-ink/45 uppercase">
+            POKIT
+          </p>
+          <h2 className="mt-1 mb-0 font-sans text-[0.95rem] font-extrabold leading-snug tracking-[-0.02em] text-ink">
             {copy.title}
           </h2>
 
-          <div className="mt-3">
+          <div className="mt-2.5 flex flex-wrap items-center gap-2.5">
             <button
               type="button"
               onClick={handleAdd}
-              className="inline-flex min-h-9 items-center justify-center bg-green px-4 font-sans text-[0.72rem] font-extrabold tracking-[0.06em] text-white uppercase hover:bg-ink"
+              className="inline-flex min-h-8 items-center justify-center gap-1.5 rounded-full bg-ink px-3.5 font-sans text-[0.72rem] font-semibold tracking-[-0.01em] text-white transition-colors hover:bg-indigo"
             >
+              <span className="size-1.5 rounded-full bg-brand" aria-hidden />
               {copy.button}
             </button>
+            {state === "sent" ? (
+              <p
+                className="m-0 font-sans text-[0.75rem] leading-snug text-ink/55"
+                role="status"
+              >
+                {copy.sent}
+              </p>
+            ) : null}
           </div>
-
-          {state === "sent" && (
-            <p
-              className="mt-3 mb-0 rounded-lg border border-ink/12 bg-[#eef3f1] px-3 py-2 font-sans text-[0.8rem] leading-snug text-green"
-              role="status"
-            >
-              {copy.sent}
-            </p>
-          )}
-        </>
+        </div>
       )}
 
       {!inApp && (
-        <div className="rounded-lg border border-ink/12 bg-[#f3f0e8] px-3 py-2.5">
+        <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3 py-2.5">
           <div className="flex items-center gap-3">
             <div className="min-w-0 flex-1">
-              <p className="m-0 font-sans text-[0.8rem] leading-snug text-ink">
+              <p className="m-0 font-sans text-[0.8rem] leading-snug text-ink/75">
                 {copy.fallback}
               </p>
-              <div className="mt-2.5 hidden max-nav:block">
+              <div className="mt-2 hidden max-nav:block">
                 <AppStoreBadge locale={locale} label={copy.download} />
               </div>
             </div>
-            <div className="flex shrink-0 flex-col items-center gap-1 rounded-md border border-ink/10 bg-white px-2 py-1.5 max-nav:hidden">
+            <div className="flex shrink-0 flex-col items-center gap-1 rounded-md bg-white px-2 py-1.5 ring-1 ring-ink/8 max-nav:hidden">
               <QRCodeSVG
                 value={storeUrl}
-                size={64}
+                size={56}
                 bgColor="#ffffff"
                 fgColor="#181a2e"
                 role="img"
                 aria-label={copy.qrAria}
               />
-              <p className="m-0 max-w-[4.75rem] text-center font-sans text-[0.58rem] font-semibold leading-tight text-ink/70 normal-case">
+              <p className="m-0 max-w-[4.5rem] text-center font-sans text-[0.55rem] font-medium leading-tight text-ink/50 normal-case">
                 {copy.qrHint}
               </p>
             </div>

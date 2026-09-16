@@ -341,7 +341,11 @@ export function HomeWorkRows({
   if (visible.length === 0) return null;
 
   return (
-    <section className="mt-20 max-nav:mt-14" aria-labelledby="home-work-heading">
+    <section
+      className="mt-20 max-nav:mt-14"
+      aria-labelledby="home-work-heading"
+      data-pokit-app-start
+    >
       <div className={monoContainer}>
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6 max-nav:mb-7">
           <DisplayHeading

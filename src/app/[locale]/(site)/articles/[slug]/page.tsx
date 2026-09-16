@@ -177,13 +177,6 @@ export default async function ArticlePage({ params }: Props) {
             <PortableText value={article.body} />
           </div>
         )}
-        {shouldShowPokitCta(article) && (
-          <AddToPokitCta
-            article={toPokitRoutineArticle(article)}
-            locale={locale}
-            copy={dict.article.addToPokit}
-          />
-        )}
         {related && (
           <RelatedArticles
             related={related}
@@ -191,6 +184,13 @@ export default async function ArticlePage({ params }: Props) {
             categoryLabels={dict.categories}
             heading={dict.article.relatedStories(related.label)}
             viewMoreLabel={dict.article.viewMore}
+          />
+        )}
+        {shouldShowPokitCta(article) && (
+          <AddToPokitCta
+            article={toPokitRoutineArticle(article)}
+            locale={locale}
+            copy={dict.article.addToPokit}
           />
         )}
       </main>

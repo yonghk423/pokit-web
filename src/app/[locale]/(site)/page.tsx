@@ -181,16 +181,18 @@ export default async function Home({ params }: Props) {
           addToPokit={dict.article.addToPokit}
         >
           {(weeklyHero.length > 0 || feedArticles.length > 0) && (
-            <HomeHero
-              locale={locale}
-              line1={dict.home.heroLine1}
-              accent={dict.home.heroAccent}
-              rest={dict.home.heroRest}
-              feedTitle={dict.home.feedTitle}
-              heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
-              feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
-              categoryLabels={categoryLabels}
-            />
+            <div data-hide-in-pokit-app>
+              <HomeHero
+                locale={locale}
+                line1={dict.home.heroLine1}
+                accent={dict.home.heroAccent}
+                rest={dict.home.heroRest}
+                feedTitle={dict.home.feedTitle}
+                heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
+                feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
+                categoryLabels={categoryLabels}
+              />
+            </div>
           )}
 
           <HomeWorkRows
@@ -216,7 +218,9 @@ export default async function Home({ params }: Props) {
             />
           )}
 
-          <HomeAbout locale={locale} dict={dict} />
+          <div data-hide-in-pokit-app>
+            <HomeAbout locale={locale} dict={dict} />
+          </div>
         </HomePreviewShell>
       </main>
     </>

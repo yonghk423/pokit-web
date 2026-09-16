@@ -346,7 +346,7 @@ export function ArticlePreviewModal({
                   })}
                   locale={locale}
                   copy={addToPokit}
-                  className="mt-6 max-w-none pt-4 pb-1"
+                  className="mt-8 max-w-none"
                 />
               ) : null}
             </div>

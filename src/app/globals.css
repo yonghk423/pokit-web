@@ -75,6 +75,15 @@
   text-transform: uppercase;
 }
 
+/* ── POKIT app WebView: start from work section ── */
+html[data-pokit-app="1"] [data-hide-in-pokit-app] {
+  display: none !important;
+}
+
+html[data-pokit-app="1"] [data-pokit-app-start] {
+  margin-top: 1.25rem !important;
+}
+
 /* ── Base ── */
 
 @layer base {
