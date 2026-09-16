@@ -46,10 +46,12 @@ function articlesWithCover(articles: ArticleCardData[]) {
 function HomeWorkRow({
   section,
   viewAllLabel,
+  autoplayOffsetMs,
 }: {
   section: HomeWorkSection;
   locale: Locale;
   viewAllLabel: string;
+  autoplayOffsetMs: number;
 }) {
   const preview = useOptionalArticlePreview();
   const images = articlesWithCover(section.articles);
@@ -107,12 +109,7 @@ function HomeWorkRow({
       paused = false;
     };
 
-    el.addEventListener("mouseenter", pause);
-    el.addEventListener("mouseleave", resume);
-    el.addEventListener("focusin", pause);
-    el.addEventListener("focusout", resume);
-
-    const timer = window.setInterval(() => {
+    const advance = () => {
       if (paused) return;
       const track = scrollRef.current;
       if (!track) return;
@@ -125,16 +122,28 @@ function HomeWorkRow({
       const card = track.querySelector<HTMLElement>("[data-work-card]");
       const step = card ? card.offsetWidth + 8 : track.clientWidth / VISIBLE_DESKTOP;
       track.scrollBy({ left: step, behavior: "smooth" });
-    }, 5000);
+    };
+
+    el.addEventListener("mouseenter", pause);
+    el.addEventListener("mouseleave", resume);
+    el.addEventListener("focusin", pause);
+    el.addEventListener("focusout", resume);
+
+    let intervalId = 0;
+    const startId = window.setTimeout(() => {
+      advance();
+      intervalId = window.setInterval(advance, 5000);
+    }, autoplayOffsetMs);
 
     return () => {
-      window.clearInterval(timer);
+      window.clearTimeout(startId);
+      window.clearInterval(intervalId);
       el.removeEventListener("mouseenter", pause);
       el.removeEventListener("mouseleave", resume);
       el.removeEventListener("focusin", pause);
       el.removeEventListener("focusout", resume);
     };
-  }, [showControls, images.length]);
+  }, [showControls, images.length, autoplayOffsetMs]);
 
   if (images.length === 0) return null;
 
@@ -352,12 +361,13 @@ export function HomeWorkRows({
         </div>
 
         <div>
-          {visible.map((section) => (
+          {visible.map((section, index) => (
             <HomeWorkRow
               key={section.id}
               section={section}
               locale={locale}
               viewAllLabel={viewAllLabel}
+              autoplayOffsetMs={(index + 1) * 1000}
             />
           ))}
         </div>
