@@ -51,6 +51,7 @@ function openPreviewFromElement(
       width: rect.width,
       height: rect.height,
       imageUrl,
+      blurDataURL: article.coverImageLqip ?? null,
     },
   });
 }

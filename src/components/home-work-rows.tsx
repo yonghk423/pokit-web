@@ -37,7 +37,7 @@ const VISIBLE_DESKTOP = 3;
 const MAX_ARTICLES = 12;
 
 const navBtnClass =
-  "size-9 shrink-0 cursor-pointer rounded-full border border-ink/15 bg-white font-sans text-sm font-semibold leading-none text-ink transition-colors hover:bg-ink hover:text-white disabled:cursor-not-allowed disabled:opacity-35";
+  "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-ink/[0.05] p-0 font-sans text-[0.8rem] font-medium leading-none text-ink/55 transition-colors hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:bg-transparent disabled:text-ink/20";
 
 function articlesWithCover(articles: ArticleCardData[]) {
   return articles.filter((article) => Boolean(article.coverImage)).slice(0, MAX_ARTICLES);
@@ -249,16 +249,17 @@ function HomeWorkRow({
                 onClick={(event) => {
                   if (!preview) return;
                   const rect = event.currentTarget.getBoundingClientRect();
-                  preview.open({
-                    article,
-                    origin: {
-                      top: rect.top,
-                      left: rect.left,
-                      width: rect.width,
-                      height: rect.height,
-                      imageUrl,
-                    },
-                  });
+                preview.open({
+                  article,
+                  origin: {
+                    top: rect.top,
+                    left: rect.left,
+                    width: rect.width,
+                    height: rect.height,
+                    imageUrl,
+                    blurDataURL: article.coverImageLqip ?? null,
+                  },
+                });
                 }}
               >
                 {imageUrl ? (

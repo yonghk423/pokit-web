@@ -1,13 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
+import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
 import { cn, monoContainer } from "@/lib/cn";
 import type { Locale } from "@/i18n/config";
-import { routineToolPath } from "@/lib/routine-tool-path";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
-import type { NewArrivalsData } from "@/sanity/types";
+import type { NewArrivalsData, NewArrivalsItem } from "@/sanity/types";
 
 type Props = {
   roundup: NewArrivalsData;
@@ -17,17 +19,47 @@ type Props = {
   rest: string;
   viewAllHref: string;
   viewAllLabel: string;
+  kicker: string;
 };
+
+function openToolPreview(
+  preview: ReturnType<typeof useOptionalArticlePreview>,
+  item: NewArrivalsItem,
+  el: HTMLElement,
+  imageUrl: string | null,
+  kicker: string,
+) {
+  if (!preview) return;
+  const rect = el.getBoundingClientRect();
+  preview.openTool({
+    tool: {
+      slug: item.slug,
+      name: item.name,
+      summary: item.summary,
+      imageAlt: item.imageAlt,
+    },
+    origin: {
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+      imageUrl,
+      blurDataURL: item.imageLqip ?? null,
+    },
+    kicker,
+  });
+}
 
 export function HomeLabs({
   roundup,
-  locale,
   line1,
   accent,
   rest,
   viewAllHref,
   viewAllLabel,
+  kicker,
 }: Props) {
+  const preview = useOptionalArticlePreview();
   const items = roundup.items.slice(0, 6);
   if (items.length === 0) return null;
 
@@ -62,17 +94,25 @@ export function HomeLabs({
               isSanityConfigured() && item.image
                 ? coverImageUrl(item.image, 900, 1100)
                 : null;
-            const href = routineToolPath(locale, item.slug);
             const tall = index % 3 === 1;
 
             return (
-              <Link
+              <button
                 key={item.slug}
-                href={href}
+                type="button"
                 className={cn(
-                  "group/lab mb-3 block break-inside-avoid overflow-hidden rounded-[1.15rem] bg-[#ebe7df] no-underline",
+                  "group/lab mb-3 block w-full break-inside-avoid overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left",
                   tall ? "aspect-[3/4]" : "aspect-[4/3]",
                 )}
+                onClick={(event) =>
+                  openToolPreview(
+                    preview,
+                    item,
+                    event.currentTarget,
+                    imageUrl,
+                    kicker,
+                  )
+                }
               >
                 <div className="relative h-full w-full">
                   {imageUrl ? (
@@ -100,7 +140,7 @@ export function HomeLabs({
                     ) : null}
                   </div>
                 </div>
-              </Link>
+              </button>
             );
           })}
         </div>

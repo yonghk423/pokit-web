@@ -80,7 +80,7 @@ export default async function ArticlePage({ params }: Props) {
     (locale === "en" && article.hasEnglishTranslation === false) ||
     (locale === "ja" && article.hasJapaneseTranslation === false);
 
-  const coverUrl = coverImageUrl(article.coverImage, 1600, 900);
+  const coverUrl = coverImageUrl(article.coverImage, 1200, 675);
   const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
   const description = articleMetaDescription(article.title, article.description);
   const jsonLdLocale =
@@ -162,9 +162,10 @@ export default async function ArticlePage({ params }: Props) {
             <Image
               src={coverUrl}
               alt={article.imageAlt}
-              width={1600}
-              height={900}
+              width={1200}
+              height={675}
               priority
+              quality={72}
               className="block h-auto w-full"
               sizes="(min-width: 1024px) 960px, 100vw"
               {...imageBlurProps(article.coverImageLqip)}

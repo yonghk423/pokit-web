@@ -38,7 +38,13 @@ export function coverImageUrl(
   height: number,
 ): string | null {
   if (!builder || !isValidImageSource(source)) return null;
-  return urlForImage(source).width(width).height(height).fit("crop").url();
+  return urlForImage(source)
+    .width(width)
+    .height(height)
+    .fit("crop")
+    .auto("format")
+    .quality(72)
+    .url();
 }
 
 /** LQIP base64 문자열 → next/image blur placeholder props */

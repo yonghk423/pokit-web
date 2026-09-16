@@ -463,7 +463,7 @@ export async function getRoutineToolBySlug(
       { locale, slug },
       newArrivalsFetchOptions,
     );
-    if (!result?.item?.name || !result.item.slug || !result.item.body?.length) {
+    if (!result?.item?.name || !result.item.slug) {
       return null;
     }
     return {

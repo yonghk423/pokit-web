@@ -97,7 +97,7 @@ export default async function RoutineToolPage({ params }: Props) {
 
   const imageUrl =
     isSanityConfigured() && tool.image
-      ? coverImageUrl(tool.image, 1400, 933)
+      ? coverImageUrl(tool.image, 1200, 800)
       : null;
 
   return (
@@ -157,6 +157,7 @@ export default async function RoutineToolPage({ params }: Props) {
               fill
               priority
               sizes="(max-width: 900px) 100vw, 900px"
+              quality={72}
               className="object-cover"
               {...imageBlurProps(tool.imageLqip)}
             />

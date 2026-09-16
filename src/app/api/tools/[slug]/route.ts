@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
 
 import { isLocale, type Locale } from "@/i18n/config";
-import { isValidArticleSlug } from "@/lib/article-path";
-import { getArticleBySlug } from "@/sanity/lib/article";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl } from "@/sanity/image";
+import { getRoutineToolBySlug } from "@/sanity/lib/fetch";
 
 type Params = { params: Promise<{ slug: string }> };
+
+function isValidToolSlug(slug: string) {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
+}
 
 export async function GET(request: Request, { params }: Params) {
   if (!isSanityConfigured()) {
@@ -15,7 +18,7 @@ export async function GET(request: Request, { params }: Params) {
 
   const { slug: rawSlug } = await params;
   const slug = decodeURIComponent(rawSlug);
-  if (!isValidArticleSlug(slug)) {
+  if (!isValidToolSlug(slug)) {
     return NextResponse.json({ error: "Invalid slug" }, { status: 400 });
   }
 
@@ -26,23 +29,20 @@ export async function GET(request: Request, { params }: Params) {
   }
   const locale: Locale = localeParam;
 
-  const article = await getArticleBySlug(slug, locale);
-  if (!article) {
+  const tool = await getRoutineToolBySlug(locale, slug);
+  if (!tool) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
   return NextResponse.json({
-    slug: article.slug,
-    title: article.title,
-    description: article.description ?? null,
-    kicker: article.kicker ?? null,
-    category: article.category,
-    imageAlt: article.imageAlt,
-    publishedAt: article.publishedAt ?? null,
-    body: article.body ?? null,
-    coverUrl: coverImageUrl(article.coverImage, 900, 1200),
-    coverImageLqip: article.coverImageLqip ?? null,
-    hasEnglishTranslation: article.hasEnglishTranslation,
-    hasJapaneseTranslation: article.hasJapaneseTranslation,
+    slug: tool.slug,
+    name: tool.name,
+    summary: tool.summary ?? null,
+    imageAlt: tool.imageAlt ?? tool.name,
+    body: tool.body ?? null,
+    coverUrl: coverImageUrl(tool.image, 900, 1200),
+    imageLqip: tool.imageLqip ?? null,
+    hasEnglishTranslation: tool.hasEnglishTranslation,
+    hasJapaneseTranslation: tool.hasJapaneseTranslation,
   });
 }

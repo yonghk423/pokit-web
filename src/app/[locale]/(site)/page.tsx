@@ -211,6 +211,7 @@ export default async function Home({ params }: Props) {
               rest={dict.home.labsRest}
               viewAllHref={newArrivalsPath(locale)}
               viewAllLabel={dict.newArrivals.viewAll}
+              kicker={dict.newArrivals.kicker}
             />
           )}
 

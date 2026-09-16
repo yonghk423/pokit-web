@@ -5,6 +5,7 @@ import {
   ArticlePreviewProvider,
   useArticlePreview,
 } from "@/components/article-preview-context";
+import { RoutineToolPreviewModal } from "@/components/routine-tool-preview-modal";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import type { ReactNode } from "react";
@@ -26,11 +27,14 @@ function HomePreviewBody({
   return (
     <>
       {children}
-      {active ? (
+      {active?.kind === "article" ? (
         <ArticlePreviewModal
           categoryLabels={categoryLabels}
           closeLabel={closeLabel}
         />
+      ) : null}
+      {active?.kind === "tool" ? (
+        <RoutineToolPreviewModal closeLabel={closeLabel} />
       ) : null}
     </>
   );

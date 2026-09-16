@@ -9,32 +9,24 @@ import {
   type CSSProperties,
 } from "react";
 
-import { ArticleDisplayTitle } from "@/components/article-display-title";
 import {
   useArticlePreview,
   type ArticlePreviewOrigin,
 } from "@/components/article-preview-context";
 import { PreviewCoverImage } from "@/components/preview-cover-image";
 import { cn } from "@/lib/cn";
-import { splitDisplayTitle } from "@/lib/display-title";
-import { formatPublishedLabel } from "@/lib/format-published";
-import type { Dictionary } from "@/i18n/types";
 
-type PreviewArticle = {
+type PreviewTool = {
   slug: string;
-  title: string;
-  description: string | null;
-  kicker: string | null;
-  category: string;
+  name: string;
+  summary: string | null;
   imageAlt: string;
-  publishedAt: string | null;
   body: PortableTextBlock[] | null;
   coverUrl: string | null;
-  coverImageLqip: string | null;
+  imageLqip: string | null;
 };
 
 type Props = {
-  categoryLabels: Dictionary["categories"];
   closeLabel: string;
 };
 
@@ -60,10 +52,7 @@ function rectStyle(rect: DOMRect): CSSProperties {
   };
 }
 
-export function ArticlePreviewModal({
-  categoryLabels,
-  closeLabel,
-}: Props) {
+export function RoutineToolPreviewModal({ closeLabel }: Props) {
   const { locale, active, close } = useArticlePreview();
   const titleId = useId();
   const mediaRef = useRef<HTMLDivElement>(null);
@@ -71,14 +60,14 @@ export function ArticlePreviewModal({
   const flyRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<"from" | "to" | "ready">("from");
   const [target, setTarget] = useState<CSSProperties | null>(null);
-  const [detail, setDetail] = useState<PreviewArticle | null>(null);
+  const [detail, setDetail] = useState<PreviewTool | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const articleActive = active?.kind === "article" ? active : null;
+  const toolActive = active?.kind === "tool" ? active : null;
 
   useEffect(() => {
-    if (!articleActive) return;
+    if (!toolActive) return;
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -113,8 +102,6 @@ export function ArticlePreviewModal({
       }
 
       setTarget(next);
-
-      // Force a paint at the origin before switching to the target.
       raf2 = requestAnimationFrame(() => {
         if (cancelled) return;
         void flyRef.current?.offsetWidth;
@@ -132,12 +119,12 @@ export function ArticlePreviewModal({
 
     const controller = new AbortController();
     fetch(
-      `/api/articles/${encodeURIComponent(articleActive.article.slug)}?locale=${locale}`,
+      `/api/tools/${encodeURIComponent(toolActive.tool.slug)}?locale=${locale}`,
       { signal: controller.signal },
     )
       .then(async (res) => {
         if (!res.ok) throw new Error("failed");
-        return res.json() as Promise<PreviewArticle>;
+        return res.json() as Promise<PreviewTool>;
       })
       .then((data) => {
         if (cancelled) return;
@@ -168,28 +155,26 @@ export function ArticlePreviewModal({
       controller.abort();
       window.removeEventListener("resize", onResize);
     };
-  }, [articleActive, locale]);
+  }, [toolActive, locale]);
 
   useEffect(() => {
-    if (!articleActive) return;
+    if (!toolActive) return;
     panelRef.current?.focus();
-  }, [articleActive]);
+  }, [toolActive]);
 
-  if (!articleActive) return null;
+  if (!toolActive) return null;
 
-  const headline = splitDisplayTitle(articleActive.article.title).headline;
-  const imageUrl = articleActive.origin.imageUrl;
+  const imageUrl = toolActive.origin.imageUrl;
   const blurDataURL =
-    articleActive.origin.blurDataURL ?? detail?.coverImageLqip ?? null;
-  const category =
-    categoryLabels[articleActive.article.category as keyof typeof categoryLabels] ??
-    articleActive.article.category;
+    toolActive.origin.blurDataURL ?? detail?.imageLqip ?? null;
   const hasFlight = Boolean(imageUrl) && phase !== "ready";
   const contentReady = phase === "ready";
   const flyStyle =
     phase === "from" || !target
-      ? originStyle(articleActive.origin)
+      ? originStyle(toolActive.origin)
       : target;
+  const title = detail?.name ?? toolActive.tool.name;
+  const summary = detail?.summary ?? toolActive.tool.summary;
   // Keep the already-warm list/card URL so detail fetch does not remount the image.
   const panelSrc = imageUrl ?? detail?.coverUrl;
 
@@ -244,7 +229,7 @@ export function ArticlePreviewModal({
               {panelSrc ? (
                 <PreviewCoverImage
                   src={panelSrc}
-                  alt={detail?.imageAlt || articleActive.article.imageAlt || headline}
+                  alt={detail?.imageAlt || toolActive.tool.imageAlt || title}
                   blurDataURL={blurDataURL}
                   sizes="(max-width: 900px) 90vw, 42vw"
                   priority
@@ -264,7 +249,7 @@ export function ArticlePreviewModal({
           >
             <div className="shrink-0 border-b border-ink/8 pb-4">
               <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase">
-                {category}
+                {toolActive.kicker}
               </p>
 
               {loading && !detail ? (
@@ -276,43 +261,21 @@ export function ArticlePreviewModal({
                 </p>
               ) : null}
 
-              {detail ? (
-                <>
-                  {detail.kicker ? (
-                    <p className="m-0 mt-3 label-caps text-green">{detail.kicker}</p>
-                  ) : null}
-                  <div id={titleId}>
-                    <ArticleDisplayTitle
-                      title={detail.title}
-                      locale={locale}
-                      category={detail.category}
-                      description={detail.description ?? undefined}
-                      as="h2"
-                      className="m-0 mt-2.5 font-sans text-[clamp(1.45rem,2.5vw,2.15rem)] font-extrabold leading-[1.12] tracking-[-0.03em]"
-                    />
-                  </div>
-                  {detail.description ? (
-                    <p className="mt-3 mb-0 max-w-[40rem] font-sans text-[0.95rem] leading-[1.6] text-muted">
-                      {detail.description}
-                    </p>
-                  ) : null}
-                  {detail.publishedAt ? (
-                    <p className="mt-2.5 mb-0 label-caps text-muted">
-                      <time dateTime={detail.publishedAt}>
-                        {formatPublishedLabel(detail.publishedAt, locale)}
-                      </time>
-                    </p>
-                  ) : null}
-                </>
-              ) : (
-                <h2 id={titleId} className="sr-only">
-                  {headline}
-                </h2>
-              )}
+              <h2
+                id={titleId}
+                className="m-0 mt-2.5 font-sans text-[clamp(1.45rem,2.5vw,2.15rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink"
+              >
+                {title}
+              </h2>
+              {summary ? (
+                <p className="mt-3 mb-0 max-w-[40rem] font-sans text-[0.95rem] leading-[1.6] text-muted">
+                  {summary}
+                </p>
+              ) : null}
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-5 max-nav:overflow-visible">
-              {detail?.body ? (
+              {detail?.body && detail.body.length > 0 ? (
                 <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
                   <PortableText value={detail.body} />
                 </div>
@@ -335,7 +298,7 @@ export function ArticlePreviewModal({
           <PreviewCoverImage
             src={imageUrl}
             alt=""
-            blurDataURL={articleActive.origin.blurDataURL}
+            blurDataURL={toolActive.origin.blurDataURL}
             sizes="50vw"
             priority
           />
