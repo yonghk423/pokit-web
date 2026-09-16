@@ -13,8 +13,8 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
-    /** Phone frames render ~160–256 CSS px; keep small widths in the candidate set. */
-    imageSizes: [96, 128, 256, 384, 640],
+    /** Include retina widths so phone frames stay sharp on mobile DPR. */
+    imageSizes: [96, 128, 256, 384, 640, 750, 828],
     remotePatterns: [
       {
         protocol: "https",

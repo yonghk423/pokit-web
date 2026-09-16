@@ -229,7 +229,13 @@ export default async function AppIntroPage({ params }: Props) {
 
       <section className="relative isolate h-[calc(100svh-5rem)] overflow-hidden bg-indigo text-white">
         <div className="absolute inset-0" aria-hidden="true">
-          <div className="absolute left-1/2 top-1/2 w-[58%] min-w-[28rem] origin-center -translate-x-[6%] -translate-y-1/2 rotate-[30deg]">
+          <div
+            className={cn(
+              "absolute left-1/2 top-1/2 origin-center",
+              // Desktop: wide rotated collage
+              "hidden w-[58%] min-w-[28rem] -translate-x-[6%] -translate-y-1/2 rotate-[30deg] nav:block",
+            )}
+          >
             <div className="grid grid-cols-4 gap-6">
               {HERO.map((phone, index) => {
                 const feature = featureById[phone.featureId];
@@ -240,17 +246,46 @@ export default async function AppIntroPage({ params }: Props) {
                     className="app-hero-phone w-full"
                     style={{ animationDelay: `${180 + index * 70}ms` }}
                   >
-                    <div className={leftEdge ? "translate-y-16 nav:translate-y-24" : undefined}>
+                    <div className={leftEdge ? "translate-y-24" : undefined}>
                       <PhoneFrame
                         src={appScreen(locale, phone.file)}
                         alt={feature?.imageAlt ?? copy.title}
                         priority={index < 2}
                         eager
                         finish="soft"
-                        sizes="(max-width: 640px) 55vw, 28vw"
+                        sizes="32vw"
                         className="w-full"
                       />
                     </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div
+            className={cn(
+              "absolute inset-y-0 right-0 flex w-[58%] items-center justify-end pr-3",
+              "nav:hidden",
+            )}
+          >
+            <div className="flex w-full max-w-[11.5rem] flex-col gap-3">
+              {HERO.slice(0, 2).map((phone, index) => {
+                const feature = featureById[phone.featureId];
+                return (
+                  <div
+                    key={phone.file}
+                    className="app-hero-phone w-full"
+                    style={{ animationDelay: `${180 + index * 90}ms` }}
+                  >
+                    <PhoneFrame
+                      src={appScreen(locale, phone.file)}
+                      alt={feature?.imageAlt ?? copy.title}
+                      priority={index === 0}
+                      eager
+                      finish="soft"
+                      sizes="45vw"
+                      className="w-full"
+                    />
                   </div>
                 );
               })}
