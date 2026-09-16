@@ -1,5 +1,4 @@
 import { SiteHeaderNav } from "@/components/site-header-nav";
-import { getCategories } from "@/lib/category-label";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 
@@ -13,14 +12,11 @@ export function SiteHeader({ locale, dict }: Props) {
     <SiteHeaderNav
       locale={locale}
       tagline={dict.header.tagline}
-      inboxTagline={dict.home.inboxTagline}
       homeAria={dict.header.homeAria}
       allStories={dict.header.allStories}
       app={dict.header.app}
       contact={dict.header.contact}
-      categoriesAria={dict.header.categoriesAria}
       languageLabels={dict.languageSwitcher}
-      categories={getCategories(dict)}
     />
   );
 }

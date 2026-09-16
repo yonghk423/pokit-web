@@ -3,33 +3,23 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
-import { homeSections } from "@/content/home";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
-const navLinkClass =
-  "bg-transparent p-1 font-sans text-[0.75rem] tracking-[0.08em] uppercase no-underline";
-const navLinkActiveClass = "font-extrabold text-[#163a7a]";
-const navLinkIdleClass = "font-semibold text-muted hover:text-ink";
-
 type Props = {
   locale: Locale;
   tagline: string;
-  inboxTagline: string;
   homeAria: string;
   allStories: string;
   app: string;
   contact: string;
-  categoriesAria: string;
   languageLabels: Dictionary["languageSwitcher"];
-  categories: { id: string; label: string }[];
 };
 
 function pathMatches(pathname: string, href: string) {
@@ -39,82 +29,53 @@ function pathMatches(pathname: string, href: string) {
 export function SiteHeaderNav({
   locale,
   tagline,
-  inboxTagline,
   homeAria,
   allStories,
   app,
   contact,
-  categoriesAria,
   languageLabels,
-  categories,
 }: Props) {
   const pathname = usePathname();
-  const [hash, setHash] = useState("");
-  const [search, setSearch] = useState("");
-
-  useEffect(() => {
-    function sync() {
-      setHash(window.location.hash.replace(/^#/, ""));
-      setSearch(window.location.search);
-    }
-    sync();
-    window.addEventListener("hashchange", sync);
-    return () => window.removeEventListener("hashchange", sync);
-  }, [pathname]);
-
   const articlesHref = withLocale(locale, "/articles");
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
   const articlesActive = pathMatches(pathname, articlesHref);
   const appActive = pathMatches(pathname, appHref);
-  const params = new URLSearchParams(search);
-  const archiveCategory = params.get("category");
-  const archiveSection = params.get("section");
 
   return (
-    <header className="border-b border-ink/10 bg-white">
-      <div
-        className={cn(
-          monoContainer,
-          "flex min-h-[2.5rem] items-center justify-between gap-4 border-b border-ink/10 py-2 font-sans text-[0.74rem] text-muted max-[640px]:[&_p]:text-[0.68rem]",
-        )}
-      >
-        <p className="m-0 flex-1 text-center tracking-[0.02em] max-[640px]:px-2">
-          {tagline}
-        </p>
-        <LanguageSwitcher locale={locale} labels={languageLabels} />
-      </div>
+    <header className="sticky top-0 z-40 border-b border-ink/8 bg-[color-mix(in_srgb,var(--color-paper)_88%,transparent)] backdrop-blur-md">
+      <div className={cn(monoContainer, "flex items-center justify-between gap-3 py-3")}>
+        <div className="flex min-w-0 items-center gap-2">
+          <Link
+            href={homeHref}
+            className="flex shrink-0 items-center gap-2.5 no-underline"
+            aria-label={homeAria}
+          >
+            <Image
+              src="/pokit5.png"
+              alt=""
+              width={28}
+              height={28}
+              priority
+              className="size-7 rounded-lg"
+            />
+            <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em]">
+              {site.name}
+            </span>
+          </Link>
+          <p className="m-0 hidden truncate font-sans text-[0.72rem] text-muted nav:block">
+            {tagline}
+          </p>
+        </div>
 
-      <div
-        className={cn(
-          monoContainer,
-          "grid min-h-[6.5rem] grid-cols-[1fr_auto_1fr] items-center py-6 max-nav:min-h-0 max-nav:grid-cols-1 max-nav:gap-4 max-nav:py-6",
-        )}
-      >
-        <div className="max-nav:hidden" aria-hidden="true" />
-        <Link
-          href={homeHref}
-          className="flex items-center justify-center gap-3"
-          aria-label={homeAria}
-        >
-          <Image
-            src="/pokit5.png"
-            alt=""
-            width={34}
-            height={34}
-            priority
-            className="size-10 rounded-xl"
-          />
-          <span className="font-sans text-[clamp(2.4rem,7vw,4.5rem)] leading-[0.95] font-extrabold tracking-[-0.04em] max-nav:text-[clamp(2rem,12vw,2.75rem)]">
-            {site.name}
-          </span>
-        </Link>
-        <div className="flex justify-self-end gap-3 max-nav:justify-self-center max-nav:flex-wrap max-nav:justify-center max-nav:gap-x-3 max-nav:gap-y-2">
+        <div className="flex shrink-0 items-center gap-1.5">
           <Link
             href={articlesHref}
             className={cn(
-              navLinkClass,
-              articlesActive ? navLinkActiveClass : navLinkIdleClass,
+              "hidden rounded-full px-3 py-1.5 font-sans text-[0.78rem] no-underline sm:inline-flex",
+              articlesActive
+                ? "bg-ink/8 font-semibold text-ink"
+                : "font-medium text-muted hover:text-ink",
             )}
             aria-current={articlesActive ? "page" : undefined}
           >
@@ -123,78 +84,21 @@ export function SiteHeaderNav({
           <Link
             href={appHref}
             className={cn(
-              navLinkClass,
-              appActive ? navLinkActiveClass : navLinkIdleClass,
+              "rounded-full px-3 py-1.5 font-sans text-[0.78rem] no-underline",
+              appActive
+                ? "bg-indigo font-semibold text-white"
+                : "bg-ink font-semibold text-white hover:bg-indigo",
             )}
             aria-current={appActive ? "page" : undefined}
           >
             {app}
           </Link>
-          <SupportEmailLink
-            className={cn(navLinkClass, navLinkIdleClass, "active:font-extrabold active:text-[#163a7a]")}
-          >
+          <SupportEmailLink className="hidden rounded-full px-3 py-1.5 font-sans text-[0.78rem] font-medium text-muted no-underline hover:text-ink md:inline-flex">
             {contact}
           </SupportEmailLink>
+          <LanguageSwitcher locale={locale} labels={languageLabels} />
         </div>
       </div>
-
-      <nav
-        className="overflow-x-auto border-b border-ink/10 bg-[#eef3f1]"
-        aria-label={categoriesAria}
-      >
-        <div
-          className={cn(
-            monoContainer,
-            "grid min-h-14 grid-cols-[1fr_auto_1fr] items-center py-2 max-[900px]:grid-cols-1",
-          )}
-        >
-          <ul className="m-0 flex min-w-0 list-none items-center justify-start gap-5 overflow-x-auto p-0 font-sans whitespace-nowrap max-[640px]:gap-3">
-          {categories.map((category) => {
-            const section = Object.values(homeSections).find(
-              (item) => item.id === category.id,
-            );
-            const onHome = pathname === homeHref;
-            const hashActive = onHome && hash === category.id;
-            const archiveActive =
-              pathMatches(pathname, articlesHref) &&
-              Boolean(
-                (section &&
-                  "archiveCategory" in section &&
-                  section.archiveCategory === archiveCategory) ||
-                  (section &&
-                    "archiveSection" in section &&
-                    section.archiveSection === archiveSection),
-              );
-            const newArrivalsActive =
-              category.id === "new-arrivals" &&
-              (pathMatches(pathname, withLocale(locale, "/new-arrivals")) ||
-                pathMatches(pathname, withLocale(locale, "/tools")));
-            const active = hashActive || archiveActive || newArrivalsActive;
-
-            return (
-              <li key={category.id}>
-                <Link
-                  href={`${homeHref}#${category.id}`}
-                  className={cn(
-                    "inline-flex items-center py-2 text-[0.92rem] tracking-[0.02em]",
-                    active
-                      ? "font-extrabold text-[#163a7a]"
-                      : "font-semibold text-ink/55 hover:text-ink",
-                  )}
-                  aria-current={active ? "page" : undefined}
-                >
-                  {category.label}
-                </Link>
-              </li>
-            );
-          })}
-          </ul>
-          <p className="m-0 justify-self-center label-caps text-green max-[900px]:hidden">
-            {inboxTagline}
-          </p>
-          <div className="max-[900px]:hidden" aria-hidden="true" />
-        </div>
-      </nav>
     </header>
   );
 }

@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { AppDownload } from "@/components/app-download";
-import { ArticleSectionCarousel } from "@/components/article-section-carousel";
-import { FeaturedHeadlineCarousel } from "@/components/featured-headline-carousel";
+import { HomeAbout } from "@/components/home-about";
+import { HomeHero } from "@/components/home-hero";
+import { HomeLabs } from "@/components/home-labs";
+import { HomeWorkRows, type HomeWorkSection } from "@/components/home-work-rows";
 import { JsonLd } from "@/components/json-ld";
-import { NewArrivalsSection } from "@/components/new-arrivals-section";
-import { SectionHeading } from "@/components/section-heading";
 import { site } from "@/config/site";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import { websiteJsonLd } from "@/lib/json-ld";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 import { newArrivalsPath } from "@/lib/new-arrivals-path";
@@ -36,7 +33,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const dict = await getDictionary(rawLocale);
-
   const alternates = localeAlternates(rawLocale, "/");
 
   return {
@@ -91,8 +87,6 @@ export default async function Home({ params }: Props) {
     newArrivals,
   } = await getHomePageWithCarousels(locale, dict);
 
-  const weekly = dict.home.sections.weekly;
-  const newArrivalsSection = dict.home.sections.newArrivals;
   const routine = dict.home.sections.routine;
   const commute = dict.home.sections.commute;
   const space = dict.home.sections.space;
@@ -100,209 +94,123 @@ export default async function Home({ params }: Props) {
   const wellness = dict.home.sections.wellness;
   const categoryLabels = dict.categories;
 
-  const hasTopStories = weeklyHero.length > 0 || weeklyRail.length > 0;
-  const weeklyStoriesAria = dict.home.storiesAria(weekly.nav);
+  const feedArticles = [...weeklyHero, ...weeklyRail].filter(
+    (article, index, list) =>
+      list.findIndex((item) => item.slug === article.slug) === index,
+  );
+
+  const workSections: HomeWorkSection[] = [
+    {
+      id: homeSections.routine.id,
+      name: routine.nav,
+      title: spotlightRowSection?.title ?? routine.title,
+      viewAllHref: articlesArchiveHref(
+        locale,
+        1,
+        homeSections.routine.archiveCategory,
+      ),
+      articles: routineCarousel,
+    },
+    {
+      id: homeSections.commute.id,
+      name: commute.nav,
+      title: radioLatestSection?.title ?? commute.title,
+      viewAllHref: articlesArchiveHref(
+        locale,
+        1,
+        homeSections.commute.archiveCategory,
+      ),
+      articles: commuteCarousel,
+    },
+    {
+      id: homeSections.space.id,
+      name: space.nav,
+      title: designAwardsSection?.title ?? space.title,
+      viewAllHref: articlesArchiveHref(
+        locale,
+        1,
+        undefined,
+        undefined,
+        homeSections.space.archiveSection,
+      ),
+      articles: spaceCarousel,
+    },
+    {
+      id: homeSections.sleep.id,
+      name: sleep.nav,
+      title: sleepStoriesSection?.title ?? sleep.title,
+      viewAllHref: articlesArchiveHref(
+        locale,
+        1,
+        homeSections.sleep.archiveCategory,
+      ),
+      articles: sleepCarousel,
+    },
+    {
+      id: homeSections.wellness.id,
+      name: wellness.nav,
+      title: cityGuidesSection?.title ?? wellness.title,
+      viewAllHref: articlesArchiveHref(
+        locale,
+        1,
+        homeSections.wellness.archiveCategory,
+      ),
+      articles: wellnessCarousel,
+    },
+  ];
 
   return (
     <>
       <JsonLd data={websiteJsonLd(dict.meta.siteDescription, locale)} />
-      <main>
-        {hasTopStories && (
-          <section id="weekly" className={cn(monoContainer, sectionSpacing)}>
-            <SectionHeading
-              kicker={weekly.kicker}
-              title={weekly.title}
-              viewAllHref={articlesArchiveHref(locale, 1, homeSections.weekly.archiveCategory)}
-              viewAllLabel={dict.sectionHeading.viewAll}
-            />
-            <div className="grid grid-cols-[minmax(0,1.55fr)_minmax(0,0.95fr)] items-start gap-[1.4rem] max-nav:grid-cols-1">
-              {weeklyHero.length > 0 && (
-                <div className="min-w-0 border-r border-ink/12 pr-[1.4rem] max-nav:border-r-0 max-nav:pr-0">
-                  <FeaturedHeadlineCarousel
-                    articles={weeklyHero}
-                    locale={locale}
-                    categoryLabels={categoryLabels}
-                    ariaLabel={weeklyStoriesAria}
-                    prevAria={dict.home.carouselPrev(weeklyStoriesAria)}
-                    nextAria={dict.home.carouselNext(weeklyStoriesAria)}
-                    shuffle
-                    autoPlay
-                  />
-                </div>
-              )}
-              {weeklyRail.length > 0 && (
-                <div className="min-w-0">
-                  <ArticleSectionCarousel
-                    articles={weeklyRail}
-                    locale={locale}
-                    categoryLabels={categoryLabels}
-                    variant="compact"
-                    layout="rail"
-                    ariaLabel={dict.home.storiesAria(weekly.nav)}
-                    shuffle
-                    autoPlay
-                  />
-                </div>
-              )}
-            </div>
-          </section>
+      <main className="pb-8">
+        {(weeklyHero.length > 0 || feedArticles.length > 0) && (
+          <HomeHero
+            locale={locale}
+            line1={dict.home.heroLine1}
+            accent={dict.home.heroAccent}
+            rest={dict.home.heroRest}
+            feedTitle={dict.home.feedTitle}
+            viewAllLabel={dict.home.exploreAll}
+            viewAllHref={articlesArchiveHref(
+              locale,
+              1,
+              homeSections.weekly.archiveCategory,
+            )}
+            heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
+            feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
+            categoryLabels={categoryLabels}
+          />
         )}
 
+        <HomeWorkRows
+          line1={dict.home.workLine1}
+          accent={dict.home.workAccent}
+          rest={dict.home.workRest}
+          viewAllLabel={dict.home.exploreAll}
+          viewAllHref={withLocale(locale, "/articles")}
+          sections={workSections}
+          locale={locale}
+        />
+
         {newArrivals && newArrivals.items.length > 0 && (
-          <NewArrivalsSection
+          <HomeLabs
             roundup={newArrivals}
             locale={locale}
-            kicker={newArrivalsSection.kicker}
-            sectionTitle={newArrivalsSection.title}
-            maxItems={2}
+            line1={dict.home.labsLine1}
+            accent={dict.home.labsAccent}
+            rest={dict.home.labsRest}
             viewAllHref={newArrivalsPath(locale)}
             viewAllLabel={dict.newArrivals.viewAll}
           />
         )}
 
-        {routineCarousel.length > 0 && (
-          <section id="routine" className={cn(monoContainer, sectionSpacing)}>
-            <SectionHeading
-              kicker={spotlightRowSection?.kicker ?? routine.kicker}
-              title={spotlightRowSection?.title ?? routine.title}
-              viewAllHref={articlesArchiveHref(
-                locale,
-                1,
-                homeSections.routine.archiveCategory,
-              )}
-              viewAllLabel={dict.sectionHeading.viewAll}
-            />
-            <ArticleSectionCarousel
-              articles={routineCarousel}
-              locale={locale}
-              categoryLabels={categoryLabels}
-              variant="vertical"
-              layout="grid"
-              columns={4}
-              ariaLabel={dict.home.storiesAria(routine.nav)}
-              shuffle
-              autoPlay
-            />
-          </section>
-        )}
-
-        <section id="commute" className={cn(monoContainer, sectionSpacing)}>
-          <SectionHeading
-            kicker={radioLatestSection?.kicker ?? commute.kicker}
-            title={radioLatestSection?.title ?? commute.title}
-            viewAllHref={articlesArchiveHref(locale, 1, homeSections.commute.archiveCategory)}
-            viewAllLabel={dict.sectionHeading.viewAll}
-          />
-          {commuteCarousel.length > 0 ? (
-            <ArticleSectionCarousel
-              articles={commuteCarousel}
-              locale={locale}
-              categoryLabels={categoryLabels}
-              variant="vertical"
-              layout="grid"
-              columns={4}
-              ariaLabel={dict.home.storiesAria(commute.nav)}
-              shuffle
-              autoPlay
-            />
-          ) : (
-            <p className="m-0 border-t border-ink/12 py-6 font-sans text-[0.9rem] text-muted">
-              {dict.home.radioEmpty(commute.nav)}
-            </p>
-          )}
-        </section>
-
-        {spaceCarousel.length > 0 && (
-          <section id="space" className={cn(monoContainer, sectionSpacing)}>
-            <SectionHeading
-              kicker={designAwardsSection?.kicker ?? space.kicker}
-              title={designAwardsSection?.title ?? space.title}
-              viewAllHref={articlesArchiveHref(
-                locale,
-                1,
-                undefined,
-                undefined,
-                homeSections.space.archiveSection,
-              )}
-              viewAllLabel={dict.sectionHeading.viewAll}
-            />
-            <ArticleSectionCarousel
-              articles={spaceCarousel}
-              locale={locale}
-              categoryLabels={categoryLabels}
-              variant="vertical"
-              layout="grid"
-              columns={4}
-              ariaLabel={dict.home.storiesAria(space.nav)}
-              shuffle
-              autoPlay
-            />
-          </section>
-        )}
-
-        {sleepCarousel.length > 0 && (
-          <section id="sleep" className={cn(monoContainer, sectionSpacing)}>
-            <SectionHeading
-              kicker={sleepStoriesSection?.kicker ?? sleep.kicker}
-              title={sleepStoriesSection?.title ?? sleep.title}
-              viewAllHref={articlesArchiveHref(
-                locale,
-                1,
-                homeSections.sleep.archiveCategory,
-              )}
-              viewAllLabel={dict.sectionHeading.viewAll}
-            />
-            <ArticleSectionCarousel
-              articles={sleepCarousel}
-              locale={locale}
-              categoryLabels={categoryLabels}
-              variant="vertical"
-              layout="grid"
-              columns={4}
-              ariaLabel={dict.home.storiesAria(sleep.nav)}
-              shuffle
-              autoPlay
-            />
-          </section>
-        )}
-
-        {wellnessCarousel.length > 0 && (
-          <section
-            id="wellness"
-            className="mt-16 border-y border-ink/10 bg-[#eef3f1] py-14"
-          >
-            <div className={monoContainer}>
-              <SectionHeading
-                kicker={cityGuidesSection?.kicker ?? wellness.kicker}
-                title={cityGuidesSection?.title ?? wellness.title}
-                viewAllHref={articlesArchiveHref(locale, 1, homeSections.wellness.archiveCategory)}
-                viewAllLabel={dict.sectionHeading.viewAll}
-              />
-              <ArticleSectionCarousel
-                articles={wellnessCarousel}
-                locale={locale}
-                categoryLabels={categoryLabels}
-                variant="vertical"
-                layout="grid"
-                columns={4}
-                ariaLabel={dict.home.storiesAria(wellness.nav)}
-                shuffle
-                autoPlay
-              />
-            </div>
-          </section>
-        )}
-
-        <section
-          className={cn(
-            monoContainer,
-            "border-t border-ink/10 py-12 text-center font-sans text-[0.92rem] [&_a]:inline-flex [&_a]:items-center [&_a]:rounded-full [&_a]:bg-indigo [&_a]:px-6 [&_a]:py-3 [&_a]:font-semibold [&_a]:text-white [&_a]:hover:bg-ink",
-          )}
-        >
-          <Link href={withLocale(locale, "/articles")}>{dict.home.viewAllStories}</Link>
-        </section>
-
-        <AppDownload locale={locale} copy={dict.appDownload} />
+        <HomeAbout
+          locale={locale}
+          aboutTitle={dict.home.aboutTitle}
+          aboutBody={dict.home.aboutBody}
+          aboutCta={dict.home.aboutCta}
+          dict={dict}
+        />
       </main>
     </>
   );

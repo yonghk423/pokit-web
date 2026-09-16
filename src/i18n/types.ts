@@ -39,6 +39,20 @@ export type Dictionary = {
     viewAllStories: string;
     carouselPrev: (label: string) => string;
     carouselNext: (label: string) => string;
+    heroLine1: string;
+    heroAccent: string;
+    heroRest: string;
+    feedTitle: string;
+    workLine1: string;
+    workAccent: string;
+    workRest: string;
+    labsLine1: string;
+    labsAccent: string;
+    labsRest: string;
+    aboutTitle: string;
+    aboutBody: string;
+    aboutCta: string;
+    exploreAll: string;
   };
   archive: {
     label: string;

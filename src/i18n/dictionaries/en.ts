@@ -71,6 +71,22 @@ const dictionary: Dictionary = {
     viewAllStories: "Browse all daily routine & wellness stories →",
     carouselPrev: (label) => `Previous: ${label}`,
     carouselNext: (label) => `Next: ${label}`,
+    heroLine1: "Daily routines & wellness.",
+    heroAccent: "Pocket",
+    heroRest: "guide.",
+    feedTitle: "Latest stories",
+    workLine1: "Scenes of the day,",
+    workAccent: "woven",
+    workRest: "into routines.",
+    labsLine1: "Tools we try,",
+    labsAccent: "and",
+    labsRest: "keep using.",
+    aboutTitle:
+      "POKIT is a pocket guide for building wellness through small daily routines.",
+    aboutBody:
+      "From weekly rhythm to commute, space, sleep, and recovery.\nOne light scene at a time can reshape the day.",
+    aboutCta: "Explore the app",
+    exploreAll: "Explore all",
   },
   archive: {
     label: "Archive",

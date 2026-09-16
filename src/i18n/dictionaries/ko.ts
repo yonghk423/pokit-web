@@ -71,6 +71,22 @@ const dictionary: Dictionary = {
     viewAllStories: "일상·루틴·웰니스 이야기 모두 보기 →",
     carouselPrev: (label) => `${label} 이전`,
     carouselNext: (label) => `${label} 다음`,
+    heroLine1: "일상 루틴과 웰니스.",
+    heroAccent: "포켓",
+    heroRest: "가이드.",
+    feedTitle: "최신 이야기",
+    workLine1: "하루의 장면을",
+    workAccent: "루틴으로",
+    workRest: "이어 갑니다.",
+    labsLine1: "실험하고 쓰는",
+    labsAccent: "루틴",
+    labsRest: "도구.",
+    aboutTitle:
+      "POKIT은 작은 일상 루틴으로 웰니스를 가꾸는 포켓 가이드입니다.",
+    aboutBody:
+      "이번 주 리듬부터 이동·공간·잠·몸 풀기까지.\n부담 없는 한 장면이 쌓여 하루를 바꿉니다.",
+    aboutCta: "앱 살펴보기",
+    exploreAll: "모두 보기",
   },
   archive: {
     label: "Archive",

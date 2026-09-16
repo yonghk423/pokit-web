@@ -71,6 +71,22 @@ const dictionary: Dictionary = {
     viewAllStories: "日常・ルーチン・ウェルネスの話をすべて見る →",
     carouselPrev: (label) => `${label} 前へ`,
     carouselNext: (label) => `${label} 次へ`,
+    heroLine1: "日常ルーチンとウェルネス。",
+    heroAccent: "ポケット",
+    heroRest: "ガイド。",
+    feedTitle: "最新のストーリー",
+    workLine1: "一日の場面を",
+    workAccent: "ルーチンで",
+    workRest: "つなぐ。",
+    labsLine1: "試して残す",
+    labsAccent: "ルーチン",
+    labsRest: "道具。",
+    aboutTitle:
+      "POKITは、小さな日常ルーチンでウェルネスを育てるポケットガイドです。",
+    aboutBody:
+      "今週のリズムから移動・空間・眠り・からだほぐしまで。\n負担の少ないひと場面が、一日を変えていきます。",
+    aboutCta: "アプリを見る",
+    exploreAll: "すべて見る",
   },
   archive: {
     label: "Archive",

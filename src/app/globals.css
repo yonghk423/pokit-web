@@ -22,7 +22,9 @@
   --color-tertiary-light: #b6d3ff;
 
   --font-sans: var(--font-hanken), "Hanken Grotesk", system-ui, sans-serif;
-  --font-serif: var(--font-hanken), "Hanken Grotesk", system-ui, sans-serif;
+  --font-serif:
+    var(--font-instrument), var(--font-noto-serif-kr), var(--font-noto-serif-jp),
+    "Instrument Serif", "Noto Serif KR", "Noto Serif JP", Georgia, serif;
 
   --breakpoint-nav: 56.25rem;
   --breakpoint-archive: 35rem;
@@ -256,10 +258,28 @@
   animation-delay: 0.3s;
 }
 
+.home-hero-rise {
+  animation: app-hero-rise 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.home-hero-rise-delay {
+  animation-delay: 0.12s;
+}
+
+/* Oimachi-style italic serif accent (Feature Deck → Instrument Serif + CJK fallback) */
+.display-serif-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.93em;
+  letter-spacing: -0.02em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .app-hero-rise,
   .app-hero-phone,
-  .app-hero-glow {
+  .app-hero-glow,
+  .home-hero-rise {
     animation: none;
   }
 }
