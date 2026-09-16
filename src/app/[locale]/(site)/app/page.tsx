@@ -87,13 +87,22 @@ function FeatureVisualCluster({
   secondaryAlt,
   secondaryFirst = false,
   priority = false,
+  align = "center",
 }: {
   visual: { primary: StaticImageData; secondary?: StaticImageData };
   alt: string;
   secondaryAlt?: string;
   secondaryFirst?: boolean;
   priority?: boolean;
+  align?: "start" | "end" | "center";
 }) {
+  const alignClass =
+    align === "start"
+      ? "mr-auto justify-start"
+      : align === "end"
+        ? "ml-auto justify-end"
+        : "mx-auto justify-center";
+
   if (!visual.secondary) {
     return (
       <PhoneFrame
@@ -103,7 +112,7 @@ function FeatureVisualCluster({
         finish="soft"
         priority={priority}
         eager={priority}
-        className="mx-auto w-full max-w-52 nav:max-w-64"
+        className={cn("w-full max-w-52 nav:max-w-64", alignClass)}
       />
     );
   }
@@ -116,7 +125,12 @@ function FeatureVisualCluster({
     : { src: visual.secondary, alt: secondaryAlt ?? alt, elevated: false };
 
   return (
-    <div className="mx-auto flex w-full max-w-md items-center justify-center gap-4 nav:max-w-lg nav:gap-6">
+    <div
+      className={cn(
+        "flex w-full max-w-md items-center gap-4 nav:max-w-lg nav:gap-5",
+        alignClass,
+      )}
+    >
       <PhoneFrame
         src={left.src}
         alt={left.alt}
@@ -227,7 +241,7 @@ export default async function AppIntroPage({ params }: Props) {
       ))}
       <JsonLd data={softwareJsonLd} />
 
-      <section className="relative isolate h-[calc(100svh-5rem)] overflow-hidden bg-indigo text-white">
+      <section className="relative isolate h-[calc(100svh-5rem)] overflow-hidden bg-pink-pastel text-ink">
         <div className="absolute inset-0" aria-hidden="true">
           <div
             className={cn(
@@ -293,7 +307,7 @@ export default async function AppIntroPage({ params }: Props) {
           </div>
         </div>
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[min(40rem,62%)] bg-linear-to-r from-indigo from-55% via-indigo/95 to-transparent"
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[min(40rem,62%)] bg-linear-to-r from-pink-pastel from-55% via-pink-pastel/95 to-transparent"
           aria-hidden="true"
         />
         <div
@@ -302,20 +316,20 @@ export default async function AppIntroPage({ params }: Props) {
             "relative z-10 flex h-full items-center py-16 nav:py-20",
           )}
         >
-          <div className="max-w-[32rem] -translate-y-10 nav:-translate-y-14">
-            <h1 className="app-hero-rise app-hero-rise-1 m-0 text-[clamp(3.25rem,8vw,5.8rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
+          <div className="max-w-[34rem] -translate-y-10 nav:-translate-y-14">
+            <h1 className="app-hero-rise app-hero-rise-1 m-0 font-sans text-[clamp(2.85rem,7vw,4.75rem)] font-medium leading-[1.02] tracking-[-0.04em]">
               {site.name}
             </h1>
-            <p className="app-hero-rise app-hero-rise-2 mt-5 mb-0 text-[clamp(1.75rem,4vw,2.7rem)] font-semibold leading-[1.2] tracking-[-0.03em] text-white/92">
+            <p className="app-hero-rise app-hero-rise-2 mt-5 mb-0 font-serif text-[clamp(1.55rem,3.6vw,2.35rem)] font-normal italic leading-[1.25] tracking-[-0.02em] text-ink/90">
               {copy.title}
             </p>
-            <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 whitespace-pre-line text-[1.22rem] leading-[1.75] text-white/72">
+            <p className="app-hero-rise app-hero-rise-3 mt-7 mb-0 max-w-[30rem] whitespace-pre-line font-sans text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-ink/65">
               {copy.lead}
             </p>
 
             <div className="app-hero-rise app-hero-rise-4 mt-10 flex flex-wrap items-center gap-5">
               <AppStoreBadge locale={locale} label={copy.download} />
-              <span className="text-[0.98rem] font-medium tracking-[-0.01em] text-white/62">
+              <span className="font-sans text-[0.92rem] font-normal tracking-[-0.01em] text-ink/55">
                 {trustLine}
               </span>
             </div>
@@ -338,18 +352,23 @@ export default async function AppIntroPage({ params }: Props) {
                 <div
                   className={cn(
                     monoContainer,
-                    "relative z-10 flex flex-col items-center gap-12 py-20 nav:grid nav:grid-cols-2 nav:items-center nav:gap-16 nav:py-24",
+                    "relative z-10 flex flex-col items-center gap-6 py-16 nav:grid nav:grid-cols-2 nav:items-center nav:gap-5 nav:py-20",
                     reverse && "nav:[&>div:first-child]:order-2",
                   )}
                 >
-                  <div className="w-full">
-                    <p className="m-0 text-[0.78rem] font-semibold tracking-[0.18em] uppercase text-green">
+                  <div
+                    className={cn(
+                      "w-full max-w-[36rem]",
+                      reverse ? "nav:mr-auto" : "nav:ml-auto",
+                    )}
+                  >
+                    <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-green">
                       0{index + 1}
                     </p>
-                    <h3 className="mt-4 mb-0 text-[clamp(1.85rem,3.6vw,2.55rem)] font-semibold leading-[1.18] tracking-[-0.03em]">
+                    <h3 className="mt-4 mb-0 font-serif text-[clamp(1.85rem,3.6vw,2.55rem)] font-normal italic leading-[1.22] tracking-[-0.02em] text-ink">
                       {feature.title}
                     </h3>
-                    <p className="mt-5 mb-0 max-w-xl whitespace-pre-line text-[1.18rem] leading-[1.75] text-muted">
+                    <p className="mt-6 mb-0 whitespace-pre-line font-serif text-[clamp(1.12rem,1.85vw,1.28rem)] font-normal leading-[1.85] tracking-[-0.01em] text-ink/78">
                       {feature.body}
                     </p>
                   </div>
@@ -357,6 +376,7 @@ export default async function AppIntroPage({ params }: Props) {
                     visual={localizeVisual(locale, visual)}
                     alt={feature.imageAlt}
                     priority={index === 0}
+                    align={reverse ? "end" : "start"}
                     secondaryFirst={
                       feature.id === "routines" || feature.id === "memo"
                     }
@@ -384,16 +404,16 @@ export default async function AppIntroPage({ params }: Props) {
 
       <section className="bg-white py-20 nav:py-24" aria-labelledby="app-gallery">
         <div className={monoContainer}>
-        <p className="m-0 text-center text-[0.78rem] font-semibold tracking-[0.18em] uppercase text-green">
+        <p className="m-0 text-center font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-green">
           {copy.galleryHeading}
         </p>
         <h2
           id="app-gallery"
-          className="mx-auto mt-4 mb-0 max-w-3xl text-center text-[clamp(1.9rem,3.8vw,2.8rem)] font-semibold leading-[1.2] tracking-[-0.03em]"
+          className="mx-auto mt-4 mb-0 max-w-3xl text-center font-serif text-[clamp(1.7rem,3.4vw,2.45rem)] font-normal italic leading-[1.25] tracking-[-0.02em] text-ink"
         >
           {copy.galleryLead}
         </h2>
-        <p className="mx-auto mt-5 mb-2 max-w-2xl text-center whitespace-pre-line text-[1.16rem] leading-[1.75] text-muted">
+        <p className="mx-auto mt-5 mb-2 max-w-2xl text-center whitespace-pre-line font-sans text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-muted">
           {copy.galleryBody}
         </p>
         </div>

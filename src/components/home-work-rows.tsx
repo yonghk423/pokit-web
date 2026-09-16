@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
-import { articlePath } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
@@ -37,11 +37,11 @@ function articlesWithCover(articles: ArticleCardData[]) {
 
 function HomeWorkRow({
   section,
-  locale,
 }: {
   section: HomeWorkSection;
   locale: Locale;
 }) {
+  const preview = useOptionalArticlePreview();
   const images = articlesWithCover(section.articles);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const active =
@@ -58,15 +58,13 @@ function HomeWorkRow({
       className="group/row relative grid scroll-mt-28 grid-cols-[minmax(12rem,0.85fr)_minmax(0,1.55fr)] items-stretch gap-8 border-t border-ink/10 py-8 max-nav:grid-cols-1 max-nav:gap-5 max-nav:py-7"
     >
       <div className="flex min-h-0 flex-col justify-between gap-8 max-nav:gap-4">
-        <div className="flex items-start gap-3">
-          <div className="min-w-0">
-            <p className="m-0 font-sans text-[0.92rem] font-extrabold leading-none tracking-[-0.02em] text-ink">
-              {section.name}
-            </p>
-            <p className="m-0 mt-1.5 font-sans text-[0.78rem] leading-snug text-muted">
-              {section.title}
-            </p>
-          </div>
+        <div className="min-w-0">
+          <p className="m-0 font-sans text-[0.92rem] font-extrabold leading-none tracking-[-0.02em] text-ink">
+            {section.name}
+          </p>
+          <p className="m-0 mt-1.5 font-sans text-[0.78rem] leading-snug text-muted">
+            {section.title}
+          </p>
         </div>
 
         <div
@@ -97,7 +95,6 @@ function HomeWorkRow({
 
       <div className="flex min-w-0 items-stretch justify-end gap-2 max-nav:justify-start">
         {images.map((article) => {
-          const href = articlePath(locale, article.slug);
           const imageUrl = isSanityConfigured()
             ? coverImageUrl(article.coverImage, 720, 960)
             : null;
@@ -105,11 +102,11 @@ function HomeWorkRow({
           const isActive = activeSlug === article.slug;
 
           return (
-            <Link
+            <button
               key={article.slug}
-              href={href}
+              type="button"
               className={cn(
-                "home-work-media relative block min-w-0 overflow-hidden rounded-[1.15rem] bg-[#ebe7df] transition-[flex-grow,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                "home-work-media relative min-w-0 cursor-pointer overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left transition-[flex-grow,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
                 "aspect-[3/4] max-w-[13rem] max-nav:max-w-none",
                 isActive ? "z-[1] flex-[1.35] max-nav:ring-2 max-nav:ring-ink/20" : "flex-1",
                 activeSlug && !isActive && "opacity-55",
@@ -119,6 +116,20 @@ function HomeWorkRow({
               onMouseLeave={() => setActiveSlug(null)}
               onFocus={() => setActiveSlug(article.slug)}
               onBlur={() => setActiveSlug(null)}
+              onClick={(event) => {
+                if (!preview) return;
+                const rect = event.currentTarget.getBoundingClientRect();
+                preview.open({
+                  article,
+                  origin: {
+                    top: rect.top,
+                    left: rect.left,
+                    width: rect.width,
+                    height: rect.height,
+                    imageUrl,
+                  },
+                });
+              }}
             >
               {imageUrl ? (
                 <Image
@@ -145,7 +156,7 @@ function HomeWorkRow({
               >
                 {headline}
               </span>
-            </Link>
+            </button>
           );
         })}
       </div>
@@ -190,17 +201,16 @@ export function HomeWorkRows({
             href={viewAllHref}
             className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 font-sans text-[0.78rem] font-semibold tracking-[0.02em] text-white no-underline transition-colors hover:bg-indigo"
           >
-            <span
-              className="size-1.5 rounded-full bg-brand"
-              aria-hidden
-            />
+            <span className="size-1.5 rounded-full bg-brand" aria-hidden />
             {viewAllLabel}
           </Link>
         </div>
 
-        <div>{visible.map((section) => (
-          <HomeWorkRow key={section.id} section={section} locale={locale} />
-        ))}</div>
+        <div>
+          {visible.map((section) => (
+            <HomeWorkRow key={section.id} section={section} locale={locale} />
+          ))}
+        </div>
       </div>
     </section>
   );

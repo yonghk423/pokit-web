@@ -47,13 +47,13 @@ export function ArticleCard({
     : null;
 
   const mediaClass = cn(
-    "overflow-hidden bg-[#f3f0e8]",
+    "overflow-hidden bg-[#ebe7df]",
     variant === "feature" && "aspect-[16/10]",
-    variant === "vertical" && "aspect-[4/3] rounded-[1.05rem] border border-ink/12",
+    variant === "vertical" && "aspect-[4/5] rounded-[1.1rem]",
     variant === "compact" &&
-    "aspect-square rounded-[1.05rem] border border-ink/12 max-[640px]:aspect-[4/3]",
+      "aspect-square rounded-[1.05rem] border border-ink/12 max-[640px]:aspect-[4/3]",
     !imageUrl &&
-    "grid place-items-center font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-indigo uppercase",
+      "grid place-items-center font-sans text-[0.72rem] font-extrabold tracking-[0.1em] text-indigo uppercase",
   );
 
   return (
@@ -85,22 +85,24 @@ export function ArticleCard({
             )}
           >
             {imageUrl ? (
-              <div className={mediaClass}>
-                <Image
-                  src={imageUrl}
-                  alt={article.imageAlt}
-                  width={w}
-                  height={h}
-                  className="h-full w-full object-cover"
-                  sizes={
-                    variant === "feature"
-                      ? "(min-width: 1024px) 66vw, 100vw"
-                      : variant === "compact"
-                        ? "140px"
-                        : "(min-width: 768px) 33vw, 100vw"
-                  }
-                  {...imageBlurProps(article.coverImageLqip)}
-                />
+              <div className={cn(variant === "vertical" && "overflow-hidden rounded-[1.1rem]")}>
+                <div className={mediaClass}>
+                  <Image
+                    src={imageUrl}
+                    alt={article.imageAlt}
+                    width={w}
+                    height={h}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover/card:scale-[1.03]"
+                    sizes={
+                      variant === "feature"
+                        ? "(min-width: 1024px) 66vw, 100vw"
+                        : variant === "compact"
+                          ? "140px"
+                          : "(min-width: 768px) 25vw, 50vw"
+                    }
+                    {...imageBlurProps(article.coverImageLqip)}
+                  />
+                </div>
               </div>
             ) : (
               <div className={mediaClass}>
@@ -142,7 +144,7 @@ export function ArticleCard({
               variant === "compact" && "text-[1.05rem] leading-[1.25]",
               variant === "mini" && "text-[0.98rem]",
               (variant === "vertical" || !variant) &&
-              "text-[1.24rem] leading-[1.18]",
+              "text-[1.05rem] font-extrabold leading-[1.22]",
             )}
           />
           {article.description && variant === "feature" && (

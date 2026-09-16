@@ -79,8 +79,8 @@ function ListIcon() {
   );
 }
 
-const toggleBtnClass =
-  "inline-flex items-center gap-2 border-0 bg-transparent px-4 py-2 font-sans text-[0.78rem] font-bold tracking-[0.04em] text-muted no-underline";
+const pillBase =
+  "inline-flex items-center gap-2 rounded-full border-0 px-3.5 py-2 font-sans text-[0.78rem] font-semibold tracking-[0.01em] transition-colors";
 
 export function ArticlesArchiveView({
   articles,
@@ -95,9 +95,9 @@ export function ArticlesArchiveView({
 
   return (
     <>
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-b border-ink/8 pb-5">
         <div
-          className="flex items-center gap-4 font-sans text-[0.78rem] font-bold tracking-[0.04em]"
+          className="flex items-center gap-1 rounded-full border border-ink/10 bg-white/70 p-1"
           role="group"
           aria-label={labels.sortAria}
         >
@@ -105,8 +105,11 @@ export function ArticlesArchiveView({
             href={newestHref}
             scroll={false}
             className={cn(
-              "text-muted no-underline hover:text-ink",
-              sort === "newest" && "text-ink underline underline-offset-[0.2em]",
+              pillBase,
+              "no-underline",
+              sort === "newest"
+                ? "bg-ink text-white"
+                : "bg-transparent text-muted hover:text-ink",
             )}
             aria-current={sort === "newest" ? "page" : undefined}
           >
@@ -116,53 +119,56 @@ export function ArticlesArchiveView({
             href={oldestHref}
             scroll={false}
             className={cn(
-              "text-muted no-underline hover:text-ink",
-              sort === "oldest" && "text-ink underline underline-offset-[0.2em]",
+              pillBase,
+              "no-underline",
+              sort === "oldest"
+                ? "bg-ink text-white"
+                : "bg-transparent text-muted hover:text-ink",
             )}
             aria-current={sort === "oldest" ? "page" : undefined}
           >
             {labels.sortOldest}
           </Link>
         </div>
-        <div className="flex items-center gap-3">
-          <div
-            className="inline-flex overflow-hidden rounded-lg border border-ink/15"
-            role="group"
-            aria-label={labels.viewModeAria}
+
+        <div
+          className="inline-flex items-center gap-1 rounded-full border border-ink/10 bg-white/70 p-1"
+          role="group"
+          aria-label={labels.viewModeAria}
+        >
+          <button
+            type="button"
+            className={cn(
+              pillBase,
+              view === "grid"
+                ? "bg-ink text-white"
+                : "bg-transparent text-muted hover:text-ink",
+            )}
+            aria-pressed={view === "grid"}
+            onClick={() => selectView("grid")}
           >
-            <button
-              type="button"
-              className={cn(
-                toggleBtnClass,
-                view === "grid" && "bg-indigo text-white",
-                view !== "grid" && "hover:bg-wash hover:text-ink",
-              )}
-              aria-pressed={view === "grid"}
-              onClick={() => selectView("grid")}
-            >
-              <GridIcon />
-              {labels.viewGrid}
-            </button>
-            <button
-              type="button"
-              className={cn(
-                toggleBtnClass,
-                "border-l border-ink/15",
-                view === "list" && "bg-indigo text-white",
-                view !== "list" && "hover:bg-wash hover:text-ink",
-              )}
-              aria-pressed={view === "list"}
-              onClick={() => selectView("list")}
-            >
-              <ListIcon />
-              {labels.viewList}
-            </button>
-          </div>
+            <GridIcon />
+            {labels.viewGrid}
+          </button>
+          <button
+            type="button"
+            className={cn(
+              pillBase,
+              view === "list"
+                ? "bg-ink text-white"
+                : "bg-transparent text-muted hover:text-ink",
+            )}
+            aria-pressed={view === "list"}
+            onClick={() => selectView("list")}
+          >
+            <ListIcon />
+            {labels.viewList}
+          </button>
         </div>
       </div>
 
       {view === "grid" ? (
-        <div className="grid grid-cols-4 gap-x-5 gap-y-6 max-nav:grid-cols-2 max-archive:grid-cols-1">
+        <div className="grid grid-cols-4 gap-x-4 gap-y-8 max-nav:grid-cols-2 max-archive:grid-cols-1">
           {articles.map((article) => (
             <ArticleCard
               key={article.slug}
@@ -174,9 +180,14 @@ export function ArticlesArchiveView({
           ))}
         </div>
       ) : (
-        <ul className="m-0 list-none border-t border-ink/12 p-0">
+        <ul className="m-0 list-none border-t border-ink/10 p-0">
           {articles.map((article) => (
-            <ArticleArchiveListItem key={article.slug} article={article} locale={locale} />
+            <ArticleArchiveListItem
+              key={article.slug}
+              article={article}
+              locale={locale}
+              categoryLabels={categoryLabels}
+            />
           ))}
         </ul>
       )}

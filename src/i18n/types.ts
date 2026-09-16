@@ -53,6 +53,7 @@ export type Dictionary = {
     aboutBody: string;
     aboutCta: string;
     exploreAll: string;
+    closePreview: string;
   };
   archive: {
     label: string;

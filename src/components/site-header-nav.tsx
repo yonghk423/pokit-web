@@ -16,7 +16,6 @@ type Props = {
   locale: Locale;
   tagline: string;
   homeAria: string;
-  allStories: string;
   app: string;
   contact: string;
   languageLabels: Dictionary["languageSwitcher"];
@@ -30,16 +29,13 @@ export function SiteHeaderNav({
   locale,
   tagline,
   homeAria,
-  allStories,
   app,
   contact,
   languageLabels,
 }: Props) {
   const pathname = usePathname();
-  const articlesHref = withLocale(locale, "/articles");
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
-  const articlesActive = pathMatches(pathname, articlesHref);
   const appActive = pathMatches(pathname, appHref);
 
   return (
@@ -70,24 +66,12 @@ export function SiteHeaderNav({
 
         <div className="flex shrink-0 items-center gap-1.5">
           <Link
-            href={articlesHref}
-            className={cn(
-              "hidden rounded-full px-3 py-1.5 font-sans text-[0.78rem] no-underline sm:inline-flex",
-              articlesActive
-                ? "bg-ink/8 font-semibold text-ink"
-                : "font-medium text-muted hover:text-ink",
-            )}
-            aria-current={articlesActive ? "page" : undefined}
-          >
-            {allStories}
-          </Link>
-          <Link
             href={appHref}
             className={cn(
-              "rounded-full px-3 py-1.5 font-sans text-[0.78rem] no-underline",
+              "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline",
               appActive
-                ? "bg-indigo font-semibold text-white"
-                : "bg-ink font-semibold text-white hover:bg-indigo",
+                ? "border border-ink/15 bg-ink/8 text-ink"
+                : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
             )}
             aria-current={appActive ? "page" : undefined}
           >

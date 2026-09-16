@@ -13,7 +13,6 @@ export function SiteHeader({ locale, dict }: Props) {
       locale={locale}
       tagline={dict.header.tagline}
       homeAria={dict.header.homeAria}
-      allStories={dict.header.allStories}
       app={dict.header.app}
       contact={dict.header.contact}
       languageLabels={dict.languageSwitcher}

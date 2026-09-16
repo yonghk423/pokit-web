@@ -194,7 +194,7 @@ export function AppScreenGallery({
           className={cn(
             "m-0 max-w-lg text-center leading-snug tracking-[-0.02em]",
             soft
-              ? "text-[clamp(1.05rem,2vw,1.28rem)] font-semibold text-muted"
+              ? "font-serif text-[clamp(1.05rem,2vw,1.35rem)] font-normal italic text-ink"
               : "text-[clamp(1.15rem,2.4vw,1.4rem)] font-extrabold",
           )}
         >

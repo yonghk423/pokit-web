@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { HomeAbout } from "@/components/home-about";
 import { HomeHero } from "@/components/home-hero";
 import { HomeLabs } from "@/components/home-labs";
+import { HomePreviewShell } from "@/components/home-preview-shell";
 import { HomeWorkRows, type HomeWorkSection } from "@/components/home-work-rows";
 import { JsonLd } from "@/components/json-ld";
 import { site } from "@/config/site";
@@ -163,54 +164,48 @@ export default async function Home({ params }: Props) {
     <>
       <JsonLd data={websiteJsonLd(dict.meta.siteDescription, locale)} />
       <main className="pb-8">
-        {(weeklyHero.length > 0 || feedArticles.length > 0) && (
-          <HomeHero
-            locale={locale}
-            line1={dict.home.heroLine1}
-            accent={dict.home.heroAccent}
-            rest={dict.home.heroRest}
-            feedTitle={dict.home.feedTitle}
+        <HomePreviewShell
+          locale={locale}
+          categoryLabels={categoryLabels}
+          closeLabel={dict.home.closePreview}
+        >
+          {(weeklyHero.length > 0 || feedArticles.length > 0) && (
+            <HomeHero
+              locale={locale}
+              line1={dict.home.heroLine1}
+              accent={dict.home.heroAccent}
+              rest={dict.home.heroRest}
+              feedTitle={dict.home.feedTitle}
+              heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
+              feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
+              categoryLabels={categoryLabels}
+            />
+          )}
+
+          <HomeWorkRows
+            line1={dict.home.workLine1}
+            accent={dict.home.workAccent}
+            rest={dict.home.workRest}
             viewAllLabel={dict.home.exploreAll}
-            viewAllHref={articlesArchiveHref(
-              locale,
-              1,
-              homeSections.weekly.archiveCategory,
-            )}
-            heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
-            feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
-            categoryLabels={categoryLabels}
-          />
-        )}
-
-        <HomeWorkRows
-          line1={dict.home.workLine1}
-          accent={dict.home.workAccent}
-          rest={dict.home.workRest}
-          viewAllLabel={dict.home.exploreAll}
-          viewAllHref={withLocale(locale, "/articles")}
-          sections={workSections}
-          locale={locale}
-        />
-
-        {newArrivals && newArrivals.items.length > 0 && (
-          <HomeLabs
-            roundup={newArrivals}
+            viewAllHref={withLocale(locale, "/articles")}
+            sections={workSections}
             locale={locale}
-            line1={dict.home.labsLine1}
-            accent={dict.home.labsAccent}
-            rest={dict.home.labsRest}
-            viewAllHref={newArrivalsPath(locale)}
-            viewAllLabel={dict.newArrivals.viewAll}
           />
-        )}
 
-        <HomeAbout
-          locale={locale}
-          aboutTitle={dict.home.aboutTitle}
-          aboutBody={dict.home.aboutBody}
-          aboutCta={dict.home.aboutCta}
-          dict={dict}
-        />
+          {newArrivals && newArrivals.items.length > 0 && (
+            <HomeLabs
+              roundup={newArrivals}
+              locale={locale}
+              line1={dict.home.labsLine1}
+              accent={dict.home.labsAccent}
+              rest={dict.home.labsRest}
+              viewAllHref={newArrivalsPath(locale)}
+              viewAllLabel={dict.newArrivals.viewAll}
+            />
+          )}
+
+          <HomeAbout locale={locale} dict={dict} />
+        </HomePreviewShell>
       </main>
     </>
   );

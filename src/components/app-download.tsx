@@ -48,7 +48,7 @@ export function AppDownload({
             className={cn(
               "m-0 inline-flex text-brand-soft",
               editorial
-                ? "px-0 text-[0.82rem] font-semibold tracking-[0.16em] uppercase"
+                ? "px-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase"
                 : cn(
                     "border border-white/35 bg-white/10 px-2.5 py-1 label-caps",
                     large && "text-[0.95rem]",
@@ -59,11 +59,15 @@ export function AppDownload({
           </p>
           <h2
             className={cn(
-              "mt-4 mb-0 leading-tight tracking-[-0.03em]",
-              editorial ? "font-semibold" : "font-extrabold",
-              large
-                ? "text-[clamp(1.85rem,3.4vw,2.55rem)]"
-                : "text-[clamp(1.45rem,2.8vw,2.05rem)]",
+              "mt-4 mb-0 leading-[1.2] tracking-[-0.02em]",
+              editorial
+                ? "font-serif text-[clamp(1.65rem,3.2vw,2.35rem)] font-normal italic"
+                : cn(
+                    "font-extrabold tracking-[-0.03em]",
+                    large
+                      ? "text-[clamp(1.85rem,3.4vw,2.55rem)]"
+                      : "text-[clamp(1.45rem,2.8vw,2.05rem)]",
+                  ),
             )}
           >
             {copy.title}
@@ -71,8 +75,8 @@ export function AppDownload({
           {copy.body ? (
             <p
               className={cn(
-                "mt-5 mb-0 whitespace-pre-line leading-[1.7] text-white/88",
-                large ? "text-[1.25rem]" : "text-[1.05rem]",
+                "mt-5 mb-0 whitespace-pre-line font-sans font-normal leading-[1.7] tracking-[-0.01em] text-white/70",
+                large ? "text-[1.05rem]" : "text-[0.98rem]",
               )}
             >
               {copy.body}

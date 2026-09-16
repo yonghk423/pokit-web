@@ -87,6 +87,7 @@ const dictionary: Dictionary = {
       "이번 주 리듬부터 이동·공간·잠·몸 풀기까지.\n부담 없는 한 장면이 쌓여 하루를 바꿉니다.",
     aboutCta: "앱 살펴보기",
     exploreAll: "모두 보기",
+    closePreview: "목록으로",
   },
   archive: {
     label: "Archive",
@@ -98,10 +99,10 @@ const dictionary: Dictionary = {
     clearSearch: "검색 초기화",
     clearFilters: "필터 해제 · 전체 이야기 보기",
     searchResults: (term, total, start, end) =>
-      `"${term}" 검색 결과 ${total}편 · ${start}–${end}번째`,
+      `"${term}" 검색 결과 ${total}편 · ${start}-${end}번째`,
     searchNoResults: (term) => `"${term}"에 맞는 이야기가 없습니다.`,
     totalRange: (total, start, end, sortLabel) =>
-      `총 ${total}편 · ${start}–${end}번째 (${sortLabel})`,
+      `총 ${total}편 · ${start}-${end}번째 (${sortLabel})`,
     empty: "아직 발행된 이야기가 없습니다.",
     noSearchMatch: "다른 검색어를 시도하거나 검색을 초기화해 보세요.",
     studioHint: "Sanity Studio에서 이야기를 발행하면 여기에 표시됩니다.",
@@ -109,13 +110,13 @@ const dictionary: Dictionary = {
     pageSuffix: (page, search) =>
       search ? ` (${page}페이지 · "${search}")` : ` (${page}페이지)`,
     descriptionAll:
-      "일상 루틴과 웰니스 가이드 — POKIT에 발행된 모든 이야기를 확인하세요.",
+      "일상 루틴과 웰니스 가이드. POKIT에 발행된 모든 이야기를 확인하세요.",
     descriptionCategory: (label) =>
-      `${label} — 일상 속 루틴과 웰니스 이야기 | POKIT`,
+      `${label}. 일상 속 루틴과 웰니스 이야기 | POKIT`,
     descriptionSection: (label) =>
-      `${label} — 일상 루틴·웰니스 이야기 | POKIT`,
+      `${label}. 일상 루틴·웰니스 이야기 | POKIT`,
     descriptionSearch: (term) =>
-      `"${term}" 검색 결과 — 일상·루틴·웰니스 이야기를 POKIT에서 확인하세요.`,
+      `"${term}" 검색 결과. 일상·루틴·웰니스 이야기를 POKIT에서 확인하세요.`,
     paginationAria: "이야기 목록 페이지",
     prev: "← 이전",
     next: "다음 →",
@@ -165,7 +166,7 @@ const dictionary: Dictionary = {
       {
         id: "routines",
         title: "오늘의 루틴, 여기서 시작",
-        body: "오늘 할 일을, 한눈에. 하루의 시작과 끝을 정하고 오늘 해야 할 루틴을 하나씩 꺼내보세요. 중요한 일은 먼저, 새로운 일은 그때그때 더하면 됩니다.",
+        body: "약을 챙겨 먹는 일, 체중을 기록하는 일,\n필요한 값을 직접 입력해 변화를 관리하는 일,\n오늘 해야 할 일을 하나씩 체크하는 일.\n\n우리에게 필요한 루틴은 저마다 다릅니다.\n\n그런데 필요한 것마다 다른 앱을 찾아 사용하다 보면\n정작 꾸준히 이어가는 일은 더 복잡해지곤 합니다.\n\nPOKIT은 다양한 루틴을 하나의 포켓에 담아\n나에게 필요한 방식으로 기록하고 이어갈 수 있도록 합니다.\n\n오늘 필요한 루틴을 꺼내고,\n하나씩 나의 하루를 채워보세요.",
         imageAlt: "POKIT 앱 오늘 루틴 목록 화면",
       },
       {

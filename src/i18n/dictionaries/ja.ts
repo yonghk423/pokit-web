@@ -87,6 +87,7 @@ const dictionary: Dictionary = {
       "今週のリズムから移動・空間・眠り・からだほぐしまで。\n負担の少ないひと場面が、一日を変えていきます。",
     aboutCta: "アプリを見る",
     exploreAll: "すべて見る",
+    closePreview: "一覧へ",
   },
   archive: {
     label: "Archive",
@@ -98,10 +99,10 @@ const dictionary: Dictionary = {
     clearSearch: "検索をクリア",
     clearFilters: "フィルター解除 · すべてのストーリーを見る",
     searchResults: (term, total, start, end) =>
-      `"${term}" の検索結果 ${total}件 · ${start}–${end}件目`,
+      `"${term}" の検索結果 ${total}件 · ${start}-${end}件目`,
     searchNoResults: (term) => `"${term}" に合うストーリーはありません。`,
     totalRange: (total, start, end, sortLabel) =>
-      `全${total}件 · ${start}–${end}件目 (${sortLabel})`,
+      `全${total}件 · ${start}-${end}件目 (${sortLabel})`,
     empty: "まだ公開されたストーリーはありません。",
     noSearchMatch: "別の検索語を試すか、検索をクリアしてください。",
     studioHint: "Sanity Studioで公開すると、ここに表示されます。",
@@ -165,7 +166,7 @@ const dictionary: Dictionary = {
       {
         id: "routines",
         title: "今日のルーチン、ここから",
-        body: "今日やることを、ひと目で。一日の始まりと終わりを決めて、今日やるルーチンをひとつずつ取り出してみよう。大事なことは先に。新しいことは、そのときどき足せばいい。",
+        body: "薬を飲むこと、体重を記録すること、\n必要な値を自分で入れて変化をみること、\n今日やることをひとつずつチェックすること。\n\n私たちに必要なルーチンは、人それぞれ違います。\n\nでも必要なものごとに別のアプリを使っていると、\nかえって続けることが難しくなりがちです。\n\nPOKITはさまざまなルーチンをひとつのポケットにまとめ、\n自分に合うやり方で記録し、続けられるようにします。\n\n今日必要なルーチンを取り出して、\nひとつずつ、自分の一日を埋めてみてください。",
         imageAlt: "POKITアプリの今日のルーチン一覧画面",
       },
       {

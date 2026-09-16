@@ -18,6 +18,7 @@
   --color-indigo: #436086;
   --color-pink: #d9a8a8;
   --color-pink-soft: #f0d4d4;
+  --color-pink-pastel: #efb7c8;
   --color-beige: #e8e2d8;
   --color-tertiary-light: #b6d3ff;
 
@@ -275,11 +276,32 @@
   letter-spacing: -0.02em;
 }
 
+@keyframes header-app-nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  40% {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand) 28%, transparent);
+  }
+  70% {
+    transform: translateY(0);
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.header-app-cta:not([aria-current="page"]) {
+  animation: header-app-nudge 2.8s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .app-hero-rise,
   .app-hero-phone,
   .app-hero-glow,
-  .home-hero-rise {
+  .home-hero-rise,
+  .header-app-cta {
     animation: none;
   }
 }

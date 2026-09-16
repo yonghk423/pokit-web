@@ -25,17 +25,17 @@ export function ArticlesArchiveSearch({
   const trimmed = q?.trim();
 
   return (
-    <form className="mt-6" action={withLocale(locale, "/articles")} method="get">
+    <form className="mt-7" action={withLocale(locale, "/articles")} method="get">
       {section && <input type="hidden" name="section" value={section} />}
       {category && <input type="hidden" name="category" value={category} />}
       {sort === "oldest" && <input type="hidden" name="sort" value="oldest" />}
       <label
-        className="mb-2 inline-block bg-indigo px-2 py-1 label-caps text-white"
+        className="mb-2 block font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase"
         htmlFor="articles-search"
       >
         {dict.archive.search}
       </label>
-      <div className="flex max-w-lg gap-3">
+      <div className="flex max-w-xl gap-2">
         <input
           id="articles-search"
           name="q"
@@ -43,18 +43,28 @@ export function ArticlesArchiveSearch({
           defaultValue={trimmed ?? ""}
           placeholder={dict.archive.searchPlaceholder}
           autoComplete="off"
-          className="min-w-0 flex-1 border border-ink/15 bg-white px-4 py-3 font-[inherit] text-[0.92rem] focus:border-indigo focus:outline-none"
+          className="min-w-0 flex-1 rounded-full border border-ink/12 bg-white px-5 py-3 font-sans text-[0.92rem] text-ink outline-none transition-colors placeholder:text-muted/70 focus:border-ink/35"
         />
         <button
           type="submit"
-          className="cursor-pointer bg-indigo px-5 py-3 font-[inherit] text-[0.88rem] font-semibold text-white hover:bg-ink"
+          className="cursor-pointer rounded-full bg-ink px-5 py-3 font-sans text-[0.85rem] font-semibold text-white transition-colors hover:bg-indigo"
         >
           {dict.archive.searchSubmit}
         </button>
       </div>
       {trimmed && (
-        <p className="mt-3 mb-0 text-[0.88rem] [&_a]:border-b-2 [&_a]:border-indigo [&_a:hover]:text-indigo">
-          <Link href={articlesArchiveHref(locale, 1, category, undefined, section, sort)}>
+        <p className="mt-3 mb-0 font-sans text-[0.85rem]">
+          <Link
+            href={articlesArchiveHref(
+              locale,
+              1,
+              category,
+              undefined,
+              section,
+              sort,
+            )}
+            className="font-semibold text-ink underline decoration-ink/25 underline-offset-[0.2em] hover:decoration-ink"
+          >
             {dict.archive.clearSearch}
           </Link>
         </p>

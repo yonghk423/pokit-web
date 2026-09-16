@@ -87,6 +87,7 @@ const dictionary: Dictionary = {
       "From weekly rhythm to commute, space, sleep, and recovery.\nOne light scene at a time can reshape the day.",
     aboutCta: "Explore the app",
     exploreAll: "Explore all",
+    closePreview: "Back to list",
   },
   archive: {
     label: "Archive",
@@ -98,10 +99,10 @@ const dictionary: Dictionary = {
     clearSearch: "Clear search",
     clearFilters: "Clear filters · view all stories",
     searchResults: (term, total, start, end) =>
-      `"${term}" — ${total} results · showing ${start}–${end}`,
+      `"${term}" · ${total} results · showing ${start}-${end}`,
     searchNoResults: (term) => `No stories match "${term}".`,
     totalRange: (total, start, end, sortLabel) =>
-      `${total} stories · showing ${start}–${end} (${sortLabel})`,
+      `${total} stories · showing ${start}-${end} (${sortLabel})`,
     empty: "No stories have been published yet.",
     noSearchMatch: "Try a different search term or clear your search.",
     studioHint: "Stories published in Sanity Studio will appear here.",
@@ -109,13 +110,13 @@ const dictionary: Dictionary = {
     pageSuffix: (page, search) =>
       search ? ` (page ${page} · "${search}")` : ` (page ${page})`,
     descriptionAll:
-      "Daily routines and wellness guides — browse every story on POKIT.",
+      "Daily routines and wellness guides. Browse every story on POKIT.",
     descriptionCategory: (label) =>
-      `${label} — daily routine and wellness stories on POKIT.`,
+      `${label}. Daily routine and wellness stories on POKIT.`,
     descriptionSection: (label) =>
-      `${label} — daily routine and wellness stories on POKIT.`,
+      `${label}. Daily routine and wellness stories on POKIT.`,
     descriptionSearch: (term) =>
-      `Results for "${term}" — daily routine and wellness stories on POKIT.`,
+      `Results for "${term}". Daily routine and wellness stories on POKIT.`,
     paginationAria: "Story archive pages",
     prev: "← Previous",
     next: "Next →",
@@ -165,7 +166,7 @@ const dictionary: Dictionary = {
       {
         id: "routines",
         title: "Today's routines, start here",
-        body: "Today's work, at a glance. Set when the day starts and ends, then take out the routines you need today, one by one. What matters comes first. Add something new when you need it.",
+        body: "Taking your medicine, logging your weight,\nentering the numbers that help you track change,\nchecking off what you need to do today.\n\nThe routines we need are different for everyone.\n\nBut when each need points to a different app,\nstaying consistent often gets harder, not easier.\n\nPOKIT keeps many kinds of routines in one pocket,\nso you can record and continue them in the way that fits you.\n\nTake out the routines you need today,\nand fill your day one by one.",
         imageAlt: "POKIT app Today screen with the daily routine list",
       },
       {
