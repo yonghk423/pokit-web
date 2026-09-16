@@ -15,9 +15,9 @@ import {
   useArticlePreview,
   type ArticlePreviewOrigin,
 } from "@/components/article-preview-context";
+import { ArticlePreviewBodySkeleton } from "@/components/article-preview-skeleton";
 import { PreviewCoverImage } from "@/components/preview-cover-image";
 import { cn } from "@/lib/cn";
-import { splitDisplayTitle } from "@/lib/display-title";
 import { formatPublishedLabel } from "@/lib/format-published";
 import {
   DEFAULT_DURATION_MINUTES,
@@ -187,7 +187,6 @@ export function ArticlePreviewModal({
 
   if (!articleActive) return null;
 
-  const headline = splitDisplayTitle(articleActive.article.title).headline;
   const imageUrl = articleActive.origin.imageUrl;
   const blurDataURL =
     articleActive.origin.blurDataURL ?? detail?.coverImageLqip ?? null;
@@ -219,10 +218,11 @@ export function ArticlePreviewModal({
         aria-labelledby={titleId}
         tabIndex={-1}
         className={cn(
-          "absolute inset-1.5 overflow-hidden rounded-[1.15rem] bg-paper shadow-[0_24px_80px_rgba(24,26,46,0.28)] outline-none",
+          "absolute inset-x-1.5 top-1.5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] overflow-hidden rounded-[1.15rem] bg-paper shadow-[0_24px_80px_rgba(24,26,46,0.28)] outline-none",
           "nav:inset-2.5 nav:rounded-[1.35rem]",
           "flex flex-col",
         )}
+        data-preview-modal-panel
       >
         <div className="flex shrink-0 items-center justify-between gap-3 px-5 py-2.5 max-nav:px-4">
           <button
@@ -245,16 +245,21 @@ export function ArticlePreviewModal({
           </button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] gap-7 px-5 pb-5 pt-1 max-nav:grid-cols-1 max-nav:gap-4 max-nav:overflow-y-auto max-nav:px-4 max-nav:pb-4">
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-y-auto px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-1 nav:grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] nav:gap-7 nav:overflow-hidden nav:px-5 nav:pb-5">
           <div className="min-h-0 max-nav:mx-auto max-nav:w-full max-nav:max-w-[22rem]">
             <div
               ref={mediaRef}
-              className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.15rem] bg-[#ebe7df] max-nav:aspect-[4/5] max-nav:h-auto max-nav:max-h-[min(48vh,26rem)]"
+              className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.15rem] bg-[#ebe7df] max-nav:aspect-4/5 max-nav:h-auto max-nav:max-h-[min(42vh,22rem)]"
             >
               {panelSrc ? (
                 <PreviewCoverImage
                   src={panelSrc}
-                  alt={detail?.imageAlt || articleActive.article.imageAlt || headline}
+                  alt={
+                    detail?.imageAlt ||
+                    articleActive.article.imageAlt ||
+                    detail?.title ||
+                    articleActive.article.title
+                  }
                   blurDataURL={blurDataURL}
                   sizes="(max-width: 900px) 90vw, 42vw"
                   priority
@@ -272,84 +277,98 @@ export function ArticlePreviewModal({
                 : "translate-x-3 opacity-0",
             )}
           >
-            <div className="shrink-0 border-b border-ink/8 pb-4">
-              <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase">
-                {category}
+            {error ? (
+              <p className="m-0 font-sans text-[0.9rem] text-muted">
+                Failed to load.
               </p>
+            ) : null}
 
-              {loading && !detail ? (
-                <p className="mt-5 m-0 font-sans text-[0.9rem] text-muted">…</p>
-              ) : null}
-              {error ? (
-                <p className="mt-5 m-0 font-sans text-[0.9rem] text-muted">
-                  Failed to load.
-                </p>
-              ) : null}
-
-              {detail ? (
-                <>
-                  {detail.kicker ? (
-                    <p className="m-0 mt-3 label-caps text-green">{detail.kicker}</p>
+            {!error ? (
+              <>
+                <div className="shrink-0 border-b border-ink/8 pb-4">
+                  <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase">
+                    {category}
+                  </p>
+                  {(detail?.kicker ?? articleActive.article.kicker) ? (
+                    <p className="m-0 mt-3 label-caps text-green">
+                      {detail?.kicker ?? articleActive.article.kicker}
+                    </p>
                   ) : null}
                   <div id={titleId}>
                     <ArticleDisplayTitle
-                      title={detail.title}
+                      title={detail?.title ?? articleActive.article.title}
                       locale={locale}
-                      category={detail.category}
-                      description={detail.description ?? undefined}
+                      category={detail?.category ?? articleActive.article.category}
+                      description={
+                        detail?.description ??
+                        articleActive.article.description ??
+                        undefined
+                      }
                       as="h2"
                       className="m-0 mt-2.5 font-sans text-[clamp(1.45rem,2.5vw,2.15rem)] font-extrabold leading-[1.12] tracking-[-0.03em]"
                     />
                   </div>
-                  {detail.description ? (
+                  {(detail?.description ?? articleActive.article.description) ? (
                     <p className="mt-3 mb-0 max-w-[40rem] font-sans text-[0.95rem] leading-[1.6] text-muted">
-                      {detail.description}
+                      {detail?.description ?? articleActive.article.description}
                     </p>
                   ) : null}
-                  {detail.publishedAt ? (
+                  {(detail?.publishedAt ?? articleActive.article.publishedAt) ? (
                     <p className="mt-2.5 mb-0 label-caps text-muted">
-                      <time dateTime={detail.publishedAt}>
-                        {formatPublishedLabel(detail.publishedAt, locale)}
+                      <time
+                        dateTime={
+                          detail?.publishedAt ??
+                          articleActive.article.publishedAt
+                        }
+                      >
+                        {formatPublishedLabel(
+                          (detail?.publishedAt ??
+                            articleActive.article.publishedAt) as string,
+                          locale,
+                        )}
                       </time>
                     </p>
                   ) : null}
-                </>
-              ) : (
-                <h2 id={titleId} className="sr-only">
-                  {headline}
-                </h2>
-              )}
-            </div>
-
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-5 max-nav:overflow-visible">
-              {detail?.body ? (
-                <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
-                  <PortableText value={detail.body} />
                 </div>
-              ) : null}
 
-              {detail?.slug ? (
-                <AddToPokitCta
-                  article={toPokitRoutineArticle({
-                    slug: detail.slug,
-                    title: detail.title,
-                    titleKo: detail.titleKo ?? detail.title,
-                    description: detail.description ?? undefined,
-                    category: detail.category,
-                    categoryKey: detail.categoryKey ?? undefined,
-                    durationMinutes:
-                      detail.durationMinutes && detail.durationMinutes > 0
-                        ? detail.durationMinutes
-                        : DEFAULT_DURATION_MINUTES,
-                    publishedAt: detail.publishedAt ?? undefined,
-                    imageAlt: detail.imageAlt,
-                  })}
-                  locale={locale}
-                  copy={addToPokit}
-                  className="mt-8 max-w-none"
-                />
-              ) : null}
-            </div>
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-4 max-nav:overflow-visible nav:pt-5">
+                  {detail?.body ? (
+                    <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
+                      <PortableText value={detail.body} />
+                    </div>
+                  ) : loading ? (
+                    <ArticlePreviewBodySkeleton />
+                  ) : null}
+
+                  {detail ? (
+                    <AddToPokitCta
+                      article={toPokitRoutineArticle({
+                        slug: detail.slug,
+                        title: detail.title,
+                        titleKo: detail.titleKo ?? detail.title,
+                        description: detail.description ?? undefined,
+                        category: detail.category,
+                        categoryKey: detail.categoryKey ?? undefined,
+                        durationMinutes:
+                          detail.durationMinutes && detail.durationMinutes > 0
+                            ? detail.durationMinutes
+                            : DEFAULT_DURATION_MINUTES,
+                        publishedAt: detail.publishedAt ?? undefined,
+                        imageAlt: detail.imageAlt,
+                      })}
+                      locale={locale}
+                      copy={addToPokit}
+                      className="mt-6 mb-4 max-w-none max-nav:mt-5 max-nav:mb-6"
+                    />
+                  ) : loading ? (
+                    <span
+                      className="mt-6 mb-2 block h-11 w-full max-w-[16rem] animate-pulse rounded-full bg-ink/[0.07]"
+                      aria-hidden
+                    />
+                  ) : null}
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       </div>

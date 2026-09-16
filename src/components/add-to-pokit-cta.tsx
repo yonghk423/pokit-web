@@ -53,11 +53,14 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
 
   return (
     <section
-      className={cn("mt-5 max-w-[42rem]", className)}
+      className={cn(
+        "mt-5 max-w-[42rem] max-nav:mx-1 max-nav:mb-[max(1.75rem,env(safe-area-inset-bottom))]",
+        className,
+      )}
       aria-label={copy.ariaLabel}
     >
       {inApp && (
-        <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3.5 py-3">
+        <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3.5 py-3.5">
           <p className="m-0 font-sans text-[0.68rem] font-semibold tracking-[0.08em] text-ink/45 uppercase">
             POKIT
           </p>
@@ -87,13 +90,13 @@ export function AddToPokitCta({ article, locale, copy, className }: Props) {
       )}
 
       {!inApp && (
-        <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3 py-2.5">
+        <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3.5 pt-3 pb-4">
           <div className="flex items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="m-0 font-sans text-[0.8rem] leading-snug text-ink/75">
                 {copy.fallback}
               </p>
-              <div className="mt-2 hidden max-nav:block">
+              <div className="mt-2.5 hidden max-nav:block">
                 <AppStoreBadge locale={locale} label={copy.download} />
               </div>
             </div>

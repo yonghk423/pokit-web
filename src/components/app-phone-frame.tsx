@@ -67,7 +67,7 @@ export function PhoneFrame({
       className={cn(
         "overflow-hidden",
         finish === "soft"
-          ? "rounded-[0.55rem] shadow-[0_20px_40px_-18px_rgba(24,26,46,0.32)] ring-1 ring-black/8 nav:rounded-[1.1rem]"
+          ? "rounded-[2.05rem] shadow-[0_28px_56px_-20px_rgba(24,26,46,0.38)] ring-1 ring-black/8"
           : cn(
               "border-2 border-black",
               elevated ? "brutal-shadow-mint" : "brutal-shadow",

@@ -84,6 +84,11 @@ html[data-pokit-app="1"] [data-pokit-app-start] {
   margin-top: 1.25rem !important;
 }
 
+/* Leave room above the native tab bar in app WebView previews */
+html[data-pokit-app="1"] [data-preview-modal-panel] {
+  bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4rem)) !important;
+}
+
 /* ── Base ── */
 
 @layer base {

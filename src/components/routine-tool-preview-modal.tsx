@@ -13,6 +13,7 @@ import {
   useArticlePreview,
   type ArticlePreviewOrigin,
 } from "@/components/article-preview-context";
+import { ArticlePreviewBodySkeleton } from "@/components/article-preview-skeleton";
 import { PreviewCoverImage } from "@/components/preview-cover-image";
 import { cn } from "@/lib/cn";
 
@@ -197,7 +198,9 @@ export function RoutineToolPreviewModal({ closeLabel }: Props) {
           "absolute inset-1.5 overflow-hidden rounded-[1.15rem] bg-paper shadow-[0_24px_80px_rgba(24,26,46,0.28)] outline-none",
           "nav:inset-2.5 nav:rounded-[1.35rem]",
           "flex flex-col",
+          "max-nav:inset-x-1.5 max-nav:top-1.5 max-nav:bottom-[max(1.25rem,env(safe-area-inset-bottom))]",
         )}
+        data-preview-modal-panel
       >
         <div className="flex shrink-0 items-center justify-between gap-3 px-5 py-2.5 max-nav:px-4">
           <button
@@ -247,40 +250,42 @@ export function RoutineToolPreviewModal({ closeLabel }: Props) {
                 : "translate-x-3 opacity-0",
             )}
           >
-            <div className="shrink-0 border-b border-ink/8 pb-4">
-              <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase">
-                {toolActive.kicker}
+            {error ? (
+              <p className="m-0 font-sans text-[0.9rem] text-muted">
+                Failed to load.
               </p>
+            ) : null}
 
-              {loading && !detail ? (
-                <p className="mt-5 m-0 font-sans text-[0.9rem] text-muted">…</p>
-              ) : null}
-              {error ? (
-                <p className="mt-5 m-0 font-sans text-[0.9rem] text-muted">
-                  Failed to load.
-                </p>
-              ) : null}
-
-              <h2
-                id={titleId}
-                className="m-0 mt-2.5 font-sans text-[clamp(1.45rem,2.5vw,2.15rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink"
-              >
-                {title}
-              </h2>
-              {summary ? (
-                <p className="mt-3 mb-0 max-w-[40rem] font-sans text-[0.95rem] leading-[1.6] text-muted">
-                  {summary}
-                </p>
-              ) : null}
-            </div>
-
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-5 max-nav:overflow-visible">
-              {detail?.body && detail.body.length > 0 ? (
-                <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
-                  <PortableText value={detail.body} />
+            {!error ? (
+              <>
+                <div className="shrink-0 border-b border-ink/8 pb-4">
+                  <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase">
+                    {toolActive.kicker}
+                  </p>
+                  <h2
+                    id={titleId}
+                    className="m-0 mt-2.5 font-sans text-[clamp(1.45rem,2.5vw,2.15rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink"
+                  >
+                    {title}
+                  </h2>
+                  {summary ? (
+                    <p className="mt-3 mb-0 max-w-[40rem] font-sans text-[0.95rem] leading-[1.6] text-muted">
+                      {summary}
+                    </p>
+                  ) : null}
                 </div>
-              ) : null}
-            </div>
+
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-5 max-nav:overflow-visible">
+                  {detail?.body && detail.body.length > 0 ? (
+                    <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
+                      <PortableText value={detail.body} />
+                    </div>
+                  ) : loading ? (
+                    <ArticlePreviewBodySkeleton />
+                  ) : null}
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       </div>

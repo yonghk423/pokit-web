@@ -150,9 +150,9 @@ function HomeWorkRow({
   return (
     <div
       id={section.id}
-      className="group/row relative grid scroll-mt-28 grid-cols-[minmax(12rem,0.85fr)_minmax(0,1.55fr)] items-stretch gap-8 border-t border-ink/10 py-8 max-nav:grid-cols-1 max-nav:gap-5 max-nav:py-7"
+      className="group/row relative grid scroll-mt-28 grid-cols-1 items-start gap-5 overflow-hidden border-t border-ink/10 py-8 max-nav:py-8 nav:grid-cols-[minmax(12rem,0.85fr)_minmax(0,1.55fr)] nav:items-stretch nav:gap-8"
     >
-      <div className="flex min-h-0 flex-col justify-between gap-8 max-nav:gap-4">
+      <div className="flex min-h-0 flex-col gap-4 nav:h-full nav:justify-between nav:gap-8">
         <div className="min-w-0">
           <p className="m-0 font-sans text-[0.92rem] font-extrabold leading-none tracking-[-0.02em] text-ink">
             {section.name}
@@ -170,7 +170,7 @@ function HomeWorkRow({
 
         <div
           className={cn(
-            "min-h-[4.5rem] max-w-[22rem] transition-opacity duration-300",
+            "hidden min-h-[4.5rem] max-w-[22rem] transition-opacity duration-300 nav:block",
             active ? "opacity-100" : "opacity-45",
           )}
           aria-live="polite"
@@ -194,7 +194,7 @@ function HomeWorkRow({
         </div>
 
         {showControls ? (
-          <div className="flex items-center gap-2 max-nav:hidden">
+          <div className="hidden items-center gap-2 nav:flex">
             <button
               type="button"
               className={navBtnClass}
@@ -217,10 +217,10 @@ function HomeWorkRow({
         ) : null}
       </div>
 
-      <div className="relative min-w-0">
+      <div className="relative min-w-0 overflow-hidden">
         <div
           ref={scrollRef}
-          className="scrollbar-hide flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth pb-1"
+          className="scrollbar-hide flex snap-x snap-mandatory gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1"
           aria-label={section.name}
         >
           {images.map((article) => {
@@ -236,8 +236,8 @@ function HomeWorkRow({
                 type="button"
                 data-work-card
                 className={cn(
-                  "home-work-media relative shrink-0 cursor-pointer snap-start overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left transition-[width,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-                  "aspect-[3/4] w-[min(13rem,calc((100%-1rem)/3))] max-nav:w-[min(11.5rem,42vw)]",
+                  "home-work-media relative shrink-0 cursor-pointer snap-start overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left transition-[flex-grow,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  "aspect-3/4 w-[min(11.5rem,42vw)] nav:w-[min(13rem,calc((100%-1rem)/3))]",
                   isActive && "z-[1] max-nav:ring-2 max-nav:ring-ink/20",
                   activeSlug && !isActive && "opacity-55",
                 )}

@@ -163,7 +163,7 @@ export function AppScreenGallery({
                     "overflow-hidden transition-all duration-500 ease-out",
                     soft
                       ? cn(
-                          "rounded-[0.55rem] ring-1 ring-black/8 nav:rounded-[1.1rem]",
+                          "rounded-[2.05rem] ring-1 ring-black/8",
                           isActive
                             ? "scale-100 opacity-100 shadow-[0_28px_56px_-20px_rgba(24,26,46,0.38)]"
                             : "scale-[0.92] opacity-50 shadow-[0_16px_32px_-18px_rgba(24,26,46,0.22)]",
