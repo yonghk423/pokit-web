@@ -111,6 +111,8 @@ export default async function Home({ params }: Props) {
         homeSections.routine.archiveCategory,
       ),
       articles: routineCarousel,
+      prevLabel: dict.home.carouselPrev(routine.nav),
+      nextLabel: dict.home.carouselNext(routine.nav),
     },
     {
       id: homeSections.commute.id,
@@ -122,6 +124,8 @@ export default async function Home({ params }: Props) {
         homeSections.commute.archiveCategory,
       ),
       articles: commuteCarousel,
+      prevLabel: dict.home.carouselPrev(commute.nav),
+      nextLabel: dict.home.carouselNext(commute.nav),
     },
     {
       id: homeSections.space.id,
@@ -135,6 +139,8 @@ export default async function Home({ params }: Props) {
         homeSections.space.archiveSection,
       ),
       articles: spaceCarousel,
+      prevLabel: dict.home.carouselPrev(space.nav),
+      nextLabel: dict.home.carouselNext(space.nav),
     },
     {
       id: homeSections.sleep.id,
@@ -146,6 +152,8 @@ export default async function Home({ params }: Props) {
         homeSections.sleep.archiveCategory,
       ),
       articles: sleepCarousel,
+      prevLabel: dict.home.carouselPrev(sleep.nav),
+      nextLabel: dict.home.carouselNext(sleep.nav),
     },
     {
       id: homeSections.wellness.id,
@@ -157,6 +165,8 @@ export default async function Home({ params }: Props) {
         homeSections.wellness.archiveCategory,
       ),
       articles: wellnessCarousel,
+      prevLabel: dict.home.carouselPrev(wellness.nav),
+      nextLabel: dict.home.carouselNext(wellness.nav),
     },
   ];
 

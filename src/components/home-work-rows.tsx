@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
@@ -19,6 +19,8 @@ export type HomeWorkSection = {
   title: string;
   viewAllHref: string;
   articles: ArticleCardData[];
+  prevLabel: string;
+  nextLabel: string;
 };
 
 type Props = {
@@ -31,24 +33,108 @@ type Props = {
   locale: Locale;
 };
 
+const VISIBLE_DESKTOP = 3;
+const MAX_ARTICLES = 12;
+
+const navBtnClass =
+  "size-9 shrink-0 cursor-pointer rounded-full border border-ink/15 bg-white font-sans text-sm font-semibold leading-none text-ink transition-colors hover:bg-ink hover:text-white disabled:cursor-not-allowed disabled:opacity-35";
+
 function articlesWithCover(articles: ArticleCardData[]) {
-  return articles.filter((article) => Boolean(article.coverImage)).slice(0, 3);
+  return articles.filter((article) => Boolean(article.coverImage)).slice(0, MAX_ARTICLES);
 }
 
 function HomeWorkRow({
   section,
+  viewAllLabel,
 }: {
   section: HomeWorkSection;
   locale: Locale;
+  viewAllLabel: string;
 }) {
   const preview = useOptionalArticlePreview();
   const images = articlesWithCover(section.articles);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
   const active =
     images.find((article) => article.slug === activeSlug) ?? null;
   const activeHeadline = active
     ? splitDisplayTitle(active.title).headline
     : null;
+  const showControls = images.length > VISIBLE_DESKTOP;
+
+  const updateControls = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateControls();
+    el.addEventListener("scroll", updateControls, { passive: true });
+    window.addEventListener("resize", updateControls);
+    return () => {
+      el.removeEventListener("scroll", updateControls);
+      window.removeEventListener("resize", updateControls);
+    };
+  }, [images, updateControls]);
+
+  const scrollByCard = useCallback((direction: "prev" | "next") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-work-card]");
+    const step = card ? card.offsetWidth + 8 : el.clientWidth / VISIBLE_DESKTOP;
+    el.scrollBy({
+      left: direction === "next" ? step : -step,
+      behavior: "smooth",
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!showControls) return;
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let paused = false;
+    const pause = () => {
+      paused = true;
+    };
+    const resume = () => {
+      paused = false;
+    };
+
+    el.addEventListener("mouseenter", pause);
+    el.addEventListener("mouseleave", resume);
+    el.addEventListener("focusin", pause);
+    el.addEventListener("focusout", resume);
+
+    const timer = window.setInterval(() => {
+      if (paused) return;
+      const track = scrollRef.current;
+      if (!track) return;
+      const atEnd =
+        track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      if (atEnd) {
+        track.scrollTo({ left: 0, behavior: "smooth" });
+        return;
+      }
+      const card = track.querySelector<HTMLElement>("[data-work-card]");
+      const step = card ? card.offsetWidth + 8 : track.clientWidth / VISIBLE_DESKTOP;
+      track.scrollBy({ left: step, behavior: "smooth" });
+    }, 5000);
+
+    return () => {
+      window.clearInterval(timer);
+      el.removeEventListener("mouseenter", pause);
+      el.removeEventListener("mouseleave", resume);
+      el.removeEventListener("focusin", pause);
+      el.removeEventListener("focusout", resume);
+    };
+  }, [showControls, images.length]);
 
   if (images.length === 0) return null;
 
@@ -65,6 +151,12 @@ function HomeWorkRow({
           <p className="m-0 mt-1.5 font-sans text-[0.78rem] leading-snug text-muted">
             {section.title}
           </p>
+          <Link
+            href={section.viewAllHref}
+            className="mt-3 inline-flex font-sans text-[0.72rem] font-semibold tracking-[-0.01em] text-ink/55 no-underline transition-colors hover:text-ink"
+          >
+            {viewAllLabel}
+          </Link>
         </div>
 
         <div
@@ -91,74 +183,127 @@ function HomeWorkRow({
             </p>
           )}
         </div>
+
+        {showControls ? (
+          <div className="flex items-center gap-2 max-nav:hidden">
+            <button
+              type="button"
+              className={navBtnClass}
+              aria-label={section.prevLabel}
+              disabled={!canPrev}
+              onClick={() => scrollByCard("prev")}
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              className={navBtnClass}
+              aria-label={section.nextLabel}
+              disabled={!canNext}
+              onClick={() => scrollByCard("next")}
+            >
+              →
+            </button>
+          </div>
+        ) : null}
       </div>
 
-      <div className="flex min-w-0 items-stretch justify-end gap-2 max-nav:justify-start">
-        {images.map((article) => {
-          const imageUrl = isSanityConfigured()
-            ? coverImageUrl(article.coverImage, 720, 960)
-            : null;
-          const headline = splitDisplayTitle(article.title).headline;
-          const isActive = activeSlug === article.slug;
+      <div className="relative min-w-0">
+        <div
+          ref={scrollRef}
+          className="scrollbar-hide flex snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth pb-1"
+          aria-label={section.name}
+        >
+          {images.map((article) => {
+            const imageUrl = isSanityConfigured()
+              ? coverImageUrl(article.coverImage, 720, 960)
+              : null;
+            const headline = splitDisplayTitle(article.title).headline;
+            const isActive = activeSlug === article.slug;
 
-          return (
-            <button
-              key={article.slug}
-              type="button"
-              className={cn(
-                "home-work-media relative min-w-0 cursor-pointer overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left transition-[flex-grow,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-                "aspect-[3/4] max-w-[13rem] max-nav:max-w-none",
-                isActive ? "z-[1] flex-[1.35] max-nav:ring-2 max-nav:ring-ink/20" : "flex-1",
-                activeSlug && !isActive && "opacity-55",
-              )}
-              aria-label={headline}
-              onMouseEnter={() => setActiveSlug(article.slug)}
-              onMouseLeave={() => setActiveSlug(null)}
-              onFocus={() => setActiveSlug(article.slug)}
-              onBlur={() => setActiveSlug(null)}
-              onClick={(event) => {
-                if (!preview) return;
-                const rect = event.currentTarget.getBoundingClientRect();
-                preview.open({
-                  article,
-                  origin: {
-                    top: rect.top,
-                    left: rect.left,
-                    width: rect.width,
-                    height: rect.height,
-                    imageUrl,
-                  },
-                });
-              }}
-            >
-              {imageUrl ? (
-                <Image
-                  src={imageUrl}
-                  alt={article.imageAlt || headline}
-                  fill
-                  sizes="(max-width: 900px) 33vw, 180px"
-                  className={cn(
-                    "object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-                    isActive ? "scale-[1.04]" : "scale-100",
-                  )}
-                  {...imageBlurProps(article.coverImageLqip)}
-                />
-              ) : (
-                <span className="grid h-full place-items-center font-sans text-[0.7rem] font-extrabold tracking-[0.12em] text-indigo uppercase">
-                  POKIT
-                </span>
-              )}
-              <span
+            return (
+              <button
+                key={article.slug}
+                type="button"
+                data-work-card
                 className={cn(
-                  "pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/55 to-transparent px-3 pb-3 pt-10 font-sans text-[0.72rem] font-semibold leading-snug text-white transition-opacity duration-300 nav:hidden",
-                  isActive ? "opacity-100" : "opacity-0",
+                  "home-work-media relative shrink-0 cursor-pointer snap-start overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left transition-[width,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  "aspect-[3/4] w-[min(13rem,calc((100%-1rem)/3))] max-nav:w-[min(11.5rem,42vw)]",
+                  isActive && "z-[1] max-nav:ring-2 max-nav:ring-ink/20",
+                  activeSlug && !isActive && "opacity-55",
                 )}
+                aria-label={headline}
+                onMouseEnter={() => setActiveSlug(article.slug)}
+                onMouseLeave={() => setActiveSlug(null)}
+                onFocus={() => setActiveSlug(article.slug)}
+                onBlur={() => setActiveSlug(null)}
+                onClick={(event) => {
+                  if (!preview) return;
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  preview.open({
+                    article,
+                    origin: {
+                      top: rect.top,
+                      left: rect.left,
+                      width: rect.width,
+                      height: rect.height,
+                      imageUrl,
+                    },
+                  });
+                }}
               >
-                {headline}
-              </span>
+                {imageUrl ? (
+                  <Image
+                    src={imageUrl}
+                    alt={article.imageAlt || headline}
+                    fill
+                    sizes="(max-width: 900px) 42vw, 180px"
+                    className={cn(
+                      "object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                      isActive ? "scale-[1.04]" : "scale-100",
+                    )}
+                    {...imageBlurProps(article.coverImageLqip)}
+                  />
+                ) : (
+                  <span className="grid h-full place-items-center font-sans text-[0.7rem] font-extrabold tracking-[0.12em] text-indigo uppercase">
+                    POKIT
+                  </span>
+                )}
+                <span
+                  className={cn(
+                    "pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/55 to-transparent px-3 pb-3 pt-10 font-sans text-[0.72rem] font-semibold leading-snug text-white transition-opacity duration-300 nav:hidden",
+                    isActive ? "opacity-100" : "opacity-0",
+                  )}
+                >
+                  {headline}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {showControls ? (
+          <div className="mt-3 hidden items-center justify-end gap-2 max-nav:flex">
+            <button
+              type="button"
+              className={navBtnClass}
+              aria-label={section.prevLabel}
+              disabled={!canPrev}
+              onClick={() => scrollByCard("prev")}
+            >
+              ←
             </button>
-          );
-        })}
+            <button
+              type="button"
+              className={navBtnClass}
+              aria-label={section.nextLabel}
+              disabled={!canNext}
+              onClick={() => scrollByCard("next")}
+            >
+              →
+            </button>
+          </div>
+        ) : null}
       </div>
 
       <div
@@ -208,7 +353,12 @@ export function HomeWorkRows({
 
         <div>
           {visible.map((section) => (
-            <HomeWorkRow key={section.id} section={section} locale={locale} />
+            <HomeWorkRow
+              key={section.id}
+              section={section}
+              locale={locale}
+              viewAllLabel={viewAllLabel}
+            />
           ))}
         </div>
       </div>
