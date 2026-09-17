@@ -79,22 +79,17 @@ function FeedCard({
   return (
     <button
       type="button"
-      className="group/feed relative block w-full cursor-pointer border-0 bg-transparent p-0 text-left"
+      className="group/feed relative block w-full cursor-pointer overflow-visible border-0 bg-transparent p-0 text-left"
       onClick={(event) =>
         openPreviewFromElement(preview, article, event.currentTarget, imageUrl)
       }
     >
-      <div className="relative pr-7">
-        <p className="m-0 flex flex-wrap items-center gap-x-1.5 font-sans text-[0.7rem] leading-none text-muted">
-          <span>{category}</span>
-          {dateLabel ? (
-            <>
-              <span aria-hidden>·</span>
-              <span>{dateLabel}</span>
-            </>
-          ) : null}
+      <div className="relative overflow-visible pr-7">
+        <p className="m-0 overflow-visible font-sans text-[0.72rem] leading-normal text-muted">
+          {category}
+          {dateLabel ? ` · ${dateLabel}` : null}
         </p>
-        <p className="m-0 mt-2 font-sans text-[0.95rem] font-bold leading-snug tracking-[-0.02em] text-ink">
+        <p className="m-0 mt-2.5 font-sans text-[0.95rem] font-bold leading-snug tracking-[-0.02em] text-ink">
           {headline}
         </p>
         {article.description ? (
@@ -157,7 +152,7 @@ export function HomeHero({
             accent={accent}
             rest={rest}
             as="h1"
-            className="max-w-[52rem]"
+            className="max-w-[52rem] text-[clamp(2rem,5vw,3.75rem)]"
           />
         </div>
 
@@ -196,19 +191,13 @@ export function HomeHero({
           {/* `.hero_feed` — fixed width, same height, internal scroll */}
           <aside
             className={cn(
-              "relative flex h-full w-[21rem] shrink-0 flex-col overflow-hidden max-nav:h-auto max-nav:w-full max-nav:min-h-[20rem]",
+              "relative flex h-full w-[21rem] shrink-0 flex-col overflow-visible max-nav:h-auto max-nav:w-full max-nav:min-h-[20rem]",
             )}
             aria-label={feedTitle}
           >
-            <div className="mb-3 flex shrink-0 items-center justify-between gap-3">
-              <h2 className="m-0 font-sans text-[1.05rem] font-extrabold tracking-[-0.02em] text-ink">
-                {feedTitle}
-              </h2>
-            </div>
-
-            <div className="relative min-h-0 flex-1">
-              <div className="scrollbar-hide absolute inset-0 overflow-y-auto max-nav:relative max-nav:inset-auto max-nav:overflow-visible">
-                <div className="flex flex-col gap-5 pb-8 max-nav:pb-0">
+            <div className="relative min-h-0 flex-1 overflow-visible">
+              <div className="scrollbar-hide absolute inset-0 overflow-y-auto overflow-x-visible max-nav:relative max-nav:inset-auto max-nav:overflow-visible">
+                <div className="flex flex-col gap-5 pt-1 pb-8 max-nav:pt-0 max-nav:pb-0">
                   {feed.map((article) => (
                     <FeedCard
                       key={article.slug}
@@ -221,11 +210,7 @@ export function HomeHero({
               </div>
 
               <div
-                className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-[var(--color-paper)] to-transparent max-nav:hidden"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[var(--color-paper)] to-transparent max-nav:hidden"
+                className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-10 bg-gradient-to-t from-[var(--color-paper)] to-transparent max-nav:hidden"
                 aria-hidden
               />
             </div>

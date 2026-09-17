@@ -14,15 +14,15 @@ type Props = {
 
 export function SiteFooter({ locale, dict }: Props) {
   return (
-    <footer className="mt-24 border-t border-ink/10 bg-[#f3f0e8] pt-14 pb-10 font-sans max-nav:mt-16">
+    <footer className="mt-24 border-t border-ink/10 bg-paper pt-14 pb-10 font-sans max-nav:mt-16">
       <div className={monoContainer}>
-        <div className="flex items-start gap-4">
+        <div className="ml-auto flex w-fit items-start gap-4">
           <Image
             src="/pokit5.png"
             alt=""
             width={48}
             height={48}
-            className="rounded-xl"
+            className="size-12 shrink-0 rounded-xl"
           />
           <div>
             <p className="m-0 text-[1.35rem] font-extrabold tracking-[-0.03em]">
@@ -48,7 +48,7 @@ export function SiteFooter({ locale, dict }: Props) {
           </div>
         </div>
 
-        <p className="mt-12 border-t border-ink/10 pt-6 text-[0.8rem] text-muted">
+        <p className="mt-12 border-t border-ink/10 pt-6 text-right text-[0.8rem] text-muted">
           © {new Date().getFullYear()} {site.name}. {dict.footer.rights}
         </p>
       </div>
