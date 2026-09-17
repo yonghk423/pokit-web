@@ -152,6 +152,7 @@ const dictionary: Dictionary = {
     qrAria: "POKITアプリ App Store QRコード",
     qrTitle: "今すぐスキャン",
     qrHint: "カメラを向けるとすぐにインストールできます",
+    heroAside: "POKIT - ルーティン習慣",
   },
   appPage: {
     metaTitle: "POKITアプリ",

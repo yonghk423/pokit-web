@@ -13,6 +13,8 @@ type Props = {
   copy: Dictionary["appDownload"];
   size?: "default" | "large";
   variant?: "brutal" | "editorial";
+  /** Defaults to `app`. Pass empty string to omit. */
+  sectionId?: string;
 };
 
 export function AppDownload({
@@ -20,19 +22,20 @@ export function AppDownload({
   copy,
   size = "default",
   variant = "brutal",
+  sectionId = "app",
 }: Props) {
   const large = size === "large";
   const editorial = variant === "editorial";
   return (
     <section
-      id="app"
-      className={cn(editorial ? "mt-0" : cn(monoContainer, "mt-12"))}
+      id={sectionId || undefined}
+      className={cn(editorial ? "mt-16 max-nav:mt-12" : cn(monoContainer, "mt-12"))}
     >
       <div
         className={cn(
           "relative isolate overflow-hidden bg-[#2563eb] text-white",
           editorial
-            ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-20 max-nav:grid-cols-1 max-nav:gap-10 max-nav:px-6 max-nav:py-16"
+            ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-10 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-12 max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10"
             : cn(
                 "rounded-[1.25rem] border border-ink/10",
                 "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-8 py-11",

@@ -8,6 +8,8 @@ if (process.env.VERCEL && !process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
 }
 
 const nextConfig: NextConfig = {
+  // Hide the floating Next.js "N" badge in local development.
+  devIndicators: false,
   turbopack: {
     root: process.cwd(),
   },

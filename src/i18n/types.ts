@@ -111,6 +111,8 @@ export type Dictionary = {
     qrAria: string;
     qrTitle: string;
     qrHint: string;
+    /** Short line beside the home hero QR. */
+    heroAside: string;
   };
   appPage: {
     metaTitle: string;

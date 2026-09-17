@@ -306,7 +306,8 @@ html[data-pokit-app="1"] [data-preview-modal-panel] {
   }
 }
 
-.header-app-cta:not([aria-current="page"]) {
+.header-app-cta:not([aria-current="page"]),
+.hero-qr-nudge {
   animation: header-app-nudge 2.8s ease-in-out infinite;
 }
 
@@ -334,7 +335,8 @@ html[data-pokit-app="1"] [data-preview-modal-panel] {
   .app-hero-phone,
   .app-hero-glow,
   .home-hero-rise,
-  .header-app-cta {
+  .header-app-cta,
+  .hero-qr-nudge {
     animation: none;
   }
 

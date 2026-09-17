@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { HomeAbout } from "@/components/home-about";
+import { AppDownload } from "@/components/app-download";
 import { HomeHero } from "@/components/home-hero";
 import { HomeLabs } from "@/components/home-labs";
 import { HomePreviewShell } from "@/components/home-preview-shell";
 import { HomeWorkRows, type HomeWorkSection } from "@/components/home-work-rows";
 import { JsonLd } from "@/components/json-ld";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { site } from "@/config/site";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
@@ -173,7 +174,7 @@ export default async function Home({ params }: Props) {
   return (
     <>
       <JsonLd data={websiteJsonLd(dict.meta.siteDescription, locale)} />
-      <main className="pb-8">
+      <main>
         <HomePreviewShell
           locale={locale}
           categoryLabels={categoryLabels}
@@ -191,6 +192,7 @@ export default async function Home({ params }: Props) {
                 heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
                 feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
                 categoryLabels={categoryLabels}
+                download={dict.appDownload}
               />
             </div>
           )}
@@ -219,7 +221,22 @@ export default async function Home({ params }: Props) {
           )}
 
           <div data-hide-in-pokit-app>
-            <HomeAbout locale={locale} dict={dict} />
+            <ScrollReveal>
+              <AppDownload
+                locale={locale}
+                size="large"
+                variant="editorial"
+                sectionId="download"
+                copy={{
+                  ...dict.appDownload,
+                  kicker: dict.appPage.ctaKicker,
+                  title: dict.appPage.ctaTitle,
+                  body: dict.appPage.ctaBody,
+                  download: dict.appPage.download,
+                  qrHint: dict.appPage.ctaQrHint,
+                }}
+              />
+            </ScrollReveal>
           </div>
         </HomePreviewShell>
       </main>

@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
+import { HomeHeroDownload } from "@/components/home-hero-download";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
@@ -22,6 +23,7 @@ type Props = {
   heroArticles: ArticleCardData[];
   feedArticles: ArticleCardData[];
   categoryLabels: Dictionary["categories"];
+  download: Dictionary["appDownload"];
 };
 
 function formatFeedDate(iso: string | null | undefined, locale: Locale) {
@@ -130,6 +132,7 @@ export function HomeHero({
   heroArticles,
   feedArticles,
   categoryLabels,
+  download,
 }: Props) {
   const preview = useOptionalArticlePreview();
   const hero = heroArticles.find((article) => article.coverImage) ?? heroArticles[0];
@@ -145,15 +148,16 @@ export function HomeHero({
   return (
     <section className="relative pt-8 max-nav:pt-6">
       <div className={monoContainer}>
-        {/* hero title */}
-        <div className="home-hero-rise">
+        {/* hero title + compact download */}
+        <div className="home-hero-rise flex items-end justify-between gap-6 max-nav:flex-col max-nav:items-stretch max-nav:gap-0">
           <DisplayHeading
             line1={line1}
             accent={accent}
             rest={rest}
             as="h1"
-            className="max-w-[52rem] text-[clamp(2rem,5vw,3.75rem)]"
+            className="min-w-0 max-w-[52rem] flex-1 text-[clamp(2rem,5vw,3.75rem)]"
           />
+          <HomeHeroDownload locale={locale} copy={download} />
         </div>
 
         {/* Oimachi `.hero_bottom`: height calc(100svh - 18rem), flex row, gap 0.4rem */}
