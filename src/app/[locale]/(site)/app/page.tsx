@@ -116,7 +116,7 @@ function FeatureVisualCluster({
         priority={priority}
         eager={priority}
         className={cn(
-          "w-full max-w-56 nav:max-w-72",
+          "w-60 nav:w-80",
           alignClass,
           className,
         )}
@@ -134,7 +134,7 @@ function FeatureVisualCluster({
   return (
     <div
       className={cn(
-        "flex w-full max-w-lg items-center gap-4 nav:max-w-xl nav:gap-5",
+        "flex w-full max-w-lg items-center gap-3 nav:w-[36rem] nav:max-w-none nav:gap-3",
         alignClass,
         className,
       )}
@@ -346,6 +346,7 @@ export default async function AppIntroPage({ params }: Props) {
             if (!visual) return null;
             const reverse = index % 2 === 1;
             const tone = FEATURE_TONES[index % FEATURE_TONES.length];
+            const dualPhones = Boolean(visual.secondary);
 
             return (
               <article
@@ -355,35 +356,40 @@ export default async function AppIntroPage({ params }: Props) {
                 <div
                   className={cn(
                     monoContainer,
-                    "relative z-10 flex flex-col items-center gap-6 py-16 nav:grid nav:grid-cols-2 nav:items-start nav:gap-5 nav:py-20",
-                    reverse && "nav:[&>div:first-child]:order-2",
+                    "relative z-10 py-16 nav:py-20",
                   )}
                 >
-                  <ScrollReveal
+                  <div
                     className={cn(
-                      "w-full max-w-[36rem] nav:pt-6",
-                      reverse ? "nav:mr-auto" : "nav:ml-auto",
+                      "mx-auto flex w-fit max-w-full flex-col items-center gap-6",
+                      "nav:flex-row nav:items-start",
+                      dualPhones ? "nav:gap-x-12" : "nav:gap-x-32",
+                      reverse && "nav:flex-row-reverse",
                     )}
                   >
-                    <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-green">
+                  <ScrollReveal className="w-full max-w-[36rem] nav:w-[36rem] nav:shrink-0 nav:pt-6">
+                    <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-ink">
                       0{index + 1}
                     </p>
                     <h3 className="mt-4 mb-0 font-serif text-[clamp(1.85rem,3.6vw,2.55rem)] font-normal italic leading-[1.22] tracking-[-0.02em] text-ink">
                       {feature.title}
                     </h3>
-                    <p className="mt-6 mb-0 whitespace-pre-line font-serif text-[clamp(1.12rem,1.85vw,1.28rem)] font-normal leading-[1.85] tracking-[-0.01em] text-ink/78">
+                    <p className="mt-6 mb-0 whitespace-pre-line font-sans text-[clamp(1.05rem,1.7vw,1.18rem)] font-normal leading-[1.85] tracking-[-0.01em] text-ink/78">
                       {feature.body}
                     </p>
                   </ScrollReveal>
                   <ScrollReveal
                     delay={140}
-                    className={index === 0 ? "nav:mt-8" : undefined}
+                    className={cn(
+                      "shrink-0",
+                      index === 0 ? "nav:mt-8" : undefined,
+                    )}
                   >
                     <FeatureVisualCluster
                       visual={localizeVisual(locale, visual)}
                       alt={feature.imageAlt}
                       priority={index === 0}
-                      align={reverse ? "end" : "start"}
+                      align="center"
                       secondaryFirst={
                         feature.id === "routines" || feature.id === "memo"
                       }
@@ -404,6 +410,7 @@ export default async function AppIntroPage({ params }: Props) {
                       }
                     />
                   </ScrollReveal>
+                  </div>
                 </div>
               </article>
             );
