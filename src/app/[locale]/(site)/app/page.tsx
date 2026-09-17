@@ -7,6 +7,7 @@ import { PhoneFrame } from "@/components/app-phone-frame";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { JsonLd } from "@/components/json-ld";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -88,6 +89,7 @@ function FeatureVisualCluster({
   secondaryFirst = false,
   priority = false,
   align = "center",
+  className,
 }: {
   visual: { primary: StaticImageData; secondary?: StaticImageData };
   alt: string;
@@ -95,6 +97,7 @@ function FeatureVisualCluster({
   secondaryFirst?: boolean;
   priority?: boolean;
   align?: "start" | "end" | "center";
+  className?: string;
 }) {
   const alignClass =
     align === "start"
@@ -112,7 +115,11 @@ function FeatureVisualCluster({
         finish="soft"
         priority={priority}
         eager={priority}
-        className={cn("w-full max-w-52 nav:max-w-64", alignClass)}
+        className={cn(
+          "w-full max-w-56 nav:max-w-72",
+          alignClass,
+          className,
+        )}
       />
     );
   }
@@ -127,8 +134,9 @@ function FeatureVisualCluster({
   return (
     <div
       className={cn(
-        "flex w-full max-w-md items-center gap-4 nav:max-w-lg nav:gap-5",
+        "flex w-full max-w-lg items-center gap-4 nav:max-w-xl nav:gap-5",
         alignClass,
+        className,
       )}
     >
       <PhoneFrame
@@ -138,7 +146,7 @@ function FeatureVisualCluster({
         finish="soft"
         priority={priority}
         eager={priority}
-        className="w-[48%]"
+        className="min-w-0 flex-1"
       />
       <PhoneFrame
         src={right.src}
@@ -147,7 +155,7 @@ function FeatureVisualCluster({
         finish="soft"
         priority={priority}
         eager={priority}
-        className="w-[48%]"
+        className="min-w-0 flex-1"
       />
     </div>
   );
@@ -347,13 +355,13 @@ export default async function AppIntroPage({ params }: Props) {
                 <div
                   className={cn(
                     monoContainer,
-                    "relative z-10 flex flex-col items-center gap-6 py-16 nav:grid nav:grid-cols-2 nav:items-center nav:gap-5 nav:py-20",
+                    "relative z-10 flex flex-col items-center gap-6 py-16 nav:grid nav:grid-cols-2 nav:items-start nav:gap-5 nav:py-20",
                     reverse && "nav:[&>div:first-child]:order-2",
                   )}
                 >
-                  <div
+                  <ScrollReveal
                     className={cn(
-                      "w-full max-w-[36rem]",
+                      "w-full max-w-[36rem] nav:pt-6",
                       reverse ? "nav:mr-auto" : "nav:ml-auto",
                     )}
                   >
@@ -366,31 +374,36 @@ export default async function AppIntroPage({ params }: Props) {
                     <p className="mt-6 mb-0 whitespace-pre-line font-serif text-[clamp(1.12rem,1.85vw,1.28rem)] font-normal leading-[1.85] tracking-[-0.01em] text-ink/78">
                       {feature.body}
                     </p>
-                  </div>
-                  <FeatureVisualCluster
-                    visual={localizeVisual(locale, visual)}
-                    alt={feature.imageAlt}
-                    priority={index === 0}
-                    align={reverse ? "end" : "start"}
-                    secondaryFirst={
-                      feature.id === "routines" || feature.id === "memo"
-                    }
-                    secondaryAlt={
-                      feature.id === "memo"
-                        ? locale === "ko"
-                          ? "POKIT 앱에서 하루 메모를 적는 화면"
-                          : locale === "ja"
-                            ? "POKITアプリで一日のメモを書く画面"
-                            : "POKIT app screen for writing the daily memo"
-                        : feature.id === "routines"
+                  </ScrollReveal>
+                  <ScrollReveal
+                    delay={140}
+                    className={index === 0 ? "nav:mt-8" : undefined}
+                  >
+                    <FeatureVisualCluster
+                      visual={localizeVisual(locale, visual)}
+                      alt={feature.imageAlt}
+                      priority={index === 0}
+                      align={reverse ? "end" : "start"}
+                      secondaryFirst={
+                        feature.id === "routines" || feature.id === "memo"
+                      }
+                      secondaryAlt={
+                        feature.id === "memo"
                           ? locale === "ko"
-                            ? "POKIT 앱을 처음 열었을 때 하루 일과를 정하는 화면"
+                            ? "POKIT 앱에서 하루 메모를 적는 화면"
                             : locale === "ja"
-                              ? "POKITアプリを初めて開いたときの一日の時間設定画面"
-                              : "POKIT first-launch screen for setting your daily span"
-                          : undefined
-                    }
-                  />
+                              ? "POKITアプリで一日のメモを書く画面"
+                              : "POKIT app screen for writing the daily memo"
+                          : feature.id === "routines"
+                            ? locale === "ko"
+                              ? "POKIT 앱을 처음 열었을 때 하루 일과를 정하는 화면"
+                              : locale === "ja"
+                                ? "POKITアプリを初めて開いたときの一日の時間設定画面"
+                                : "POKIT first-launch screen for setting your daily span"
+                            : undefined
+                      }
+                    />
+                  </ScrollReveal>
                 </div>
               </article>
             );
@@ -398,7 +411,7 @@ export default async function AppIntroPage({ params }: Props) {
       </section>
 
       <section className="bg-white py-20 nav:py-24" aria-labelledby="app-gallery">
-        <div className={monoContainer}>
+        <ScrollReveal className={monoContainer}>
         <p className="m-0 text-center font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-green">
           {copy.galleryHeading}
         </p>
@@ -411,7 +424,8 @@ export default async function AppIntroPage({ params }: Props) {
         <p className="mx-auto mt-5 mb-2 max-w-2xl text-center whitespace-pre-line font-sans text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-muted">
           {copy.galleryBody}
         </p>
-        </div>
+        </ScrollReveal>
+        <ScrollReveal delay={120}>
         <AppScreenGallery
           finish="soft"
           items={GALLERY.map((item) => {
@@ -425,6 +439,7 @@ export default async function AppIntroPage({ params }: Props) {
           prevAria={dict.home.carouselPrev(copy.galleryHeading)}
           nextAria={dict.home.carouselNext(copy.galleryHeading)}
         />
+        </ScrollReveal>
       </section>
 
       <div>

@@ -1,5 +1,8 @@
 "use client";
 
+import { Suspense, type ReactNode } from "react";
+
+import { ArticleDeepLink } from "@/components/article-deep-link";
 import { ArticlePreviewModal } from "@/components/article-preview-modal";
 import {
   ArticlePreviewProvider,
@@ -8,7 +11,6 @@ import {
 import { RoutineToolPreviewModal } from "@/components/routine-tool-preview-modal";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
-import type { ReactNode } from "react";
 
 type ShellProps = {
   locale: Locale;
@@ -28,6 +30,9 @@ function HomePreviewBody({
 
   return (
     <>
+      <Suspense fallback={null}>
+        <ArticleDeepLink />
+      </Suspense>
       {children}
       {active?.kind === "article" ? (
         <ArticlePreviewModal

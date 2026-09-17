@@ -7,6 +7,7 @@ import {
   LOCALE_COOKIE,
   type Locale,
 } from "@/i18n/config";
+import { POKIT_APP_HEADER } from "@/lib/pokit-app-header";
 
 const PUBLIC_FILE = /\.[^/]+$/;
 
@@ -42,6 +43,24 @@ function prefixPath(locale: Locale, pathname: string) {
   return `/${locale}${pathname}`;
 }
 
+/** UA / query flags that the old beforeInteractive boot script handled. */
+function isPokitAppRequest(request: NextRequest) {
+  if (request.nextUrl.searchParams.get("pokit_app") === "1") {
+    return true;
+  }
+  const ua = request.headers.get("user-agent") ?? "";
+  return /POKIT/i.test(ua);
+}
+
+function withRequestHints(request: NextRequest, pathname: string) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathname);
+  if (isPokitAppRequest(request)) {
+    requestHeaders.set(POKIT_APP_HEADER, "1");
+  }
+  return requestHeaders;
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -70,11 +89,8 @@ export function middleware(request: NextRequest) {
 
   const firstSegment = pathname.split("/")[1];
   if (isLocale(firstSegment)) {
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("x-pathname", pathname);
-
     const response = NextResponse.next({
-      request: { headers: requestHeaders },
+      request: { headers: withRequestHints(request, pathname) },
     });
     const cookie = request.cookies.get(LOCALE_COOKIE)?.value;
     if (cookie !== firstSegment) {

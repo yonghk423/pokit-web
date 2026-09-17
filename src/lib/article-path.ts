@@ -7,7 +7,7 @@ export function isValidArticleSlug(slug: string) {
   return SLUG_PATTERN.test(slug);
 }
 
-/** Article 상세 페이지 경로 (slug URL 인코딩) */
+/** Home preview deep link (article detail pages redirect here). */
 export function articlePath(locale: Locale, slug: string) {
-  return withLocale(locale, `/articles/${encodeURIComponent(slug)}`);
+  return `${withLocale(locale, "/")}?article=${encodeURIComponent(slug)}`;
 }

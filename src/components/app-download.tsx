@@ -30,7 +30,7 @@ export function AppDownload({
     >
       <div
         className={cn(
-          "relative isolate overflow-hidden bg-indigo text-white",
+          "relative isolate overflow-hidden bg-[#2563eb] text-white",
           editorial
             ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-12 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-20 max-nav:grid-cols-1 max-nav:gap-10 max-nav:px-6 max-nav:py-16"
             : cn(

@@ -6,7 +6,7 @@ import { isPokitAppContext } from "@/lib/pokit-bridge";
 
 /**
  * Keeps `html[data-pokit-app]` in sync after hydration
- * (covers ReactNativeWebView / injected flags that the boot script may miss).
+ * (ReactNativeWebView / window.POKIT_APP are only visible on the client).
  */
 export function PokitAppDocumentFlag() {
   useEffect(() => {

@@ -1,8 +1,9 @@
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import Script from "next/script";
 
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { fontVariables } from "@/lib/fonts";
+import { POKIT_APP_HEADER } from "@/lib/pokit-app-header";
 import { localeToHtmlLang } from "@/lib/locale-path";
 
 type Props = {
@@ -14,8 +15,6 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-const POKIT_APP_BOOT = `(function(){try{var q=new URLSearchParams(location.search);if(q.get("pokit_app")==="1"||/POKIT/i.test(navigator.userAgent)||window.ReactNativeWebView||window.POKIT_APP===true){document.documentElement.dataset.pokitApp="1";}}catch(e){}})();`;
-
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale: rawLocale } = await params;
 
@@ -24,19 +23,17 @@ export default async function LocaleLayout({ children, params }: Props) {
   }
 
   const locale: Locale = rawLocale;
+  const headerList = await headers();
+  const pokitApp = headerList.get(POKIT_APP_HEADER) === "1";
 
   return (
     <html
       lang={localeToHtmlLang(locale)}
       suppressHydrationWarning
       className={fontVariables}
+      {...(pokitApp ? { "data-pokit-app": "1" } : {})}
     >
-      <body>
-        <Script id="pokit-app-boot" strategy="beforeInteractive">
-          {POKIT_APP_BOOT}
-        </Script>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

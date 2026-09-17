@@ -183,8 +183,8 @@ const dictionary: Dictionary = {
       },
       {
         id: "todos",
-        title: "Tasks, in order of what matters",
-        body: "The things to do, in today's order. You do not have to finish everything at once. Pick what matters now, then close them one by one.",
+        title: "Not a routine? Use a checklist",
+        body: "Some things only need to get done today, not every day. Those do not have to become routines. Put them on your to-do list, then check them off one by one.",
         imageAlt: "POKIT to-do list screen",
       },
       {
