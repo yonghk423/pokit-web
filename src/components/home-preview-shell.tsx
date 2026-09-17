@@ -9,6 +9,7 @@ import {
   useArticlePreview,
 } from "@/components/article-preview-context";
 import { RoutineToolPreviewModal } from "@/components/routine-tool-preview-modal";
+import { ToolDeepLink } from "@/components/tool-deep-link";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 
@@ -17,6 +18,7 @@ type ShellProps = {
   categoryLabels: Dictionary["categories"];
   closeLabel: string;
   addToPokit: Dictionary["article"]["addToPokit"];
+  toolKicker: string;
   children: ReactNode;
 };
 
@@ -24,6 +26,7 @@ function HomePreviewBody({
   categoryLabels,
   closeLabel,
   addToPokit,
+  toolKicker,
   children,
 }: Omit<ShellProps, "locale">) {
   const { active } = useArticlePreview();
@@ -32,6 +35,7 @@ function HomePreviewBody({
     <>
       <Suspense fallback={null}>
         <ArticleDeepLink />
+        <ToolDeepLink kicker={toolKicker} />
       </Suspense>
       {children}
       {active?.kind === "article" ? (
@@ -53,6 +57,7 @@ export function HomePreviewShell({
   categoryLabels,
   closeLabel,
   addToPokit,
+  toolKicker,
   children,
 }: ShellProps) {
   return (
@@ -61,6 +66,7 @@ export function HomePreviewShell({
         categoryLabels={categoryLabels}
         closeLabel={closeLabel}
         addToPokit={addToPokit}
+        toolKicker={toolKicker}
       >
         {children}
       </HomePreviewBody>

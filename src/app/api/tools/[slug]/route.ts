@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
 
 import { isLocale, type Locale } from "@/i18n/config";
+import { isValidToolSlug } from "@/lib/routine-tool-path";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl } from "@/sanity/image";
 import { getRoutineToolBySlug } from "@/sanity/lib/fetch";
 
 type Params = { params: Promise<{ slug: string }> };
-
-function isValidToolSlug(slug: string) {
-  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
-}
 
 export async function GET(request: Request, { params }: Params) {
   if (!isSanityConfigured()) {

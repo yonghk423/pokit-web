@@ -180,6 +180,7 @@ export default async function Home({ params }: Props) {
           categoryLabels={categoryLabels}
           closeLabel={dict.home.closePreview}
           addToPokit={dict.article.addToPokit}
+          toolKicker={dict.newArrivals.kicker}
         >
           {(weeklyHero.length > 0 || feedArticles.length > 0) && (
             <div data-hide-in-pokit-app>

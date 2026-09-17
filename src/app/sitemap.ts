@@ -4,7 +4,6 @@ import { site } from "@/config/site";
 import { locales } from "@/i18n/config";
 import { briefingWeekPath } from "@/lib/briefing-path";
 import { newArrivalsWeekPath } from "@/lib/new-arrivals-path";
-import { routineToolPath } from "@/lib/routine-tool-path";
 import { withLocale } from "@/lib/locale-path";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
@@ -12,7 +11,6 @@ import { sanityFetchOptions } from "@/sanity/lib/cache";
 import {
   SITEMAP_DIGESTS_QUERY,
   SITEMAP_NEW_ARRIVALS_QUERY,
-  SITEMAP_ROUTINE_TOOLS_QUERY,
 } from "@/sanity/lib/queries";
 
 export const revalidate = false;
@@ -54,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return staticPages;
   }
 
-  const [digests, newArrivals, tools] = await Promise.all([
+  const [digests, newArrivals] = await Promise.all([
     client.fetch<{ weekOf: string; _updatedAt?: string }[]>(
       SITEMAP_DIGESTS_QUERY,
       {},
@@ -62,11 +60,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ),
     client.fetch<{ weekOf: string; _updatedAt?: string }[]>(
       SITEMAP_NEW_ARRIVALS_QUERY,
-      {},
-      sanityFetchOptions,
-    ),
-    client.fetch<{ _updatedAt?: string; slugs?: string[] }[]>(
-      SITEMAP_ROUTINE_TOOLS_QUERY,
       {},
       sanityFetchOptions,
     ),
@@ -94,19 +87,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })),
     );
 
-  const toolPages: MetadataRoute.Sitemap = (tools ?? []).flatMap(
-    ({ _updatedAt, slugs }) =>
-      (slugs ?? [])
-        .filter(Boolean)
-        .flatMap((slug) =>
-          locales.map((locale) => ({
-            url: `${site.siteUrl}${routineToolPath(locale, slug)}`,
-            lastModified: _updatedAt ? new Date(_updatedAt) : undefined,
-            changeFrequency: "weekly" as const,
-            priority: 0.8,
-          })),
-        ),
-  );
-
-  return [...staticPages, ...digestPages, ...newArrivalsPages, ...toolPages];
+  return [...staticPages, ...digestPages, ...newArrivalsPages];
 }
