@@ -245,11 +245,11 @@ export function ArticlePreviewModal({
           </button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-y-auto px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-1 nav:grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] nav:gap-7 nav:overflow-hidden nav:px-5 nav:pb-5">
-          <div className="min-h-0 max-nav:mx-auto max-nav:w-full max-nav:max-w-[22rem]">
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-5 overflow-y-auto px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-1 max-nav:gap-6 nav:grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] nav:gap-7 nav:overflow-hidden nav:px-5 nav:pb-5">
+          <div className="min-h-0 shrink-0 max-nav:mx-auto max-nav:w-full max-nav:max-w-[22rem]">
             <div
               ref={mediaRef}
-              className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.15rem] bg-[#ebe7df] max-nav:aspect-4/5 max-nav:h-auto max-nav:max-h-[min(42vh,22rem)]"
+              className="relative isolate overflow-hidden rounded-[1.15rem] bg-[#ebe7df] max-nav:aspect-4/5 max-nav:h-auto max-nav:max-h-[min(42vh,22rem)] max-nav:min-h-0 nav:h-full nav:min-h-72"
             >
               {panelSrc ? (
                 <PreviewCoverImage
@@ -285,8 +285,8 @@ export function ArticlePreviewModal({
 
             {!error ? (
               <>
-                <div className="shrink-0 border-b border-ink/8 pb-4">
-                  <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase">
+                <div className="shrink-0 border-b border-ink/8 pb-4 max-nav:pt-1">
+                  <p className="m-0 font-sans text-[0.72rem] font-semibold leading-snug tracking-[0.06em] text-muted">
                     {category}
                   </p>
                   {(detail?.kicker ?? articleActive.article.kicker) ? (
