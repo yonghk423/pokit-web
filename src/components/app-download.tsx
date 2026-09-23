@@ -29,7 +29,7 @@ export function AppDownload({
   return (
     <section
       id={sectionId || undefined}
-      className={cn(editorial ? "mt-0" : cn(monoContainer, "mt-12"))}
+      className={cn(editorial ? "mt-20 max-nav:mt-14" : cn(monoContainer, "mt-12"))}
     >
       <div
         className={cn(
