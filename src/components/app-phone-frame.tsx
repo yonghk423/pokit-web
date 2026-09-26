@@ -27,8 +27,11 @@ export function AppScreenImage({
       src={src}
       alt={alt}
       sizes={sizes}
-      // UI screenshots are already compressed WebP; re-encoding to AVIF/q75 softens text.
+      // Keep WebP as-is so UI text stays sharp; still show build-time blur until paint.
       unoptimized
+      {...(src.blurDataURL
+        ? { placeholder: "blur" as const, blurDataURL: src.blurDataURL }
+        : {})}
       priority={priority}
       loading={eager || priority ? "eager" : undefined}
       fetchPriority={eager || priority ? "high" : undefined}
