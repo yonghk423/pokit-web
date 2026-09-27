@@ -190,6 +190,8 @@ export default async function Home({ params }: Props) {
                 accent={dict.home.heroAccent}
                 rest={dict.home.heroRest}
                 feedTitle={dict.home.feedTitle}
+                feedPrevLabel={dict.home.carouselPrev(dict.home.feedTitle)}
+                feedNextLabel={dict.home.carouselNext(dict.home.feedTitle)}
                 heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
                 feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
                 categoryLabels={categoryLabels}

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
@@ -20,11 +21,16 @@ type Props = {
   accent: string;
   rest: string;
   feedTitle: string;
+  feedPrevLabel: string;
+  feedNextLabel: string;
   heroArticles: ArticleCardData[];
   feedArticles: ArticleCardData[];
   categoryLabels: Dictionary["categories"];
   download: Dictionary["appDownload"];
 };
+
+const feedNavBtnClass =
+  "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-ink/[0.05] p-0 font-sans text-[0.8rem] font-medium leading-none text-ink/55 transition-colors hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:bg-transparent disabled:text-ink/20";
 
 function formatFeedDate(iso: string | null | undefined, locale: Locale) {
   if (!iso) return null;
@@ -91,7 +97,7 @@ function FeedCard({
           {category}
           {dateLabel ? ` · ${dateLabel}` : null}
         </p>
-        <p className="m-0 mt-2.5 font-sans text-[0.95rem] font-bold leading-snug tracking-[-0.02em] text-ink">
+        <p className="m-0 mt-2.5 line-clamp-2 font-sans text-[0.95rem] font-bold leading-snug tracking-[-0.02em] text-ink">
           {headline}
         </p>
         {article.description ? (
@@ -113,7 +119,7 @@ function FeedCard({
             src={imageUrl}
             alt={article.imageAlt || headline}
             fill
-            sizes="(max-width: 900px) 100vw, 22vw"
+            sizes="(max-width: 900px) 78vw, 22vw"
             className="object-cover transition-transform duration-500 group-hover/feed:scale-[1.03]"
             {...imageBlurProps(article.coverImageLqip)}
           />
@@ -129,12 +135,17 @@ export function HomeHero({
   accent,
   rest,
   feedTitle,
+  feedPrevLabel,
+  feedNextLabel,
   heroArticles,
   feedArticles,
   categoryLabels,
   download,
 }: Props) {
   const preview = useOptionalArticlePreview();
+  const feedScrollRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
   const hero = heroArticles.find((article) => article.coverImage) ?? heroArticles[0];
   const heroUrl =
     hero && isSanityConfigured()
@@ -144,6 +155,36 @@ export function HomeHero({
     ? splitDisplayTitle(hero.title).headline
     : null;
   const feed = feedArticles.slice(0, 6);
+
+  const updateFeedControls = useCallback(() => {
+    const el = feedScrollRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = feedScrollRef.current;
+    if (!el) return;
+    updateFeedControls();
+    el.addEventListener("scroll", updateFeedControls, { passive: true });
+    window.addEventListener("resize", updateFeedControls);
+    return () => {
+      el.removeEventListener("scroll", updateFeedControls);
+      window.removeEventListener("resize", updateFeedControls);
+    };
+  }, [feed.length, updateFeedControls]);
+
+  const scrollFeedByCard = useCallback((direction: "prev" | "next") => {
+    const el = feedScrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-feed-card]");
+    const step = card ? card.offsetWidth + 12 : el.clientWidth * 0.8;
+    el.scrollBy({
+      left: direction === "next" ? step : -step,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <section className="relative pt-8 max-nav:pt-6">
@@ -161,12 +202,12 @@ export function HomeHero({
         </div>
 
         {/* Oimachi `.hero_bottom`: height calc(100svh - 18rem), flex row, gap 0.4rem */}
-        <div className="mt-3 flex h-[calc(100svh-18rem)] gap-[0.4rem] max-nav:mt-4 max-nav:h-auto max-nav:flex-col max-nav:gap-8">
-          {/* `.hero_graphic` */}
+        <div className="mt-3 flex h-[calc(100svh-18rem)] gap-[0.4rem] max-nav:mt-4 max-nav:h-auto max-nav:flex-col max-nav:gap-0">
+          {/* `.hero_graphic` — desktop only; mobile uses the horizontal feed instead */}
           {hero ? (
             <button
               type="button"
-              className="home-hero-rise home-hero-rise-delay group/hero relative h-full min-w-0 flex-1 cursor-pointer overflow-hidden rounded-[0.3rem] border-0 bg-[#ebe7df] p-0 text-left max-nav:aspect-square max-nav:h-auto max-nav:w-full"
+              className="home-hero-rise home-hero-rise-delay group/hero relative h-full min-w-0 flex-1 cursor-pointer overflow-hidden rounded-[0.3rem] border-0 bg-[#ebe7df] p-0 text-left max-nav:hidden"
               aria-label={heroHeadline ?? feedTitle}
               onClick={(event) =>
                 openPreviewFromElement(preview, hero, event.currentTarget, heroUrl)
@@ -189,26 +230,43 @@ export function HomeHero({
               )}
             </button>
           ) : (
-            <div className="h-full min-w-0 flex-1 rounded-[0.3rem] bg-[#ebe7df] max-nav:aspect-square max-nav:h-auto" />
+            <div className="h-full min-w-0 flex-1 rounded-[0.3rem] bg-[#ebe7df] max-nav:hidden" />
           )}
 
-          {/* `.hero_feed` — fixed width, same height, internal scroll */}
+          {/* `.hero_feed` — vertical scroll on desktop, horizontal snap on mobile */}
           <aside
             className={cn(
-              "relative flex h-full w-[21rem] shrink-0 flex-col overflow-visible max-nav:h-auto max-nav:w-full max-nav:min-h-[20rem]",
+              "relative flex h-full w-[21rem] shrink-0 flex-col overflow-visible",
+              "max-nav:h-auto max-nav:w-full",
             )}
             aria-label={feedTitle}
           >
             <div className="relative min-h-0 flex-1 overflow-visible">
-              <div className="scrollbar-hide absolute inset-0 overflow-y-auto overflow-x-visible max-nav:relative max-nav:inset-auto max-nav:overflow-visible">
-                <div className="flex flex-col gap-5 pt-1 pb-8 max-nav:pt-0 max-nav:pb-0">
+              <div
+                ref={feedScrollRef}
+                className={cn(
+                  "scrollbar-hide absolute inset-0 overflow-y-auto overflow-x-visible",
+                  "max-nav:relative max-nav:inset-auto max-nav:flex max-nav:snap-x max-nav:snap-mandatory max-nav:overflow-x-auto max-nav:overflow-y-hidden max-nav:scroll-smooth",
+                )}
+              >
+                <div
+                  className={cn(
+                    "flex flex-col gap-5 pt-1 pb-8",
+                    "max-nav:w-max max-nav:flex-row max-nav:gap-3 max-nav:pt-0 max-nav:pb-1",
+                  )}
+                >
                   {feed.map((article) => (
-                    <FeedCard
+                    <div
                       key={article.slug}
-                      article={article}
-                      locale={locale}
-                      categoryLabels={categoryLabels}
-                    />
+                      data-feed-card
+                      className="max-nav:w-[min(17.5rem,78vw)] max-nav:shrink-0 max-nav:snap-center"
+                    >
+                      <FeedCard
+                        article={article}
+                        locale={locale}
+                        categoryLabels={categoryLabels}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -218,6 +276,29 @@ export function HomeHero({
                 aria-hidden
               />
             </div>
+
+            {feed.length > 1 ? (
+              <div className="mt-4 flex items-center gap-2 nav:hidden">
+                <button
+                  type="button"
+                  className={feedNavBtnClass}
+                  aria-label={feedPrevLabel}
+                  disabled={!canPrev}
+                  onClick={() => scrollFeedByCard("prev")}
+                >
+                  ←
+                </button>
+                <button
+                  type="button"
+                  className={feedNavBtnClass}
+                  aria-label={feedNextLabel}
+                  disabled={!canNext}
+                  onClick={() => scrollFeedByCard("next")}
+                >
+                  →
+                </button>
+              </div>
+            ) : null}
           </aside>
         </div>
       </div>
