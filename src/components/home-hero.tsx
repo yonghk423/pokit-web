@@ -202,12 +202,12 @@ export function HomeHero({
         </div>
 
         {/* Oimachi `.hero_bottom`: height calc(100svh - 18rem), flex row, gap 0.4rem */}
-        <div className="mt-3 flex h-[calc(100svh-18rem)] gap-[0.4rem] max-nav:mt-4 max-nav:h-auto max-nav:flex-col max-nav:gap-0">
-          {/* `.hero_graphic` — desktop only; mobile uses the horizontal feed instead */}
+        <div className="mt-3 flex h-[calc(100svh-18rem)] gap-[0.4rem] max-nav:mt-4 max-nav:h-auto max-nav:flex-col max-nav:gap-8">
+          {/* `.hero_graphic` */}
           {hero ? (
             <button
               type="button"
-              className="home-hero-rise home-hero-rise-delay group/hero relative h-full min-w-0 flex-1 cursor-pointer overflow-hidden rounded-[0.3rem] border-0 bg-[#ebe7df] p-0 text-left max-nav:hidden"
+              className="home-hero-rise home-hero-rise-delay group/hero relative h-full min-w-0 flex-1 cursor-pointer overflow-hidden rounded-[0.3rem] border-0 bg-[#ebe7df] p-0 text-left max-nav:aspect-square max-nav:h-auto max-nav:w-full"
               aria-label={heroHeadline ?? feedTitle}
               onClick={(event) =>
                 openPreviewFromElement(preview, hero, event.currentTarget, heroUrl)
@@ -230,7 +230,7 @@ export function HomeHero({
               )}
             </button>
           ) : (
-            <div className="h-full min-w-0 flex-1 rounded-[0.3rem] bg-[#ebe7df] max-nav:hidden" />
+            <div className="h-full min-w-0 flex-1 rounded-[0.3rem] bg-[#ebe7df] max-nav:aspect-square max-nav:h-auto" />
           )}
 
           {/* `.hero_feed` — vertical scroll on desktop, horizontal snap on mobile */}
