@@ -155,7 +155,7 @@ const dictionary: Dictionary = {
     heroAside: "POKIT - Daily Habit Planner",
   },
   appPage: {
-    metaTitle: "POKIT App",
+    metaTitle: "POKIT - Todo, time & routines",
     metaDescription:
       "Set your day bounds, then keep routines, tasks, memos, and history in one place. Start your daily rhythm with the POKIT app.",
     kicker: "App",

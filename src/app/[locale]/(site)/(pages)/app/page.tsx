@@ -174,12 +174,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const dict = await getDictionary(rawLocale);
   const alternates = localeAlternates(rawLocale, "/app");
 
+  const title = dict.appPage.metaTitle;
+
   return {
-    title: dict.appPage.metaTitle,
+    title: { absolute: title },
     description: dict.appPage.metaDescription,
     alternates,
     openGraph: {
-      title: dict.appPage.metaTitle,
+      title,
       description: dict.appPage.metaDescription,
       url: alternates.canonical,
       siteName: site.name,
@@ -189,7 +191,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: dict.appPage.metaTitle,
+      title,
       description: dict.appPage.metaDescription,
       images: [OG_IMAGE.url],
     },

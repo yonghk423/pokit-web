@@ -155,7 +155,7 @@ const dictionary: Dictionary = {
     heroAside: "POKIT - 루틴 습관 투두리스트",
   },
   appPage: {
-    metaTitle: "POKIT 앱",
+    metaTitle: "POKIT - 투두 시간 관리 루틴",
     metaDescription:
       "하루의 시작과 끝을 정하고, 루틴·할 일·메모·기록을 한곳에서. POKIT 앱으로 일상을 가볍게 가꿔 보세요.",
     kicker: "App",

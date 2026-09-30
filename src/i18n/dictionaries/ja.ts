@@ -155,7 +155,7 @@ const dictionary: Dictionary = {
     heroAside: "POKIT - ルーティン習慣",
   },
   appPage: {
-    metaTitle: "POKITアプリ",
+    metaTitle: "POKIT - タスク・時間管理・ルーティン",
     metaDescription:
       "一日の始まりと終わりを決め、ルーチン・やること・メモ・記録をひとつに。POKITアプリで日常を軽やかに。",
     kicker: "App",
