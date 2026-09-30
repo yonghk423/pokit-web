@@ -227,7 +227,8 @@ export function RoutineToolPreviewModal({ closeLabel }: Props) {
           <div className="min-h-0 shrink-0 max-nav:mx-auto max-nav:w-full max-nav:max-w-[22rem]">
             <div
               ref={mediaRef}
-              className="relative isolate overflow-hidden rounded-[1.15rem] bg-[#ebe7df] max-nav:aspect-4/5 max-nav:h-auto max-nav:max-h-[min(48vh,26rem)] max-nav:min-h-0 nav:h-full nav:min-h-72"
+              data-preview-cover
+              className="relative isolate z-0 overflow-hidden rounded-[1.15rem] bg-[#ebe7df] max-nav:aspect-4/5 max-nav:h-auto max-nav:max-h-[min(34svh,18rem)] max-nav:min-h-0 nav:h-full nav:min-h-72"
             >
               {panelSrc ? (
                 <PreviewCoverImage

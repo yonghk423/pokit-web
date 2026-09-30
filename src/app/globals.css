@@ -89,6 +89,14 @@ html[data-pokit-app="1"] [data-preview-modal-panel] {
   bottom: max(5.5rem, calc(env(safe-area-inset-bottom, 0px) + 4rem)) !important;
 }
 
+/*
+  App WebView: panel is shorter (tab bar), but `vh` still tracks the full screen.
+  Cap the cover so it cannot spill over the category label below.
+*/
+html[data-pokit-app="1"] [data-preview-cover] {
+  max-height: min(28svh, 15rem) !important;
+}
+
 /* ── Base ── */
 
 @layer base {
