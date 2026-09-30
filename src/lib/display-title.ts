@@ -7,8 +7,9 @@ export type DisplayTitleParts = {
   headline: string;
 };
 
-const KO_PREFIX = /^(일상 공간 루틴|일상 루틴):\s*(.+)$/;
+const KO_PREFIX = /^(일상(?:\s+[가-힣·&]+)+):\s*(.+)$/;
 const KO_EM_DASH_SUFFIX = /^(.+?)\s*[—–-]\s*(일상 웰니스 루틴)$/;
+const KO_WELLNESS_SUFFIX = /^(.+?)\s+일상 웰니스 루틴$/;
 const KO_TRAILING_ROUTINE = /^(.+?)\s+(루틴)$/;
 const EN_SUFFIX = /^(.+?):\s*(a daily(?: wellness| space)? routine)$/i;
 
@@ -30,6 +31,11 @@ export function splitDisplayTitle(title: string): DisplayTitleParts {
   const koSuffix = full.match(KO_EM_DASH_SUFFIX);
   if (koSuffix) {
     return { full, headline: koSuffix[1].trim() };
+  }
+
+  const koWellness = full.match(KO_WELLNESS_SUFFIX);
+  if (koWellness) {
+    return { full, headline: koWellness[1].trim() };
   }
 
   const enSuffix = full.match(EN_SUFFIX);

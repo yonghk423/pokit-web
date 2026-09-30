@@ -1,5 +1,6 @@
 import { articlePath } from "@/lib/article-path";
 import { resolveCategoryKey } from "@/lib/category-key";
+import { splitDisplayTitle } from "@/lib/display-title";
 import { site } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { ArticleDocument, PokitRoutineArticle } from "@/sanity/types";
@@ -72,11 +73,17 @@ export function formatPublishedDate(publishedAt?: string) {
   return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : undefined;
 }
 
+/** App-facing title: strip SEO wrappers like `일상 루틴:`. */
+export function pokitRoutineTitle(title: string) {
+  return splitDisplayTitle(title).headline;
+}
+
 export function buildAddRoutinePayload(
   article: PokitRoutineArticle,
   locale: Locale,
 ): PokitAddRoutinePayload {
   const categoryKey = resolveCategoryKey(article.category, article.categoryKey);
+  const rawTitle = article.titleKo ?? article.title;
 
   return {
     type: POKIT_ADD_ROUTINE_TYPE,
@@ -86,7 +93,7 @@ export function buildAddRoutinePayload(
       id: article.slug,
       slug: article.slug,
       url: `${site.siteUrl}${articlePath(locale, article.slug)}`,
-      title: article.titleKo ?? article.title,
+      title: pokitRoutineTitle(rawTitle),
       ...(article.description ? { summary: article.description } : {}),
       category: article.category,
       categoryKey,
@@ -120,7 +127,7 @@ export function buildPokitDeepLink(article: PokitRoutineArticle) {
   const params = new URLSearchParams({
     slug: article.slug,
     minutes: String(article.durationMinutes),
-    title: article.title,
+    title: pokitRoutineTitle(article.title),
   });
   if (article.description) {
     params.set("summary", article.description);
@@ -161,11 +168,13 @@ export function toPokitRoutineArticle(article: ArticleDocument): PokitRoutineArt
     typeof article.durationMinutes === "number" && article.durationMinutes > 0
       ? article.durationMinutes
       : DEFAULT_DURATION_MINUTES;
+  const title = pokitRoutineTitle(article.title);
+  const titleKo = pokitRoutineTitle(article.titleKo ?? article.title);
 
   return {
     slug: article.slug,
-    title: article.title,
-    titleKo: article.titleKo ?? article.title,
+    title,
+    titleKo,
     description: article.description,
     category: article.category,
     categoryKey: article.categoryKey,
