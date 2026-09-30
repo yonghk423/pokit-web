@@ -279,12 +279,7 @@ function HomeWorkRow({
                     POKIT
                   </span>
                 )}
-                <span
-                  className={cn(
-                    "pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/55 to-transparent px-3 pb-3 pt-10 font-sans text-[0.72rem] font-semibold leading-snug text-white transition-opacity duration-300 nav:hidden",
-                    isActive ? "opacity-100" : "opacity-0",
-                  )}
-                >
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/55 to-transparent px-3 pb-3 pt-10 font-sans text-[0.72rem] font-semibold leading-snug text-white nav:hidden">
                   {headline}
                 </span>
               </button>

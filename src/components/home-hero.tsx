@@ -97,7 +97,7 @@ function FeedCard({
           {category}
           {dateLabel ? ` · ${dateLabel}` : null}
         </p>
-        <p className="m-0 mt-2.5 line-clamp-2 font-sans text-[0.95rem] font-bold leading-snug tracking-[-0.02em] text-ink">
+        <p className="m-0 mt-2.5 truncate font-sans text-[0.95rem] font-bold leading-snug tracking-[-0.02em] text-ink">
           {headline}
         </p>
         {article.description ? (
@@ -259,7 +259,7 @@ export function HomeHero({
                     <div
                       key={article.slug}
                       data-feed-card
-                      className="max-nav:w-[min(17.5rem,78vw)] max-nav:shrink-0 max-nav:snap-center"
+                      className="min-w-0 max-nav:w-[min(17.5rem,78vw)] max-nav:shrink-0 max-nav:snap-center"
                     >
                       <FeedCard
                         article={article}
