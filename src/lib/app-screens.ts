@@ -2,16 +2,22 @@ import type { StaticImageData } from "next/image";
 
 import type { Locale } from "@/i18n/config";
 
+import dailyMemoEditorEn from "@/assets/app-screens/en/daily-memo-editor.webp";
+import dailyMemoLockEn from "@/assets/app-screens/en/daily-memo-lock.webp";
 import firstLaunchEn from "@/assets/app-screens/en/first-launch.webp";
 import historyEn from "@/assets/app-screens/en/history.webp";
+import homeWidgetsEn from "@/assets/app-screens/en/home-widgets.webp";
 import libraryEn from "@/assets/app-screens/en/library.webp";
 import lockScreenMemoEn from "@/assets/app-screens/en/lock-screen-memo.webp";
 import memoEditorEn from "@/assets/app-screens/en/memo-editor.webp";
 import routinesEn from "@/assets/app-screens/en/routines.webp";
 import todayNoteEn from "@/assets/app-screens/en/today-note.webp";
 import todosEn from "@/assets/app-screens/en/todos.webp";
+import dailyMemoEditor from "@/assets/app-screens/daily-memo-editor.webp";
+import dailyMemoLock from "@/assets/app-screens/daily-memo-lock.webp";
 import firstLaunch from "@/assets/app-screens/first-launch.webp";
 import history from "@/assets/app-screens/history.webp";
+import homeWidgets from "@/assets/app-screens/home-widgets.webp";
 import library from "@/assets/app-screens/library.webp";
 import lockScreenMemo from "@/assets/app-screens/lock-screen-memo.webp";
 import memoEditor from "@/assets/app-screens/memo-editor.webp";
@@ -27,7 +33,10 @@ export type AppScreenFile =
   | "lock-screen-memo.webp"
   | "today-note.webp"
   | "library.webp"
-  | "history.webp";
+  | "history.webp"
+  | "home-widgets.webp"
+  | "daily-memo-editor.webp"
+  | "daily-memo-lock.webp";
 
 const KO: Record<AppScreenFile, StaticImageData> = {
   "first-launch.webp": firstLaunch,
@@ -38,6 +47,9 @@ const KO: Record<AppScreenFile, StaticImageData> = {
   "today-note.webp": todayNote,
   "library.webp": library,
   "history.webp": history,
+  "home-widgets.webp": homeWidgets,
+  "daily-memo-editor.webp": dailyMemoEditor,
+  "daily-memo-lock.webp": dailyMemoLock,
 };
 
 const EN: Record<AppScreenFile, StaticImageData> = {
@@ -49,6 +61,9 @@ const EN: Record<AppScreenFile, StaticImageData> = {
   "today-note.webp": todayNoteEn,
   "library.webp": libraryEn,
   "history.webp": historyEn,
+  "home-widgets.webp": homeWidgetsEn,
+  "daily-memo-editor.webp": dailyMemoEditorEn,
+  "daily-memo-lock.webp": dailyMemoLockEn,
 };
 
 /** Static import so Next.js can optimize + generate blur at build time. */

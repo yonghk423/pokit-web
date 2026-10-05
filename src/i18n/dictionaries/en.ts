@@ -173,8 +173,14 @@ const dictionary: Dictionary = {
       {
         id: "memo",
         title: "Notes you can see on the lock screen",
-        body: "What you want to remember, right in front of you. Write down a thought you do not want to lose, or something you have to keep in mind today. Leave it on the lock screen so you see it every time you wake your phone.",
-        imageAlt: "POKIT quick memo on the iPhone lock screen",
+        body: "Write what you need to keep today, and see it on the lock screen.\nLeave short notes for morning, afternoon, and evening,\nand meet them again every time you wake the phone.\n\nYou can keep the day moving without digging deep into the app.",
+        imageAlt: "POKIT daily memo shown on the iPhone lock screen",
+      },
+      {
+        id: "widgets",
+        title: "From the home screen, a quicker day with widgets",
+        body: "You do not always need to open the app.\nPut the routines you check often on the home screen as widgets:\nweight, medicine, counts, and memos stay in sight,\nso you can glance and continue from the unlocked home.\n\nA few small cards make the day feel a little lighter.",
+        imageAlt: "POKIT widgets arranged on an iPhone home screen",
       },
       {
         id: "notes",

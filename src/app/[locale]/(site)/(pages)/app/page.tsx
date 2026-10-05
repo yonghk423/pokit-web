@@ -3,7 +3,7 @@ import type { StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
-import { PhoneFrame } from "@/components/app-phone-frame";
+import { AppScreenImage, PhoneFrame } from "@/components/app-phone-frame";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { JsonLd } from "@/components/json-ld";
@@ -28,24 +28,36 @@ const OG_IMAGE = {
 type FeatureVisual = {
   primary: AppScreenFile;
   secondary?: AppScreenFile;
+  /** Full device screenshot already includes iOS chrome; skip PhoneFrame. */
+  frame?: "phone" | "homescreen";
 };
 
 function localizeVisual(
   locale: Locale,
   visual: FeatureVisual,
-): { primary: StaticImageData; secondary?: StaticImageData } {
+): {
+  primary: StaticImageData;
+  secondary?: StaticImageData;
+  frame: "phone" | "homescreen";
+} {
   return {
     primary: appScreen(locale, visual.primary),
     secondary: visual.secondary
       ? appScreen(locale, visual.secondary)
       : undefined,
+    frame: visual.frame ?? "phone",
   };
 }
 
 const FEATURE_VISUALS: Record<string, FeatureVisual> = {
   routines: { primary: "routines.webp", secondary: "first-launch.webp" },
-  memo: { primary: "lock-screen-memo.webp", secondary: "memo-editor.webp" },
-  notes: { primary: "today-note.webp" },
+  memo: {
+    primary: "daily-memo-lock.webp",
+    secondary: "daily-memo-editor.webp",
+    frame: "homescreen",
+  },
+  widgets: { primary: "home-widgets.webp", frame: "homescreen" },
+  notes: { primary: "today-note.webp", frame: "homescreen" },
   todos: { primary: "todos.webp" },
   history: { primary: "history.webp" },
   library: { primary: "library.webp" },
@@ -80,6 +92,7 @@ const FEATURE_TONES = [
   "bg-white",
   "bg-[#f3f0e8]",
   "bg-[#eef3f1]",
+  "bg-white",
 ] as const;
 
 function FeatureVisualCluster({
@@ -91,7 +104,11 @@ function FeatureVisualCluster({
   align = "center",
   className,
 }: {
-  visual: { primary: StaticImageData; secondary?: StaticImageData };
+  visual: {
+    primary: StaticImageData;
+    secondary?: StaticImageData;
+    frame: "phone" | "homescreen";
+  };
   alt: string;
   secondaryAlt?: string;
   secondaryFirst?: boolean;
@@ -105,6 +122,70 @@ function FeatureVisualCluster({
       : align === "end"
         ? "ml-auto justify-end"
         : "mx-auto justify-center";
+
+  if (visual.frame === "homescreen") {
+    const deviceClass = cn(
+      "overflow-hidden rounded-[2.05rem] bg-black shadow-[0_28px_56px_-20px_rgba(24,26,46,0.38)] ring-1 ring-black/8",
+      "min-w-0",
+    );
+
+    if (!visual.secondary) {
+      return (
+        <div
+          className={cn(
+            deviceClass,
+            "w-[13.5rem] nav:w-[18rem]",
+            alignClass,
+            className,
+          )}
+        >
+          <AppScreenImage
+            src={visual.primary}
+            alt={alt}
+            sizes="(max-width: 640px) 55vw, 288px"
+            priority={priority}
+            eager={priority}
+          />
+        </div>
+      );
+    }
+
+    const left = secondaryFirst
+      ? { src: visual.secondary, alt: secondaryAlt ?? alt }
+      : { src: visual.primary, alt };
+    const right = secondaryFirst
+      ? { src: visual.primary, alt }
+      : { src: visual.secondary, alt: secondaryAlt ?? alt };
+
+    return (
+      <div
+        className={cn(
+          "flex w-full max-w-lg items-center gap-3 nav:w-[36rem] nav:max-w-none",
+          alignClass,
+          className,
+        )}
+      >
+        <div className={cn(deviceClass, "flex-1")}>
+          <AppScreenImage
+            src={left.src}
+            alt={left.alt}
+            sizes="(max-width: 640px) 42vw, 260px"
+            priority={priority}
+            eager={priority}
+          />
+        </div>
+        <div className={cn(deviceClass, "flex-1")}>
+          <AppScreenImage
+            src={right.src}
+            alt={right.alt}
+            sizes="(max-width: 640px) 42vw, 260px"
+            priority={priority}
+            eager={priority}
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (!visual.secondary) {
     return (
@@ -371,7 +452,7 @@ export default async function AppIntroPage({ params }: Props) {
                   >
                   <ScrollReveal className="w-full max-w-[36rem] nav:w-[36rem] nav:shrink-0 nav:pt-6">
                     <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-ink">
-                      0{index + 1}
+                      {String(index + 1).padStart(2, "0")}
                     </p>
                     <h3 className="mt-4 mb-0 font-serif text-[clamp(1.85rem,3.6vw,2.55rem)] font-normal italic leading-[1.22] tracking-[-0.02em] text-ink">
                       {feature.title}
@@ -398,10 +479,10 @@ export default async function AppIntroPage({ params }: Props) {
                       secondaryAlt={
                         feature.id === "memo"
                           ? locale === "ko"
-                            ? "POKIT 앱에서 하루 메모를 적는 화면"
+                            ? "잠금화면에 남길 하루 메모를 적는 화면"
                             : locale === "ja"
-                              ? "POKITアプリで一日のメモを書く画面"
-                              : "POKIT app screen for writing the daily memo"
+                              ? "ロック画面に残す一日のメモを書く画面"
+                              : "POKIT screen for writing a daily memo for the lock screen"
                           : feature.id === "routines"
                             ? locale === "ko"
                               ? "POKIT 앱을 처음 열었을 때 하루 일과를 정하는 화면"
