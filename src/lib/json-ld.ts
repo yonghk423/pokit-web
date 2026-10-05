@@ -10,7 +10,7 @@ const publisher = {
   url: site.siteUrl,
   logo: {
     "@type": "ImageObject" as const,
-    url: `${site.siteUrl}/pokit5.png`,
+    url: `${site.siteUrl}/pokit-logo.png`,
   },
 };
 

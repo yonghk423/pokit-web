@@ -22,7 +22,7 @@ type Props = {
 };
 
 const OG_IMAGE = {
-  url: "/pokit5.png",
+  url: "/pokit-logo.png",
   width: 512,
   height: 512,
 } as const;
@@ -308,7 +308,7 @@ export default async function AppIntroPage({ params }: Props) {
     operatingSystem: "iOS",
     description: copy.metaDescription,
     url: `${site.siteUrl}/${locale}/app`,
-    image: `${site.siteUrl}/pokit5.png`,
+    image: `${site.siteUrl}/pokit-logo.png`,
     offers: {
       "@type": "Offer",
       price: "0",

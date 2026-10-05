@@ -38,7 +38,7 @@ export function AppStoreBadge({
         )}
       >
         <Image
-          src="/apple.png"
+          src="/apple-logo.png"
           alt=""
           width={compact ? 20 : 32}
           height={compact ? 20 : 32}

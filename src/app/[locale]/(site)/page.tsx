@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: "/pokit5.png",
+          url: "/pokit-logo.png",
           width: 512,
           height: 512,
         },
@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary",
       title: dict.meta.siteTitle,
       description: dict.meta.siteDescription,
-      images: ["/pokit5.png"],
+      images: ["/pokit-logo.png"],
     },
   };
 }

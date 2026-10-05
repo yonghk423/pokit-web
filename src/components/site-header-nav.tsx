@@ -48,7 +48,7 @@ export function SiteHeaderNav({
             aria-label={homeAria}
           >
             <Image
-              src="/pokit5.png"
+              src="/pokit-logo.png"
               alt=""
               width={28}
               height={28}

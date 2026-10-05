@@ -26,7 +26,7 @@ type Props = {
 };
 
 const OG_IMAGE = {
-  url: "/pokit5.png",
+  url: "/pokit-logo.png",
   width: 512,
   height: 512,
 } as const;
