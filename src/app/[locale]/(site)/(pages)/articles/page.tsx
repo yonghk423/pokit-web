@@ -77,8 +77,8 @@ export async function generateMetadata({
     ? dict.archive.descriptionSearch(searchTerm)
     : archiveSection
       ? dict.archive.descriptionSection(
-          getArchiveSectionLabel(archiveSection, dict),
-        )
+        getArchiveSectionLabel(archiveSection, dict),
+      )
       : category
         ? dict.archive.descriptionCategory(getCategoryLabel(category, dict))
         : dict.archive.descriptionAll;
@@ -90,13 +90,13 @@ export async function generateMetadata({
   const canonicalPath = isSearchResult
     ? "/articles"
     : articlesArchiveHref(
-        rawLocale,
-        1,
-        category,
-        undefined,
-        archiveSection,
-        sort,
-      ).replace(`/${rawLocale}`, "");
+      rawLocale,
+      1,
+      category,
+      undefined,
+      archiveSection,
+      sort,
+    ).replace(`/${rawLocale}`, "");
 
   const alternates = localeAlternates(rawLocale, canonicalPath);
 

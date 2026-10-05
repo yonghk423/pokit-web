@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import type { StaticImageData } from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 
+import heroStationery from "@/assets/app-promo/hero-stationery.jpg";
 import { AppDownload } from "@/components/app-download";
 import { AppScreenImage, PhoneFrame } from "@/components/app-phone-frame";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { JsonLd } from "@/components/json-ld";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { StationeryScatter } from "@/components/stationery-scatter";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -63,17 +65,6 @@ const FEATURE_VISUALS: Record<string, FeatureVisual> = {
   library: { primary: "library.webp" },
 };
 
-const HERO = [
-  { file: "first-launch.webp" as const, featureId: "routines" },
-  { file: "todos.webp" as const, featureId: "todos" },
-  { file: "history.webp" as const, featureId: "history" },
-  { file: "today-note.webp" as const, featureId: "notes" },
-  { file: "routines.webp" as const, featureId: "routines" },
-  { file: "library.webp" as const, featureId: "library" },
-  { file: "memo-editor.webp" as const, featureId: "memo" },
-  { file: "lock-screen-memo.webp" as const, featureId: "memo" },
-] as const;
-
 const GALLERY = [
   { file: "first-launch.webp" as const, featureId: "routines" },
   { file: "routines.webp" as const, featureId: "routines" },
@@ -86,13 +77,23 @@ const GALLERY = [
 ] as const;
 
 const FEATURE_TONES = [
-  "bg-[#f3f0e8]",
-  "bg-white",
-  "bg-[#eef3f1]",
-  "bg-white",
-  "bg-[#f3f0e8]",
-  "bg-[#eef3f1]",
-  "bg-white",
+  "bg-[#f3efe6]",
+  "bg-[#ebe4d6]",
+  "bg-[#f0ebe3]",
+  "bg-[#e7efe9]",
+  "bg-[#f3efe6]",
+  "bg-[#ebe4d6]",
+  "bg-[#f0ebe3]",
+] as const;
+
+const FEATURE_TEXT_GLOWS = [
+  "#f3efe6",
+  "#ebe4d6",
+  "#f0ebe3",
+  "#e7efe9",
+  "#f3efe6",
+  "#ebe4d6",
+  "#f0ebe3",
 ] as const;
 
 function FeatureVisualCluster({
@@ -316,53 +317,36 @@ export default async function AppIntroPage({ params }: Props) {
     downloadUrl: storeUrl,
   };
 
-  const heroSrcs = HERO.map((phone) => appScreen(locale, phone.file).src);
+  const heroAlt =
+    locale === "ko"
+      ? "POKIT 앱 화면들과 필기도구가 놓인 데스크 장면"
+      : locale === "ja"
+        ? "POKITアプリ画面と文房具が並ぶデスクシーン"
+        : "POKIT app screens on a desk with writing tools";
 
   return (
     <main className="overflow-x-clip">
-      {heroSrcs.map((href) => (
-        <link
-          key={href}
-          rel="preload"
-          as="image"
-          href={href}
-          type="image/webp"
-          fetchPriority="high"
-        />
-      ))}
+      <link
+        rel="preload"
+        as="image"
+        href={heroStationery.src}
+        type="image/jpeg"
+        fetchPriority="high"
+      />
       <JsonLd data={softwareJsonLd} />
 
-      <section className="relative isolate overflow-hidden bg-pink-pastel text-ink nav:h-[calc(100svh-5rem)]">
+      <section className="relative isolate overflow-hidden bg-[#ebe4d6] text-ink nav:h-[calc(100svh-5rem)]">
         <div className="absolute inset-0 hidden nav:block" aria-hidden="true">
-          <div className="absolute left-1/2 top-1/2 w-[58%] min-w-[28rem] origin-center -translate-x-[6%] -translate-y-1/2 rotate-[30deg]">
-            <div className="grid grid-cols-4 gap-6">
-              {HERO.map((phone, index) => {
-                const feature = featureById[phone.featureId];
-                const leftEdge = index === 0 || index === 4;
-                return (
-                  <div
-                    key={phone.file}
-                    className="app-hero-phone w-full"
-                    style={{ animationDelay: `${180 + index * 70}ms` }}
-                  >
-                    <div className={leftEdge ? "translate-y-24" : undefined}>
-                      <PhoneFrame
-                        src={appScreen(locale, phone.file)}
-                        alt={feature?.imageAlt ?? copy.title}
-                        priority={index < 2}
-                        eager
-                        finish="soft"
-                        sizes="32vw"
-                        className="w-full"
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <Image
+            src={heroStationery}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="app-hero-phone object-cover object-[72%_center]"
+          />
           <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[min(40rem,62%)] bg-linear-to-r from-pink-pastel from-55% via-pink-pastel/95 to-transparent"
+            className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[min(42rem,68%)] bg-linear-to-r from-[#ebe4d6] from-40% via-[#ebe4d6]/92 to-transparent"
             aria-hidden="true"
           />
         </div>
@@ -392,65 +376,62 @@ export default async function AppIntroPage({ params }: Props) {
             </div>
           </div>
 
-          <div
-            className="relative mx-auto flex w-full max-w-[20rem] justify-center gap-3 pb-4 nav:hidden"
-            aria-hidden="true"
-          >
-            {HERO.slice(0, 2).map((phone, index) => {
-              const feature = featureById[phone.featureId];
-              return (
-                <div
-                  key={phone.file}
-                  className={cn(
-                    "app-hero-phone w-[46%]",
-                    index === 1 && "translate-y-6",
-                  )}
-                  style={{ animationDelay: `${180 + index * 90}ms` }}
-                >
-                  <PhoneFrame
-                    src={appScreen(locale, phone.file)}
-                    alt={feature?.imageAlt ?? copy.title}
-                    priority={index === 0}
-                    eager
-                    finish="soft"
-                    sizes="42vw"
-                    className="w-full"
-                  />
-                </div>
-              );
-            })}
+          <div className="app-hero-phone relative mx-auto w-full max-w-[28rem] nav:hidden">
+            <Image
+              src={heroStationery}
+              alt={heroAlt}
+              sizes="92vw"
+              priority
+              className="h-auto w-full"
+            />
           </div>
         </div>
       </section>
 
       <section aria-label={copy.featuresHeading}>
         {copy.features.map((feature, index) => {
-            const visual = FEATURE_VISUALS[feature.id];
-            if (!visual) return null;
-            const reverse = index % 2 === 1;
-            const tone = FEATURE_TONES[index % FEATURE_TONES.length];
-            const dualPhones = Boolean(visual.secondary);
+          const visual = FEATURE_VISUALS[feature.id];
+          if (!visual) return null;
+          const reverse = index % 2 === 1;
+          const tone = FEATURE_TONES[index % FEATURE_TONES.length];
+          const textGlow =
+            FEATURE_TEXT_GLOWS[index % FEATURE_TEXT_GLOWS.length];
+          const dualPhones = Boolean(visual.secondary);
 
-            return (
-              <article
-                key={feature.id}
-                className={cn("relative overflow-hidden", tone)}
+          return (
+            <article
+              key={feature.id}
+              className={cn("relative overflow-hidden", tone)}
+            >
+              <StationeryScatter
+                variant={index}
+                fillSide={reverse ? "left" : "right"}
+              />
+              <div
+                className={cn(
+                  monoContainer,
+                  "relative z-10 py-16 nav:py-20",
+                )}
               >
                 <div
                   className={cn(
-                    monoContainer,
-                    "relative z-10 py-16 nav:py-20",
+                    "mx-auto flex w-fit max-w-full flex-col items-center gap-6",
+                    "nav:flex-row nav:items-start",
+                    dualPhones ? "nav:gap-x-12" : "nav:gap-x-32",
+                    reverse && "nav:flex-row-reverse",
                   )}
                 >
-                  <div
-                    className={cn(
-                      "mx-auto flex w-fit max-w-full flex-col items-center gap-6",
-                      "nav:flex-row nav:items-start",
-                      dualPhones ? "nav:gap-x-12" : "nav:gap-x-32",
-                      reverse && "nav:flex-row-reverse",
-                    )}
-                  >
-                  <ScrollReveal className="w-full max-w-[36rem] nav:w-[36rem] nav:shrink-0 nav:pt-6">
+                  <ScrollReveal className="relative z-10 w-full max-w-[36rem] nav:w-[36rem] nav:shrink-0 nav:pt-6">
+                    <div
+                      aria-hidden
+                      className={cn(
+                        "pointer-events-none absolute -inset-x-4 -inset-y-3 -z-10 rounded-[1.75rem]",
+                        tone,
+                      )}
+                      style={{
+                        boxShadow: `0 0 52px 40px ${textGlow}`,
+                      }}
+                    />
                     <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-ink">
                       {String(index + 1).padStart(2, "0")}
                     </p>
@@ -493,42 +474,42 @@ export default async function AppIntroPage({ params }: Props) {
                       }
                     />
                   </ScrollReveal>
-                  </div>
                 </div>
-              </article>
-            );
-          })}
+              </div>
+            </article>
+          );
+        })}
       </section>
 
       <section className="bg-white py-20 nav:py-24" aria-labelledby="app-gallery">
         <ScrollReveal className={monoContainer}>
-        <p className="m-0 text-center font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-green">
-          {copy.galleryHeading}
-        </p>
-        <h2
-          id="app-gallery"
-          className="mx-auto mt-4 mb-0 max-w-3xl text-center font-serif text-[clamp(1.7rem,3.4vw,2.45rem)] font-normal italic leading-[1.25] tracking-[-0.02em] text-ink"
-        >
-          {copy.galleryLead}
-        </h2>
-        <p className="mx-auto mt-5 mb-2 max-w-2xl text-center whitespace-pre-line font-sans text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-muted">
-          {copy.galleryBody}
-        </p>
+          <p className="m-0 text-center font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-green">
+            {copy.galleryHeading}
+          </p>
+          <h2
+            id="app-gallery"
+            className="mx-auto mt-4 mb-0 max-w-3xl text-center font-serif text-[clamp(1.7rem,3.4vw,2.45rem)] font-normal italic leading-[1.25] tracking-[-0.02em] text-ink"
+          >
+            {copy.galleryLead}
+          </h2>
+          <p className="mx-auto mt-5 mb-2 max-w-2xl text-center whitespace-pre-line font-sans text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-muted">
+            {copy.galleryBody}
+          </p>
         </ScrollReveal>
         <ScrollReveal delay={120}>
-        <AppScreenGallery
-          finish="soft"
-          items={GALLERY.map((item) => {
-            const feature = featureById[item.featureId];
-            return {
-              src: appScreen(locale, item.file),
-              title: feature?.title ?? copy.galleryHeading,
-              alt: feature?.imageAlt ?? copy.galleryHeading,
-            };
-          })}
-          prevAria={dict.home.carouselPrev(copy.galleryHeading)}
-          nextAria={dict.home.carouselNext(copy.galleryHeading)}
-        />
+          <AppScreenGallery
+            finish="soft"
+            items={GALLERY.map((item) => {
+              const feature = featureById[item.featureId];
+              return {
+                src: appScreen(locale, item.file),
+                title: feature?.title ?? copy.galleryHeading,
+                alt: feature?.imageAlt ?? copy.galleryHeading,
+              };
+            })}
+            prevAria={dict.home.carouselPrev(copy.galleryHeading)}
+            nextAria={dict.home.carouselNext(copy.galleryHeading)}
+          />
         </ScrollReveal>
       </section>
 

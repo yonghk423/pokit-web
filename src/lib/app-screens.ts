@@ -13,17 +13,17 @@ import memoEditorEn from "@/assets/app-screens/en/memo-editor.webp";
 import routinesEn from "@/assets/app-screens/en/routines.webp";
 import todayNoteEn from "@/assets/app-screens/en/today-note.webp";
 import todosEn from "@/assets/app-screens/en/todos.webp";
-import dailyMemoEditor from "@/assets/app-screens/daily-memo-editor.webp";
-import dailyMemoLock from "@/assets/app-screens/daily-memo-lock.webp";
-import firstLaunch from "@/assets/app-screens/first-launch.webp";
-import history from "@/assets/app-screens/history.webp";
-import homeWidgets from "@/assets/app-screens/home-widgets.webp";
-import library from "@/assets/app-screens/library.webp";
-import lockScreenMemo from "@/assets/app-screens/lock-screen-memo.webp";
-import memoEditor from "@/assets/app-screens/memo-editor.webp";
-import routines from "@/assets/app-screens/routines.webp";
-import todayNote from "@/assets/app-screens/today-note.webp";
-import todos from "@/assets/app-screens/todos.webp";
+import dailyMemoEditor from "@/assets/app-screens/kr/daily-memo-editor.webp";
+import dailyMemoLock from "@/assets/app-screens/kr/daily-memo-lock.webp";
+import firstLaunch from "@/assets/app-screens/kr/first-launch.webp";
+import history from "@/assets/app-screens/kr/history.webp";
+import homeWidgets from "@/assets/app-screens/kr/home-widgets.webp";
+import library from "@/assets/app-screens/kr/library.webp";
+import lockScreenMemo from "@/assets/app-screens/kr/lock-screen-memo.webp";
+import memoEditor from "@/assets/app-screens/kr/memo-editor.webp";
+import routines from "@/assets/app-screens/kr/routines.webp";
+import todayNote from "@/assets/app-screens/kr/today-note.webp";
+import todos from "@/assets/app-screens/kr/todos.webp";
 
 export type AppScreenFile =
   | "first-launch.webp"

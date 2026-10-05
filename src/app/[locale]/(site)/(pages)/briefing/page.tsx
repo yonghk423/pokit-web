@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const latest = await getLatestWellnessDigest(locale);
   const description = latest
     ? dict.briefing.metaDescriptionFromItems(
-        latest.items.map((item) => item.headline),
-      )
+      latest.items.map((item) => item.headline),
+    )
     : dict.briefing.hubDescription;
   const alternates = localeAlternates(locale, "/briefing");
 
@@ -86,8 +86,8 @@ export default async function BriefingHubPage({ params }: Props) {
   const pastWeeks = archive.filter((item) => item.weekOf !== latest?.weekOf);
   const description = latest
     ? dict.briefing.metaDescriptionFromItems(
-        latest.items.map((item) => item.headline),
-      )
+      latest.items.map((item) => item.headline),
+    )
     : dict.briefing.hubDescription;
 
   return (

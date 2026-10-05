@@ -46,8 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const latest = await getLatestNewArrivals(locale);
   const description = latest
     ? dict.newArrivals.metaDescriptionFromItems(
-        latest.items.map((item) => item.name),
-      )
+      latest.items.map((item) => item.name),
+    )
     : dict.newArrivals.hubDescription;
   const alternates = localeAlternates(locale, "/new-arrivals");
 
@@ -89,8 +89,8 @@ export default async function NewArrivalsHubPage({ params }: Props) {
   const pastWeeks = archive.filter((item) => item.weekOf !== latest?.weekOf);
   const description = latest
     ? dict.newArrivals.metaDescriptionFromItems(
-        latest.items.map((item) => item.name),
-      )
+      latest.items.map((item) => item.name),
+    )
     : dict.newArrivals.hubDescription;
 
   return (

@@ -119,79 +119,79 @@ export default async function SupportPage({ params }: Props) {
   const storeUrl = appStoreUrl(locale);
 
   return (
-      <main className={cn(narrowContainer, "py-14 pb-24")}>
-        <p className="m-0 label-caps text-muted">{copy.kicker}</p>
-        <h1 className="mt-3 mb-0 text-[clamp(2rem,5vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.04em]">
-          {copy.title}
-        </h1>
-        <div className="mt-6 grid gap-4">
-          {copy.lead.map((paragraph) => (
-            <p key={paragraph} className="m-0 text-[1.05rem] leading-relaxed text-muted">
-              {paragraph}
-            </p>
-          ))}
-        </div>
+    <main className={cn(narrowContainer, "py-14 pb-24")}>
+      <p className="m-0 label-caps text-muted">{copy.kicker}</p>
+      <h1 className="mt-3 mb-0 text-[clamp(2rem,5vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.04em]">
+        {copy.title}
+      </h1>
+      <div className="mt-6 grid gap-4">
+        {copy.lead.map((paragraph) => (
+          <p key={paragraph} className="m-0 text-[1.05rem] leading-relaxed text-muted">
+            {paragraph}
+          </p>
+        ))}
+      </div>
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          <a
-            href={storeUrl}
-            className="inline-flex min-h-12 items-center bg-indigo px-5 font-sans text-[0.78rem] font-extrabold tracking-[0.06em] text-white uppercase hover:bg-ink"
-          >
-            {copy.appStore}
-          </a>
-          <SupportEmailLink variant="button">{dict.support.sendMail}</SupportEmailLink>
-        </div>
-
-        <nav className="mt-10 rounded-xl border border-ink/12 bg-[#f3f0e8] p-4" aria-label={copy.tocLabel}>
-          <p className="m-0 mb-3 label-caps text-ink">{copy.tocLabel}</p>
-          <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
-            {copy.sections.map((section) => (
-              <li key={section.id}>
-                <a
-                  href={`#${section.id}`}
-                  className="inline-flex bg-white px-2.5 py-1 text-[0.78rem] font-bold text-ink hover:bg-indigo hover:text-white"
-                >
-                  {section.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="mt-12 grid gap-14">
-          {copy.sections.map((section) => (
-            <section key={section.id} id={section.id} className="scroll-mt-24">
-              <h2 className="m-0 text-[clamp(1.35rem,3vw,1.8rem)] font-extrabold tracking-[-0.03em]">
-                {section.title}
-              </h2>
-              <div className="mt-5 grid gap-4">
-                {section.blocks.map((block, index) => (
-                  <SupportBlockView
-                    key={`${section.id}-${block.type}-${index}`}
-                    block={block}
-                  />
-                ))}
-                {section.id === "contact" ? (
-                  <div className="grid gap-3">
-                    <p className="m-0 text-[0.92rem] font-bold">{dict.support.email}</p>
-                    <SupportEmailLink>{site.supportEmail}</SupportEmailLink>
-                    <SupportEmailLink variant="button">
-                      {dict.support.sendMail}
-                    </SupportEmailLink>
-                  </div>
-                ) : null}
-              </div>
-            </section>
-          ))}
-        </div>
-
-        <Link
-          href={withLocale(locale, "/")}
-          className="mt-12 inline-block bg-indigo px-5 py-2 font-sans font-semibold text-white hover:bg-ink"
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a
+          href={storeUrl}
+          className="inline-flex min-h-12 items-center bg-indigo px-5 font-sans text-[0.78rem] font-extrabold tracking-[0.06em] text-white uppercase hover:bg-ink"
         >
-          {dict.support.backHome}
-        </Link>
-      </main>
+          {copy.appStore}
+        </a>
+        <SupportEmailLink variant="button">{dict.support.sendMail}</SupportEmailLink>
+      </div>
+
+      <nav className="mt-10 rounded-xl border border-ink/12 bg-[#f3f0e8] p-4" aria-label={copy.tocLabel}>
+        <p className="m-0 mb-3 label-caps text-ink">{copy.tocLabel}</p>
+        <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+          {copy.sections.map((section) => (
+            <li key={section.id}>
+              <a
+                href={`#${section.id}`}
+                className="inline-flex bg-white px-2.5 py-1 text-[0.78rem] font-bold text-ink hover:bg-indigo hover:text-white"
+              >
+                {section.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div className="mt-12 grid gap-14">
+        {copy.sections.map((section) => (
+          <section key={section.id} id={section.id} className="scroll-mt-24">
+            <h2 className="m-0 text-[clamp(1.35rem,3vw,1.8rem)] font-extrabold tracking-[-0.03em]">
+              {section.title}
+            </h2>
+            <div className="mt-5 grid gap-4">
+              {section.blocks.map((block, index) => (
+                <SupportBlockView
+                  key={`${section.id}-${block.type}-${index}`}
+                  block={block}
+                />
+              ))}
+              {section.id === "contact" ? (
+                <div className="grid gap-3">
+                  <p className="m-0 text-[0.92rem] font-bold">{dict.support.email}</p>
+                  <SupportEmailLink>{site.supportEmail}</SupportEmailLink>
+                  <SupportEmailLink variant="button">
+                    {dict.support.sendMail}
+                  </SupportEmailLink>
+                </div>
+              ) : null}
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <Link
+        href={withLocale(locale, "/")}
+        className="mt-12 inline-block bg-indigo px-5 py-2 font-sans font-semibold text-white hover:bg-ink"
+      >
+        {dict.support.backHome}
+      </Link>
+    </main>
   );
 }
 
