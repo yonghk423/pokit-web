@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 
 import { site } from "@/config/site";
 import { locales } from "@/i18n/config";
+import { articlePath } from "@/lib/article-path";
 import { briefingWeekPath } from "@/lib/briefing-path";
 import { newArrivalsWeekPath } from "@/lib/new-arrivals-path";
 import { withLocale } from "@/lib/locale-path";
@@ -9,6 +10,7 @@ import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { sanityFetchOptions } from "@/sanity/lib/cache";
 import {
+  SITEMAP_ARTICLES_QUERY,
   SITEMAP_DIGESTS_QUERY,
   SITEMAP_NEW_ARRIVALS_QUERY,
 } from "@/sanity/lib/queries";
@@ -52,7 +54,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return staticPages;
   }
 
-  const [digests, newArrivals] = await Promise.all([
+  const [articles, digests, newArrivals] = await Promise.all([
+    client.fetch<
+      { slug: string; publishedAt?: string; hasEnglishTranslation?: boolean }[]
+    >(SITEMAP_ARTICLES_QUERY, {}, sanityFetchOptions),
     client.fetch<{ weekOf: string; _updatedAt?: string }[]>(
       SITEMAP_DIGESTS_QUERY,
       {},
@@ -64,6 +69,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       sanityFetchOptions,
     ),
   ]);
+
+  const articlePages: MetadataRoute.Sitemap = (articles ?? [])
+    .filter(({ slug }) => slug)
+    .flatMap(({ slug, publishedAt, hasEnglishTranslation }) => {
+      const localesForArticle = hasEnglishTranslation
+        ? locales
+        : (["ko", "ja"] as const);
+
+      return localesForArticle.map((locale) => ({
+        url: `${site.siteUrl}${articlePath(locale, slug)}`,
+        lastModified: publishedAt ? new Date(publishedAt) : undefined,
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      }));
+    });
 
   const digestPages: MetadataRoute.Sitemap = (digests ?? [])
     .filter(({ weekOf }) => weekOf)
@@ -87,5 +107,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })),
     );
 
-  return [...staticPages, ...digestPages, ...newArrivalsPages];
+  return [
+    ...staticPages,
+    ...articlePages,
+    ...digestPages,
+    ...newArrivalsPages,
+  ];
 }

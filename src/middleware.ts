@@ -7,6 +7,7 @@ import {
   LOCALE_COOKIE,
   type Locale,
 } from "@/i18n/config";
+import { isValidArticleSlug } from "@/lib/article-path";
 import { POKIT_APP_HEADER } from "@/lib/pokit-app-header";
 
 const PUBLIC_FILE = /\.[^/]+$/;
@@ -89,6 +90,18 @@ export function middleware(request: NextRequest) {
 
   const firstSegment = pathname.split("/")[1];
   if (isLocale(firstSegment)) {
+    const articleParam = request.nextUrl.searchParams.get("article");
+    const isHome = pathname === `/${firstSegment}` || pathname === `/${firstSegment}/`;
+    if (articleParam && isHome) {
+      const slug = decodeURIComponent(articleParam);
+      if (isValidArticleSlug(slug)) {
+        const redirectUrl = request.nextUrl.clone();
+        redirectUrl.pathname = `/${firstSegment}/articles/${encodeURIComponent(slug)}`;
+        redirectUrl.searchParams.delete("article");
+        return NextResponse.redirect(redirectUrl, 308);
+      }
+    }
+
     const response = NextResponse.next({
       request: { headers: withRequestHints(request, pathname) },
     });
@@ -105,7 +118,17 @@ export function middleware(request: NextRequest) {
 
   const locale = detectLocale(request);
   const redirectUrl = request.nextUrl.clone();
-  redirectUrl.pathname = prefixPath(locale, pathname);
+  const articleParam = request.nextUrl.searchParams.get("article");
+  if (
+    articleParam &&
+    (pathname === "/" || pathname === "") &&
+    isValidArticleSlug(decodeURIComponent(articleParam))
+  ) {
+    redirectUrl.pathname = `/${locale}/articles/${encodeURIComponent(decodeURIComponent(articleParam))}`;
+    redirectUrl.searchParams.delete("article");
+  } else {
+    redirectUrl.pathname = prefixPath(locale, pathname);
+  }
 
   const response = NextResponse.redirect(redirectUrl);
   if (!request.cookies.get(LOCALE_COOKIE)) {

@@ -7,7 +7,7 @@ export function isValidArticleSlug(slug: string) {
   return SLUG_PATTERN.test(slug);
 }
 
-/** Home preview deep link (article detail pages redirect here). */
+/** Article detail page path (slug URL-encoded). */
 export function articlePath(locale: Locale, slug: string) {
-  return `${withLocale(locale, "/")}?article=${encodeURIComponent(slug)}`;
+  return withLocale(locale, `/articles/${encodeURIComponent(slug)}`);
 }
