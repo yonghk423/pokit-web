@@ -78,7 +78,7 @@ const dictionary: Dictionary = {
     workLine1: "하루의 장면을",
     workAccent: "루틴으로",
     workRest: "이어 갑니다.",
-    labsLine1: "실험하고 쓰는",
+    labsLine1: "하루를 붙잡는",
     labsAccent: "루틴",
     labsRest: "도구.",
     aboutTitle:

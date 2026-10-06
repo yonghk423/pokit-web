@@ -78,9 +78,9 @@ const dictionary: Dictionary = {
     workLine1: "Scenes of the day,",
     workAccent: "woven",
     workRest: "into routines.",
-    labsLine1: "Tools we try,",
-    labsAccent: "and",
-    labsRest: "keep using.",
+    labsLine1: "Tools that hold",
+    labsAccent: "onto",
+    labsRest: "the day.",
     aboutTitle:
       "POKIT is a pocket guide for building wellness through small daily routines.",
     aboutBody:

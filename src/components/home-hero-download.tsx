@@ -1,11 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { appStoreUrl } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
+
+const QR_SIZE = 68;
 
 type Props = {
   locale: Locale;
@@ -24,9 +27,19 @@ export function HomeHeroDownload({ locale, copy }: Props) {
     >
       <AppStoreBadge locale={locale} label={copy.download} size="compact" />
       <div className="flex items-start gap-2.5">
-        <p className="m-0 mt-0.5 shrink-0 whitespace-nowrap text-right font-serif text-[0.78rem] font-normal italic leading-[1.45] tracking-[-0.02em] text-ink/60 max-nav:text-left">
-          {copy.heroAside}
-        </p>
+        <div className="flex shrink-0 flex-col items-end gap-2 max-nav:items-start">
+          <p className="m-0 mt-0.5 whitespace-nowrap text-right font-serif text-[0.78rem] font-normal italic leading-[1.45] tracking-[-0.02em] text-ink/60 max-nav:text-left">
+            {copy.heroAside}
+          </p>
+          <Image
+            src="/pokit-mark.png"
+            alt=""
+            width={QR_SIZE}
+            height={QR_SIZE}
+            unoptimized
+            className="size-[68px] rounded-[0.35rem] object-cover ring-1 ring-ink/6"
+          />
+        </div>
         <a
           href={appStoreUrl(locale)}
           aria-label={copy.download}
@@ -38,7 +51,7 @@ export function HomeHeroDownload({ locale, copy }: Props) {
           <div className="rounded-[0.35rem] bg-white p-0.5">
             <QRCodeSVG
               value={appStoreUrl(locale)}
-              size={68}
+              size={QR_SIZE}
               bgColor="#ffffff"
               fgColor="#181a2e"
               role="img"

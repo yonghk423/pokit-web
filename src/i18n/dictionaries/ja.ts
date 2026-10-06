@@ -78,7 +78,7 @@ const dictionary: Dictionary = {
     workLine1: "一日の場面を",
     workAccent: "ルーチンで",
     workRest: "つなぐ。",
-    labsLine1: "試して残す",
+    labsLine1: "一日をつかむ",
     labsAccent: "ルーチン",
     labsRest: "道具。",
     aboutTitle:

@@ -48,12 +48,13 @@ export function SiteHeaderNav({
             aria-label={homeAria}
           >
             <Image
-              src="/pokit-logo.png"
+              src="/pokit-mark.png"
               alt=""
               width={28}
               height={28}
               priority
-              className="size-7 rounded-lg"
+              unoptimized
+              className="size-7 rounded-lg object-cover"
             />
             <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em]">
               {site.name}
