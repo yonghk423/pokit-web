@@ -7,7 +7,8 @@ export const site = {
   appStoreId: "6762331629",
   appStoreUrls: {
     ko: "https://apps.apple.com/kr/app/id6762331629",
-    en: "https://apps.apple.com/app/id6762331629",
+    /** Explicit US storefront — bare `/app/id…` geo-redirects to the scanner's country (often KR). */
+    en: "https://apps.apple.com/us/app/id6762331629",
     ja: "https://apps.apple.com/jp/app/id6762331629",
   },
 } as const;

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 
 import { AppStoreBadge } from "@/components/app-store-badge";
@@ -8,6 +9,13 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { cn, monoContainer } from "@/lib/cn";
 
+type DownloadVisual = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
 type Props = {
   locale: Locale;
   copy: Dictionary["appDownload"];
@@ -15,7 +23,29 @@ type Props = {
   variant?: "brutal" | "editorial";
   /** Defaults to `app`. Pass empty string to omit. */
   sectionId?: string;
+  /**
+   * Still shown left of the QR on editorial layouts.
+   * Omit to use the default post-it visual; pass `null` to hide.
+   */
+  visual?: DownloadVisual | null;
 };
+
+function defaultEditorialVisual(locale: Locale): DownloadVisual {
+  return {
+    src:
+      locale === "ko"
+        ? "/icon-with-multi-postit-labels.png"
+        : "/en/icon-with-multi-postit-labels.png",
+    alt:
+      locale === "ko"
+        ? "형광펜과 포스트잇에 적힌 루틴, 할 일, 메모 라벨"
+        : locale === "ja"
+          ? "蛍光ペンと付箋に書かれたルーチン・TODO・メモのラベル"
+          : "Highlighters and sticky notes labeled pokit, Routine, todo, Time Planner, and notes",
+    width: 1152,
+    height: 864,
+  };
+}
 
 export function AppDownload({
   locale,
@@ -23,9 +53,15 @@ export function AppDownload({
   size = "default",
   variant = "brutal",
   sectionId = "app",
+  visual,
 }: Props) {
   const large = size === "large";
   const editorial = variant === "editorial";
+  const resolvedVisual =
+    visual === null
+      ? null
+      : (visual ?? (editorial ? defaultEditorialVisual(locale) : null));
+
   return (
     <section
       id={sectionId || undefined}
@@ -35,7 +71,7 @@ export function AppDownload({
         className={cn(
           "relative isolate overflow-hidden bg-[#2563eb] text-white",
           editorial
-            ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-10 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-12 max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10"
+            ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-12 max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10 nav:gap-10"
             : cn(
                 "rounded-[1.25rem] border border-ink/10",
                 "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-8 py-11",
@@ -90,10 +126,31 @@ export function AppDownload({
           </div>
         </div>
 
-        <div className="relative z-10 justify-self-end max-nav:hidden">
+        <div
+          className={cn(
+            "relative z-10 flex items-center justify-self-end",
+            resolvedVisual
+              ? "gap-2 max-nav:w-full max-nav:flex-col max-nav:gap-6"
+              : "max-nav:hidden",
+          )}
+        >
+          {resolvedVisual ? (
+            <div className="w-[min(15rem,100%)] shrink-0 max-nav:mx-auto nav:w-[15rem] nav:-mr-1">
+              <Image
+                src={resolvedVisual.src}
+                alt={resolvedVisual.alt}
+                width={resolvedVisual.width}
+                height={resolvedVisual.height}
+                sizes="15rem"
+                className="h-auto w-full"
+              />
+            </div>
+          ) : null}
+
           <div
             className={cn(
-              "flex aspect-square w-44 flex-col items-center justify-between bg-panel px-3 py-3 text-ink",
+              "flex aspect-square w-44 shrink-0 flex-col items-center justify-between bg-panel px-3 py-3 text-ink",
+              resolvedVisual && "max-nav:hidden",
               editorial
                 ? "rounded-[1.6rem] shadow-[0_24px_48px_-20px_rgba(0,0,0,0.45)]"
                 : "rounded-[1.25rem] border border-ink/12",
