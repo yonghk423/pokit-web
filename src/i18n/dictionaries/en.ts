@@ -171,6 +171,12 @@ const dictionary: Dictionary = {
         imageAlt: "POKIT app Today screen with the daily routine list",
       },
       {
+        id: "puzzle",
+        title: "Your own photo puzzle, completed with every routine win",
+        body: "Whether you keep one routine or a few,\neach time you complete one, a piece of your photo puzzle falls into place.\n\nInstead of a dry history of checkmarks,\nyou get to watch a picture you chose come together.\nThat small joy of finishing is why this feature is here.",
+        imageAlt: "POKIT app photo puzzle screen",
+      },
+      {
         id: "memo",
         title: "Notes you can see on the lock screen",
         body: "Write what you need to keep today, and see it on the lock screen.\nLeave short notes for morning, afternoon, and evening,\nand meet them again every time you wake the phone.\n\nYou can keep the day moving without digging deep into the app.",

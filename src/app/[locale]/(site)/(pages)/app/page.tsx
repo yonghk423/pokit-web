@@ -53,6 +53,7 @@ function localizeVisual(
 
 const FEATURE_VISUALS: Record<string, FeatureVisual> = {
   routines: { primary: "routines.webp", secondary: "first-launch.webp" },
+  puzzle: { primary: "puzzle.webp", frame: "homescreen" },
   memo: {
     primary: "daily-memo-lock.webp",
     secondary: "daily-memo-editor.webp",
@@ -68,6 +69,7 @@ const FEATURE_VISUALS: Record<string, FeatureVisual> = {
 const GALLERY = [
   { file: "first-launch.webp" as const, featureId: "routines" },
   { file: "routines.webp" as const, featureId: "routines" },
+  { file: "puzzle.webp" as const, featureId: "puzzle" },
   { file: "memo-editor.webp" as const, featureId: "memo" },
   { file: "lock-screen-memo.webp" as const, featureId: "memo" },
   { file: "todos.webp" as const, featureId: "todos" },
@@ -84,6 +86,7 @@ const FEATURE_TONES = [
   "bg-[#f3efe6]",
   "bg-[#ebe4d6]",
   "bg-[#f0ebe3]",
+  "bg-[#e7efe9]",
 ] as const;
 
 const FEATURE_TEXT_GLOWS = [
@@ -94,6 +97,7 @@ const FEATURE_TEXT_GLOWS = [
   "#f3efe6",
   "#ebe4d6",
   "#f0ebe3",
+  "#e7efe9",
 ] as const;
 
 function FeatureVisualCluster({
