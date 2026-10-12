@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
 import { HomeHeroDownload } from "@/components/home-hero-download";
+import { appStoreUrl } from "@/config/site";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
@@ -223,23 +224,29 @@ export function HomeHero({
           />
           <div className="flex shrink-0 items-end gap-4 max-nav:w-full max-nav:flex-col max-nav:items-stretch">
             <div className="group relative mb-0.5 max-nav:mb-0">
-              <video
-                ref={videoRef}
-                className="h-[8.75rem] w-auto max-w-[min(22rem,34vw)] rounded-[0.7rem] object-cover max-nav:h-auto max-nav:w-full max-nav:max-w-none"
-                src="/pokit-video-3.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                aria-label={videoLabel}
-                onPlay={() => setVideoPlaying(true)}
-                onPause={() => setVideoPlaying(false)}
-              />
+              <a
+                href={appStoreUrl(locale)}
+                aria-label={download.download}
+                className="block cursor-pointer"
+              >
+                <video
+                  ref={videoRef}
+                  className="pointer-events-none h-[8.75rem] w-auto max-w-[min(22rem,34vw)] rounded-[0.7rem] object-cover max-nav:h-auto max-nav:w-full max-nav:max-w-none"
+                  src="/pokit-video-3.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  aria-label={videoLabel}
+                  onPlay={() => setVideoPlaying(true)}
+                  onPause={() => setVideoPlaying(false)}
+                />
+              </a>
               <button
                 type="button"
                 onClick={toggleVideo}
                 aria-label={videoPlaying ? videoPauseLabel : videoPlayLabel}
-                className="pointer-events-none absolute bottom-2 left-2 inline-flex size-8 cursor-pointer items-center justify-center rounded-full border-0 bg-ink/75 p-0 text-white opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100 max-nav:pointer-events-auto max-nav:opacity-100"
+                className="pointer-events-none absolute bottom-2 left-2 z-10 inline-flex size-8 cursor-pointer items-center justify-center rounded-full border-0 bg-ink/75 p-0 text-white opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100 max-nav:pointer-events-auto max-nav:opacity-100"
               >
                 {videoPlaying ? (
                   <span className="flex gap-[3px]" aria-hidden>
