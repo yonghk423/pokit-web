@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image, { type StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 
-import heroStationery from "@/assets/app-promo/hero-stationery.jpg";
 import { AppDownload } from "@/components/app-download";
 import { AppScreenImage, PhoneFrame } from "@/components/app-phone-frame";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
@@ -87,6 +86,12 @@ const FEATURE_TONES = [
   "bg-[#ebe4d6]",
   "bg-[#f0ebe3]",
   "bg-[#e7efe9]",
+] as const;
+
+const PUZZLE_BACKGROUNDS = [
+  "/스크린샷 2026-10-11 오후 6.58.42.png",
+  "/스크린샷 2026-10-11 오후 6.58.15.png",
+  "/스크린샷 2026-10-11 오후 6.57.55.png",
 ] as const;
 
 const FEATURE_TEXT_GLOWS = [
@@ -323,37 +328,41 @@ export default async function AppIntroPage({ params }: Props) {
 
   const heroAlt =
     locale === "ko"
-      ? "POKIT 앱 화면들과 필기도구가 놓인 데스크 장면"
+      ? "하루 루틴을 POKIT 앱으로 챙기는 일러스트"
       : locale === "ja"
-        ? "POKITアプリ画面と文房具が並ぶデスクシーン"
-        : "POKIT app screens on a desk with writing tools";
+        ? "一日のルーチンをPOKITアプリで進めるイラスト"
+        : "Illustration of a day of routines kept in the POKIT app";
 
   return (
     <main className="overflow-x-clip">
       <link
         rel="preload"
         as="image"
-        href={heroStationery.src}
-        type="image/jpeg"
+        href="/icon_header3.png"
+        type="image/png"
         fetchPriority="high"
       />
       <JsonLd data={softwareJsonLd} />
 
       <section className="relative isolate overflow-hidden bg-[#ebe4d6] text-ink nav:h-[calc(100svh-5rem)]">
-        <div className="absolute inset-0 hidden nav:block" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 hidden nav:flex nav:items-center nav:justify-end nav:pr-[clamp(1rem,1.8vw,1.5rem)]"
+          aria-hidden="true"
+        >
           <Image
-            src={heroStationery}
+            src="/icon_header3.png"
             alt=""
-            fill
+            width={3840}
+            height={1646}
             priority
-            sizes="100vw"
-            className="app-hero-phone object-cover object-[72%_center]"
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[min(42rem,68%)] bg-linear-to-r from-[#ebe4d6] from-40% via-[#ebe4d6]/92 to-transparent"
-            aria-hidden="true"
+            sizes="(min-width: 900px) 75vw, 100vw"
+            className="app-hero-phone h-[min(68vh,calc((100vw-4rem)/2.55))] w-auto max-w-none"
           />
         </div>
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 z-[1] hidden w-[min(32rem,42%)] bg-linear-to-r from-[#ebe4d6] from-40% via-[#ebe4d6]/80 to-transparent nav:block"
+          aria-hidden="true"
+        />
 
         <div
           className={cn(
@@ -382,8 +391,10 @@ export default async function AppIntroPage({ params }: Props) {
 
           <div className="app-hero-phone relative mx-auto w-full max-w-[28rem] nav:hidden">
             <Image
-              src={heroStationery}
+              src="/icon_header3.png"
               alt={heroAlt}
+              width={3840}
+              height={1646}
               sizes="92vw"
               priority
               className="h-auto w-full"
@@ -407,6 +418,27 @@ export default async function AppIntroPage({ params }: Props) {
               key={feature.id}
               className={cn("relative overflow-hidden", tone)}
             >
+              {feature.id === "puzzle" ? (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 top-0 z-0 grid h-[34rem] grid-cols-3 gap-2 p-3 nav:inset-y-4 nav:right-3 nav:left-auto nav:h-auto nav:w-[min(82%,76rem)]"
+                >
+                  {PUZZLE_BACKGROUNDS.map((src) => (
+                    <div
+                      key={src}
+                      className="relative min-h-48 overflow-hidden rounded-[1.15rem] nav:min-h-0"
+                    >
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        sizes="(min-width: 900px) 16vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : null}
               <StationeryScatter
                 variant={index}
                 fillSide={reverse ? "left" : "right"}
@@ -430,11 +462,13 @@ export default async function AppIntroPage({ params }: Props) {
                       aria-hidden
                       className={cn(
                         "pointer-events-none absolute -inset-x-4 -inset-y-3 -z-10 rounded-[1.75rem]",
-                        tone,
+                        feature.id === "puzzle" ? "bg-[#ebe4d6]/82" : tone,
                       )}
-                      style={{
-                        boxShadow: `0 0 52px 40px ${textGlow}`,
-                      }}
+                      style={
+                        feature.id === "puzzle"
+                          ? undefined
+                          : { boxShadow: `0 0 52px 40px ${textGlow}` }
+                      }
                     />
                     <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-ink">
                       {String(index + 1).padStart(2, "0")}

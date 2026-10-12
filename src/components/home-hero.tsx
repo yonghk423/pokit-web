@@ -144,8 +144,10 @@ export function HomeHero({
 }: Props) {
   const preview = useOptionalArticlePreview();
   const feedScrollRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(true);
   const hero = heroArticles.find((article) => article.coverImage) ?? heroArticles[0];
   const heroUrl =
     hero && isSanityConfigured()
@@ -186,6 +188,27 @@ export function HomeHero({
     });
   }, []);
 
+  const videoLabel =
+    locale === "ko"
+      ? "POKIT 앱 소개 영상"
+      : locale === "ja"
+        ? "POKITアプリ紹介動画"
+        : "POKIT app preview";
+  const videoPauseLabel =
+    locale === "ko" ? "영상 정지" : locale === "ja" ? "動画を停止" : "Pause video";
+  const videoPlayLabel =
+    locale === "ko" ? "영상 재생" : locale === "ja" ? "動画を再生" : "Play video";
+
+  const toggleVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      void video.play();
+      return;
+    }
+    video.pause();
+  }, []);
+
   return (
     <section className="relative pt-8 max-nav:pt-6">
       <div className={monoContainer}>
@@ -198,7 +221,41 @@ export function HomeHero({
             as="h1"
             className="min-w-0 max-w-[52rem] flex-1 text-[clamp(2rem,5vw,3.75rem)]"
           />
-          <HomeHeroDownload locale={locale} copy={download} />
+          <div className="flex shrink-0 items-end gap-4 max-nav:w-full max-nav:flex-col max-nav:items-stretch">
+            <div className="group relative mb-0.5 max-nav:mb-0">
+              <video
+                ref={videoRef}
+                className="h-[8.75rem] w-auto max-w-[min(22rem,34vw)] rounded-[0.7rem] object-cover max-nav:h-auto max-nav:w-full max-nav:max-w-none"
+                src="/pokit-video-3.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                aria-label={videoLabel}
+                onPlay={() => setVideoPlaying(true)}
+                onPause={() => setVideoPlaying(false)}
+              />
+              <button
+                type="button"
+                onClick={toggleVideo}
+                aria-label={videoPlaying ? videoPauseLabel : videoPlayLabel}
+                className="pointer-events-none absolute bottom-2 left-2 inline-flex size-8 cursor-pointer items-center justify-center rounded-full border-0 bg-ink/75 p-0 text-white opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100 max-nav:pointer-events-auto max-nav:opacity-100"
+              >
+                {videoPlaying ? (
+                  <span className="flex gap-[3px]" aria-hidden>
+                    <span className="block h-3 w-[3px] rounded-sm bg-white" />
+                    <span className="block h-3 w-[3px] rounded-sm bg-white" />
+                  </span>
+                ) : (
+                  <span
+                    aria-hidden
+                    className="ml-0.5 block h-0 w-0 border-y-[6px] border-l-[9px] border-y-transparent border-l-white"
+                  />
+                )}
+              </button>
+            </div>
+            <HomeHeroDownload locale={locale} copy={download} />
+          </div>
         </div>
 
         {/* Oimachi `.hero_bottom`: height calc(100svh - 18rem), flex row, gap 0.4rem */}
