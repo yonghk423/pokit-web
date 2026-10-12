@@ -30,7 +30,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html
       lang={localeToHtmlLang(locale)}
       suppressHydrationWarning
-      className={fontVariables}
+      className={`${fontVariables} scrollbar-hide`}
       {...(pokitApp ? { "data-pokit-app": "1" } : {})}
     >
       <body>{children}</body>

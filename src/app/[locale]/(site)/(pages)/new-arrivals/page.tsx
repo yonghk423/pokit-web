@@ -2,22 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { HomePreviewShell } from "@/components/home-preview-shell";
 import { JsonLd } from "@/components/json-ld";
-import { NewArrivalsSection } from "@/components/new-arrivals-section";
+import { ToolArchiveCard } from "@/components/tool-archive-card";
 import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
+import { cn, monoContainer } from "@/lib/cn";
 import { briefingCollectionJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
-import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
-import {
-  newArrivalsPath,
-  newArrivalsWeekPath,
-} from "@/lib/new-arrivals-path";
-import {
-  getLatestNewArrivals,
-  listNewArrivals,
-} from "@/sanity/lib/fetch";
+import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
+import { newArrivalsPath } from "@/lib/new-arrivals-path";
+import { listAllRoutineTools } from "@/sanity/lib/fetch";
 
 export const revalidate = false;
 
@@ -43,20 +38,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const locale: Locale = rawLocale;
   const dict = await getDictionary(locale);
-  const latest = await getLatestNewArrivals(locale);
-  const description = latest
-    ? dict.newArrivals.metaDescriptionFromItems(
-      latest.items.map((item) => item.name),
-    )
+  const tools = await listAllRoutineTools(locale);
+  const description = tools.length
+    ? dict.newArrivals.metaDescriptionFromItems(tools.map((item) => item.name))
     : dict.newArrivals.hubDescription;
+  const title = dict.newArrivals.allTools;
   const alternates = localeAlternates(locale, "/new-arrivals");
 
   return {
-    title: dict.newArrivals.hubTitle,
+    title,
     description,
     alternates,
     openGraph: {
-      title: dict.newArrivals.hubTitle,
+      title,
       description,
       url: alternates.canonical,
       siteName: site.name,
@@ -66,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: dict.newArrivals.hubTitle,
+      title,
       description,
       images: [OG_IMAGE.url],
     },
@@ -81,96 +75,82 @@ export default async function NewArrivalsHubPage({ params }: Props) {
 
   const locale: Locale = rawLocale;
   const dict = await getDictionary(locale);
-  const [latest, archive] = await Promise.all([
-    getLatestNewArrivals(locale),
-    listNewArrivals(locale),
-  ]);
-
-  const pastWeeks = archive.filter((item) => item.weekOf !== latest?.weekOf);
-  const description = latest
-    ? dict.newArrivals.metaDescriptionFromItems(
-      latest.items.map((item) => item.name),
-    )
+  const tools = await listAllRoutineTools(locale);
+  const description = tools.length
+    ? dict.newArrivals.metaDescriptionFromItems(tools.map((item) => item.name))
     : dict.newArrivals.hubDescription;
 
   return (
-    <main>
+    <HomePreviewShell
+      locale={locale}
+      categoryLabels={dict.categories}
+      closeLabel={dict.home.closePreview}
+      addToPokit={dict.article.addToPokit}
+      toolKicker={dict.newArrivals.kicker}
+    >
+    <main className="pb-8">
       <JsonLd
         data={breadcrumbJsonLd(
           [
             { name: site.name, path: "/" },
-            { name: dict.newArrivals.hubTitle, path: "/new-arrivals" },
+            { name: dict.newArrivals.allTools, path: "/new-arrivals" },
           ],
           locale,
         )}
       />
-      {latest && (
+      {tools.length > 0 && (
         <JsonLd
           data={briefingCollectionJsonLd({
             locale,
             path: "/new-arrivals",
-            name: dict.newArrivals.hubTitle,
+            name: dict.newArrivals.allTools,
             description,
-            items: latest.items.map((item) => ({
+            items: tools.map((item) => ({
               headline: item.name,
               summary: item.summary,
               sourceUrl: newArrivalsPath(locale),
             })),
-            datePublished: latest.weekOf,
           })}
         />
       )}
 
-      {latest ? (
-        <NewArrivalsSection
-          roundup={latest}
-          locale={locale}
-          kicker={dict.newArrivals.kicker}
-          sectionTitle={dict.newArrivals.hubTitle}
-          titleAs="h1"
-          sectionId="new-arrivals-hub"
-        />
-      ) : (
-        <section className={cn(monoContainer, sectionSpacing)}>
-          <h1 className="m-0 text-[clamp(1.85rem,3.5vw,2.75rem)] font-extrabold tracking-[-0.03em]">
-            {dict.newArrivals.hubTitle}
+      <section className={cn(monoContainer, "pt-10 pb-16 max-nav:pt-8")}>
+        <header className="mb-10 max-nav:mb-8">
+          <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.08em] text-muted uppercase">
+            {dict.newArrivals.kicker}
+          </p>
+          <h1 className="m-0 mt-3 max-w-[40rem] font-sans text-[clamp(2.35rem,5.5vw,4rem)] font-medium leading-[1.08] tracking-[-0.035em] text-ink">
+            {dict.newArrivals.allTools}
           </h1>
-          <p className="mt-4 font-sans text-muted">{dict.newArrivals.empty}</p>
-        </section>
-      )}
+          <p className="mt-4 mb-0 max-w-[36rem] font-sans text-[0.95rem] leading-relaxed text-muted">
+            {tools.length > 0
+              ? dict.newArrivals.allToolsCount(tools.length)
+              : dict.newArrivals.empty}
+          </p>
+        </header>
 
-      {latest?.weekOf && (
-        <p className={cn(monoContainer, "pb-4 font-sans text-[0.9rem]")}>
+        {tools.length > 0 ? (
+          <div className="grid grid-cols-4 gap-x-4 gap-y-8 max-nav:grid-cols-2 max-archive:grid-cols-1">
+            {tools.map((item) => (
+              <ToolArchiveCard
+                key={item.slug}
+                item={item}
+                kicker={dict.newArrivals.kicker}
+              />
+            ))}
+          </div>
+        ) : null}
+
+        <p className="mt-14 mb-0 border-t border-ink/8 pt-8">
           <Link
-            href={newArrivalsWeekPath(locale, latest.weekOf)}
-            className="font-bold underline decoration-2 underline-offset-2 hover:bg-wash"
+            href={withLocale(locale, "/")}
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 font-sans text-[0.8rem] font-semibold text-white no-underline transition-colors hover:bg-indigo"
           >
-            {dict.newArrivals.viewFull} → {latest.weekOf}
+            {dict.archive.backHome}
           </Link>
         </p>
-      )}
-
-      {pastWeeks.length > 0 && (
-        <section className={cn(monoContainer, "border-t border-ink/10 py-12 pb-16")}>
-          <h2 className="m-0 mb-6 text-[1.25rem] font-extrabold tracking-[-0.02em]">
-            {dict.newArrivals.archiveTitle}
-          </h2>
-          <ul className="m-0 grid list-none gap-3 p-0">
-            {pastWeeks.map((item) => (
-              <li key={item.weekOf}>
-                <Link
-                  href={newArrivalsWeekPath(locale, item.weekOf)}
-                  className="font-sans text-[0.95rem] font-bold underline decoration-2 underline-offset-2 hover:bg-wash"
-                >
-                  <time dateTime={item.weekOf}>{item.weekOf}</time>
-                  <span className="mx-2 text-muted">·</span>
-                  {item.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      </section>
     </main>
+    </HomePreviewShell>
   );
 }

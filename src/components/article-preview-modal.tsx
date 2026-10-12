@@ -245,7 +245,7 @@ export function ArticlePreviewModal({
           </button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-1 gap-5 overflow-y-auto px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-1 max-nav:gap-7 nav:grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] nav:gap-7 nav:overflow-hidden nav:px-5 nav:pb-5">
+        <div className="scrollbar-hide grid min-h-0 flex-1 grid-cols-1 gap-5 overflow-y-auto px-4 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-1 max-nav:gap-7 nav:grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] nav:gap-7 nav:overflow-hidden nav:px-5 nav:pb-5">
           <div className="min-h-0 shrink-0 max-nav:mx-auto max-nav:w-full max-nav:max-w-[22rem]">
             <div
               ref={mediaRef}
@@ -332,7 +332,7 @@ export function ArticlePreviewModal({
                   ) : null}
                 </div>
 
-                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-4 max-nav:overflow-visible nav:pt-5">
+                <div className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-contain pt-4 max-nav:overflow-visible nav:pt-5">
                   {detail?.body ? (
                     <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
                       <PortableText value={detail.body} />

@@ -5,6 +5,7 @@ import { homeSections } from "@/content/home";
 import { isSanityConfigured } from "@/sanity/env";
 import { sanityFetchOptions } from "@/sanity/lib/cache";
 import {
+  ALL_ROUTINE_TOOLS_QUERY,
   ARTICLES_DESIGN_SPACE_POOL_QUERY,
   ARTICLES_RECENT_BY_CATEGORY_QUERY,
   HOME_PAGE_QUERY,
@@ -12,6 +13,7 @@ import {
   LATEST_WELLNESS_DIGEST_QUERY,
   NEW_ARRIVALS_BY_WEEK_QUERY,
   NEW_ARRIVALS_LIST_QUERY,
+  PAST_ROUTINE_TOOLS_QUERY,
   ROUTINE_TOOL_BY_SLUG_QUERY,
   ROUTINE_TOOL_SLUGS_QUERY,
   SITEMAP_DIGESTS_QUERY,
@@ -28,6 +30,7 @@ import type {
   ArticleCardData,
   HomePageContent,
   NewArrivalsData,
+  NewArrivalsItem,
   NewArrivalsListItem,
   RoutineToolDetail,
   SectionHeading,
@@ -153,6 +156,7 @@ export type HomePageCarousels = {
   sleepCarousel: ArticleCardData[];
   wellnessCarousel: ArticleCardData[];
   newArrivals: NewArrivalsData | null;
+  pastRoutineTools: NewArrivalsItem[];
 };
 
 export type HomePageWithCarousels = HomePageContent & HomePageCarousels;
@@ -386,6 +390,64 @@ export async function getLatestNewArrivals(
   }
 }
 
+export async function listPastRoutineTools(
+  locale: Locale,
+): Promise<NewArrivalsItem[]> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    const docs = await client.fetch<{ items?: NewArrivalsItem[] | null }[]>(
+      PAST_ROUTINE_TOOLS_QUERY,
+      { locale },
+      newArrivalsFetchOptions,
+    );
+    const seen = new Set<string>();
+    const tools: NewArrivalsItem[] = [];
+    for (const doc of docs ?? []) {
+      for (const item of doc.items ?? []) {
+        if (!item?.slug || !item.name || seen.has(item.slug)) continue;
+        seen.add(item.slug);
+        tools.push(item);
+      }
+    }
+    return tools;
+  } catch (error) {
+    console.warn("Failed to fetch past routine tools from Sanity:", error);
+    return [];
+  }
+}
+
+export async function listAllRoutineTools(
+  locale: Locale,
+): Promise<NewArrivalsItem[]> {
+  if (!isSanityConfigured() || !client) {
+    return [];
+  }
+
+  try {
+    const docs = await client.fetch<{ items?: NewArrivalsItem[] | null }[]>(
+      ALL_ROUTINE_TOOLS_QUERY,
+      { locale },
+      newArrivalsFetchOptions,
+    );
+    const seen = new Set<string>();
+    const tools: NewArrivalsItem[] = [];
+    for (const doc of docs ?? []) {
+      for (const item of doc.items ?? []) {
+        if (!item?.slug || !item.name || seen.has(item.slug)) continue;
+        seen.add(item.slug);
+        tools.push(item);
+      }
+    }
+    return tools;
+  } catch (error) {
+    console.warn("Failed to list all routine tools from Sanity:", error);
+    return [];
+  }
+}
+
 export async function getNewArrivalsByWeek(
   locale: Locale,
   weekOf: string,
@@ -535,13 +597,15 @@ export async function getHomePageWithCarousels(
       sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
       newArrivals: null,
+      pastRoutineTools: [],
     };
   }
 
   try {
-    const [pools, newArrivals] = await Promise.all([
+    const [pools, newArrivals, pastRoutineTools] = await Promise.all([
       fetchHomeCarouselPools(locale),
       getLatestNewArrivals(locale),
+      listPastRoutineTools(locale),
     ]);
     if (!pools) {
       throw new Error("Sanity client unavailable");
@@ -601,10 +665,14 @@ export async function getHomePageWithCarousels(
         12,
       ),
       newArrivals,
+      pastRoutineTools,
     };
   } catch (error) {
     console.warn("Failed to fetch carousel articles from Sanity:", error);
-    const newArrivals = await getLatestNewArrivals(locale);
+    const [newArrivals, pastRoutineTools] = await Promise.all([
+      getLatestNewArrivals(locale),
+      listPastRoutineTools(locale),
+    ]);
     return {
       ...home,
       weeklyHero: home.featuredArticle ? [home.featuredArticle] : [],
@@ -615,6 +683,7 @@ export async function getHomePageWithCarousels(
       sleepCarousel: home.sleepStories,
       wellnessCarousel: home.cityGuides,
       newArrivals,
+      pastRoutineTools,
     };
   }
 }

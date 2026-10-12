@@ -133,6 +133,19 @@ export const LATEST_NEW_ARRIVALS_QUERY = `*[_type == "newArrivals" && defined(we
   ${newArrivalsFields}
 }`;
 
+/** Earlier weeks only. The newest roundup stays in LATEST_NEW_ARRIVALS_QUERY. */
+export const PAST_ROUTINE_TOOLS_QUERY = `*[_type == "newArrivals" && defined(weekOf)] | order(weekOf desc)[1...24]{
+  "items": items[]{
+    ${newArrivalsItemCardFields}
+  }
+}`;
+
+export const ALL_ROUTINE_TOOLS_QUERY = `*[_type == "newArrivals" && defined(weekOf)] | order(weekOf desc){
+  "items": items[]{
+    ${newArrivalsItemCardFields}
+  }
+}`;
+
 export const NEW_ARRIVALS_BY_WEEK_QUERY = `*[_type == "newArrivals" && weekOf == $weekOf][0]{
   ${newArrivalsFields}
 }`;

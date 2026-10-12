@@ -181,10 +181,13 @@ export type Dictionary = {
     readSourceLabel: string;
     productLabel: string;
     archiveTitle: string;
+    pastTools: string;
     empty: string;
     backToHub: string;
     viewFull: string;
     viewAll: string;
+    allTools: string;
+    allToolsCount: (total: number) => string;
     metaDescriptionFromItems: (names: string[]) => string;
     localeFallbackBanner: string;
   };

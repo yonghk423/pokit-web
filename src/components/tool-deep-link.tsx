@@ -35,7 +35,8 @@ export function ToolDeepLink({ kicker }: { kicker: string }) {
   const pathname = usePathname();
   const { locale, openTool, active } = useArticlePreview();
   const openedSlugRef = useRef<string | null>(null);
-  const pendingSlugRef = useRef<string | null>(null);
+  const activeRef = useRef(active);
+  activeRef.current = active;
 
   useEffect(() => {
     const slug = searchParams.get("tool");
@@ -44,19 +45,22 @@ export function ToolDeepLink({ kicker }: { kicker: string }) {
       return;
     }
 
-    if (active?.kind === "tool" && active.tool.slug === slug) {
+    const current = activeRef.current;
+    if (current?.kind === "tool" && current.tool.slug === slug) {
       openedSlugRef.current = slug;
       return;
     }
 
-    if (pendingSlugRef.current === slug || openedSlugRef.current === slug) {
+    if (openedSlugRef.current === slug) {
       return;
     }
 
-    pendingSlugRef.current = slug;
+    const controller = new AbortController();
     let cancelled = false;
 
-    fetch(`/api/tools/${encodeURIComponent(slug)}?locale=${locale}`)
+    fetch(`/api/tools/${encodeURIComponent(slug)}?locale=${locale}`, {
+      signal: controller.signal,
+    })
       .then(async (res) => {
         if (!res.ok) throw new Error("failed");
         return res.json() as Promise<PreviewPayload>;
@@ -64,7 +68,6 @@ export function ToolDeepLink({ kicker }: { kicker: string }) {
       .then((data) => {
         if (cancelled) return;
         openedSlugRef.current = slug;
-        pendingSlugRef.current = null;
         openTool({
           tool: {
             slug: data.slug,
@@ -76,8 +79,13 @@ export function ToolDeepLink({ kicker }: { kicker: string }) {
           kicker,
         });
       })
-      .catch(() => {
-        pendingSlugRef.current = null;
+      .catch((error: unknown) => {
+        if (
+          cancelled ||
+          (error instanceof DOMException && error.name === "AbortError")
+        ) {
+          return;
+        }
         openedSlugRef.current = null;
         const next = new URLSearchParams(searchParams.toString());
         next.delete("tool");
@@ -89,8 +97,9 @@ export function ToolDeepLink({ kicker }: { kicker: string }) {
 
     return () => {
       cancelled = true;
+      controller.abort();
     };
-  }, [searchParams, locale, openTool, active, router, pathname, kicker]);
+  }, [searchParams, locale, openTool, router, pathname, kicker]);
 
   useEffect(() => {
     if (active) return;

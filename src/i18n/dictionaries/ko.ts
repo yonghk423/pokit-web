@@ -277,10 +277,13 @@ const dictionary: Dictionary = {
     readSourceLabel: "출처 보기",
     productLabel: "참고 링크",
     archiveTitle: "지난 루틴 도구",
+    pastTools: "지난 도구",
     empty: "아직 발행된 루틴 도구 리스트가 없습니다.",
     backToHub: "← 루틴 도구 목록",
     viewFull: "전체 보기",
     viewAll: "도구 전체",
+    allTools: "모든 도구들",
+    allToolsCount: (total) => `총 ${total}개`,
     metaDescriptionFromItems: (names) => {
       const joined = names.slice(0, 3).join(" · ");
       return joined

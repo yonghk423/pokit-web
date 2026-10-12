@@ -87,6 +87,7 @@ export default async function Home({ params }: Props) {
     cityGuidesSection,
     wellnessCarousel,
     newArrivals,
+    pastRoutineTools,
   } = await getHomePageWithCarousels(locale, dict);
 
   const routine = dict.home.sections.routine;
@@ -213,12 +214,14 @@ export default async function Home({ params }: Props) {
           {newArrivals && newArrivals.items.length > 0 && (
             <HomeLabs
               roundup={newArrivals}
+              pastTools={pastRoutineTools}
               locale={locale}
               line1={dict.home.labsLine1}
               accent={dict.home.labsAccent}
               rest={dict.home.labsRest}
               viewAllHref={newArrivalsPath(locale)}
               viewAllLabel={dict.newArrivals.viewAll}
+              pastLabel={dict.newArrivals.pastTools}
               kicker={dict.newArrivals.kicker}
             />
           )}

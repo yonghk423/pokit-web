@@ -277,10 +277,13 @@ const dictionary: Dictionary = {
     readSourceLabel: "出典を見る",
     productLabel: "参考リンク",
     archiveTitle: "過去のルーチン道具",
+    pastTools: "これまでの道具",
     empty: "まだ公開されたルーチン道具リストはありません。",
     backToHub: "← ルーチン道具一覧",
     viewFull: "すべて見る",
     viewAll: "道具すべて",
+    allTools: "すべての道具",
+    allToolsCount: (total) => `全${total}件`,
     metaDescriptionFromItems: (names) => {
       const joined = names.slice(0, 3).join(" · ");
       return joined

@@ -277,10 +277,13 @@ const dictionary: Dictionary = {
     readSourceLabel: "View source",
     productLabel: "Reference link",
     archiveTitle: "Past routine tools",
+    pastTools: "Earlier tools",
     empty: "No routine tools lists published yet.",
     backToHub: "← All routine tools",
     viewFull: "View full",
     viewAll: "All tools",
+    allTools: "All tools",
+    allToolsCount: (total) => `${total} tools`,
     metaDescriptionFromItems: (names) => {
       const joined = names.slice(0, 3).join(" · ");
       return joined

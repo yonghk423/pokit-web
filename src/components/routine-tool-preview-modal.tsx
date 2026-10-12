@@ -223,7 +223,7 @@ export function RoutineToolPreviewModal({ closeLabel }: Props) {
           </button>
         </div>
 
-        <div className="grid min-h-0 flex-1 grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] gap-7 px-5 pb-5 pt-1 max-nav:grid-cols-1 max-nav:gap-6 max-nav:overflow-y-auto max-nav:px-4 max-nav:pb-4">
+        <div className="grid min-h-0 flex-1 grid-cols-[minmax(16rem,0.85fr)_minmax(0,1.25fr)] gap-7 px-5 pb-5 pt-1 max-nav:grid-cols-1 max-nav:gap-6 max-nav:overflow-y-auto max-nav:px-4 max-nav:pb-4 max-nav:scrollbar-hide">
           <div className="min-h-0 shrink-0 max-nav:mx-auto max-nav:w-full max-nav:max-w-[22rem]">
             <div
               ref={mediaRef}
@@ -276,7 +276,7 @@ export function RoutineToolPreviewModal({ closeLabel }: Props) {
                   ) : null}
                 </div>
 
-                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pt-5 max-nav:overflow-visible">
+                <div className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-contain pt-5 max-nav:overflow-visible">
                   {detail?.body && detail.body.length > 0 ? (
                     <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
                       <PortableText value={detail.body} />
