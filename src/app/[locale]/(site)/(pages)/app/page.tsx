@@ -12,6 +12,7 @@ import { StationeryScatter } from "@/components/stationery-scatter";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import heroArt from "@/assets/app-promo/app-hero.webp";
 import { appScreen, type AppScreenFile } from "@/lib/app-screens";
 import { cn, monoContainer } from "@/lib/cn";
 import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
@@ -335,13 +336,6 @@ export default async function AppIntroPage({ params }: Props) {
 
   return (
     <main className="overflow-x-clip">
-      <link
-        rel="preload"
-        as="image"
-        href="/icon_header3.png"
-        type="image/png"
-        fetchPriority="high"
-      />
       <JsonLd data={softwareJsonLd} />
 
       <section className="relative isolate overflow-hidden bg-[#ebe4d6] text-ink nav:h-[calc(100svh-5rem)]">
@@ -350,12 +344,12 @@ export default async function AppIntroPage({ params }: Props) {
           aria-hidden="true"
         >
           <Image
-            src="/icon_header3.png"
+            src={heroArt}
             alt=""
-            width={3840}
-            height={1646}
             priority
-            sizes="(min-width: 900px) 75vw, 100vw"
+            unoptimized
+            placeholder="blur"
+            sizes="(min-width: 900px) 92vw, 100vw"
             className="app-hero-phone h-[min(68vh,calc((100vw-4rem)/2.55))] w-auto max-w-none"
           />
         </div>
@@ -391,12 +385,12 @@ export default async function AppIntroPage({ params }: Props) {
 
           <div className="app-hero-phone relative mx-auto w-full max-w-[28rem] nav:hidden">
             <Image
-              src="/icon_header3.png"
+              src={heroArt}
               alt={heroAlt}
-              width={3840}
-              height={1646}
               sizes="92vw"
               priority
+              unoptimized
+              placeholder="blur"
               className="h-auto w-full"
             />
           </div>
