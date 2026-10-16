@@ -15,7 +15,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import heroArt from "@/assets/app-promo/app-hero.webp";
 import { appScreen, type AppScreenFile } from "@/lib/app-screens";
 import { cn, monoContainer } from "@/lib/cn";
-import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
+import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -550,6 +550,9 @@ export default async function AppIntroPage({ params }: Props) {
           locale={locale}
           size="large"
           variant="editorial"
+          resourceLinks={[
+            { href: withLocale(locale, "/support"), label: dict.footer.support },
+          ]}
           copy={{
             ...dict.appDownload,
             kicker: copy.ctaKicker,

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 
 import { AppStoreBadge } from "@/components/app-store-badge";
@@ -28,6 +29,7 @@ type Props = {
    * Omit to use the default post-it visual; pass `null` to hide.
    */
   visual?: DownloadVisual | null;
+  resourceLinks?: { href: string; label: string }[];
 };
 
 function defaultEditorialVisual(locale: Locale): DownloadVisual {
@@ -54,6 +56,7 @@ export function AppDownload({
   variant = "brutal",
   sectionId = "app",
   visual,
+  resourceLinks,
 }: Props) {
   const large = size === "large";
   const editorial = variant === "editorial";
@@ -120,6 +123,16 @@ export function AppDownload({
             >
               {copy.body}
             </p>
+          ) : null}
+          {resourceLinks?.length ? (
+            <nav className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+              {resourceLinks.map(link => (
+                <Link key={link.href} href={link.href}
+                  className="font-sans text-sm font-medium text-white underline decoration-white/70 underline-offset-4 transition-colors hover:text-white/80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           ) : null}
           <div className="mt-6">
             <AppStoreBadge locale={locale} label={copy.download} />
