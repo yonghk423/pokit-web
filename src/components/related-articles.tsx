@@ -34,7 +34,8 @@ export function RelatedArticles({
         </h2>
         <Link
           href={related.viewAllHref}
-          className="shrink-0 bg-indigo px-4 py-2 font-sans text-[0.82rem] font-semibold tracking-[0.02em] text-white hover:bg-ink"
+          className="shrink-0 bg-ink px-4 py-2 font-sans text-[0.82rem] font-semibold tracking-[0.02em] text-white hover:bg-ink transition-colors rounded-full"
+          transition-colors rounded-full
         >
           {viewMoreLabel}
         </Link>
