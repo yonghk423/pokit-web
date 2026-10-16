@@ -84,14 +84,12 @@ export async function generateMetadata({
         : dict.archive.descriptionAll;
 
   const isSearchResult = Boolean(searchTerm);
-  const isPaginated = page > 1;
-  const shouldLimitIndexing = isSearchResult || isPaginated;
 
   const canonicalPath = isSearchResult
     ? "/articles"
     : articlesArchiveHref(
       rawLocale,
-      1,
+      page,
       category,
       undefined,
       archiveSection,
@@ -104,7 +102,7 @@ export async function generateMetadata({
     title,
     description,
     alternates,
-    robots: shouldLimitIndexing ? { index: false, follow: true } : undefined,
+    robots: isSearchResult ? { index: false, follow: true } : undefined,
     openGraph: {
       title: `${title} | ${site.name}`,
       description,
