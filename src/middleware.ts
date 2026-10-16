@@ -7,6 +7,7 @@ import {
   LOCALE_COOKIE,
   type Locale,
 } from "@/i18n/config";
+import { articleRedirectPath } from "@/lib/article-redirects";
 import { isValidArticleSlug } from "@/lib/article-path";
 import { POKIT_APP_HEADER } from "@/lib/pokit-app-header";
 
@@ -76,9 +77,10 @@ export function middleware(request: NextRequest) {
 
   // Retire legacy article URLs to one stable canonical destination.
   // Keep this ahead of locale detection and the legacy ?locale= handler.
-  if (pathname === "/articles" || pathname.startsWith("/articles/")) {
+  const retiredArticlePath = articleRedirectPath(pathname);
+  if (retiredArticlePath) {
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = prefixPath("en", pathname);
+    redirectUrl.pathname = retiredArticlePath;
     redirectUrl.searchParams.delete("locale");
     return NextResponse.redirect(redirectUrl, 308);
   }
