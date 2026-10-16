@@ -74,6 +74,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Retire legacy article URLs to one stable canonical destination.
+  // Keep this ahead of locale detection and the legacy ?locale= handler.
+  if (pathname === "/articles" || pathname.startsWith("/articles/")) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = prefixPath("en", pathname);
+    redirectUrl.searchParams.delete("locale");
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
   const localeParam = request.nextUrl.searchParams.get("locale");
   if (localeParam && isLocale(localeParam)) {
     const redirectUrl = request.nextUrl.clone();
