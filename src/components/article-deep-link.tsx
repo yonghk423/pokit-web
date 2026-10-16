@@ -8,7 +8,7 @@ import { articlePath, isValidArticleSlug } from "@/lib/article-path";
 
 /**
  * Legacy `?article=` deep links redirect to the SEO article page.
- * Home card previews still open via `preview.open` without setting the query.
+ * Home cards navigate to the detail URL using an intercepted modal route.
  */
 export function ArticleDeepLink() {
   const searchParams = useSearchParams();

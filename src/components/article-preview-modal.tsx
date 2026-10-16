@@ -45,6 +45,7 @@ type Props = {
   categoryLabels: Dictionary["categories"];
   closeLabel: string;
   addToPokit: Dictionary["article"]["addToPokit"];
+  preview?: Pick<ReturnType<typeof useArticlePreview>, "locale" | "active" | "close">;
 };
 
 function originStyle(origin: ArticlePreviewOrigin): CSSProperties {
@@ -73,8 +74,10 @@ export function ArticlePreviewModal({
   categoryLabels,
   closeLabel,
   addToPokit,
+  preview,
 }: Props) {
-  const { locale, active, close } = useArticlePreview();
+  const context = useArticlePreview();
+  const { locale, active, close } = preview ?? context;
   const titleId = useId();
   const mediaRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);

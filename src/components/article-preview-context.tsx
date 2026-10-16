@@ -10,6 +10,9 @@ import {
   type ReactNode,
 } from "react";
 
+import { useRouter } from "next/navigation";
+import { articlePath } from "@/lib/article-path";
+
 import type { Locale } from "@/i18n/config";
 import type { ArticleCardData, NewArrivalsItem } from "@/sanity/types";
 
@@ -62,6 +65,7 @@ type ProviderProps = {
 };
 
 export function ArticlePreviewProvider({ locale, children }: ProviderProps) {
+  const router = useRouter();
   const [active, setActive] = useState<PreviewActive | null>(null);
 
   const close = useCallback(() => {
@@ -77,8 +81,9 @@ export function ArticlePreviewProvider({ locale, children }: ProviderProps) {
       origin: ArticlePreviewOrigin;
     }) => {
       setActive({ kind: "article", article, origin });
+      router.push(articlePath(locale, article.slug), { scroll: false });
     },
-    [],
+    [locale, router],
   );
 
   const openTool = useCallback(
@@ -97,7 +102,7 @@ export function ArticlePreviewProvider({ locale, children }: ProviderProps) {
   );
 
   useEffect(() => {
-    if (!active) return;
+    if (active?.kind !== "tool") return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") close();
     }

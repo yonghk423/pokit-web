@@ -1,19 +1,16 @@
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
 import { HomeHero } from "@/components/home-hero";
 import { HomeLabs } from "@/components/home-labs";
-import { HomePreviewShell } from "@/components/home-preview-shell";
 import { HomeWorkRows, type HomeWorkSection } from "@/components/home-work-rows";
 import { JsonLd } from "@/components/json-ld";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { site } from "@/config/site";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { websiteJsonLd } from "@/lib/json-ld";
-import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
+import { withLocale } from "@/lib/locale-path";
 import { newArrivalsPath } from "@/lib/new-arrivals-path";
 import { articlesArchiveHref } from "@/sanity/lib/articles";
 import { getHomePageWithCarousels } from "@/sanity/lib/fetch";
@@ -26,43 +23,6 @@ type Props = {
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale: rawLocale } = await params;
-  if (!isLocale(rawLocale)) {
-    return {};
-  }
-
-  const dict = await getDictionary(rawLocale);
-  const alternates = localeAlternates(rawLocale, "/");
-
-  return {
-    title: dict.meta.siteTitle,
-    description: dict.meta.siteDescription,
-    alternates,
-    openGraph: {
-      title: dict.meta.siteTitle,
-      description: dict.meta.siteDescription,
-      url: alternates.canonical,
-      siteName: site.name,
-      locale: localeOpenGraph(rawLocale),
-      type: "website",
-      images: [
-        {
-          url: "/pokit-logo.png",
-          width: 512,
-          height: 512,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary",
-      title: dict.meta.siteTitle,
-      description: dict.meta.siteDescription,
-      images: ["/pokit-logo.png"],
-    },
-  };
 }
 
 export default async function Home({ params }: Props) {
@@ -176,13 +136,6 @@ export default async function Home({ params }: Props) {
     <>
       <JsonLd data={websiteJsonLd(dict.meta.siteDescription, locale)} />
       <main>
-        <HomePreviewShell
-          locale={locale}
-          categoryLabels={categoryLabels}
-          closeLabel={dict.home.closePreview}
-          addToPokit={dict.article.addToPokit}
-          toolKicker={dict.newArrivals.kicker}
-        >
           {(weeklyHero.length > 0 || feedArticles.length > 0) && (
             <div data-hide-in-pokit-app>
               <HomeHero
@@ -244,7 +197,6 @@ export default async function Home({ params }: Props) {
               />
             </ScrollReveal>
           </div>
-        </HomePreviewShell>
       </main>
     </>
   );

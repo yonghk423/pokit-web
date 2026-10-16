@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
 
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
 import { HomeHeroDownload } from "@/components/home-hero-download";
 import { appStoreUrl } from "@/config/site";
+import { articlePath } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
@@ -47,11 +48,12 @@ function formatFeedDate(iso: string | null | undefined, locale: Locale) {
 function openPreviewFromElement(
   preview: ReturnType<typeof useOptionalArticlePreview>,
   article: ArticleCardData,
-  el: HTMLElement,
+  event: MouseEvent<HTMLAnchorElement>,
   imageUrl: string | null,
 ) {
-  if (!preview) return;
-  const rect = el.getBoundingClientRect();
+  if (!preview || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  const rect = event.currentTarget.getBoundingClientRect();
   preview.open({
     article,
     origin: {
@@ -86,11 +88,11 @@ function FeedCard({
   const dateLabel = formatFeedDate(article.publishedAt, locale);
 
   return (
-    <button
-      type="button"
+    <a
+      href={articlePath(locale, article.slug)}
       className="group/feed relative block w-full cursor-pointer overflow-visible border-0 bg-transparent p-0 text-left"
       onClick={(event) =>
-        openPreviewFromElement(preview, article, event.currentTarget, imageUrl)
+        openPreviewFromElement(preview, article, event, imageUrl)
       }
     >
       <div className="relative overflow-visible pr-7">
@@ -126,7 +128,7 @@ function FeedCard({
           />
         </div>
       ) : null}
-    </button>
+    </a>
   );
 }
 
@@ -269,12 +271,12 @@ export function HomeHero({
         <div className="mt-3 flex h-[calc(100svh-18rem)] gap-[0.4rem] max-nav:mt-4 max-nav:h-auto max-nav:flex-col max-nav:gap-8">
           {/* `.hero_graphic` */}
           {hero ? (
-            <button
-              type="button"
+            <a
+              href={articlePath(locale, hero.slug)}
               className="home-hero-rise home-hero-rise-delay group/hero relative h-full min-w-0 flex-1 cursor-pointer overflow-hidden rounded-[0.3rem] border-0 bg-[#ebe7df] p-0 text-left max-nav:aspect-square max-nav:h-auto max-nav:w-full"
               aria-label={heroHeadline ?? feedTitle}
               onClick={(event) =>
-                openPreviewFromElement(preview, hero, event.currentTarget, heroUrl)
+                openPreviewFromElement(preview, hero, event, heroUrl)
               }
             >
               {heroUrl ? (
@@ -292,7 +294,7 @@ export function HomeHero({
                   POKIT
                 </span>
               )}
-            </button>
+            </a>
           ) : (
             <div className="h-full min-w-0 flex-1 rounded-[0.3rem] bg-[#ebe7df] max-nav:aspect-square max-nav:h-auto" />
           )}

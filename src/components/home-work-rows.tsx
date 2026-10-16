@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
+import { articlePath } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
@@ -45,6 +46,7 @@ function articlesWithCover(articles: ArticleCardData[]) {
 
 function HomeWorkRow({
   section,
+  locale,
   viewAllLabel,
   autoplayOffsetMs,
 }: {
@@ -231,9 +233,9 @@ function HomeWorkRow({
             const isActive = activeSlug === article.slug;
 
             return (
-              <button
+              <a
                 key={article.slug}
-                type="button"
+                href={articlePath(locale, article.slug)}
                 data-work-card
                 className={cn(
                   "home-work-media relative shrink-0 cursor-pointer snap-start overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left transition-[flex-grow,opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
@@ -247,7 +249,8 @@ function HomeWorkRow({
                 onFocus={() => setActiveSlug(article.slug)}
                 onBlur={() => setActiveSlug(null)}
                 onClick={(event) => {
-                  if (!preview) return;
+                  if (!preview || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                  event.preventDefault();
                   const rect = event.currentTarget.getBoundingClientRect();
                 preview.open({
                   article,
@@ -282,7 +285,7 @@ function HomeWorkRow({
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/55 to-transparent px-3 pb-3 pt-10 font-sans text-[0.72rem] font-semibold leading-snug text-white nav:hidden">
                   {headline}
                 </span>
-              </button>
+              </a>
             );
           })}
         </div>
