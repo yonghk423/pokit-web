@@ -110,13 +110,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ),
       images: coverImage
         ? [
-            {
-              url: coverImage,
-              width: 1200,
-              height: 630,
-              alt: article.imageAlt,
-            },
-          ]
+          {
+            url: coverImage,
+            width: 1200,
+            height: 630,
+            alt: article.imageAlt,
+          },
+        ]
         : undefined,
     },
     twitter: {
@@ -201,7 +201,7 @@ export default async function ArticlePage({ params }: Props) {
       <main className={cn(monoContainer, "py-12 pb-20")}>
         <Link
           href={withLocale(locale, "/")}
-          className="mb-10 inline-block bg-indigo px-4 py-2 label-caps text-white hover:bg-ink"
+          className="mb-10 inline-block bg-ink px-4 py-2 label-caps text-white hover:bg-indigo transition-colors rounded-full"
         >
           {dict.article.backHome}
         </Link>
