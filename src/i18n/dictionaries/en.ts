@@ -65,11 +65,6 @@ const dictionary: Dictionary = {
         title: "Daily wellness: ten minutes for your body",
       },
     },
-    video: {
-      label: "POKIT app preview",
-      pause: "Pause video",
-      play: "Play video",
-    },
     storiesAria: (label) => `${label} stories`,
     radioEmpty: (sectionNav) =>
       `Connect 3 stories in Home Page → ${sectionNav}.`,

@@ -9,6 +9,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { getHomeVideoMessages } from "@/i18n/get-home-video-messages";
 import { websiteJsonLd } from "@/lib/json-ld";
 import { withLocale } from "@/lib/locale-path";
 import { newArrivalsPath } from "@/lib/new-arrivals-path";
@@ -32,7 +33,10 @@ export default async function Home({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const [dict, videoMessages] = await Promise.all([
+    getDictionary(locale),
+    getHomeVideoMessages(locale),
+  ]);
   const {
     weeklyHero,
     weeklyRail,
@@ -149,7 +153,7 @@ export default async function Home({ params }: Props) {
                 heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
                 feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
                 categoryLabels={categoryLabels}
-                video={dict.home.video}
+                videoMessages={videoMessages}
                 download={dict.appDownload}
               />
             </div>

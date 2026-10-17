@@ -65,11 +65,6 @@ const dictionary: Dictionary = {
         title: "日常ウェルネス、体のための10分",
       },
     },
-    video: {
-      label: "POKITアプリ紹介動画",
-      pause: "動画を停止",
-      play: "動画を再生",
-    },
     storiesAria: (label) => `${label}のストーリー`,
     radioEmpty: (sectionNav) =>
       `Home Page → ${sectionNav} でストーリーを3つつないでください。`,

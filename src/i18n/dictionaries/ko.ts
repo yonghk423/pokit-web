@@ -65,11 +65,6 @@ const dictionary: Dictionary = {
         title: "일상 웰니스, 몸을 위한 10분",
       },
     },
-    video: {
-      label: "POKIT 앱 소개 영상",
-      pause: "영상 정지",
-      play: "영상 재생",
-    },
     storiesAria: (label) => `${label} 이야기`,
     radioEmpty: (sectionNav) =>
       `Home Page → ${sectionNav}에서 이야기 3개를 연결해주세요.`,

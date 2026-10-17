@@ -13,6 +13,8 @@ import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
 import { localeToIntl } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
+import { createTranslator } from "@/i18n/create-translator";
+import type { HomeVideoMessages } from "@/i18n/get-home-video-messages";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
 import type { ArticleCardData } from "@/sanity/types";
@@ -25,7 +27,7 @@ type Props = {
   feedTitle: string;
   feedPrevLabel: string;
   feedNextLabel: string;
-  video: Dictionary["home"]["video"];
+  videoMessages: HomeVideoMessages;
   heroArticles: ArticleCardData[];
   feedArticles: ArticleCardData[];
   categoryLabels: Dictionary["categories"];
@@ -141,12 +143,13 @@ export function HomeHero({
   feedTitle,
   feedPrevLabel,
   feedNextLabel,
-  video,
+  videoMessages,
   heroArticles,
   feedArticles,
   categoryLabels,
   download,
 }: Props) {
+  const t = createTranslator(videoMessages);
   const preview = useOptionalArticlePreview();
   const feedScrollRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -232,7 +235,7 @@ export function HomeHero({
                   muted
                   loop
                   playsInline
-                  aria-label={video.label}
+                  aria-label={t("POKIT 앱 소개 영상")}
                   onPlay={() => setVideoPlaying(true)}
                   onPause={() => setVideoPlaying(false)}
                 />
@@ -240,7 +243,7 @@ export function HomeHero({
               <button
                 type="button"
                 onClick={toggleVideo}
-                aria-label={videoPlaying ? video.pause : video.play}
+                aria-label={videoPlaying ? t("영상 정지") : t("영상 재생")}
                 className="pointer-events-none absolute bottom-2 left-2 z-10 inline-flex size-8 cursor-pointer items-center justify-center rounded-full border-0 bg-ink/75 p-0 text-white opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100 max-nav:pointer-events-auto max-nav:opacity-100"
               >
                 {videoPlaying ? (

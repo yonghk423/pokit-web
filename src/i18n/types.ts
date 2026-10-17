@@ -43,11 +43,6 @@ export type Dictionary = {
     heroAccent: string;
     heroRest: string;
     feedTitle: string;
-    video: {
-      label: string;
-      pause: string;
-      play: string;
-    };
     workLine1: string;
     workAccent: string;
     workRest: string;
