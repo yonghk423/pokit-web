@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test:i18n": "node --experimental-strip-types --test src/i18n/*.test.mjs"
+    "test:i18n": "node --experimental-strip-types --test src/i18n/*.test.mjs scripts/lib/*.test.mjs",
+    "i18n:extract": "node scripts/extract-i18n.mjs"
   },
   "dependencies": {
     "@sanity/image-url": "^2.1.1",
