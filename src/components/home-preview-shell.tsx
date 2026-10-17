@@ -9,20 +9,23 @@ import {
 } from "@/components/article-preview-context";
 import { RoutineToolPreviewModal } from "@/components/routine-tool-preview-modal";
 import { ToolDeepLink } from "@/components/tool-deep-link";
+import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
 
 type ShellProps = {
   locale: Locale;
   closeLabel: string;
+  installCopy: Dictionary["article"]["addToPokit"];
   toolKicker: string;
   children: ReactNode;
 };
 
 function HomePreviewBody({
   closeLabel,
+  installCopy,
   toolKicker,
   children,
-}: Pick<ShellProps, "closeLabel" | "toolKicker" | "children">) {
+}: Pick<ShellProps, "closeLabel" | "installCopy" | "toolKicker" | "children">) {
   const { active } = useArticlePreview();
 
   return (
@@ -33,7 +36,7 @@ function HomePreviewBody({
       </Suspense>
       {children}
       {active?.kind === "tool" ? (
-        <RoutineToolPreviewModal closeLabel={closeLabel} />
+        <RoutineToolPreviewModal closeLabel={closeLabel} installCopy={installCopy} />
       ) : null}
     </>
   );
@@ -42,6 +45,7 @@ function HomePreviewBody({
 export function HomePreviewShell({
   locale,
   closeLabel,
+  installCopy,
   toolKicker,
   children,
 }: ShellProps) {
@@ -49,6 +53,7 @@ export function HomePreviewShell({
     <ArticlePreviewProvider locale={locale}>
       <HomePreviewBody
         closeLabel={closeLabel}
+        installCopy={installCopy}
         toolKicker={toolKicker}
       >
         {children}

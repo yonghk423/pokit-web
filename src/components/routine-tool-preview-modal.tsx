@@ -1,5 +1,8 @@
 "use client";
 
+import { AppInstallCta } from "@/components/app-install-cta";
+import type { Dictionary } from "@/i18n/types";
+
 import { PortableText, type PortableTextBlock } from "next-sanity";
 import {
   useEffect,
@@ -29,6 +32,7 @@ type PreviewTool = {
 
 type Props = {
   closeLabel: string;
+  installCopy: Dictionary["article"]["addToPokit"];
 };
 
 function originStyle(origin: ArticlePreviewOrigin): CSSProperties {
@@ -53,7 +57,7 @@ function rectStyle(rect: DOMRect): CSSProperties {
   };
 }
 
-export function RoutineToolPreviewModal({ closeLabel }: Props) {
+export function RoutineToolPreviewModal({ closeLabel, installCopy }: Props) {
   const { locale, active, close } = useArticlePreview();
   const titleId = useId();
   const mediaRef = useRef<HTMLDivElement>(null);
@@ -283,6 +287,10 @@ export function RoutineToolPreviewModal({ closeLabel }: Props) {
                     </div>
                   ) : loading ? (
                     <ArticlePreviewBodySkeleton />
+                  ) : null}
+                  {detail ? (
+                    <AppInstallCta locale={locale} copy={installCopy}
+                      className="mt-6 mb-4 max-w-none max-nav:mt-5 max-nav:mb-6" />
                   ) : null}
                 </div>
               </>

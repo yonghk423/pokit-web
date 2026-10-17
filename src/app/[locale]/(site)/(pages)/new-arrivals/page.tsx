@@ -84,6 +84,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
     <HomePreviewShell
       locale={locale}
       closeLabel={dict.home.closePreview}
+      installCopy={dict.article.addToPokit}
       toolKicker={dict.newArrivals.kicker}
     >
     <main className="pb-8">

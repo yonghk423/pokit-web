@@ -56,6 +56,7 @@ export default async function HomeLayout({ children, modal, params }: {
   return (
     <HomePreviewShell locale={locale}
       closeLabel={dict.home.closePreview}
+      installCopy={dict.article.addToPokit}
       toolKicker={dict.newArrivals.kicker}>
       {children}
       {modal}
