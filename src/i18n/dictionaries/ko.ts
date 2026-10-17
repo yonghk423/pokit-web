@@ -65,12 +65,9 @@ const dictionary: Dictionary = {
         title: "일상 웰니스, 몸을 위한 10분",
       },
     },
-    storiesAria: (label) => `${label} 이야기`,
     radioEmpty: (sectionNav) =>
       `Home Page → ${sectionNav}에서 이야기 3개를 연결해주세요.`,
     viewAllStories: "일상·루틴·웰니스 이야기 모두 보기 →",
-    carouselPrev: (label) => `${label} 이전`,
-    carouselNext: (label) => `${label} 다음`,
     heroLine1: "일상 루틴과 웰니스.",
     heroAccent: "포켓",
     heroRest: "가이드.",

@@ -9,6 +9,8 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { createTranslator } from "@/i18n/create-translator";
+import { getHomeMessages } from "@/i18n/get-home-messages";
 import { getHomeVideoMessages } from "@/i18n/get-home-video-messages";
 import { getAppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { websiteJsonLd } from "@/lib/json-ld";
@@ -34,11 +36,13 @@ export default async function Home({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, videoMessages, downloadMessages] = await Promise.all([
+  const [dict, videoMessages, downloadMessages, homeMessages] = await Promise.all([
     getDictionary(locale),
     getHomeVideoMessages(locale),
     getAppDownloadMessages(locale),
+    getHomeMessages(locale),
   ]);
+  const t = createTranslator(homeMessages);
   const {
     weeklyHero,
     weeklyRail,
@@ -72,6 +76,7 @@ export default async function Home({ params }: Props) {
     {
       id: homeSections.routine.id,
       name: routine.nav,
+      storiesLabel: t("{{label}} 이야기", { label: routine.nav }),
       title: spotlightRowSection?.title ?? routine.title,
       viewAllHref: articlesArchiveHref(
         locale,
@@ -79,12 +84,13 @@ export default async function Home({ params }: Props) {
         homeSections.routine.archiveCategory,
       ),
       articles: routineCarousel,
-      prevLabel: dict.home.carouselPrev(routine.nav),
-      nextLabel: dict.home.carouselNext(routine.nav),
+      prevLabel: t("{{label}} 이전", { label: routine.nav }),
+      nextLabel: t("{{label}} 다음", { label: routine.nav }),
     },
     {
       id: homeSections.commute.id,
       name: commute.nav,
+      storiesLabel: t("{{label}} 이야기", { label: commute.nav }),
       title: radioLatestSection?.title ?? commute.title,
       viewAllHref: articlesArchiveHref(
         locale,
@@ -92,12 +98,13 @@ export default async function Home({ params }: Props) {
         homeSections.commute.archiveCategory,
       ),
       articles: commuteCarousel,
-      prevLabel: dict.home.carouselPrev(commute.nav),
-      nextLabel: dict.home.carouselNext(commute.nav),
+      prevLabel: t("{{label}} 이전", { label: commute.nav }),
+      nextLabel: t("{{label}} 다음", { label: commute.nav }),
     },
     {
       id: homeSections.space.id,
       name: space.nav,
+      storiesLabel: t("{{label}} 이야기", { label: space.nav }),
       title: designAwardsSection?.title ?? space.title,
       viewAllHref: articlesArchiveHref(
         locale,
@@ -107,12 +114,13 @@ export default async function Home({ params }: Props) {
         homeSections.space.archiveSection,
       ),
       articles: spaceCarousel,
-      prevLabel: dict.home.carouselPrev(space.nav),
-      nextLabel: dict.home.carouselNext(space.nav),
+      prevLabel: t("{{label}} 이전", { label: space.nav }),
+      nextLabel: t("{{label}} 다음", { label: space.nav }),
     },
     {
       id: homeSections.sleep.id,
       name: sleep.nav,
+      storiesLabel: t("{{label}} 이야기", { label: sleep.nav }),
       title: sleepStoriesSection?.title ?? sleep.title,
       viewAllHref: articlesArchiveHref(
         locale,
@@ -120,12 +128,13 @@ export default async function Home({ params }: Props) {
         homeSections.sleep.archiveCategory,
       ),
       articles: sleepCarousel,
-      prevLabel: dict.home.carouselPrev(sleep.nav),
-      nextLabel: dict.home.carouselNext(sleep.nav),
+      prevLabel: t("{{label}} 이전", { label: sleep.nav }),
+      nextLabel: t("{{label}} 다음", { label: sleep.nav }),
     },
     {
       id: homeSections.wellness.id,
       name: wellness.nav,
+      storiesLabel: t("{{label}} 이야기", { label: wellness.nav }),
       title: cityGuidesSection?.title ?? wellness.title,
       viewAllHref: articlesArchiveHref(
         locale,
@@ -133,8 +142,8 @@ export default async function Home({ params }: Props) {
         homeSections.wellness.archiveCategory,
       ),
       articles: wellnessCarousel,
-      prevLabel: dict.home.carouselPrev(wellness.nav),
-      nextLabel: dict.home.carouselNext(wellness.nav),
+      prevLabel: t("{{label}} 이전", { label: wellness.nav }),
+      nextLabel: t("{{label}} 다음", { label: wellness.nav }),
     },
   ];
 
@@ -150,8 +159,8 @@ export default async function Home({ params }: Props) {
                 accent={dict.home.heroAccent}
                 rest={dict.home.heroRest}
                 feedTitle={dict.home.feedTitle}
-                feedPrevLabel={dict.home.carouselPrev(dict.home.feedTitle)}
-                feedNextLabel={dict.home.carouselNext(dict.home.feedTitle)}
+                feedPrevLabel={t("{{label}} 이전", { label: dict.home.feedTitle })}
+                feedNextLabel={t("{{label}} 다음", { label: dict.home.feedTitle })}
                 heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
                 feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
                 categoryLabels={categoryLabels}

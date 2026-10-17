@@ -65,12 +65,9 @@ const dictionary: Dictionary = {
         title: "Daily wellness: ten minutes for your body",
       },
     },
-    storiesAria: (label) => `${label} stories`,
     radioEmpty: (sectionNav) =>
       `Connect 3 stories in Home Page → ${sectionNav}.`,
     viewAllStories: "Browse all daily routine & wellness stories →",
-    carouselPrev: (label) => `Previous: ${label}`,
-    carouselNext: (label) => `Next: ${label}`,
     heroLine1: "Daily routines & wellness.",
     heroAccent: "Pocket",
     heroRest: "guide.",

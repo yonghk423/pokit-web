@@ -13,6 +13,7 @@ import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { createTranslator } from "@/i18n/create-translator";
+import { getHomeMessages } from "@/i18n/get-home-messages";
 import { getAppPageMessages } from "@/i18n/get-app-page-messages";
 import { getAppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { getAppFeatures, type AppFeatureId } from "@/content/app-features";
@@ -302,12 +303,14 @@ export default async function AppIntroPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, pageMessages, downloadMessages] = await Promise.all([
+  const [dict, pageMessages, downloadMessages, homeMessages] = await Promise.all([
     getDictionary(locale),
     getAppPageMessages(locale),
     getAppDownloadMessages(locale),
+    getHomeMessages(locale),
   ]);
   const t = createTranslator(pageMessages);
+  const homeT = createTranslator(homeMessages);
   const downloadT = createTranslator(downloadMessages);
   const features = getAppFeatures(t);
   const storeUrl = appStoreUrl(locale);
@@ -528,8 +531,8 @@ export default async function AppIntroPage({ params }: Props) {
                 alt: feature?.imageAlt ?? t("화면부터 볼까요"),
               };
             })}
-            prevAria={dict.home.carouselPrev(t("화면부터 볼까요"))}
-            nextAria={dict.home.carouselNext(t("화면부터 볼까요"))}
+            prevAria={homeT("{{label}} 이전", { label: t("화면부터 볼까요") })}
+            nextAria={homeT("{{label}} 다음", { label: t("화면부터 볼까요") })}
           />
         </ScrollReveal>
       </section>

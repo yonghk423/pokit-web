@@ -34,11 +34,8 @@ export type Dictionary = {
   home: {
     inboxTagline: string;
     sections: Record<HomeSectionId, HomeSectionCopy>;
-    storiesAria: (label: string) => string;
     radioEmpty: (sectionNav: string) => string;
     viewAllStories: string;
-    carouselPrev: (label: string) => string;
-    carouselNext: (label: string) => string;
     heroLine1: string;
     heroAccent: string;
     heroRest: string;

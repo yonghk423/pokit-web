@@ -65,12 +65,9 @@ const dictionary: Dictionary = {
         title: "日常ウェルネス、体のための10分",
       },
     },
-    storiesAria: (label) => `${label}のストーリー`,
     radioEmpty: (sectionNav) =>
       `Home Page → ${sectionNav} でストーリーを3つつないでください。`,
     viewAllStories: "日常・ルーチン・ウェルネスの話をすべて見る →",
-    carouselPrev: (label) => `${label} 前へ`,
-    carouselNext: (label) => `${label} 次へ`,
     heroLine1: "日常ルーチンとウェルネス。",
     heroAccent: "ポケット",
     heroRest: "ガイド。",

@@ -17,6 +17,7 @@ import type { ArticleCardData } from "@/sanity/types";
 export type HomeWorkSection = {
   id: string;
   name: string;
+  storiesLabel: string;
   title: string;
   viewAllHref: string;
   articles: ArticleCardData[];
@@ -223,7 +224,7 @@ function HomeWorkRow({
         <div
           ref={scrollRef}
           className="scrollbar-hide flex snap-x snap-mandatory gap-2 overflow-x-auto overflow-y-hidden scroll-smooth pb-1"
-          aria-label={section.name}
+          aria-label={section.storiesLabel}
         >
           {images.map((article) => {
             const imageUrl = isSanityConfigured()
