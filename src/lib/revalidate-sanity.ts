@@ -1,5 +1,6 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 
+import { sitemapPaths } from "@/lib/sitemap-paths";
 import { locales } from "@/i18n/config";
 import { SANITY_CACHE_TAG } from "@/sanity/lib/cache";
 
@@ -49,7 +50,7 @@ export function slugsFromSanityWebhook(body: unknown): string[] {
 export function revalidateSanityContent(slugs: string[] = []) {
   revalidateTag(SANITY_CACHE_TAG, "max");
 
-  const paths = new Set<string>(["/sitemap.xml"]);
+  const paths = new Set<string>(sitemapPaths);
 
   for (const locale of locales) {
     paths.add(`/${locale}`);
