@@ -12,6 +12,10 @@ import { StationeryScatter } from "@/components/stationery-scatter";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { createTranslator } from "@/i18n/create-translator";
+import { getAppPageMessages } from "@/i18n/get-app-page-messages";
+import { getAppDownloadMessages } from "@/i18n/get-app-download-messages";
+import { getAppFeatures, type AppFeatureId } from "@/content/app-features";
 import heroArt from "@/assets/app-promo/app-hero.webp";
 import { appScreen, type AppScreenFile } from "@/lib/app-screens";
 import { cn, monoContainer } from "@/lib/cn";
@@ -51,7 +55,7 @@ function localizeVisual(
   };
 }
 
-const FEATURE_VISUALS: Record<string, FeatureVisual> = {
+const FEATURE_VISUALS: Record<AppFeatureId, FeatureVisual> = {
   routines: { primary: "routines.webp", secondary: "first-launch.webp" },
   puzzle: { primary: "puzzle.webp", frame: "homescreen" },
   memo: {
@@ -263,18 +267,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {};
   }
 
-  const dict = await getDictionary(rawLocale);
+  const t = createTranslator(await getAppPageMessages(rawLocale));
   const alternates = localeAlternates(rawLocale, "/app");
 
-  const title = dict.appPage.metaTitle;
+  const title = t("POKIT - 투두 시간 관리 루틴");
+  const description = t("하루의 시작과 끝을 정하고, 루틴·할 일·메모·기록을 한곳에서. POKIT 앱으로 일상을 가볍게 가꿔 보세요.");
 
   return {
     title: { absolute: title },
-    description: dict.appPage.metaDescription,
+    description,
     alternates,
     openGraph: {
       title,
-      description: dict.appPage.metaDescription,
+      description,
       url: alternates.canonical,
       siteName: site.name,
       locale: localeOpenGraph(rawLocale),
@@ -284,7 +289,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary",
       title,
-      description: dict.appPage.metaDescription,
+      description,
       images: [OG_IMAGE.url],
     },
   };
@@ -297,11 +302,17 @@ export default async function AppIntroPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
-  const copy = dict.appPage;
+  const [dict, pageMessages, downloadMessages] = await Promise.all([
+    getDictionary(locale),
+    getAppPageMessages(locale),
+    getAppDownloadMessages(locale),
+  ]);
+  const t = createTranslator(pageMessages);
+  const downloadT = createTranslator(downloadMessages);
+  const features = getAppFeatures(t);
   const storeUrl = appStoreUrl(locale);
   const featureById = Object.fromEntries(
-    copy.features.map((feature) => [feature.id, feature]),
+    features.map((feature) => [feature.id, feature]),
   );
   const softwareJsonLd = {
     "@context": "https://schema.org",
@@ -309,7 +320,7 @@ export default async function AppIntroPage({ params }: Props) {
     name: site.name,
     applicationCategory: "LifestyleApplication",
     operatingSystem: "iOS",
-    description: copy.metaDescription,
+    description: t("하루의 시작과 끝을 정하고, 루틴·할 일·메모·기록을 한곳에서. POKIT 앱으로 일상을 가볍게 가꿔 보세요."),
     url: `${site.siteUrl}/${locale}/app`,
     image: `${site.siteUrl}/pokit-logo.png`,
     offers: {
@@ -355,16 +366,16 @@ export default async function AppIntroPage({ params }: Props) {
               {site.name}
             </h1>
             <p className="app-hero-rise app-hero-rise-2 mt-4 mb-0 font-serif text-[clamp(1.35rem,4.5vw,2.35rem)] font-normal italic leading-[1.25] tracking-[-0.02em] text-ink/90 nav:mt-5">
-              {copy.title}
+              {t("하루를 담는 포켓, POKIT")}
             </p>
             <p className="app-hero-rise app-hero-rise-3 mt-5 mb-0 max-w-[30rem] whitespace-pre-line font-sans text-[0.98rem] font-normal leading-[1.7] tracking-[-0.01em] text-ink/65 nav:mt-7 nav:text-[1.05rem]">
-              {copy.lead}
+              {t("오늘 필요한 것들을, 하나의 포켓에. 루틴부터 할 일, 메모와 기록까지. 매일 필요한 작은 것들을 POKIT에 담아두세요.")}
             </p>
 
             <div className="app-hero-rise app-hero-rise-4 mt-8 flex flex-col items-start gap-3 nav:mt-10 nav:flex-row nav:flex-wrap nav:items-center nav:gap-5">
-              <AppStoreBadge locale={locale} label={copy.download} />
+              <AppStoreBadge locale={locale} label={downloadT("App Store에서 받기")} />
               <span className="font-sans text-[0.88rem] font-normal tracking-[-0.01em] text-ink/55 nav:text-[0.92rem]">
-                {copy.trustLine}
+                {t("루틴도 메모도 할 일도, 여기 한곳에")}
               </span>
             </div>
           </div>
@@ -372,7 +383,7 @@ export default async function AppIntroPage({ params }: Props) {
           <div className="app-hero-phone relative mx-auto w-full max-w-[28rem] nav:hidden">
             <Image
               src={heroArt}
-              alt={copy.heroAlt}
+              alt={t("하루 루틴을 POKIT 앱으로 챙기는 일러스트")}
               sizes="92vw"
               priority
               unoptimized
@@ -383,8 +394,8 @@ export default async function AppIntroPage({ params }: Props) {
         </div>
       </section>
 
-      <section aria-label={copy.featuresHeading}>
-        {copy.features.map((feature, index) => {
+      <section aria-label={t("앱을 열면, 이렇게 쓰게 될 거예요")}>
+        {features.map((feature, index) => {
           const visual = FEATURE_VISUALS[feature.id];
           if (!visual) return null;
           const reverse = index % 2 === 1;
@@ -477,9 +488,9 @@ export default async function AppIntroPage({ params }: Props) {
                       }
                       secondaryAlt={
                         feature.id === "memo"
-                          ? copy.secondaryImageAlt.memo
+                          ? t("잠금화면에 남길 하루 메모를 적는 화면")
                           : feature.id === "routines"
-                            ? copy.secondaryImageAlt.routines
+                            ? t("POKIT 앱을 처음 열었을 때 하루 일과를 정하는 화면")
                             : undefined
                       }
                     />
@@ -494,16 +505,16 @@ export default async function AppIntroPage({ params }: Props) {
       <section className="bg-white py-20 nav:py-24" aria-labelledby="app-gallery">
         <ScrollReveal className={monoContainer}>
           <p className="m-0 text-center font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase text-green">
-            {copy.galleryHeading}
+            {t("화면부터 볼까요")}
           </p>
           <h2
             id="app-gallery"
             className="mx-auto mt-4 mb-0 max-w-3xl text-center font-serif text-[clamp(1.7rem,3.4vw,2.45rem)] font-normal italic leading-[1.25] tracking-[-0.02em] text-ink"
           >
-            {copy.galleryLead}
+            {t("필요한 순간에, 필요한 화면을.")}
           </h2>
           <p className="mx-auto mt-5 mb-2 max-w-2xl text-center whitespace-pre-line font-sans text-[1.05rem] font-normal leading-[1.7] tracking-[-0.01em] text-muted">
-            {copy.galleryBody}
+            {t("오늘의 루틴부터 메모와 기록까지. POKIT의 하루를 직접 만나보세요.")}
           </p>
         </ScrollReveal>
         <ScrollReveal delay={120}>
@@ -513,12 +524,12 @@ export default async function AppIntroPage({ params }: Props) {
               const feature = featureById[item.featureId];
               return {
                 src: appScreen(locale, item.file),
-                title: feature?.title ?? copy.galleryHeading,
-                alt: feature?.imageAlt ?? copy.galleryHeading,
+                title: feature?.title ?? t("화면부터 볼까요"),
+                alt: feature?.imageAlt ?? t("화면부터 볼까요"),
               };
             })}
-            prevAria={dict.home.carouselPrev(copy.galleryHeading)}
-            nextAria={dict.home.carouselNext(copy.galleryHeading)}
+            prevAria={dict.home.carouselPrev(t("화면부터 볼까요"))}
+            nextAria={dict.home.carouselNext(t("화면부터 볼까요"))}
           />
         </ScrollReveal>
       </section>
@@ -531,14 +542,7 @@ export default async function AppIntroPage({ params }: Props) {
           resourceLinks={[
             { href: withLocale(locale, "/support"), label: dict.footer.support },
           ]}
-          copy={{
-            ...dict.appDownload,
-            kicker: copy.ctaKicker,
-            title: copy.ctaTitle,
-            body: copy.ctaBody,
-            download: copy.download,
-            qrHint: copy.ctaQrHint,
-          }}
+          messages={downloadMessages}
         />
       </div>
     </main>

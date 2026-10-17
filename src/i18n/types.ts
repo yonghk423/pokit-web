@@ -103,46 +103,6 @@ export type Dictionary = {
       qrHint: string;
     };
   };
-  appDownload: {
-    kicker: string;
-    title: string;
-    body?: string;
-    download: string;
-    qrAria: string;
-    qrTitle: string;
-    qrHint: string;
-    /** Short line beside the home hero QR. */
-    heroAside: string;
-    visualAlt: string;
-  };
-  appPage: {
-    trustLine: string;
-    heroAlt: string;
-    secondaryImageAlt: {
-      memo: string;
-      routines: string;
-    };
-    metaTitle: string;
-    metaDescription: string;
-    kicker: string;
-    title: string;
-    lead: string;
-    download: string;
-    featuresHeading: string;
-    features: {
-      id: string;
-      title: string;
-      body: string;
-      imageAlt: string;
-    }[];
-    galleryHeading: string;
-    galleryLead: string;
-    galleryBody: string;
-    ctaKicker: string;
-    ctaTitle: string;
-    ctaBody: string;
-    ctaQrHint: string;
-  };
   notFound: {
     title: string;
     description: string;

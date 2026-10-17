@@ -7,7 +7,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { appStoreUrl } from "@/config/site";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import { createTranslator } from "@/i18n/create-translator";
+import type { AppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { cn, monoContainer } from "@/lib/cn";
 
 type DownloadVisual = {
@@ -19,7 +20,7 @@ type DownloadVisual = {
 
 type Props = {
   locale: Locale;
-  copy: Dictionary["appDownload"];
+  messages: AppDownloadMessages;
   size?: "default" | "large";
   variant?: "brutal" | "editorial";
   /** Defaults to `app`. Pass empty string to omit. */
@@ -46,19 +47,27 @@ function defaultEditorialVisual(locale: Locale, alt: string): DownloadVisual {
 
 export function AppDownload({
   locale,
-  copy,
+  messages,
   size = "default",
   variant = "brutal",
   sectionId = "app",
   visual,
   resourceLinks,
 }: Props) {
+  const t = createTranslator(messages);
+  const body = t("오늘 필요한 것들을, POKIT에 담아보세요. 루틴도, 메모도, 해야 할 일도. 하루에 필요한 작은 것부터 하나씩. POKIT과 함께 오늘을 가볍게 시작해보세요.");
   const large = size === "large";
   const editorial = variant === "editorial";
   const resolvedVisual =
     visual === null
       ? null
-      : (visual ?? (editorial ? defaultEditorialVisual(locale, copy.visualAlt) : null));
+      : (visual ??
+        (editorial
+          ? defaultEditorialVisual(
+              locale,
+              t("형광펜과 포스트잇에 적힌 루틴, 할 일, 메모 라벨"),
+            )
+          : null));
 
   return (
     <section
@@ -92,7 +101,7 @@ export function AppDownload({
                   ),
             )}
           >
-            {copy.kicker}
+            {t("지금 시작")}
           </p>
           <h2
             className={cn(
@@ -107,16 +116,16 @@ export function AppDownload({
                   ),
             )}
           >
-            {copy.title}
+            {t("POKIT 깔고, 오늘부터 천천히 채워 보세요.")}
           </h2>
-          {copy.body ? (
+          {body ? (
             <p
               className={cn(
                 "mt-5 mb-0 whitespace-pre-line font-sans font-normal leading-[1.7] tracking-[-0.01em] text-white/70",
                 large ? "text-[1.05rem]" : "text-[0.98rem]",
               )}
             >
-              {copy.body}
+              {body}
             </p>
           ) : null}
           {resourceLinks?.length ? (
@@ -130,7 +139,7 @@ export function AppDownload({
             </nav>
           ) : null}
           <div className="mt-6">
-            <AppStoreBadge locale={locale} label={copy.download} />
+            <AppStoreBadge locale={locale} label={t("App Store에서 받기")} />
           </div>
         </div>
 
@@ -165,7 +174,7 @@ export function AppDownload({
             )}
           >
             <p className="m-0 text-center label-caps text-green">
-              {copy.qrTitle}
+              {t("지금 스캔해 보세요")}
             </p>
             <div
               className={cn(
@@ -179,7 +188,7 @@ export function AppDownload({
                 bgColor="#ffffff"
                 fgColor="#181a2e"
                 role="img"
-                aria-label={copy.qrAria}
+                aria-label={t("POKIT 앱 App Store QR 코드")}
               />
             </div>
             <p
@@ -188,7 +197,7 @@ export function AppDownload({
                 large ? "text-[0.78rem]" : "text-[0.68rem]",
               )}
             >
-              {copy.qrHint}
+              {t("카메라로 QR 코드를 스캔해 POKIT을 바로 시작할 수 있어요.")}
             </p>
           </div>
         </div>

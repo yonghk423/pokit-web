@@ -15,6 +15,7 @@ import { localeToIntl } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { createTranslator } from "@/i18n/create-translator";
 import type { HomeVideoMessages } from "@/i18n/get-home-video-messages";
+import type { AppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
 import type { ArticleCardData } from "@/sanity/types";
@@ -31,7 +32,7 @@ type Props = {
   heroArticles: ArticleCardData[];
   feedArticles: ArticleCardData[];
   categoryLabels: Dictionary["categories"];
-  download: Dictionary["appDownload"];
+  downloadMessages: AppDownloadMessages;
 };
 
 const feedNavBtnClass =
@@ -147,9 +148,10 @@ export function HomeHero({
   heroArticles,
   feedArticles,
   categoryLabels,
-  download,
+  downloadMessages,
 }: Props) {
   const t = createTranslator(videoMessages);
+  const downloadT = createTranslator(downloadMessages);
   const preview = useOptionalArticlePreview();
   const feedScrollRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -222,7 +224,7 @@ export function HomeHero({
             <div className="group relative mb-0.5 max-nav:mb-0">
               <a
                 href={appStoreUrl(locale)}
-                aria-label={download.download}
+                aria-label={downloadT("App Store에서 다운로드")}
                 className="block cursor-pointer"
               >
                 <video
@@ -259,7 +261,7 @@ export function HomeHero({
                 )}
               </button>
             </div>
-            <HomeHeroDownload locale={locale} copy={download} />
+            <HomeHeroDownload locale={locale} messages={downloadMessages} />
           </div>
         </div>
 

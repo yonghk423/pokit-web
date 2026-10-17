@@ -10,6 +10,7 @@ import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getHomeVideoMessages } from "@/i18n/get-home-video-messages";
+import { getAppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { websiteJsonLd } from "@/lib/json-ld";
 import { withLocale } from "@/lib/locale-path";
 import { newArrivalsPath } from "@/lib/new-arrivals-path";
@@ -33,9 +34,10 @@ export default async function Home({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, videoMessages] = await Promise.all([
+  const [dict, videoMessages, downloadMessages] = await Promise.all([
     getDictionary(locale),
     getHomeVideoMessages(locale),
+    getAppDownloadMessages(locale),
   ]);
   const {
     weeklyHero,
@@ -154,7 +156,7 @@ export default async function Home({ params }: Props) {
                 feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
                 categoryLabels={categoryLabels}
                 videoMessages={videoMessages}
-                download={dict.appDownload}
+                downloadMessages={downloadMessages}
               />
             </div>
           )}
@@ -191,14 +193,7 @@ export default async function Home({ params }: Props) {
                 size="large"
                 variant="editorial"
                 sectionId="download"
-                copy={{
-                  ...dict.appDownload,
-                  kicker: dict.appPage.ctaKicker,
-                  title: dict.appPage.ctaTitle,
-                  body: dict.appPage.ctaBody,
-                  download: dict.appPage.download,
-                  qrHint: dict.appPage.ctaQrHint,
-                }}
+                messages={downloadMessages}
               />
             </ScrollReveal>
           </div>
