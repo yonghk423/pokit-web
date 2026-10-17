@@ -45,8 +45,8 @@ const dictionary: Dictionary = {
         title: "Daily routines worth starting now",
       },
       commute: {
-        nav: "Commute & rest",
-        kicker: "Commute & rest",
+        nav: "On the Go",
+        kicker: "On the Go",
         title: "Daily moments in motion and pause",
       },
       space: {
@@ -296,7 +296,7 @@ const dictionary: Dictionary = {
   categories: {
     Weekly: "This week",
     Routine: "Routines",
-    Commute: "Commute & rest",
+    Commute: "On the Go",
     Space: "Space",
     Sleep: "Sleep & night",
     Wellness: "Wellness",

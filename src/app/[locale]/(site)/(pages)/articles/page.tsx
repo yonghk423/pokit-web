@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticlesArchiveSections } from "@/components/articles-archive-sections";
 import { ArticlesArchiveSearch } from "@/components/articles-archive-search";
 import { ArticlesArchiveView } from "@/components/articles-archive-view";
 import { ArticlePagination } from "@/components/article-pagination";
@@ -189,6 +190,15 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             )}
           </p>
 
+          <ArticlesArchiveSections
+            locale={locale}
+            dict={dict}
+            category={category}
+            section={archiveSection}
+            q={searchTerm}
+            sort={sort}
+          />
+
           <ArticlesArchiveSearch
             locale={locale}
             dict={dict}
@@ -198,23 +208,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             sort={sort}
           />
 
-          {(category || archiveSection) && (
-            <p className="mt-4 mb-0 font-sans text-[0.85rem]">
-              <Link
-                href={articlesArchiveHref(
-                  locale,
-                  1,
-                  undefined,
-                  searchTerm,
-                  undefined,
-                  sort,
-                )}
-                className="inline-flex items-center gap-1.5 rounded-full border border-ink/12 bg-white px-3.5 py-1.5 font-semibold text-ink no-underline transition-colors hover:border-ink/30"
-              >
-                {dict.archive.clearFilters}
-              </Link>
-            </p>
-          )}
+
         </header>
 
         {articles.length > 0 ? (
