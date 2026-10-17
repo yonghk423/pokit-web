@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import { createTranslator } from "@/i18n/create-translator";
+import type { ArchiveMessages } from "@/i18n/get-archive-messages";
 import { withLocale } from "@/lib/locale-path";
 import { articlesArchiveHref, type ArchiveSort } from "@/sanity/lib/articles";
 
 type Props = {
   locale: Locale;
-  dict: Dictionary;
+  messages: ArchiveMessages;
   q?: string;
   category?: string;
   section?: string;
@@ -16,12 +17,13 @@ type Props = {
 
 export function ArticlesArchiveSearch({
   locale,
-  dict,
+  messages,
   q,
   category,
   section,
   sort = "newest",
 }: Props) {
+  const t = createTranslator(messages);
   const trimmed = q?.trim();
 
   return (
@@ -33,7 +35,7 @@ export function ArticlesArchiveSearch({
         className="mb-2 block font-sans text-[0.72rem] font-semibold tracking-[0.06em] text-muted uppercase"
         htmlFor="articles-search"
       >
-        {dict.archive.search}
+        {t("검색")}
       </label>
       <div className="flex max-w-xl gap-2">
         <input
@@ -41,7 +43,7 @@ export function ArticlesArchiveSearch({
           name="q"
           type="search"
           defaultValue={trimmed ?? ""}
-          placeholder={dict.archive.searchPlaceholder}
+          placeholder={t("제목, 설명, 키워드")}
           autoComplete="off"
           className="min-w-0 flex-1 rounded-full border border-ink/12 bg-white px-5 py-3 font-sans text-[0.92rem] text-ink outline-none transition-colors placeholder:text-muted/70 focus:border-ink/35"
         />
@@ -49,7 +51,7 @@ export function ArticlesArchiveSearch({
           type="submit"
           className="cursor-pointer rounded-full bg-ink px-5 py-3 font-sans text-[0.85rem] font-semibold text-white transition-colors hover:bg-indigo"
         >
-          {dict.archive.searchSubmit}
+          {t("검색")}
         </button>
       </div>
       {trimmed && (
@@ -65,7 +67,7 @@ export function ArticlesArchiveSearch({
             )}
             className="font-semibold text-ink underline decoration-ink/25 underline-offset-[0.2em] hover:decoration-ink"
           >
-            {dict.archive.clearSearch}
+            {t("검색 초기화")}
           </Link>
         </p>
       )}

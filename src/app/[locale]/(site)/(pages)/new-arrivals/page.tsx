@@ -7,6 +7,8 @@ import { JsonLd } from "@/components/json-ld";
 import { ToolArchiveCard } from "@/components/tool-archive-card";
 import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
+import { createTranslator } from "@/i18n/create-translator";
+import { getArchiveMessages } from "@/i18n/get-archive-messages";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { cn, monoContainer } from "@/lib/cn";
 import { briefingCollectionJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
@@ -74,7 +76,11 @@ export default async function NewArrivalsHubPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const [dict, archiveMessages] = await Promise.all([
+    getDictionary(locale),
+    getArchiveMessages(locale),
+  ]);
+  const archiveT = createTranslator(archiveMessages);
   const tools = await listAllRoutineTools(locale);
   const description = tools.length
     ? dict.newArrivals.metaDescriptionFromItems(tools.map((item) => item.name))
@@ -145,7 +151,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
             href={withLocale(locale, "/")}
             className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 font-sans text-[0.8rem] font-semibold text-white no-underline transition-colors hover:bg-indigo"
           >
-            {dict.archive.backHome}
+            {archiveT("← 홈으로")}
           </Link>
         </p>
       </section>

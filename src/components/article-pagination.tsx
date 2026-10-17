@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import { createTranslator } from "@/i18n/create-translator";
+import type { ArchiveMessages } from "@/i18n/get-archive-messages";
 import { cn } from "@/lib/cn";
 import { articlesArchiveHref, type ArchiveSort } from "@/sanity/lib/articles";
 
 type Props = {
   locale: Locale;
-  dict: Dictionary;
+  messages: ArchiveMessages;
   page: number;
   totalPages: number;
   category?: string;
@@ -18,7 +19,7 @@ type Props = {
 
 export function ArticlePagination({
   locale,
-  dict,
+  messages,
   page,
   totalPages,
   category,
@@ -26,6 +27,7 @@ export function ArticlePagination({
   q,
   sort = "newest",
 }: Props) {
+  const t = createTranslator(messages);
   if (totalPages <= 1) {
     return null;
   }
@@ -37,7 +39,7 @@ export function ArticlePagination({
   return (
     <nav
       className="mt-14 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 border-t border-ink/8 pt-8"
-      aria-label={dict.archive.paginationAria}
+      aria-label={t("이야기 목록 페이지")}
     >
       {page > 1 ? (
         <Link
@@ -55,7 +57,7 @@ export function ArticlePagination({
             "border-ink/12 bg-white text-ink no-underline hover:border-ink/35",
           )}
         >
-          {dict.archive.prev}
+          {t("← 이전")}
         </Link>
       ) : (
         <span
@@ -64,7 +66,7 @@ export function ArticlePagination({
             "pointer-events-none border-ink/8 text-muted/50",
           )}
         >
-          {dict.archive.prev}
+          {t("← 이전")}
         </span>
       )}
 
@@ -114,7 +116,7 @@ export function ArticlePagination({
             "border-ink/12 bg-white text-ink no-underline hover:border-ink/35",
           )}
         >
-          {dict.archive.next}
+          {t("다음 →")}
         </Link>
       ) : (
         <span
@@ -123,7 +125,7 @@ export function ArticlePagination({
             "pointer-events-none border-ink/8 text-muted/50",
           )}
         >
-          {dict.archive.next}
+          {t("다음 →")}
         </span>
       )}
     </nav>

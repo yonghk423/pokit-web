@@ -1,5 +1,6 @@
 import { createTranslator } from "./create-translator";
 import type { HomeMessages } from "./get-home-messages";
+import type { ArchiveMessages } from "./get-archive-messages";
 
 /** Compile-only checks; this function is never executed. */
 export function checkTranslationTypes(messages: HomeMessages) {
@@ -32,4 +33,17 @@ export function checkTranslationTypes(messages: HomeMessages) {
   const mixed = createTranslator({ "고정": "Fixed", "{{name}}": "{{name}}" });
   // @ts-expect-error The fixed key must not allow inference to widen to the dynamic key.
   mixed("고정", { name: "메모" });
+}
+
+/** Archive results require the query, total, and both ends of the visible range. */
+export function checkArchiveTranslationTypes(messages: ArchiveMessages) {
+  const t = createTranslator(messages);
+  t('"{{term}}" 검색 결과 {{total}}편 · {{start}}-{{end}}번째', {
+    term: "메모", total: 25, start: 13, end: 24,
+  });
+  // @ts-expect-error The end of the visible range is required.
+  t('"{{term}}" 검색 결과 {{total}}편 · {{start}}-{{end}}번째', { term: "메모", total: 25, start: 13 });
+  t(" ({{page}}페이지)", { page: 2 });
+  // @ts-expect-error Page-only suffixes do not take a search term.
+  t(" ({{page}}페이지)", { page: 2, term: "메모" });
 }

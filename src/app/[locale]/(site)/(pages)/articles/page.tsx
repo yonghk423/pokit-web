@@ -8,6 +8,8 @@ import { ArticlesArchiveView } from "@/components/articles-archive-view";
 import { ArticlePagination } from "@/components/article-pagination";
 import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
+import { createTranslator } from "@/i18n/create-translator";
+import { getArchiveMessages } from "@/i18n/get-archive-messages";
 import { getDictionary } from "@/i18n/get-dictionary";
 import {
   getArchiveHeading,
@@ -65,24 +67,30 @@ export async function generateMetadata({
   const archiveSection =
     section && isArchiveSection(section) ? section : undefined;
   const sort = parseArchiveSort(rawSort);
-  const dict = await getDictionary(rawLocale);
-  const heading = getArchiveHeading(dict, category, archiveSection);
+  const [dict, messages] = await Promise.all([
+    getDictionary(rawLocale),
+    getArchiveMessages(rawLocale),
+  ]);
+  const t = createTranslator(messages);
+  const heading = getArchiveHeading(dict, t, category, archiveSection);
   const pageSuffix =
     page > 1
-      ? dict.archive.pageSuffix(page, searchTerm)
+      ? searchTerm
+        ? t(" ({{page}}페이지 · \"{{term}}\")", { page, term: searchTerm })
+        : t(" ({{page}}페이지)", { page })
       : searchTerm
-        ? ` · "${searchTerm}"`
+        ? t(" · \"{{term}}\"", { term: searchTerm })
         : "";
   const title = `${heading}${pageSuffix}`;
   const description = searchTerm
-    ? dict.archive.descriptionSearch(searchTerm)
+    ? t("\"{{term}}\" 검색 결과. 일상·루틴·웰니스 이야기를 POKIT에서 확인하세요.", { term: searchTerm })
     : archiveSection
-      ? dict.archive.descriptionSection(
-        getArchiveSectionLabel(archiveSection, dict),
-      )
+      ? t("{{label}}. 일상 루틴·웰니스 이야기 | POKIT", {
+        label: getArchiveSectionLabel(archiveSection, dict),
+      })
       : category
-        ? dict.archive.descriptionCategory(getCategoryLabel(category, dict))
-        : dict.archive.descriptionAll;
+        ? t("{{label}}. 일상 속 루틴과 웰니스 이야기 | POKIT", { label: getCategoryLabel(category, dict) })
+        : t("일상 루틴과 웰니스 가이드. POKIT에 발행된 모든 이야기를 확인하세요.");
 
   const isSearchResult = Boolean(searchTerm);
 
@@ -129,7 +137,11 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(rawLocale);
+  const [dict, messages] = await Promise.all([
+    getDictionary(rawLocale),
+    getArchiveMessages(rawLocale),
+  ]);
+  const t = createTranslator(messages);
   const { page: rawPage, category, section, q, sort: rawSort } =
     await searchParams;
   const page = parsePage(rawPage);
@@ -157,16 +169,16 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
   const rangeStart = total === 0 ? 0 : (page - 1) * ARTICLES_PER_PAGE + 1;
   const rangeEnd = Math.min(page * ARTICLES_PER_PAGE, total);
-  const heading = getArchiveHeading(dict, category, archiveSection);
+  const heading = getArchiveHeading(dict, t, category, archiveSection);
   const sortLabel =
-    sort === "oldest" ? dict.archive.sortOldest : dict.archive.sortNewest;
+    sort === "oldest" ? t("오래된순") : t("최신순");
 
   return (
     <main className="pb-8">
       <section className={cn(monoContainer, "pt-10 pb-16 max-nav:pt-8")}>
         <header className="mb-10 max-nav:mb-8">
           <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.08em] text-muted uppercase">
-            {dict.archive.label}
+            {t("Archive")}
           </p>
           <h1 className="m-0 mt-3 max-w-[40rem] font-sans text-[clamp(2.35rem,5.5vw,4rem)] font-medium leading-[1.08] tracking-[-0.035em] text-ink">
             {heading}
@@ -174,25 +186,24 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
           <p className="mt-4 mb-0 max-w-[36rem] font-sans text-[0.95rem] leading-relaxed text-muted">
             {searchTerm ? (
               total > 0 ? (
-                dict.archive.searchResults(
-                  searchTerm,
-                  total,
-                  rangeStart,
-                  rangeEnd,
-                )
+                t("\"{{term}}\" 검색 결과 {{total}}편 · {{start}}-{{end}}번째", {
+                  term: searchTerm, total, start: rangeStart, end: rangeEnd,
+                })
               ) : (
-                dict.archive.searchNoResults(searchTerm)
+                t("\"{{term}}\"에 맞는 이야기가 없습니다.", { term: searchTerm })
               )
             ) : total > 0 ? (
-              dict.archive.totalRange(total, rangeStart, rangeEnd, sortLabel)
+              t("총 {{total}}편 · {{start}}-{{end}}번째 ({{sortLabel}})", { total, start: rangeStart, end: rangeEnd, sortLabel })
             ) : (
-              dict.archive.empty
+              t("아직 발행된 이야기가 없습니다.")
             )}
           </p>
 
           <ArticlesArchiveSections
             locale={locale}
-            dict={dict}
+            messages={messages}
+            categoryLabels={dict.categories}
+            categoriesAria={dict.header.categoriesAria}
             category={category}
             section={archiveSection}
             q={searchTerm}
@@ -201,7 +212,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
           <ArticlesArchiveSearch
             locale={locale}
-            dict={dict}
+            messages={messages}
             q={searchTerm}
             category={category}
             section={archiveSection}
@@ -235,17 +246,17 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
                 "oldest",
               )}
               labels={{
-                viewModeAria: dict.archive.viewModeAria,
-                viewGrid: dict.archive.viewGrid,
-                viewList: dict.archive.viewList,
-                sortAria: dict.archive.sortAria,
-                sortNewest: dict.archive.sortNewest,
-                sortOldest: dict.archive.sortOldest,
+                viewModeAria: t("보기 방식"),
+                viewGrid: t("갤러리"),
+                viewList: t("리스트"),
+                sortAria: t("정렬"),
+                sortNewest: t("최신순"),
+                sortOldest: t("오래된순"),
               }}
             />
             <ArticlePagination
               locale={locale}
-              dict={dict}
+              messages={messages}
               page={page}
               totalPages={totalPages}
               category={category}
@@ -257,8 +268,8 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
         ) : (
           <p className="m-0 rounded-[1.1rem] border border-ink/10 bg-white/60 px-5 py-8 font-sans text-[0.92rem] text-muted">
             {searchTerm
-              ? dict.archive.noSearchMatch
-              : dict.archive.studioHint}
+              ? t("다른 검색어를 시도하거나 검색을 초기화해 보세요.")
+              : t("Sanity Studio에서 이야기를 발행하면 여기에 표시됩니다.")}
           </p>
         )}
 
@@ -267,7 +278,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             href={withLocale(locale, "/")}
             className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 font-sans text-[0.8rem] font-semibold text-white no-underline transition-colors hover:bg-indigo"
           >
-            {dict.archive.backHome}
+            {t("← 홈으로")}
           </Link>
         </p>
       </section>

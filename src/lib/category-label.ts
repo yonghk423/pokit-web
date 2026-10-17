@@ -3,6 +3,8 @@ import {
   isArticleCategoryId,
   normalizeArticleCategory,
 } from "@/content/categories";
+import type { createTranslator } from "@/i18n/create-translator";
+import type { ArchiveMessages } from "@/i18n/get-archive-messages";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { homeSections } from "@/content/home";
@@ -29,16 +31,17 @@ export function isArchiveSection(section: string) {
 
 export function getArchiveHeading(
   dict: Dictionary,
+  t: ReturnType<typeof createTranslator<ArchiveMessages>>,
   category?: string,
   section?: string,
 ) {
   if (section) {
-    return dict.archive.storiesIn(getArchiveSectionLabel(section, dict));
+    return t("{{label}} 이야기", { label: getArchiveSectionLabel(section, dict) });
   }
   if (category) {
-    return dict.archive.storiesIn(getCategoryLabel(category, dict));
+    return t("{{label}} 이야기", { label: getCategoryLabel(category, dict) });
   }
-  return dict.archive.allStories;
+  return t("모든 이야기");
 }
 
 export function getHomeSectionCopy(dict: Dictionary, sectionId: keyof typeof homeSections) {

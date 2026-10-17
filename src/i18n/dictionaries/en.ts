@@ -86,45 +86,6 @@ const dictionary: Dictionary = {
     exploreAll: "Explore all",
     closePreview: "Back to list",
   },
-  archive: {
-    label: "Archive",
-    allStories: "All stories",
-    storiesIn: (label) => `${label} stories`,
-    search: "Search",
-    searchPlaceholder: "Title, description, keywords",
-    searchSubmit: "Search",
-    clearSearch: "Clear search",
-    clearFilters: "Clear filters · view all stories",
-    searchResults: (term, total, start, end) =>
-      `"${term}" · ${total} results · showing ${start}-${end}`,
-    searchNoResults: (term) => `No stories match "${term}".`,
-    totalRange: (total, start, end, sortLabel) =>
-      `${total} stories · showing ${start}-${end} (${sortLabel})`,
-    empty: "No stories have been published yet.",
-    noSearchMatch: "Try a different search term or clear your search.",
-    studioHint: "Stories published in Sanity Studio will appear here.",
-    backHome: "← Back to home",
-    pageSuffix: (page, search) =>
-      search ? ` (page ${page} · "${search}")` : ` (page ${page})`,
-    descriptionAll:
-      "Daily routines and wellness guides. Browse every story on POKIT.",
-    descriptionCategory: (label) =>
-      `${label}. Daily routine and wellness stories on POKIT.`,
-    descriptionSection: (label) =>
-      `${label}. Daily routine and wellness stories on POKIT.`,
-    descriptionSearch: (term) =>
-      `Results for "${term}". Daily routine and wellness stories on POKIT.`,
-    paginationAria: "Story archive pages",
-    prev: "← Previous",
-    next: "Next →",
-    viewModeAria: "View mode",
-    viewLabel: "View",
-    viewGrid: "Grid",
-    viewList: "List",
-    sortAria: "Sort order",
-    sortNewest: "Newest",
-    sortOldest: "Oldest",
-  },
   article: {
     backHome: "← Back to POKIT",
     koreanOnlyBanner:

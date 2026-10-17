@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { articleCategoryIds, normalizeArticleCategory } from "@/content/categories";
 import { homeSections } from "@/content/home";
+import { createTranslator } from "@/i18n/create-translator";
+import type { ArchiveMessages } from "@/i18n/get-archive-messages";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { cn } from "@/lib/cn";
@@ -9,28 +11,31 @@ import { articlesArchiveHref, type ArchiveSort } from "@/sanity/lib/articles";
 
 type Props = {
   locale: Locale;
-  dict: Dictionary;
+  categoryLabels: Dictionary["categories"];
+  categoriesAria: string;
+  messages: ArchiveMessages;
   category?: string;
   section?: string;
   q?: string;
   sort: ArchiveSort;
 };
 
-export function ArticlesArchiveSections({ locale, dict, category, section, q, sort }: Props) {
+export function ArticlesArchiveSections({ locale, categoryLabels, categoriesAria, messages, category, section, q, sort }: Props) {
+  const t = createTranslator(messages);
   const selected = section === homeSections.space.archiveSection
     ? "Space" : category ? normalizeArticleCategory(category) : undefined;
   const options = [
-    { id: "all", label: dict.archive.allStories, category: undefined, section: undefined },
+    { id: "all", label: t("모든 이야기"), category: undefined, section: undefined },
     ...articleCategoryIds.map(id => ({
       id,
-      label: dict.categories[id],
+      label: categoryLabels[id],
       category: id === "Space" ? undefined : id,
       section: id === "Space" ? homeSections.space.archiveSection : undefined,
     })),
   ];
 
   return (
-    <nav aria-label={dict.header.categoriesAria} className="mt-7 border-b border-ink/12">
+    <nav aria-label={categoriesAria} className="mt-7 border-b border-ink/12">
       <ul className="m-0 flex list-none flex-wrap gap-x-6 gap-y-1 p-0 max-nav:gap-x-5">
         {options.map(option => {
           const active = option.id === "all" ? !selected : selected === option.id;

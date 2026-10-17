@@ -86,45 +86,6 @@ const dictionary: Dictionary = {
     exploreAll: "모두 보기",
     closePreview: "목록으로",
   },
-  archive: {
-    label: "Archive",
-    allStories: "모든 이야기",
-    storiesIn: (label) => `${label} 이야기`,
-    search: "검색",
-    searchPlaceholder: "제목, 설명, 키워드",
-    searchSubmit: "검색",
-    clearSearch: "검색 초기화",
-    clearFilters: "필터 해제 · 전체 이야기 보기",
-    searchResults: (term, total, start, end) =>
-      `"${term}" 검색 결과 ${total}편 · ${start}-${end}번째`,
-    searchNoResults: (term) => `"${term}"에 맞는 이야기가 없습니다.`,
-    totalRange: (total, start, end, sortLabel) =>
-      `총 ${total}편 · ${start}-${end}번째 (${sortLabel})`,
-    empty: "아직 발행된 이야기가 없습니다.",
-    noSearchMatch: "다른 검색어를 시도하거나 검색을 초기화해 보세요.",
-    studioHint: "Sanity Studio에서 이야기를 발행하면 여기에 표시됩니다.",
-    backHome: "← 홈으로",
-    pageSuffix: (page, search) =>
-      search ? ` (${page}페이지 · "${search}")` : ` (${page}페이지)`,
-    descriptionAll:
-      "일상 루틴과 웰니스 가이드. POKIT에 발행된 모든 이야기를 확인하세요.",
-    descriptionCategory: (label) =>
-      `${label}. 일상 속 루틴과 웰니스 이야기 | POKIT`,
-    descriptionSection: (label) =>
-      `${label}. 일상 루틴·웰니스 이야기 | POKIT`,
-    descriptionSearch: (term) =>
-      `"${term}" 검색 결과. 일상·루틴·웰니스 이야기를 POKIT에서 확인하세요.`,
-    paginationAria: "이야기 목록 페이지",
-    prev: "← 이전",
-    next: "다음 →",
-    viewModeAria: "보기 방식",
-    viewLabel: "보기",
-    viewGrid: "갤러리",
-    viewList: "리스트",
-    sortAria: "정렬",
-    sortNewest: "최신순",
-    sortOldest: "오래된순",
-  },
   article: {
     backHome: "← Back to POKIT",
     koreanOnlyBanner:

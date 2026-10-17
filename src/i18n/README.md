@@ -1,11 +1,11 @@
 # UI 번역 전환
 
-홈 영상, 홈 이야기 안내·이전/다음 버튼, 앱 소개, 앱 다운로드 영역은 한글 원문 키와 JSON 리소스를 사용합니다.
+홈 영상, 홈 이야기 안내·이전/다음 버튼, 앱 소개, 앱 다운로드, 게시글 목록 영역은 한글 원문 키와 JSON 리소스를 사용합니다.
 나머지 UI는 기존 `getDictionary`를 사용하며, Sanity 콘텐츠 번역은 별도로 관리합니다.
 
 ## 리소스와 호출
 
-- `messages/{ko,en,ja}/{home,home-video,app-page,app-download}.json`에 같은 한글 키를 등록합니다.
+- `messages/{ko,en,ja}/{home,home-video,app-page,app-download,archive}.json`에 같은 한글 키를 등록합니다.
 - 한국어 리소스의 키가 각 영역의 메시지 타입 기준입니다. 다른 언어에
   필요한 키가 없으면 로더의 타입 검사에서 오류가 발생합니다.
 - 서버에서는 `getHomeVideoMessages(locale)`로 현재 언어의 리소스를 읽고
@@ -17,6 +17,9 @@
   번역하고, 클라이언트의 다운로드 영역에는 다운로드 리소스만 전달합니다.
 - 기능 ID와 순서는 `src/content/app-features.ts`에서 한 번만 정의합니다.
   이미지 선택과 갤러리는 이 ID를 사용하고, 번역 JSON에는 문구만 저장합니다.
+- 게시글 목록은 `getArchiveMessages(locale)`로 읽습니다. 검색 결과 수·표시 범위와
+  메타데이터는 서버에서 번역합니다. 보기·정렬 컨트롤에는 번역한 문자열만 전달합니다.
+  페이지 제목의 접미사는 검색어 유무에 따라 별도 키를 사용합니다.
 
 ```tsx
 const t = createTranslator(videoMessages);

@@ -52,38 +52,6 @@ export type Dictionary = {
     exploreAll: string;
     closePreview: string;
   };
-  archive: {
-    label: string;
-    allStories: string;
-    storiesIn: (label: string) => string;
-    search: string;
-    searchPlaceholder: string;
-    searchSubmit: string;
-    clearSearch: string;
-    clearFilters: string;
-    searchResults: (term: string, total: number, start: number, end: number) => string;
-    searchNoResults: (term: string) => string;
-    totalRange: (total: number, start: number, end: number, sortLabel: string) => string;
-    empty: string;
-    noSearchMatch: string;
-    studioHint: string;
-    backHome: string;
-    pageSuffix: (page: number, search?: string) => string;
-    descriptionAll: string;
-    descriptionCategory: (label: string) => string;
-    descriptionSection: (label: string) => string;
-    descriptionSearch: (term: string) => string;
-    paginationAria: string;
-    prev: string;
-    next: string;
-    viewModeAria: string;
-    viewLabel: string;
-    viewGrid: string;
-    viewList: string;
-    sortAria: string;
-    sortNewest: string;
-    sortOldest: string;
-  };
   article: {
     backHome: string;
     koreanOnlyBanner: string;
