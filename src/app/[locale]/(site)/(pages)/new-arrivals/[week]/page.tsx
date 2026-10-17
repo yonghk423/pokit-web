@@ -1,3 +1,4 @@
+import { createTranslator } from "@/i18n/create-translator";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -6,7 +7,8 @@ import { JsonLd } from "@/components/json-ld";
 import { NewArrivalsSection } from "@/components/new-arrivals-section";
 import { site } from "@/config/site";
 import { isLocale, locales, localeToIntl, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getNewArrivalsMessages } from "@/i18n/get-new-arrivals-messages";
+import { createNewArrivalsDescription } from "@/content/new-arrivals-copy";
 import { cn, monoContainer } from "@/lib/cn";
 import { briefingCollectionJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
@@ -55,15 +57,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const t = createTranslator(await getNewArrivalsMessages(locale));
   const roundup = await getNewArrivalsByWeek(locale, week);
   if (!roundup) {
     return {};
   }
 
   const weekLabel = formatWeekLabel(week, locale);
-  const title = dict.newArrivals.weekTitle(weekLabel);
-  const description = dict.newArrivals.metaDescriptionFromItems(
+  const title = t("{{weekLabel}} 루틴 도구", { weekLabel });
+  const description = createNewArrivalsDescription(
+    t,
     roundup.items.map((item) => item.name),
   );
   const alternates = localeAlternates(locale, `/new-arrivals/${week}`);
@@ -97,15 +100,16 @@ export default async function NewArrivalsWeekPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const t = createTranslator(await getNewArrivalsMessages(locale));
   const roundup = await getNewArrivalsByWeek(locale, week);
   if (!roundup) {
     notFound();
   }
 
   const weekLabel = formatWeekLabel(week, locale);
-  const pageTitle = dict.newArrivals.weekTitle(weekLabel);
-  const description = dict.newArrivals.metaDescriptionFromItems(
+  const pageTitle = t("{{weekLabel}} 루틴 도구", { weekLabel });
+  const description = createNewArrivalsDescription(
+    t,
     roundup.items.map((item) => item.name),
   );
 
@@ -115,7 +119,7 @@ export default async function NewArrivalsWeekPage({ params }: Props) {
         data={breadcrumbJsonLd(
           [
             { name: site.name, path: "/" },
-            { name: dict.newArrivals.hubTitle, path: "/new-arrivals" },
+            { name: t("루틴 도구"), path: "/new-arrivals" },
             { name: pageTitle, path: `/new-arrivals/${week}` },
           ],
           locale,
@@ -141,14 +145,14 @@ export default async function NewArrivalsWeekPage({ params }: Props) {
           href={newArrivalsPath(locale)}
           className="font-bold underline decoration-2 underline-offset-2 hover:bg-wash"
         >
-          {dict.newArrivals.backToHub}
+          {t("← 루틴 도구 목록")}
         </Link>
       </p>
 
       <NewArrivalsSection
         roundup={{ ...roundup, title: pageTitle }}
         locale={locale}
-        kicker={dict.newArrivals.kicker}
+        kicker={t("루틴 도구")}
         titleAs="h1"
         sectionId="new-arrivals-week"
       />

@@ -12,6 +12,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { createTranslator } from "@/i18n/create-translator";
 import { getHomeMessages } from "@/i18n/get-home-messages";
 import { getHomeVideoMessages } from "@/i18n/get-home-video-messages";
+import { getNewArrivalsMessages } from "@/i18n/get-new-arrivals-messages";
 import { getAppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { websiteJsonLd } from "@/lib/json-ld";
 import { withLocale } from "@/lib/locale-path";
@@ -36,13 +37,15 @@ export default async function Home({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, videoMessages, downloadMessages, homeMessages] = await Promise.all([
+  const [dict, videoMessages, downloadMessages, homeMessages, toolMessages] = await Promise.all([
     getDictionary(locale),
     getHomeVideoMessages(locale),
     getAppDownloadMessages(locale),
     getHomeMessages(locale),
+    getNewArrivalsMessages(locale),
   ]);
   const t = createTranslator(homeMessages);
+  const toolT = createTranslator(toolMessages);
   const {
     weeklyHero,
     weeklyRail,
@@ -189,9 +192,9 @@ export default async function Home({ params }: Props) {
               accent={t("루틴")}
               rest={t("도구.")}
               viewAllHref={newArrivalsPath(locale)}
-              viewAllLabel={dict.newArrivals.viewAll}
-              pastLabel={dict.newArrivals.pastTools}
-              kicker={dict.newArrivals.kicker}
+              viewAllLabel={toolT("도구 전체")}
+              pastLabel={toolT("지난 도구")}
+              kicker={toolT("루틴 도구")}
             />
           )}
 

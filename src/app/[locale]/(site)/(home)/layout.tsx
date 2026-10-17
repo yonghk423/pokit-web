@@ -4,7 +4,7 @@ import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
 import { notFound } from "next/navigation";
 import { HomePreviewShell } from "@/components/home-preview-shell";
 import { isLocale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getNewArrivalsMessages } from "@/i18n/get-new-arrivals-messages";
 import { createTranslator } from "@/i18n/create-translator";
 import { getCommonMessages } from "@/i18n/get-common-messages";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
@@ -56,17 +56,18 @@ export default async function HomeLayout({ children, modal, params }: {
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const [dict, homeMessages, installMessages] = await Promise.all([
-    getDictionary(locale),
+  const [toolMessages, homeMessages, installMessages] = await Promise.all([
+    getNewArrivalsMessages(locale),
     getHomeMessages(locale),
     getAppInstallMessages(locale),
   ]);
   const t = createTranslator(homeMessages);
+  const toolT = createTranslator(toolMessages);
   return (
     <HomePreviewShell locale={locale}
       closeLabel={t("목록으로")}
       installMessages={installMessages}
-      toolKicker={dict.newArrivals.kicker}>
+      toolKicker={toolT("루틴 도구")}>
       {children}
       {modal}
     </HomePreviewShell>

@@ -9,8 +9,10 @@ import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
+import { getHomeMessages } from "@/i18n/get-home-messages";
 import { getArchiveMessages } from "@/i18n/get-archive-messages";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getNewArrivalsMessages } from "@/i18n/get-new-arrivals-messages";
+import { createNewArrivalsDescription } from "@/content/new-arrivals-copy";
 import { cn, monoContainer } from "@/lib/cn";
 import { briefingCollectionJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
@@ -40,12 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const t = createTranslator(await getNewArrivalsMessages(locale));
   const tools = await listAllRoutineTools(locale);
   const description = tools.length
-    ? dict.newArrivals.metaDescriptionFromItems(tools.map((item) => item.name))
-    : dict.newArrivals.hubDescription;
-  const title = dict.newArrivals.allTools;
+    ? createNewArrivalsDescription(t, tools.map((item) => item.name))
+    : t("생산성·건강·웰니스를 높이는 도구를 장면과 함께 추천합니다. 신상 나열이 아니라, 실제로 루틴에 붙이는 방법입니다.");
+  const title = t("모든 도구들");
   const alternates = localeAlternates(locale, "/new-arrivals");
 
   return {
@@ -77,30 +79,33 @@ export default async function NewArrivalsHubPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, archiveMessages, installMessages] = await Promise.all([
-    getDictionary(locale),
+  const [toolMessages, archiveMessages, installMessages, homeMessages] = await Promise.all([
+    getNewArrivalsMessages(locale),
     getArchiveMessages(locale),
     getAppInstallMessages(locale),
+    getHomeMessages(locale),
   ]);
+  const t = createTranslator(toolMessages);
+  const homeT = createTranslator(homeMessages);
   const archiveT = createTranslator(archiveMessages);
   const tools = await listAllRoutineTools(locale);
   const description = tools.length
-    ? dict.newArrivals.metaDescriptionFromItems(tools.map((item) => item.name))
-    : dict.newArrivals.hubDescription;
+    ? createNewArrivalsDescription(t, tools.map((item) => item.name))
+    : t("생산성·건강·웰니스를 높이는 도구를 장면과 함께 추천합니다. 신상 나열이 아니라, 실제로 루틴에 붙이는 방법입니다.");
 
   return (
     <HomePreviewShell
       locale={locale}
-      closeLabel={dict.home.closePreview}
+      closeLabel={homeT("목록으로")}
       installMessages={installMessages}
-      toolKicker={dict.newArrivals.kicker}
+      toolKicker={t("루틴 도구")}
     >
     <main className="pb-8">
       <JsonLd
         data={breadcrumbJsonLd(
           [
             { name: site.name, path: "/" },
-            { name: dict.newArrivals.allTools, path: "/new-arrivals" },
+            { name: t("모든 도구들"), path: "/new-arrivals" },
           ],
           locale,
         )}
@@ -110,7 +115,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
           data={briefingCollectionJsonLd({
             locale,
             path: "/new-arrivals",
-            name: dict.newArrivals.allTools,
+            name: t("모든 도구들"),
             description,
             items: tools.map((item) => ({
               headline: item.name,
@@ -124,15 +129,15 @@ export default async function NewArrivalsHubPage({ params }: Props) {
       <section className={cn(monoContainer, "pt-10 pb-16 max-nav:pt-8")}>
         <header className="mb-10 max-nav:mb-8">
           <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.08em] text-muted uppercase">
-            {dict.newArrivals.kicker}
+            {t("루틴 도구")}
           </p>
           <h1 className="m-0 mt-3 max-w-[40rem] font-sans text-[clamp(2.35rem,5.5vw,4rem)] font-medium leading-[1.08] tracking-[-0.035em] text-ink">
-            {dict.newArrivals.allTools}
+            {t("모든 도구들")}
           </h1>
           <p className="mt-4 mb-0 max-w-[36rem] font-sans text-[0.95rem] leading-relaxed text-muted">
             {tools.length > 0
-              ? dict.newArrivals.allToolsCount(tools.length)
-              : dict.newArrivals.empty}
+              ? t("총 {{total}}개", { total: tools.length })
+              : t("아직 발행된 루틴 도구 리스트가 없습니다.")}
           </p>
         </header>
 
@@ -142,7 +147,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
               <ToolArchiveCard
                 key={item.slug}
                 item={item}
-                kicker={dict.newArrivals.kicker}
+                kicker={t("루틴 도구")}
               />
             ))}
           </div>
