@@ -3,11 +3,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SupportEmailLink } from "@/components/support-email-link";
-import { getSupportCopy } from "@/content/support-copy";
+import { createSupportCopy } from "@/content/support-copy";
 import type { SupportBlock } from "@/content/support-types";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { createTranslator } from "@/i18n/create-translator";
+import { getSupportMessages } from "@/i18n/get-support-messages";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 
 type Props = {
@@ -81,7 +82,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {};
   }
 
-  const copy = getSupportCopy(rawLocale);
+  const t = createTranslator(await getSupportMessages(rawLocale));
+  const copy = createSupportCopy(t);
   const alternates = localeAlternates(rawLocale, "/support");
 
   return {
@@ -113,8 +115,8 @@ export default async function SupportPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
-  const copy = getSupportCopy(locale);
+  const t = createTranslator(await getSupportMessages(locale));
+  const copy = createSupportCopy(t);
   const storeUrl = appStoreUrl(locale);
 
   return (
@@ -131,7 +133,7 @@ export default async function SupportPage({ params }: Props) {
             </div>
             <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">
               <a href={storeUrl} className="text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">{copy.appStore}</a>
-              <SupportEmailLink className="text-ink decoration-ink/35 underline-offset-4 hover:decoration-ink">{dict.support.sendMail}</SupportEmailLink>
+              <SupportEmailLink className="text-ink decoration-ink/35 underline-offset-4 hover:decoration-ink">{t("메일 보내기")}</SupportEmailLink>
             </div>
           </div>
         </div>
@@ -162,16 +164,16 @@ export default async function SupportPage({ params }: Props) {
               </div>
               {section.id === "contact" ? (
                 <div className="mt-6 grid justify-items-start gap-3">
-                  <p className="m-0 text-sm text-ink/60">{dict.support.email}</p>
+                  <p className="m-0 text-sm text-ink/60">{t("이메일")}</p>
                   <SupportEmailLink className="break-all text-base text-ink decoration-ink/35">{site.supportEmail}</SupportEmailLink>
-                  <SupportEmailLink className="mt-2 text-sm text-ink decoration-ink/35">{dict.support.sendMail}</SupportEmailLink>
+                  <SupportEmailLink className="mt-2 text-sm text-ink decoration-ink/35">{t("메일 보내기")}</SupportEmailLink>
                 </div>
               ) : null}
             </div>
           </section>
         ))}
       </div>
-      <Link href={withLocale(locale, "/")} className="mt-8 inline-block text-sm text-ink/65 underline decoration-ink/30 underline-offset-4 hover:text-ink">{dict.support.backHome}</Link>
+      <Link href={withLocale(locale, "/")} className="mt-8 inline-block text-sm text-ink/65 underline decoration-ink/30 underline-offset-4 hover:text-ink">{t("← 홈으로")}</Link>
     </main>
   );
 }

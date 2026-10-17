@@ -4,33 +4,6 @@ import type { HomeCopy } from "./create-home-copy";
 export type Dictionary = LegacyDictionary & CommonCopy & { home: HomeCopy };
 
 export type LegacyDictionary = {
-  article: {
-    backHome: string;
-    koreanOnlyBanner: string;
-    relatedStories: (label: string) => string;
-    viewMore: string;
-    addToPokit: {
-      ariaLabel: string;
-      title: string;
-      button: string;
-      sent: string;
-      fallback: string;
-      download: string;
-      qrAria: string;
-      qrHint: string;
-    };
-  };
-  support: {
-    title: string;
-    description: string;
-    intro: string;
-    email: string;
-    sendMail: string;
-    contactCta: string;
-    contactHint: string;
-    backHome: string;
-    help: string;
-  };
   briefing: {
     nav: string;
     kicker: string;

@@ -1,34 +1,6 @@
 import type { LegacyDictionary } from "@/i18n/types";
 
 const dictionary: LegacyDictionary = {
-  article: {
-    backHome: "← Back to POKIT",
-    koreanOnlyBanner:
-      "This story is not yet available in English. Showing the Korean original.",
-    relatedStories: (label) => `More ${label.toLowerCase()} stories`,
-    viewMore: "View more →",
-    addToPokit: {
-      ariaLabel: "Save this routine to the POKIT app",
-      title: "Save this routine to your app",
-      button: "Add to POKIT",
-      sent: "You can finish saving in the app",
-      fallback: "Track daily routines and protect your wellness in the POKIT app.",
-      download: "Download on the App Store",
-      qrAria: "POKIT App Store QR code",
-      qrHint: "Scan with your phone camera to install",
-    },
-  },
-  support: {
-    title: "POKIT Support",
-    description: "About POKIT, screen guide, FAQ, and contact.",
-    intro: "For questions about the site or app, email us below.",
-    email: "Email",
-    sendMail: "Send email",
-    contactCta: "Contact us",
-    contactHint: "If something is off, send us a note",
-    backHome: "← Back to home",
-    help: "Help & FAQ",
-  },
   briefing: {
     nav: "Wellness briefing",
     kicker: "Weekly briefing",

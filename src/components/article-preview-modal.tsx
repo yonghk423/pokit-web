@@ -1,5 +1,7 @@
 "use client";
 
+import type { AppInstallMessages } from "@/i18n/get-app-install-messages";
+
 import { PortableText, type PortableTextBlock } from "next-sanity";
 import {
   useEffect,
@@ -44,7 +46,7 @@ type PreviewArticle = {
 type Props = {
   categoryLabels: Dictionary["categories"];
   closeLabel: string;
-  addToPokit: Dictionary["article"]["addToPokit"];
+  installMessages: AppInstallMessages;
   preview?: Pick<ReturnType<typeof useArticlePreview>, "locale" | "active" | "close">;
 };
 
@@ -73,7 +75,7 @@ function rectStyle(rect: DOMRect): CSSProperties {
 export function ArticlePreviewModal({
   categoryLabels,
   closeLabel,
-  addToPokit,
+  installMessages,
   preview,
 }: Props) {
   const context = useArticlePreview();
@@ -361,7 +363,7 @@ export function ArticlePreviewModal({
                         imageAlt: detail.imageAlt,
                       })}
                       locale={locale}
-                      copy={addToPokit}
+                      messages={installMessages}
                       className="mt-6 mb-4 max-w-none max-nav:mt-5 max-nav:mb-6"
                     />
                   ) : loading ? (

@@ -1,34 +1,6 @@
 import type { LegacyDictionary } from "@/i18n/types";
 
 const dictionary: LegacyDictionary = {
-  article: {
-    backHome: "← Back to POKIT",
-    koreanOnlyBanner:
-      "이 글은 아직 영문 번역이 준비되지 않았습니다. 한국어 원문을 표시하고 있습니다.",
-    relatedStories: (label) => `${label} 이야기`,
-    viewMore: "더보기 →",
-    addToPokit: {
-      ariaLabel: "POKIT 앱에 루틴 담기",
-      title: "이 루틴을 앱에 담아 보세요",
-      button: "POKIT에 담기",
-      sent: "앱에서 이어서 담을 수 있어요",
-      fallback: "POKIT 앱에서 일상 루틴을 기록하고, 웰니스를 지켜 보세요.",
-      download: "App Store에서 다운로드",
-      qrAria: "POKIT 앱 App Store QR 코드",
-      qrHint: "휴대폰 카메라로 스캔해서 설치",
-    },
-  },
-  support: {
-    title: "POKIT 지원 정보",
-    description: "POKIT 앱 소개, 화면 안내, 자주 묻는 질문과 문의 창구입니다.",
-    intro: "사이트·앱 관련 문의는 아래 이메일로 보내 주세요.",
-    email: "이메일",
-    sendMail: "메일 보내기",
-    contactCta: "문의하기",
-    contactHint: "문제가 있으면 메일로 남겨 주세요",
-    backHome: "← 홈으로",
-    help: "지원 · FAQ",
-  },
   briefing: {
     nav: "웰니스 브리핑",
     kicker: "주간 브리핑",

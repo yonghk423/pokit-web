@@ -1,5 +1,7 @@
 "use client";
 
+import type { AppInstallMessages } from "@/i18n/get-app-install-messages";
+
 import { Suspense, type ReactNode } from "react";
 
 import { ArticleDeepLink } from "@/components/article-deep-link";
@@ -9,23 +11,22 @@ import {
 } from "@/components/article-preview-context";
 import { RoutineToolPreviewModal } from "@/components/routine-tool-preview-modal";
 import { ToolDeepLink } from "@/components/tool-deep-link";
-import type { Dictionary } from "@/i18n/types";
 import type { Locale } from "@/i18n/config";
 
 type ShellProps = {
   locale: Locale;
   closeLabel: string;
-  installCopy: Dictionary["article"]["addToPokit"];
+  installMessages: AppInstallMessages;
   toolKicker: string;
   children: ReactNode;
 };
 
 function HomePreviewBody({
   closeLabel,
-  installCopy,
+  installMessages,
   toolKicker,
   children,
-}: Pick<ShellProps, "closeLabel" | "installCopy" | "toolKicker" | "children">) {
+}: Pick<ShellProps, "closeLabel" | "installMessages" | "toolKicker" | "children">) {
   const { active } = useArticlePreview();
 
   return (
@@ -36,7 +37,7 @@ function HomePreviewBody({
       </Suspense>
       {children}
       {active?.kind === "tool" ? (
-        <RoutineToolPreviewModal closeLabel={closeLabel} installCopy={installCopy} />
+        <RoutineToolPreviewModal closeLabel={closeLabel} installMessages={installMessages} />
       ) : null}
     </>
   );
@@ -45,7 +46,7 @@ function HomePreviewBody({
 export function HomePreviewShell({
   locale,
   closeLabel,
-  installCopy,
+  installMessages,
   toolKicker,
   children,
 }: ShellProps) {
@@ -53,7 +54,7 @@ export function HomePreviewShell({
     <ArticlePreviewProvider locale={locale}>
       <HomePreviewBody
         closeLabel={closeLabel}
-        installCopy={installCopy}
+        installMessages={installMessages}
         toolKicker={toolKicker}
       >
         {children}

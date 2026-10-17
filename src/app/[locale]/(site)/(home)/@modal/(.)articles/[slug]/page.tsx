@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { RoutedArticlePreview } from "@/components/routed-article-preview";
 import { isLocale } from "@/i18n/config";
+import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { isValidArticleSlug } from "@/lib/article-path";
 import { getArticleBySlug } from "@/sanity/lib/article";
@@ -21,7 +22,10 @@ export default async function ArticleModalPage({ params }: {
   if (!isLocale(locale) || !isValidArticleSlug(slug)) notFound();
   const article = await getArticleBySlug(slug, locale);
   if (!article) notFound();
-  const dict = await getDictionary(locale);
+  const [dict, installMessages] = await Promise.all([
+    getDictionary(locale),
+    getAppInstallMessages(locale),
+  ]);
   const metadata = await articleMetadata({ params });
   const seo = {
     title: `${String(metadata.title ?? article.title)} | POKIT`,
@@ -34,5 +38,5 @@ export default async function ArticleModalPage({ params }: {
   return <RoutedArticlePreview seo={seo} article={article} locale={locale}
     imageUrl={coverImageUrl(article.coverImage, 1200, 675)}
     categoryLabels={dict.categories} closeLabel={dict.home.closePreview}
-    addToPokit={dict.article.addToPokit} />;
+    installMessages={installMessages} />;
 }

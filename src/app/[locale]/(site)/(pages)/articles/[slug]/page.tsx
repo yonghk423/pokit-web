@@ -10,6 +10,9 @@ import { JsonLd } from "@/components/json-ld";
 import { RelatedArticles } from "@/components/related-articles";
 import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
+import { createTranslator } from "@/i18n/create-translator";
+import { getArticleMessages } from "@/i18n/get-article-messages";
+import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { articleSeo } from "@/lib/article-seo";
 import { isValidArticleSlug } from "@/lib/article-path";
@@ -123,7 +126,12 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const dict = await getDictionary(locale);
+  const [dict, articleMessages, installMessages] = await Promise.all([
+    getDictionary(locale),
+    getArticleMessages(locale),
+    getAppInstallMessages(locale),
+  ]);
+  const t = createTranslator(articleMessages);
   const article = await getArticleBySlug(slug, locale);
 
   if (!article) {
@@ -172,7 +180,7 @@ export default async function ArticlePage({ params }: Props) {
           href={withLocale(locale, "/")}
           className="mb-10 inline-block bg-ink px-4 py-2 label-caps text-white hover:bg-indigo transition-colors rounded-full"
         >
-          {dict.article.backHome}
+          {t("← Back to POKIT")}
         </Link>
 
         {showKoreanOnlyBanner && (
@@ -180,7 +188,7 @@ export default async function ArticlePage({ params }: Props) {
             className="mb-8 max-w-[42rem] border border-ink/12 bg-[#f8eee8] px-5 py-4 font-sans text-[0.88rem] leading-[1.6] text-ink"
             role="note"
           >
-            {dict.article.koreanOnlyBanner}
+            {t("이 글은 아직 영문 번역이 준비되지 않았습니다. 한국어 원문을 표시하고 있습니다.")}
           </p>
         )}
 
@@ -236,15 +244,17 @@ export default async function ArticlePage({ params }: Props) {
             related={related}
             locale={locale}
             categoryLabels={dict.categories}
-            heading={dict.article.relatedStories(related.label)}
-            viewMoreLabel={dict.article.viewMore}
+            heading={t("{{label}} 이야기", {
+              label: locale === "en" ? related.label.toLowerCase() : related.label,
+            })}
+            viewMoreLabel={t("더보기 →")}
           />
         )}
         {shouldShowPokitCta(article) && (
           <AddToPokitCta
             article={toPokitRoutineArticle(article)}
             locale={locale}
-            copy={dict.article.addToPokit}
+            messages={installMessages}
           />
         )}
       </main>

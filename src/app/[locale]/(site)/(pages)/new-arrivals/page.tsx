@@ -8,6 +8,7 @@ import { ToolArchiveCard } from "@/components/tool-archive-card";
 import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
+import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
 import { getArchiveMessages } from "@/i18n/get-archive-messages";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { cn, monoContainer } from "@/lib/cn";
@@ -76,9 +77,10 @@ export default async function NewArrivalsHubPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, archiveMessages] = await Promise.all([
+  const [dict, archiveMessages, installMessages] = await Promise.all([
     getDictionary(locale),
     getArchiveMessages(locale),
+    getAppInstallMessages(locale),
   ]);
   const archiveT = createTranslator(archiveMessages);
   const tools = await listAllRoutineTools(locale);
@@ -90,7 +92,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
     <HomePreviewShell
       locale={locale}
       closeLabel={dict.home.closePreview}
-      installCopy={dict.article.addToPokit}
+      installMessages={installMessages}
       toolKicker={dict.newArrivals.kicker}
     >
     <main className="pb-8">

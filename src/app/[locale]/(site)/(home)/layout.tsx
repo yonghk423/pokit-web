@@ -7,6 +7,7 @@ import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { createTranslator } from "@/i18n/create-translator";
 import { getCommonMessages } from "@/i18n/get-common-messages";
+import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
 import { getHomeMessages } from "@/i18n/get-home-messages";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -55,15 +56,16 @@ export default async function HomeLayout({ children, modal, params }: {
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const [dict, homeMessages] = await Promise.all([
+  const [dict, homeMessages, installMessages] = await Promise.all([
     getDictionary(locale),
     getHomeMessages(locale),
+    getAppInstallMessages(locale),
   ]);
   const t = createTranslator(homeMessages);
   return (
     <HomePreviewShell locale={locale}
       closeLabel={t("목록으로")}
-      installCopy={dict.article.addToPokit}
+      installMessages={installMessages}
       toolKicker={dict.newArrivals.kicker}>
       {children}
       {modal}

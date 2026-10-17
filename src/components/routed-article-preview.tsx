@@ -1,5 +1,7 @@
 "use client";
 
+import type { AppInstallMessages } from "@/i18n/get-app-install-messages";
+
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo } from "react";
 import { articlePath } from "@/lib/article-path";
@@ -9,14 +11,14 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import type { ArticleCardData } from "@/sanity/types";
 
-export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels, closeLabel, addToPokit, seo }: {
+export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels, closeLabel, installMessages, seo }: {
   seo: { title: string; description: string; canonical: string; languages: Record<string, string>; robots: string };
   article: ArticleCardData;
   locale: Locale;
   imageUrl: string | null;
   categoryLabels: Dictionary["categories"];
   closeLabel: string;
-  addToPokit: Dictionary["article"]["addToPokit"];
+  installMessages: AppInstallMessages;
 }) {
   const router = useRouter();
   const { active: pending } = useArticlePreview();
@@ -107,5 +109,5 @@ export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels
   if (!isHomePreview) return null;
 
   return <ArticlePreviewModal categoryLabels={categoryLabels} closeLabel={closeLabel}
-    addToPokit={addToPokit} preview={{ locale, active, close }} />;
+    installMessages={installMessages} preview={{ locale, active, close }} />;
 }

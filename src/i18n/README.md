@@ -1,6 +1,6 @@
 # UI 번역 전환
 
-공통 UI·카테고리·404, 홈, 앱 소개·다운로드, 게시글 목록 영역은 한글 원문 키와 JSON 리소스를 사용합니다.
+공통 UI·카테고리·404, 홈, 앱 소개·다운로드, 게시글 목록·상세·미리보기, 지원 영역은 한글 원문 키와 JSON 리소스를 사용합니다.
 나머지 UI는 기존 `getDictionary`를 사용하며, Sanity 콘텐츠 번역은 별도로 관리합니다.
 
 ## 리소스와 호출
@@ -25,6 +25,14 @@
 - 홈은 `home.json`, 영상은 `home-video.json`, 섹션 메뉴는 `home-section-nav.json`,
   섹션 제목은 `home-section-content.json`으로 나눕니다. 같은 한국어라도 영어에서
   Tools/Routine tools처럼 용도에 따라 번역이 다르면 별도 영역을 사용합니다.
+- 게시글 상세 문구는 `getArticleMessages(locale)`로 읽습니다. 관련 이야기 제목은
+  영어일 때만 카테고리 표시명을 소문자로 바꿔 `{{label}}`에 전달합니다.
+- 앱 저장·다운로드 안내는 `getAppInstallMessages(locale)`로 읽습니다.
+  게시글 상세·게시글 미리보기·루틴 도구 미리보기가 같은 리소스를 공유합니다.
+  클라이언트에는 현재 언어의 메시지 객체만 전달하고 저장·전송 동작은 그대로 유지합니다.
+- 지원 페이지는 `getSupportMessages(locale)`로 읽고 `createSupportCopy(t)`로 구성합니다.
+  섹션 ID·순서와 문단·목록·FAQ·문제 해결 블록은 `src/content/support-copy.ts`에서
+  공통으로 정의하며, 번역 문구는 `support.json`에서만 관리합니다.
 
 ## 기존 화면과의 연결
 
@@ -32,7 +40,7 @@
 공통·홈 문구는 `createCommonCopy`와 `createHomeCopy`에서 JSON을 번역해 구성하며,
 언어별 TypeScript 사전에 같은 문구를 중복 보관하지 않습니다. 카테고리와 홈 섹션의
 ID 매핑도 이 공통 구성 함수에서 한 번만 정의합니다. 남은 TypeScript 사전의 타입은
-`LegacyDictionary`이며 게시글 상세·지원·브리핑·루틴 도구 문구가 남아 있습니다.
+`LegacyDictionary`이며 브리핑·루틴 도구 문구가 남아 있습니다.
 
 ```tsx
 const t = createTranslator(videoMessages);
