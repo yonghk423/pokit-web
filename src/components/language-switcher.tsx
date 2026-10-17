@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { locales, type Locale } from "@/i18n/config";
@@ -32,7 +31,8 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
               /
             </span>
           )}
-          <Link
+          {/* Reload across locales so preserved modal routes cannot restore the previous language. */}
+          <a
             href={switchLocalePath(pathname, value)}
             className={cn(
               "px-1 py-0.5",
@@ -43,7 +43,7 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
             aria-current={locale === value ? "true" : undefined}
           >
             {labels[value]}
-          </Link>
+          </a>
         </span>
       ))}
     </div>

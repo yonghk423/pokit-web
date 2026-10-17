@@ -55,8 +55,8 @@ const dictionary: Dictionary = {
         title: "일상의 공간을 다시 짜는 이야기",
       },
       sleep: {
-        nav: "잠·저녁",
-        kicker: "잠·저녁",
+        nav: "하루 마무리",
+        kicker: "하루 마무리",
         title: "하루를 닫는 저녁 루틴",
       },
       wellness: {
@@ -298,7 +298,7 @@ const dictionary: Dictionary = {
     Routine: "루틴",
     Commute: "이동·휴식",
     Space: "공간",
-    Sleep: "잠·저녁",
+    Sleep: "하루 마무리",
     Wellness: "웰니스",
     design: "공간",
   },
