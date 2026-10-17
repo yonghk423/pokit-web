@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run i18n:check && next build",
     "start": "next start",
     "lint": "eslint .",
     "test:i18n": "node --experimental-strip-types --test src/i18n/*.test.mjs scripts/lib/*.test.mjs",
-    "i18n:extract": "node scripts/extract-i18n.mjs"
+    "i18n:extract": "node scripts/extract-i18n.mjs",
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "check": "npm run i18n:check && tsc --noEmit"
   },
   "dependencies": {
     "@sanity/image-url": "^2.1.1",
