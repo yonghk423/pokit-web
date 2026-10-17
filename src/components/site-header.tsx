@@ -1,21 +1,28 @@
 import { SiteHeaderNav } from "@/components/site-header-nav";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import { createTranslator } from "@/i18n/create-translator";
+import type { CommonMessages } from "@/i18n/get-common-messages";
 
 type Props = {
   locale: Locale;
-  dict: Dictionary;
+  messages: CommonMessages;
 };
 
-export function SiteHeader({ locale, dict }: Props) {
+export function SiteHeader({ locale, messages }: Props) {
+  const t = createTranslator(messages);
   return (
     <SiteHeaderNav
       locale={locale}
-      tagline={dict.header.tagline}
-      homeAria={dict.header.homeAria}
-      app={dict.header.app}
-      contact={dict.header.contact}
-      languageLabels={dict.languageSwitcher}
+      tagline={t("일상 루틴과 웰니스를 위한 포켓 가이드")}
+      homeAria={t("POKIT 홈")}
+      app={t("App")}
+      contact={t("Contact")}
+      languageLabels={{
+        label: t("Language"),
+        ko: t("한국어"),
+        en: t("English"),
+        ja: t("日本語"),
+      }}
     />
   );
 }

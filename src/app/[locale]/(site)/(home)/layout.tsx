@@ -5,6 +5,9 @@ import { notFound } from "next/navigation";
 import { HomePreviewShell } from "@/components/home-preview-shell";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { createTranslator } from "@/i18n/create-translator";
+import { getCommonMessages } from "@/i18n/get-common-messages";
+import { getHomeMessages } from "@/i18n/get-home-messages";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -14,16 +17,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {};
   }
 
-  const dict = await getDictionary(rawLocale);
+  const t = createTranslator(await getCommonMessages(rawLocale));
   const alternates = localeAlternates(rawLocale, "/");
 
   return {
-    title: dict.meta.siteTitle,
-    description: dict.meta.siteDescription,
+    title: t("POKIT — 일상 웰니스 루틴"),
+    description: t("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."),
     alternates,
     openGraph: {
-      title: dict.meta.siteTitle,
-      description: dict.meta.siteDescription,
+      title: t("POKIT — 일상 웰니스 루틴"),
+      description: t("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."),
       url: alternates.canonical,
       siteName: site.name,
       locale: localeOpenGraph(rawLocale),
@@ -38,8 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: dict.meta.siteTitle,
-      description: dict.meta.siteDescription,
+      title: t("POKIT — 일상 웰니스 루틴"),
+      description: t("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."),
       images: ["/pokit-logo.png"],
     },
   };
@@ -52,10 +55,14 @@ export default async function HomeLayout({ children, modal, params }: {
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const dict = await getDictionary(locale);
+  const [dict, homeMessages] = await Promise.all([
+    getDictionary(locale),
+    getHomeMessages(locale),
+  ]);
+  const t = createTranslator(homeMessages);
   return (
     <HomePreviewShell locale={locale}
-      closeLabel={dict.home.closePreview}
+      closeLabel={t("목록으로")}
       installCopy={dict.article.addToPokit}
       toolKicker={dict.newArrivals.kicker}>
       {children}

@@ -4,7 +4,7 @@ import { GoogleAnalytics } from "@/components/google-analytics";
 import { PokitAppDocumentFlag } from "@/components/pokit-app-chrome";
 import { SiteHeader } from "@/components/site-header";
 import { isLocale, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getCommonMessages } from "@/i18n/get-common-messages";
 
 type Props = {
   children: React.ReactNode;
@@ -19,14 +19,14 @@ export default async function SiteLayout({ children, params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const messages = await getCommonMessages(locale);
 
   return (
     <>
       <PokitAppDocumentFlag />
       <GoogleAnalytics />
       <div data-hide-in-pokit-app>
-        <SiteHeader locale={locale} dict={dict} />
+        <SiteHeader locale={locale} messages={messages} />
       </div>
       {children}
     </>

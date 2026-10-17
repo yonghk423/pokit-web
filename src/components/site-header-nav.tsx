@@ -8,7 +8,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CommonCopy } from "@/i18n/create-common-copy";
 import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
@@ -18,7 +18,7 @@ type Props = {
   homeAria: string;
   app: string;
   contact: string;
-  languageLabels: Dictionary["languageSwitcher"];
+  languageLabels: CommonCopy["languageSwitcher"];
 };
 
 function pathMatches(pathname: string, href: string) {

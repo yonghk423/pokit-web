@@ -1,57 +1,9 @@
-import type { HomeSectionId } from "@/content/home";
+import type { CommonCopy } from "./create-common-copy";
+import type { HomeCopy } from "./create-home-copy";
 
-export type HomeSectionCopy = {
-  nav: string;
-  kicker: string;
-  title: string;
-};
+export type Dictionary = LegacyDictionary & CommonCopy & { home: HomeCopy };
 
-export type Dictionary = {
-  meta: {
-    siteTitle: string;
-    siteDescription: string;
-  };
-  header: {
-    tagline: string;
-    openMenu: string;
-    homeAria: string;
-    allStories: string;
-    app: string;
-    contact: string;
-    categoriesAria: string;
-  };
-  footer: {
-    tagline: string;
-    sections: string;
-    information: string;
-    allStories: string;
-    support: string;
-    briefing: string;
-    newArrivals: string;
-    app: string;
-    rights: string;
-  };
-  home: {
-    inboxTagline: string;
-    sections: Record<HomeSectionId, HomeSectionCopy>;
-    radioEmpty: (sectionNav: string) => string;
-    viewAllStories: string;
-    heroLine1: string;
-    heroAccent: string;
-    heroRest: string;
-    feedTitle: string;
-    workLine1: string;
-    workAccent: string;
-    workRest: string;
-    labsLine1: string;
-    labsAccent: string;
-    labsRest: string;
-    aboutTitle: string;
-    aboutBody: string;
-    aboutCta: string;
-    exploreAll: string;
-    closePreview: string;
-  };
+export type LegacyDictionary = {
   article: {
     backHome: string;
     koreanOnlyBanner: string;
@@ -67,12 +19,6 @@ export type Dictionary = {
       qrAria: string;
       qrHint: string;
     };
-  };
-  notFound: {
-    title: string;
-    description: string;
-    home: string;
-    allStories: string;
   };
   support: {
     title: string;
@@ -122,24 +68,6 @@ export type Dictionary = {
     allToolsCount: (total: number) => string;
     metaDescriptionFromItems: (names: string[]) => string;
     localeFallbackBanner: string;
-  };
-  categories: {
-    Weekly: string;
-    Routine: string;
-    Commute: string;
-    Space: string;
-    Sleep: string;
-    Wellness: string;
-    design: string;
-  };
-  sectionHeading: {
-    viewAll: string;
-  };
-  languageSwitcher: {
-    label: string;
-    ko: string;
-    en: string;
-    ja: string;
   };
   dates: {
     intl: string;

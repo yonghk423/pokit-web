@@ -155,12 +155,12 @@ export default async function Home({ params }: Props) {
             <div data-hide-in-pokit-app>
               <HomeHero
                 locale={locale}
-                line1={dict.home.heroLine1}
-                accent={dict.home.heroAccent}
-                rest={dict.home.heroRest}
-                feedTitle={dict.home.feedTitle}
-                feedPrevLabel={t("{{label}} 이전", { label: dict.home.feedTitle })}
-                feedNextLabel={t("{{label}} 다음", { label: dict.home.feedTitle })}
+                line1={t("일상 루틴과 웰니스.")}
+                accent={t("포켓")}
+                rest={t("가이드.")}
+                feedTitle={t("최신 이야기")}
+                feedPrevLabel={t("{{label}} 이전", { label: t("최신 이야기") })}
+                feedNextLabel={t("{{label}} 다음", { label: t("최신 이야기") })}
                 heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
                 feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
                 categoryLabels={categoryLabels}
@@ -171,10 +171,10 @@ export default async function Home({ params }: Props) {
           )}
 
           <HomeWorkRows
-            line1={dict.home.workLine1}
-            accent={dict.home.workAccent}
-            rest={dict.home.workRest}
-            viewAllLabel={dict.home.exploreAll}
+            line1={t("하루의 장면을")}
+            accent={t("루틴으로")}
+            rest={t("이어 갑니다.")}
+            viewAllLabel={t("모두 보기")}
             viewAllHref={withLocale(locale, "/articles")}
             sections={workSections}
             locale={locale}
@@ -185,9 +185,9 @@ export default async function Home({ params }: Props) {
               roundup={newArrivals}
               pastTools={pastRoutineTools}
               locale={locale}
-              line1={dict.home.labsLine1}
-              accent={dict.home.labsAccent}
-              rest={dict.home.labsRest}
+              line1={t("하루를 붙잡는")}
+              accent={t("루틴")}
+              rest={t("도구.")}
               viewAllHref={newArrivalsPath(locale)}
               viewAllLabel={dict.newArrivals.viewAll}
               pastLabel={dict.newArrivals.pastTools}

@@ -1,91 +1,6 @@
-import type { Dictionary } from "@/i18n/types";
+import type { LegacyDictionary } from "@/i18n/types";
 
-const dictionary: Dictionary = {
-  meta: {
-    siteTitle: "POKIT — 日々のウェルネスルーチン",
-    siteDescription:
-      "小さな日常ルーチンでウェルネスを育てるガイドとアプリ。POKITで日常・ルーチン・ウェルネスの話をどうぞ。",
-  },
-  header: {
-    tagline: "日常ルーチンとウェルネスのためのポケットガイド",
-    openMenu: "メニューを開く",
-    homeAria: "POKIT ホーム",
-    allStories: "すべてのストーリー",
-    app: "App",
-    contact: "Contact",
-    categoriesAria: "カテゴリー",
-  },
-  footer: {
-    tagline: "日常ルーチンとウェルネスで、一日を整える。",
-    sections: "セクション",
-    information: "Information",
-    allStories: "すべてのストーリー",
-    support: "アプリサポート",
-    briefing: "ウェルネスブリーフィング",
-    newArrivals: "ルーチン道具",
-    app: "アプリ紹介",
-    rights: "All rights reserved.",
-  },
-  home: {
-    inboxTagline: "日常ルーチン・ウェルネス by POKIT",
-    sections: {
-      weekly: {
-        nav: "今週",
-        kicker: "今週",
-        title: "日常の一週間をひらく話",
-      },
-      newArrivals: {
-        nav: "ルーチン道具",
-        kicker: "ルーチン道具",
-        title: "生産性とウェルネスを支える道具",
-      },
-      routine: {
-        nav: "ルーチン",
-        kicker: "ルーチン",
-        title: "いま始めやすい日常ルーチン",
-      },
-      commute: {
-        nav: "移動・休憩",
-        kicker: "移動・休憩",
-        title: "移動と休みのあいだの日常",
-      },
-      space: {
-        nav: "空間",
-        kicker: "空間",
-        title: "日常の空間を組み直す話",
-      },
-      sleep: {
-        nav: "睡眠・夜",
-        kicker: "睡眠・夜",
-        title: "一日を閉じる夜のルーチン",
-      },
-      wellness: {
-        nav: "ウェルネス",
-        kicker: "ウェルネス",
-        title: "日常ウェルネス、体のための10分",
-      },
-    },
-    radioEmpty: (sectionNav) =>
-      `Home Page → ${sectionNav} でストーリーを3つつないでください。`,
-    viewAllStories: "日常・ルーチン・ウェルネスの話をすべて見る →",
-    heroLine1: "日常ルーチンとウェルネス。",
-    heroAccent: "ポケット",
-    heroRest: "ガイド。",
-    feedTitle: "最新のストーリー",
-    workLine1: "一日の場面を",
-    workAccent: "ルーチンで",
-    workRest: "つなぐ。",
-    labsLine1: "一日をつかむ",
-    labsAccent: "ルーチン",
-    labsRest: "道具。",
-    aboutTitle:
-      "POKITは、小さな日常ルーチンでウェルネスを育てるポケットガイドです。",
-    aboutBody:
-      "今週のリズムから移動・空間・眠り・からだほぐしまで。\n負担の少ないひと場面が、一日を変えていきます。",
-    aboutCta: "アプリを見る",
-    exploreAll: "すべて見る",
-    closePreview: "一覧へ",
-  },
+const dictionary: LegacyDictionary = {
   article: {
     backHome: "← Back to POKIT",
     koreanOnlyBanner:
@@ -102,12 +17,6 @@ const dictionary: Dictionary = {
       qrAria: "POKITアプリ App Store QRコード",
       qrHint: "スマホのカメラでスキャンしてインストール",
     },
-  },
-  notFound: {
-    title: "ページが見つかりません",
-    description: "アドレスが変わったか、ページが削除された可能性があります。",
-    home: "ホームへ",
-    allStories: "すべてのストーリー",
   },
   support: {
     title: "POKITサポート",
@@ -172,24 +81,6 @@ const dictionary: Dictionary = {
     },
     localeFallbackBanner:
       "このページの日本語版はまだありません。韓国語を表示しています。",
-  },
-  categories: {
-    Weekly: "今週",
-    Routine: "ルーチン",
-    Commute: "移動・休憩",
-    Space: "空間",
-    Sleep: "睡眠・夜",
-    Wellness: "ウェルネス",
-    design: "空間",
-  },
-  sectionHeading: {
-    viewAll: "もっと見る",
-  },
-  languageSwitcher: {
-    label: "Language",
-    ko: "한국어",
-    en: "English",
-    ja: "日本語",
   },
   dates: {
     intl: "ja-JP",

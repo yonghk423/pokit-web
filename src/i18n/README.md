@@ -1,11 +1,11 @@
 # UI 번역 전환
 
-홈 영상, 홈 이야기 안내·이전/다음 버튼, 앱 소개, 앱 다운로드, 게시글 목록 영역은 한글 원문 키와 JSON 리소스를 사용합니다.
+공통 UI·카테고리·404, 홈, 앱 소개·다운로드, 게시글 목록 영역은 한글 원문 키와 JSON 리소스를 사용합니다.
 나머지 UI는 기존 `getDictionary`를 사용하며, Sanity 콘텐츠 번역은 별도로 관리합니다.
 
 ## 리소스와 호출
 
-- `messages/{ko,en,ja}/{home,home-video,app-page,app-download,archive}.json`에 같은 한글 키를 등록합니다.
+- `messages/{ko,en,ja}/` 아래 영역별 JSON에 같은 한글 키를 등록합니다.
 - 한국어 리소스의 키가 각 영역의 메시지 타입 기준입니다. 다른 언어에
   필요한 키가 없으면 로더의 타입 검사에서 오류가 발생합니다.
 - 서버에서는 `getHomeVideoMessages(locale)`로 현재 언어의 리소스를 읽고
@@ -20,6 +20,19 @@
 - 게시글 목록은 `getArchiveMessages(locale)`로 읽습니다. 검색 결과 수·표시 범위와
   메타데이터는 서버에서 번역합니다. 보기·정렬 컨트롤에는 번역한 문자열만 전달합니다.
   페이지 제목의 접미사는 검색어 유무에 따라 별도 키를 사용합니다.
+- `common.json`은 헤더·푸터 문구, 언어 선택, 카테고리, 사이트 메타데이터,
+  404 문구를 관리합니다. 현재 별도의 푸터 컴포넌트는 없습니다.
+- 홈은 `home.json`, 영상은 `home-video.json`, 섹션 메뉴는 `home-section-nav.json`,
+  섹션 제목은 `home-section-content.json`으로 나눕니다. 같은 한국어라도 영어에서
+  Tools/Routine tools처럼 용도에 따라 번역이 다르면 별도 영역을 사용합니다.
+
+## 기존 화면과의 연결
+
+`getDictionary`는 아직 전환하지 않은 화면을 위해 기존 객체 형태를 제공합니다.
+공통·홈 문구는 `createCommonCopy`와 `createHomeCopy`에서 JSON을 번역해 구성하며,
+언어별 TypeScript 사전에 같은 문구를 중복 보관하지 않습니다. 카테고리와 홈 섹션의
+ID 매핑도 이 공통 구성 함수에서 한 번만 정의합니다. 남은 TypeScript 사전의 타입은
+`LegacyDictionary`이며 게시글 상세·지원·브리핑·루틴 도구 문구가 남아 있습니다.
 
 ```tsx
 const t = createTranslator(videoMessages);

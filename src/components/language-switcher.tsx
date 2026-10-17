@@ -3,13 +3,13 @@
 import { usePathname } from "next/navigation";
 
 import { locales, type Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CommonCopy } from "@/i18n/create-common-copy";
 import { switchLocalePath } from "@/lib/locale-path";
 import { cn } from "@/lib/cn";
 
 type Props = {
   locale: Locale;
-  labels: Dictionary["languageSwitcher"];
+  labels: CommonCopy["languageSwitcher"];
   className?: string;
 };
 

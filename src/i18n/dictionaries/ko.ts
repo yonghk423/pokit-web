@@ -1,91 +1,6 @@
-import type { Dictionary } from "@/i18n/types";
+import type { LegacyDictionary } from "@/i18n/types";
 
-const dictionary: Dictionary = {
-  meta: {
-    siteTitle: "POKIT — 일상 웰니스 루틴",
-    siteDescription:
-      "일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요.",
-  },
-  header: {
-    tagline: "일상 루틴과 웰니스를 위한 포켓 가이드",
-    openMenu: "메뉴 열기",
-    homeAria: "POKIT 홈",
-    allStories: "모든 이야기",
-    app: "App",
-    contact: "Contact",
-    categoriesAria: "카테고리",
-  },
-  footer: {
-    tagline: "일상 루틴과 웰니스로 하루를 가꿉니다.",
-    sections: "섹션",
-    information: "Information",
-    allStories: "모든 이야기",
-    support: "앱 지원",
-    briefing: "웰니스 브리핑",
-    newArrivals: "루틴 도구",
-    app: "앱 소개",
-    rights: "All rights reserved.",
-  },
-  home: {
-    inboxTagline: "일상 루틴·웰니스 by POKIT",
-    sections: {
-      weekly: {
-        nav: "이번 주",
-        kicker: "이번 주",
-        title: "일상을 여는 이야기",
-      },
-      newArrivals: {
-        nav: "루틴 도구",
-        kicker: "루틴 도구",
-        title: "생산성·웰니스를 돕는 도구",
-      },
-      routine: {
-        nav: "루틴",
-        kicker: "루틴",
-        title: "일상에서 시작하기 좋은 루틴",
-      },
-      commute: {
-        nav: "이동·휴식",
-        kicker: "이동·휴식",
-        title: "일상 속 이동과 쉬는 시간",
-      },
-      space: {
-        nav: "공간",
-        kicker: "공간",
-        title: "일상의 공간을 다시 짜는 이야기",
-      },
-      sleep: {
-        nav: "하루 마무리",
-        kicker: "하루 마무리",
-        title: "하루를 닫는 저녁 루틴",
-      },
-      wellness: {
-        nav: "웰니스",
-        kicker: "웰니스",
-        title: "일상 웰니스, 몸을 위한 10분",
-      },
-    },
-    radioEmpty: (sectionNav) =>
-      `Home Page → ${sectionNav}에서 이야기 3개를 연결해주세요.`,
-    viewAllStories: "일상·루틴·웰니스 이야기 모두 보기 →",
-    heroLine1: "일상 루틴과 웰니스.",
-    heroAccent: "포켓",
-    heroRest: "가이드.",
-    feedTitle: "최신 이야기",
-    workLine1: "하루의 장면을",
-    workAccent: "루틴으로",
-    workRest: "이어 갑니다.",
-    labsLine1: "하루를 붙잡는",
-    labsAccent: "루틴",
-    labsRest: "도구.",
-    aboutTitle:
-      "POKIT은 작은 일상 루틴으로 웰니스를 가꾸는 포켓 가이드입니다.",
-    aboutBody:
-      "이번 주 리듬부터 이동·공간·잠·몸 풀기까지.\n부담 없는 한 장면이 쌓여 하루를 바꿉니다.",
-    aboutCta: "앱 살펴보기",
-    exploreAll: "모두 보기",
-    closePreview: "목록으로",
-  },
+const dictionary: LegacyDictionary = {
   article: {
     backHome: "← Back to POKIT",
     koreanOnlyBanner:
@@ -102,12 +17,6 @@ const dictionary: Dictionary = {
       qrAria: "POKIT 앱 App Store QR 코드",
       qrHint: "휴대폰 카메라로 스캔해서 설치",
     },
-  },
-  notFound: {
-    title: "페이지를 찾을 수 없습니다",
-    description: "주소가 바뀌었거나 삭제된 페이지일 수 있습니다.",
-    home: "홈으로",
-    allStories: "모든 이야기",
   },
   support: {
     title: "POKIT 지원 정보",
@@ -172,24 +81,6 @@ const dictionary: Dictionary = {
     },
     localeFallbackBanner:
       "이 페이지의 일본어 번역은 아직 없습니다. 영어가 있으면 영어를, 없으면 한국어를 표시합니다.",
-  },
-  categories: {
-    Weekly: "이번 주",
-    Routine: "루틴",
-    Commute: "이동·휴식",
-    Space: "공간",
-    Sleep: "하루 마무리",
-    Wellness: "웰니스",
-    design: "공간",
-  },
-  sectionHeading: {
-    viewAll: "더보기",
-  },
-  languageSwitcher: {
-    label: "Language",
-    ko: "한국어",
-    en: "English",
-    ja: "日本語",
   },
   dates: {
     intl: "ko-KR",
