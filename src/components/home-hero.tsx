@@ -235,6 +235,8 @@ export function HomeHero({
                   ref={videoRef}
                   className="pointer-events-none h-[8.75rem] w-auto max-w-[min(22rem,34vw)] rounded-[0.7rem] object-cover max-nav:h-auto max-nav:w-full max-nav:max-w-none"
                   src="/pokit-video-3.mp4"
+                  width={1920}
+                  height={1080}
                   autoPlay
                   muted
                   loop

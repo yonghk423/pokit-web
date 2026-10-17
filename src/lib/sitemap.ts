@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 
 import { site } from "@/config/site";
 import { locales, type Locale } from "@/i18n/config";
+import { articleAvailableLocales } from "@/lib/article-seo";
+import { localeAlternates } from "@/lib/locale-path";
 import { articlePath } from "@/lib/article-path";
 import { briefingWeekPath } from "@/lib/briefing-path";
 import { newArrivalsWeekPath } from "@/lib/new-arrivals-path";
@@ -28,6 +30,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = locales.flatMap((locale) =>
     staticPaths.map((path) => ({
       url: `${site.siteUrl}${withLocale(locale, path)}`,
+      alternates: { languages: localeAlternates(locale, path).languages },
       changeFrequency:
         path === "" ||
         path === "/articles" ||
@@ -54,7 +57,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
 
   const [articles, digests, newArrivals] = await Promise.all([
     client.fetch<
-      { slug: string; publishedAt?: string; hasEnglishTranslation?: boolean }[]
+      { slug: string; publishedAt?: string; _updatedAt?: string; hasEnglishTranslation?: boolean; hasJapaneseTranslation?: boolean }[]
     >(SITEMAP_ARTICLES_QUERY, {}, sanityFetchOptions),
     client.fetch<{ weekOf: string; _updatedAt?: string }[]>(
       SITEMAP_DIGESTS_QUERY,
@@ -70,14 +73,13 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
 
   const articlePages: MetadataRoute.Sitemap = (articles ?? [])
     .filter(({ slug }) => slug)
-    .flatMap(({ slug, publishedAt, hasEnglishTranslation }) => {
-      const localesForArticle = hasEnglishTranslation
-        ? locales
-        : (["ko", "ja"] as const);
-
-      return localesForArticle.map((locale) => ({
+    .flatMap((article) => {
+      const { slug, publishedAt, _updatedAt } = article;
+      const availableLocales = articleAvailableLocales(article);
+      return availableLocales.map((locale) => ({
         url: `${site.siteUrl}${articlePath(locale, slug)}`,
-        lastModified: publishedAt ? new Date(publishedAt) : undefined,
+        alternates: { languages: localeAlternates(locale, `/articles/${slug}`, { availableLocales }).languages },
+        lastModified: _updatedAt ?? publishedAt,
         changeFrequency: "weekly" as const,
         priority: 0.8,
       }));
@@ -88,6 +90,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     .flatMap(({ weekOf, _updatedAt }) =>
       locales.map((locale) => ({
         url: `${site.siteUrl}${briefingWeekPath(locale, weekOf)}`,
+        alternates: { languages: localeAlternates(locale, `/briefing/${weekOf}`).languages },
         lastModified: _updatedAt ? new Date(_updatedAt) : undefined,
         changeFrequency: "weekly" as const,
         priority: 0.85,
@@ -99,6 +102,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     .flatMap(({ weekOf, _updatedAt }) =>
       locales.map((locale) => ({
         url: `${site.siteUrl}${newArrivalsWeekPath(locale, weekOf)}`,
+        alternates: { languages: localeAlternates(locale, `/new-arrivals/${weekOf}`).languages },
         lastModified: _updatedAt ? new Date(_updatedAt) : undefined,
         changeFrequency: "weekly" as const,
         priority: 0.85,

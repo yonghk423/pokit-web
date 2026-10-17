@@ -29,6 +29,8 @@ const articleCardFields = `
   "slug": slug.current,
   "title": ${localizedString("title")},
   "titleKo": title,
+  "seoTitle": select($locale == "en" => seoTitleEn, $locale == "ja" => seoTitleJa, seoTitle),
+  "seoDescription": select($locale == "en" => seoDescriptionEn, $locale == "ja" => seoDescriptionJa, seoDescription),
   "description": ${localizedString("description")},
   "kicker": ${localizedString("kicker")},
   category,
@@ -41,8 +43,8 @@ const articleCardFields = `
   "coverImageLqip": coverImage.asset->metadata.lqip,
   publishedAt,
   "_updatedAt": _updatedAt,
-  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0,
-  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0
+  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0,
+  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0
 `;
 
 const sectionHeadingProjection = `{
@@ -190,7 +192,9 @@ export const ARTICLE_SLUGS_QUERY = `*[_type == "article" && defined(slug.current
 export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && defined(slug.current)]{
   "slug": slug.current,
   publishedAt,
-  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0
+  _updatedAt,
+  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0,
+  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0
 }`;
 
 export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && defined(slug.current) && ${searchFilter}])`;

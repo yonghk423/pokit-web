@@ -11,6 +11,7 @@ import { RelatedArticles } from "@/components/related-articles";
 import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
+import { articleSeo } from "@/lib/article-seo";
 import { isValidArticleSlug } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
 import { formatPublishedLabel } from "@/lib/format-published";
@@ -31,17 +32,6 @@ export const dynamicParams = true;
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
-
-function articleAvailableLocales(
-  hasEnglishTranslation: boolean | undefined,
-): readonly Locale[] {
-  return hasEnglishTranslation === false ? (["ko", "ja"] as const) : locales;
-}
-
-function articleMetaDescription(title: string, description?: string) {
-  const trimmed = description?.trim();
-  return trimmed && trimmed.length > 0 ? trimmed : title;
-}
 
 export async function generateStaticParams() {
   if (!isSanityConfigured() || !client) {
@@ -77,37 +67,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const coverImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
-  const availableLocales = articleAvailableLocales(
-    article.hasEnglishTranslation,
-  );
+  const { availableLocales, contentLocale, indexable, title, description } = articleSeo(article, rawLocale);
   const alternates = localeAlternates(rawLocale, `/articles/${slug}`, {
     availableLocales,
   });
-  const description = articleMetaDescription(
-    article.title,
-    article.description,
-  );
-  const isKoreanOnlyOnEn =
-    rawLocale === "en" && article.hasEnglishTranslation === false;
 
   return {
-    title: article.title,
+    title,
     description,
     alternates,
-    robots: isKoreanOnlyOnEn ? { index: false, follow: true } : undefined,
+    robots: !indexable ? { index: false, follow: true } : undefined,
     openGraph: {
-      title: article.title,
+      title,
       description,
       type: "article",
       siteName: site.name,
       url: alternates.canonical,
       publishedTime: article.publishedAt,
       modifiedTime: article._updatedAt,
-      locale: localeOpenGraph(
-        availableLocales.includes(rawLocale)
-          ? rawLocale
-          : availableLocales[0],
-      ),
+      locale: localeOpenGraph(contentLocale),
       images: coverImage
         ? [
           {
@@ -121,7 +99,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: article.title,
+      title,
       description,
       images: coverImage ? [coverImage] : undefined,
     },
@@ -164,16 +142,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const coverUrl = coverImageUrl(article.coverImage, 1200, 675);
   const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
-  const description = articleMetaDescription(
-    article.title,
-    article.description,
-  );
-  const jsonLdLocale =
-    locale === "en" && article.hasEnglishTranslation === false
-      ? ("ko" as const)
-      : locale === "ja" && article.hasJapaneseTranslation === false
-        ? ("ko" as const)
-        : locale;
+  const { description, contentLocale: jsonLdLocale } = articleSeo(article, locale);
 
   return (
     <>

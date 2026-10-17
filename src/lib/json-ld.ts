@@ -108,3 +108,8 @@ export function briefingCollectionJsonLd(params: {
     },
   };
 }
+
+/** Escape HTML delimiters so CMS text cannot terminate the JSON-LD script. */
+export function serializeJsonLd(data: Record<string, unknown>) {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}

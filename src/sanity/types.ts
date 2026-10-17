@@ -5,6 +5,8 @@ export type ArticleCardData = {
   slug: string;
   title: string;
   titleKo?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   description?: string;
   kicker?: string;
   category: string;

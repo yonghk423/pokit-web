@@ -16,10 +16,13 @@ export function sitemapXmlResponse(entries: MetadataRoute.Sitemap): Response {
     }
     if (entry.changeFrequency) fields.push(`<changefreq>${entry.changeFrequency}</changefreq>`);
     if (entry.priority !== undefined) fields.push(`<priority>${entry.priority}</priority>`);
+    for (const [language, href] of Object.entries(entry.alternates?.languages ?? {})) {
+      fields.push(`<xhtml:link rel="alternate" hreflang="${escapeXml(language)}" href="${escapeXml(String(href))}"/>`);
+    }
     return `  <url>${fields.join("")}</url>`;
   });
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
-    + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    + '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
     + urls.join("\n") + "\n</urlset>\n";
   return new Response(xml, { headers: { "Content-Type": "application/xml; charset=utf-8" } });
 }

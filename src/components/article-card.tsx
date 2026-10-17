@@ -97,7 +97,7 @@ export function ArticleCard({
                       variant === "feature"
                         ? "(min-width: 1024px) 66vw, 100vw"
                         : variant === "compact"
-                          ? "140px"
+                          ? "(max-width: 640px) 100vw, 140px"
                           : "(min-width: 768px) 25vw, 50vw"
                     }
                     {...imageBlurProps(article.coverImageLqip)}

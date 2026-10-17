@@ -10,7 +10,7 @@ import type { Dictionary } from "@/i18n/types";
 import type { ArticleCardData } from "@/sanity/types";
 
 export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels, closeLabel, addToPokit, seo }: {
-  seo: { title: string; description: string; canonical: string; languages: Record<string, string> };
+  seo: { title: string; description: string; canonical: string; languages: Record<string, string>; robots: string };
   article: ArticleCardData;
   locale: Locale;
   imageUrl: string | null;
@@ -45,7 +45,16 @@ export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels
     const restore: Array<() => void> = [];
     function update(selector: string, attribute: string, value: string) {
       const element = document.head.querySelector(selector);
-      if (!element) return;
+      if (!element) {
+        const created = document.createElement("meta");
+        const name = selector.match(/meta\[name="([^"]+)"\]/)?.[1];
+        if (!name) return;
+        created.name = name;
+        created.setAttribute(attribute, value);
+        document.head.appendChild(created);
+        restore.push(() => created.remove());
+        return;
+      }
       const previous = element.getAttribute(attribute);
       element.setAttribute(attribute, value);
       restore.push(() => {
@@ -55,9 +64,21 @@ export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels
       });
     }
     update('link[rel="canonical"]', "href", seo.canonical);
-    for (const [lang, href] of Object.entries(seo.languages)) {
-      update(`link[rel="alternate"][hreflang="${lang}"]`, "href", href);
-    }
+    const previousAlternates = Array.from(document.head.querySelectorAll('link[rel="alternate"][hreflang]'));
+    previousAlternates.forEach(link => link.remove());
+    const alternates = Object.entries(seo.languages).map(([lang, href]) => {
+      const link = document.createElement("link");
+      link.rel = "alternate";
+      link.hreflang = lang;
+      link.href = href;
+      document.head.appendChild(link);
+      return link;
+    });
+    restore.push(() => {
+      alternates.forEach(link => link.remove());
+      previousAlternates.forEach(link => document.head.appendChild(link));
+    });
+    update('meta[name="robots"]', "content", seo.robots);
     update('meta[name="description"]', "content", seo.description);
     update('meta[property="og:title"]', "content", seo.title);
     update('meta[property="og:description"]', "content", seo.description);

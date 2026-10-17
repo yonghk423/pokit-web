@@ -24,8 +24,9 @@ export default async function ArticleModalPage({ params }: {
   const dict = await getDictionary(locale);
   const metadata = await articleMetadata({ params });
   const seo = {
-    title: `${article.title} | POKIT`,
+    title: `${String(metadata.title ?? article.title)} | POKIT`,
     description: String(metadata.description ?? ""),
+    robots: metadata.robots ? "noindex, follow" : "index, follow",
     canonical: String(metadata.alternates?.canonical ?? ""),
     languages: Object.fromEntries(Object.entries(metadata.alternates?.languages ?? {})
       .map(([lang, href]) => [lang, String(href)])),
