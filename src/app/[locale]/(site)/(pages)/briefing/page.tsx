@@ -6,7 +6,9 @@ import { JsonLd } from "@/components/json-ld";
 import { WellnessNewsDigest } from "@/components/wellness-news-digest";
 import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { createTranslator } from "@/i18n/create-translator";
+import { getBriefingMessages } from "@/i18n/get-briefing-messages";
+import { createBriefingDescription } from "@/content/briefing-copy";
 import { briefingWeekPath } from "@/lib/briefing-path";
 import { cn, monoContainer, sectionSpacing } from "@/lib/cn";
 import { briefingCollectionJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
@@ -39,21 +41,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const t = createTranslator(await getBriefingMessages(locale));
   const latest = await getLatestWellnessDigest(locale);
   const description = latest
-    ? dict.briefing.metaDescriptionFromItems(
+    ? createBriefingDescription(t,
       latest.items.map((item) => item.headline),
     )
-    : dict.briefing.hubDescription;
+    : t("공공기관·국제기구 소식을 POKIT이 요약하고, 일상 루틴으로 연결합니다. 원문은 출처에서 확인하세요.");
   const alternates = localeAlternates(locale, "/briefing");
 
   return {
-    title: dict.briefing.hubTitle,
+    title: t("웰니스 브리핑"),
     description,
     alternates,
     openGraph: {
-      title: dict.briefing.hubTitle,
+      title: t("웰니스 브리핑"),
       description,
       url: alternates.canonical,
       siteName: site.name,
@@ -63,7 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary",
-      title: dict.briefing.hubTitle,
+      title: t("웰니스 브리핑"),
       description,
       images: [OG_IMAGE.url],
     },
@@ -77,7 +79,7 @@ export default async function BriefingHubPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const dict = await getDictionary(locale);
+  const t = createTranslator(await getBriefingMessages(locale));
   const [latest, archive] = await Promise.all([
     getLatestWellnessDigest(locale),
     listWellnessDigests(locale),
@@ -85,10 +87,10 @@ export default async function BriefingHubPage({ params }: Props) {
 
   const pastWeeks = archive.filter((item) => item.weekOf !== latest?.weekOf);
   const description = latest
-    ? dict.briefing.metaDescriptionFromItems(
+    ? createBriefingDescription(t,
       latest.items.map((item) => item.headline),
     )
-    : dict.briefing.hubDescription;
+    : t("공공기관·국제기구 소식을 POKIT이 요약하고, 일상 루틴으로 연결합니다. 원문은 출처에서 확인하세요.");
 
   return (
     <main>
@@ -96,7 +98,7 @@ export default async function BriefingHubPage({ params }: Props) {
         data={breadcrumbJsonLd(
           [
             { name: site.name, path: "/" },
-            { name: dict.briefing.hubTitle, path: "/briefing" },
+            { name: t("웰니스 브리핑"), path: "/briefing" },
           ],
           locale,
         )}
@@ -106,7 +108,7 @@ export default async function BriefingHubPage({ params }: Props) {
           data={briefingCollectionJsonLd({
             locale,
             path: "/briefing",
-            name: dict.briefing.hubTitle,
+            name: t("웰니스 브리핑"),
             description,
             items: latest.items,
             datePublished: latest.weekOf,
@@ -118,20 +120,20 @@ export default async function BriefingHubPage({ params }: Props) {
         <WellnessNewsDigest
           digest={latest}
           locale={locale}
-          kicker={dict.briefing.kicker}
-          sourceLabel={dict.briefing.sourceLabel}
-          readSourceLabel={dict.briefing.readSourceLabel}
+          kicker={t("주간 브리핑")}
+          sourceLabel={t("출처")}
+          readSourceLabel={t("원문 보기")}
           showExtras
-          editorNoteLabel={dict.briefing.editorNoteLabel}
-          relatedLabel={dict.briefing.relatedLabel}
+          editorNoteLabel={t("POKIT 노트")}
+          relatedLabel={t("같이 읽으면 좋은 이야기")}
           titleAs="h1"
         />
       ) : (
         <section className={cn(monoContainer, sectionSpacing)}>
           <h1 className="m-0 text-[clamp(1.85rem,3.5vw,2.75rem)] font-extrabold tracking-[-0.03em]">
-            {dict.briefing.hubTitle}
+            {t("웰니스 브리핑")}
           </h1>
-          <p className="mt-4 font-sans text-muted">{dict.briefing.empty}</p>
+          <p className="mt-4 font-sans text-muted">{t("아직 발행된 브리핑이 없습니다.")}</p>
         </section>
       )}
 
@@ -141,7 +143,7 @@ export default async function BriefingHubPage({ params }: Props) {
             href={briefingWeekPath(locale, latest.weekOf)}
             className="font-bold underline decoration-2 underline-offset-2 hover:bg-wash"
           >
-            {dict.briefing.viewFull} → {latest.weekOf}
+            {t("전체 보기 → {{week}}", { week: latest.weekOf })}
           </Link>
         </p>
       )}
@@ -149,7 +151,7 @@ export default async function BriefingHubPage({ params }: Props) {
       {pastWeeks.length > 0 && (
         <section className={cn(monoContainer, "border-t border-ink/10 py-12 pb-16")}>
           <h2 className="m-0 mb-6 text-[1.25rem] font-extrabold tracking-[-0.02em]">
-            {dict.briefing.archiveTitle}
+            {t("지난 브리핑")}
           </h2>
           <ul className="m-0 grid list-none gap-3 p-0">
             {pastWeeks.map((item) => (

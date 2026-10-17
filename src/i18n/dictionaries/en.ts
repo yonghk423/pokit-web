@@ -1,30 +1,6 @@
 import type { LegacyDictionary } from "@/i18n/types";
 
 const dictionary: LegacyDictionary = {
-  briefing: {
-    nav: "Wellness briefing",
-    kicker: "Weekly briefing",
-    hubTitle: "Wellness briefing",
-    hubDescription:
-      "POKIT summarizes public-health and wellness updates and ties them to daily routines. Read the original at the source.",
-    weekTitle: (weekLabel) => `Wellness briefing · ${weekLabel}`,
-    weekDescription: (title) =>
-      `${title} — a weekly curation through a daily-routine lens | POKIT`,
-    sourceLabel: "Source",
-    readSourceLabel: "Read source",
-    editorNoteLabel: "POKIT note",
-    relatedLabel: "Related stories",
-    archiveTitle: "Past briefings",
-    empty: "No briefings published yet.",
-    backToHub: "← All briefings",
-    viewFull: "View full",
-    metaDescriptionFromItems: (headlines) => {
-      const joined = headlines.slice(0, 3).join(" · ");
-      return joined
-        ? `${joined} — POKIT weekly wellness briefing`
-        : "Weekly wellness updates, summarized for daily routines — POKIT";
-    },
-  },
   newArrivals: {
     nav: "Routine tools",
     kicker: "Routine tools",

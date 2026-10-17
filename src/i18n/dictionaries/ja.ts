@@ -1,30 +1,6 @@
 import type { LegacyDictionary } from "@/i18n/types";
 
 const dictionary: LegacyDictionary = {
-  briefing: {
-    nav: "ウェルネスブリーフィング",
-    kicker: "週間ブリーフィング",
-    hubTitle: "ウェルネスブリーフィング",
-    hubDescription:
-      "公的機関・国際機関のニュースをPOKITが要約し、日常ルーチンにつなげます。原文は出典で確認してください。",
-    weekTitle: (weekLabel) => `${weekLabel} ウェルネスブリーフィング`,
-    weekDescription: (title) =>
-      `${title}。日常ルーチン・ウェルネス視点の週間キュレーション | POKIT`,
-    sourceLabel: "出典",
-    readSourceLabel: "原文を見る",
-    editorNoteLabel: "POKITノート",
-    relatedLabel: "あわせて読みたい話",
-    archiveTitle: "過去のブリーフィング",
-    empty: "まだ公開されたブリーフィングはありません。",
-    backToHub: "← ブリーフィング一覧",
-    viewFull: "すべて見る",
-    metaDescriptionFromItems: (headlines) => {
-      const joined = headlines.slice(0, 3).join(" · ");
-      return joined
-        ? `${joined}。POKIT週間ウェルネスブリーフィング`
-        : "公的・国際のウェルネスニュースを日常ルーチンにつなげるPOKIT週間ブリーフィング";
-    },
-  },
   newArrivals: {
     nav: "ルーチン道具",
     kicker: "ルーチン道具",
