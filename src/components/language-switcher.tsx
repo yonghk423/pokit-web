@@ -3,13 +3,14 @@
 import { usePathname } from "next/navigation";
 
 import { locales, type Locale } from "@/i18n/config";
-import type { CommonCopy } from "@/i18n/create-common-copy";
 import { switchLocalePath } from "@/lib/locale-path";
 import { cn } from "@/lib/cn";
 
+export type LanguageLabels = { label: string } & Record<Locale, string>;
+
 type Props = {
   locale: Locale;
-  labels: CommonCopy["languageSwitcher"];
+  labels: LanguageLabels;
   className?: string;
 };
 

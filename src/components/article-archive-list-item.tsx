@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { articlePath } from "@/lib/article-path";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { formatPublishedLabel } from "@/lib/format-published";
 import { isSanityConfigured } from "@/sanity/env";
 import { coverImageUrl, imageBlurProps } from "@/sanity/image";
@@ -13,7 +13,7 @@ import type { ArticleCardData } from "@/sanity/types";
 type Props = {
   article: ArticleCardData;
   locale: Locale;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
 };
 
 export function ArticleArchiveListItem({

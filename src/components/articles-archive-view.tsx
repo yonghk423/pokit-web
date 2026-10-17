@@ -6,7 +6,7 @@ import { useSyncExternalStore } from "react";
 import { ArticleArchiveListItem } from "@/components/article-archive-list-item";
 import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { cn } from "@/lib/cn";
 import type { ArchiveSort } from "@/sanity/lib/articles";
 import type { ArticleCardData } from "@/sanity/types";
@@ -28,7 +28,7 @@ type ArchiveViewLabels = {
 type Props = {
   articles: ArticleCardData[];
   locale: Locale;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   labels: ArchiveViewLabels;
   sort: ArchiveSort;
   newestHref: string;

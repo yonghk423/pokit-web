@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { shuffleArticlesKeepingNewest } from "@/lib/shuffle-articles";
 import { useCarouselAutoplay } from "@/lib/use-carousel-autoplay";
 import type { ArticleCardData } from "@/sanity/types";
@@ -12,7 +12,7 @@ import type { ArticleCardData } from "@/sanity/types";
 type Props = {
   articles: ArticleCardData[];
   locale: Locale;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   ariaLabel: string;
   prevAria: string;
   nextAria: string;

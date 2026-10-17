@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { HomeSectionLabels } from "@/i18n/home-section-labels";
 import { client } from "@/sanity/client";
 import { homeSections } from "@/content/home";
 import { isSanityConfigured } from "@/sanity/env";
@@ -38,27 +38,27 @@ import type {
   WellnessDigestListItem,
 } from "@/sanity/types";
 
-function sectionDefaults(dict: Dictionary) {
+function sectionDefaults(sections: HomeSectionLabels) {
   return {
     routine: {
-      kicker: dict.home.sections.routine.kicker,
-      title: dict.home.sections.routine.title,
+      kicker: sections.routine.kicker,
+      title: sections.routine.title,
     },
     commute: {
-      kicker: dict.home.sections.commute.kicker,
-      title: dict.home.sections.commute.title,
+      kicker: sections.commute.kicker,
+      title: sections.commute.title,
     },
     space: {
-      kicker: dict.home.sections.space.kicker,
-      title: dict.home.sections.space.title,
+      kicker: sections.space.kicker,
+      title: sections.space.title,
     },
     sleep: {
-      kicker: dict.home.sections.sleep.kicker,
-      title: dict.home.sections.sleep.title,
+      kicker: sections.sleep.kicker,
+      title: sections.sleep.title,
     },
     wellness: {
-      kicker: dict.home.sections.wellness.kicker,
-      title: dict.home.sections.wellness.title,
+      kicker: sections.wellness.kicker,
+      title: sections.wellness.title,
     },
   };
 }
@@ -90,9 +90,9 @@ const emptyHomeContent = (): HomePageContent => ({
 
 export async function getHomePageContent(
   locale: Locale,
-  dict: Dictionary,
+  sections: HomeSectionLabels,
 ): Promise<HomePageContent> {
-  const defaults = sectionDefaults(dict);
+  const defaults = sectionDefaults(sections);
 
   if (!isSanityConfigured() || !client) {
     console.warn(
@@ -582,9 +582,9 @@ export async function listRoutineToolsForSitemap(): Promise<
 
 export async function getHomePageWithCarousels(
   locale: Locale,
-  dict: Dictionary,
+  sections: HomeSectionLabels,
 ): Promise<HomePageWithCarousels> {
-  const home = await getHomePageContent(locale, dict);
+  const home = await getHomePageContent(locale, sections);
 
   if (!isSanityConfigured() || !client) {
     return {

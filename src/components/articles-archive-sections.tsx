@@ -5,13 +5,13 @@ import { homeSections } from "@/content/home";
 import { createTranslator } from "@/i18n/create-translator";
 import type { ArchiveMessages } from "@/i18n/get-archive-messages";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { cn } from "@/lib/cn";
 import { articlesArchiveHref, type ArchiveSort } from "@/sanity/lib/articles";
 
 type Props = {
   locale: Locale;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   categoriesAria: string;
   messages: ArchiveMessages;
   category?: string;

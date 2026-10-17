@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { withLocale } from "@/lib/locale-path";
 import { homeSections } from "@/content/home";
 import { normalizeArticleCategory } from "@/content/categories";
@@ -160,7 +160,7 @@ export async function getRelatedArticles(
   slug: string,
   category: string,
   locale: Locale,
-  dict: Dictionary,
+  categoryLabels: CategoryLabels,
 ): Promise<RelatedArticlesResult | null> {
   if (!isSanityConfigured() || !client) {
     return null;
@@ -196,8 +196,8 @@ export async function getRelatedArticles(
   return {
     articles,
     label: inDesignSpace
-      ? getArchiveSectionLabel(homeSections.space.archiveSection!, dict)
-      : getCategoryLabel(normalizedCategory, dict),
+      ? getArchiveSectionLabel(homeSections.space.archiveSection!, categoryLabels)
+      : getCategoryLabel(normalizedCategory, categoryLabels),
     viewAllHref: inDesignSpace
       ? articlesArchiveHref(locale, 1, undefined, undefined, homeSections.space.archiveSection)
       : articlesArchiveHref(locale, 1, normalizedCategory),

@@ -11,7 +11,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { StationeryScatter } from "@/components/stationery-scatter";
 import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getCommonMessages } from "@/i18n/get-common-messages";
 import { createTranslator } from "@/i18n/create-translator";
 import { getHomeMessages } from "@/i18n/get-home-messages";
 import { getAppPageMessages } from "@/i18n/get-app-page-messages";
@@ -303,12 +303,13 @@ export default async function AppIntroPage({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, pageMessages, downloadMessages, homeMessages] = await Promise.all([
-    getDictionary(locale),
+  const [commonMessages, pageMessages, downloadMessages, homeMessages] = await Promise.all([
+    getCommonMessages(locale),
     getAppPageMessages(locale),
     getAppDownloadMessages(locale),
     getHomeMessages(locale),
   ]);
+  const commonT = createTranslator(commonMessages);
   const t = createTranslator(pageMessages);
   const homeT = createTranslator(homeMessages);
   const downloadT = createTranslator(downloadMessages);
@@ -543,7 +544,7 @@ export default async function AppIntroPage({ params }: Props) {
           size="large"
           variant="editorial"
           resourceLinks={[
-            { href: withLocale(locale, "/support"), label: dict.footer.support },
+            { href: withLocale(locale, "/support"), label: commonT("앱 지원") },
           ]}
           messages={downloadMessages}
         />

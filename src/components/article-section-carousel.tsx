@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { ArticleCard } from "@/components/article-card";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { cn } from "@/lib/cn";
 import { shuffleArticlesKeepingNewest } from "@/lib/shuffle-articles";
 import { useCarouselAutoplay } from "@/lib/use-carousel-autoplay";
@@ -15,7 +15,7 @@ type Variant = "vertical" | "compact";
 type Props = {
   articles: ArticleCardData[];
   locale: Locale;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   variant?: Variant;
   layout?: "rail" | "grid";
   columns?: 3 | 4;

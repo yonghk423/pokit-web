@@ -2,7 +2,10 @@ import { notFound } from "next/navigation";
 import { RoutedArticlePreview } from "@/components/routed-article-preview";
 import { isLocale } from "@/i18n/config";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { createTranslator } from "@/i18n/create-translator";
+import { getHomeMessages } from "@/i18n/get-home-messages";
+import { getCommonMessages } from "@/i18n/get-common-messages";
+import { createCategoryLabels } from "@/i18n/category-labels";
 import { isValidArticleSlug } from "@/lib/article-path";
 import { getArticleBySlug } from "@/sanity/lib/article";
 import { coverImageUrl } from "@/sanity/image";
@@ -22,10 +25,13 @@ export default async function ArticleModalPage({ params }: {
   if (!isLocale(locale) || !isValidArticleSlug(slug)) notFound();
   const article = await getArticleBySlug(slug, locale);
   if (!article) notFound();
-  const [dict, installMessages] = await Promise.all([
-    getDictionary(locale),
+  const [commonMessages, installMessages, homeMessages] = await Promise.all([
+    getCommonMessages(locale),
     getAppInstallMessages(locale),
+    getHomeMessages(locale),
   ]);
+  const categoryLabels = createCategoryLabels(createTranslator(commonMessages));
+  const t = createTranslator(homeMessages);
   const metadata = await articleMetadata({ params });
   const seo = {
     title: `${String(metadata.title ?? article.title)} | POKIT`,
@@ -37,6 +43,6 @@ export default async function ArticleModalPage({ params }: {
   };
   return <RoutedArticlePreview seo={seo} article={article} locale={locale}
     imageUrl={coverImageUrl(article.coverImage, 1200, 675)}
-    categoryLabels={dict.categories} closeLabel={dict.home.closePreview}
+    categoryLabels={categoryLabels} closeLabel={t("목록으로")}
     installMessages={installMessages} />;
 }

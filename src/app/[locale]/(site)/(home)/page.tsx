@@ -8,7 +8,11 @@ import { JsonLd } from "@/components/json-ld";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { homeSections } from "@/content/home";
 import { isLocale, locales, type Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getCommonMessages } from "@/i18n/get-common-messages";
+import { createCategoryLabels } from "@/i18n/category-labels";
+import { createHomeSectionLabels } from "@/i18n/home-section-labels";
+import { getHomeSectionNavMessages } from "@/i18n/get-home-section-nav-messages";
+import { getHomeSectionContentMessages } from "@/i18n/get-home-section-content-messages";
 import { createTranslator } from "@/i18n/create-translator";
 import { getHomeMessages } from "@/i18n/get-home-messages";
 import { getHomeVideoMessages } from "@/i18n/get-home-video-messages";
@@ -37,14 +41,22 @@ export default async function Home({ params }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, videoMessages, downloadMessages, homeMessages, toolMessages] = await Promise.all([
-    getDictionary(locale),
+  const [commonMessages, videoMessages, downloadMessages, homeMessages, toolMessages, sectionNav, sectionContent] = await Promise.all([
+    getCommonMessages(locale),
     getHomeVideoMessages(locale),
     getAppDownloadMessages(locale),
     getHomeMessages(locale),
     getNewArrivalsMessages(locale),
+    getHomeSectionNavMessages(locale),
+    getHomeSectionContentMessages(locale),
   ]);
   const t = createTranslator(homeMessages);
+  const commonT = createTranslator(commonMessages);
+  const categoryLabels = createCategoryLabels(createTranslator(commonMessages));
+  const sectionLabels = createHomeSectionLabels(
+    createTranslator(sectionNav),
+    createTranslator(sectionContent),
+  );
   const toolT = createTranslator(toolMessages);
   const {
     weeklyHero,
@@ -61,14 +73,13 @@ export default async function Home({ params }: Props) {
     wellnessCarousel,
     newArrivals,
     pastRoutineTools,
-  } = await getHomePageWithCarousels(locale, dict);
+  } = await getHomePageWithCarousels(locale, sectionLabels);
 
-  const routine = dict.home.sections.routine;
-  const commute = dict.home.sections.commute;
-  const space = dict.home.sections.space;
-  const sleep = dict.home.sections.sleep;
-  const wellness = dict.home.sections.wellness;
-  const categoryLabels = dict.categories;
+  const routine = sectionLabels.routine;
+  const commute = sectionLabels.commute;
+  const space = sectionLabels.space;
+  const sleep = sectionLabels.sleep;
+  const wellness = sectionLabels.wellness;
 
   const feedArticles = [...weeklyHero, ...weeklyRail].filter(
     (article, index, list) =>
@@ -152,7 +163,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <>
-      <JsonLd data={websiteJsonLd(dict.meta.siteDescription, locale)} />
+      <JsonLd data={websiteJsonLd(commonT("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."), locale)} />
       <main>
           {(weeklyHero.length > 0 || feedArticles.length > 0) && (
             <div data-hide-in-pokit-app>

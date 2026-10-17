@@ -4,11 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { LanguageSwitcher } from "@/components/language-switcher";
+import { LanguageSwitcher, type LanguageLabels } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
 import { site } from "@/config/site";
 import type { Locale } from "@/i18n/config";
-import type { CommonCopy } from "@/i18n/create-common-copy";
 import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
@@ -18,7 +17,7 @@ type Props = {
   homeAria: string;
   app: string;
   contact: string;
-  languageLabels: CommonCopy["languageSwitcher"];
+  languageLabels: LanguageLabels;
 };
 
 function pathMatches(pathname: string, href: string) {

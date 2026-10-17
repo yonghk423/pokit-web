@@ -12,7 +12,7 @@ import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
 import { localeToIntl } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { createTranslator } from "@/i18n/create-translator";
 import type { HomeVideoMessages } from "@/i18n/get-home-video-messages";
 import type { AppDownloadMessages } from "@/i18n/get-app-download-messages";
@@ -31,7 +31,7 @@ type Props = {
   videoMessages: HomeVideoMessages;
   heroArticles: ArticleCardData[];
   feedArticles: ArticleCardData[];
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   downloadMessages: AppDownloadMessages;
 };
 
@@ -79,7 +79,7 @@ function FeedCard({
 }: {
   article: ArticleCardData;
   locale: Locale;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
 }) {
   const preview = useOptionalArticlePreview();
   const headline = splitDisplayTitle(article.title).headline;

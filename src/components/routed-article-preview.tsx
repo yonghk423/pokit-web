@@ -8,7 +8,7 @@ import { articlePath } from "@/lib/article-path";
 import { ArticlePreviewModal } from "@/components/article-preview-modal";
 import { useArticlePreview, type PreviewActive } from "@/components/article-preview-context";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import type { ArticleCardData } from "@/sanity/types";
 
 export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels, closeLabel, installMessages, seo }: {
@@ -16,7 +16,7 @@ export function RoutedArticlePreview({ article, locale, imageUrl, categoryLabels
   article: ArticleCardData;
   locale: Locale;
   imageUrl: string | null;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   closeLabel: string;
   installMessages: AppInstallMessages;
 }) {

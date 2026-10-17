@@ -1,7 +1,7 @@
 # UI 번역 전환
 
 공통 UI·카테고리·404, 홈, 앱 소개·다운로드, 게시글 목록·상세·미리보기, 지원, 브리핑, 루틴 도구 영역은 한글 원문 키와 JSON 리소스를 사용합니다.
-나머지 UI는 기존 `getDictionary`를 사용하며, Sanity 콘텐츠 번역은 별도로 관리합니다.
+각 화면은 필요한 영역의 로더를 사용하며, Sanity 콘텐츠 번역은 별도로 관리합니다.
 
 ## 리소스와 호출
 
@@ -41,14 +41,15 @@
   결과가 비어 있으면 기존 기본 설명을 사용합니다. 도구 본문·일본어 콘텐츠 대체
   정책은 기존대로 유지합니다. 현재 미사용인 번역 미제공 문구도 리소스에 보관합니다.
 
-## 기존 화면과의 연결
+## 필요한 문구만 전달
 
-`getDictionary`는 아직 전환하지 않은 화면을 위해 기존 객체 형태를 제공합니다.
-공통·홈 문구는 `createCommonCopy`와 `createHomeCopy`에서 JSON을 번역해 구성하며,
-언어별 TypeScript 사전에 같은 문구를 중복 보관하지 않습니다. 카테고리와 홈 섹션의
-ID 매핑도 이 공통 구성 함수에서 한 번만 정의합니다. 남은 TypeScript 사전의 타입은
-`LegacyDictionary`이며 날짜 locale 설정만 남아 있습니다. UI 문구의 JSON 전환은
-완료했으며, 기존 사전과 호환 객체 제거는 별도 정리 단계에서 진행합니다.
+카테고리 이름은 `createCategoryLabels(t)`와 `CategoryLabels`, 언어 선택 문구는
+`LanguageLabels` 타입을 사용합니다. 홈의 섹션 ID·메뉴·CMS 기본 제목은
+`createHomeSectionLabels(navT, contentT)`와 `HomeSectionLabels`로 관리합니다.
+Sanity 조회에는 필요한 카테고리 이름 또는 섹션 기본 문구만 전달합니다.
+
+기존 통합 사전과 호환 객체는 제거했습니다. 날짜 locale은 `config.ts`의
+`localeToIntl(locale)`을 사용하며 번역 사전에 별도로 보관하지 않습니다.
 
 ```tsx
 const t = createTranslator(videoMessages);
@@ -76,4 +77,4 @@ t("{{label}} 이전", { label: "루틴" });
 
 `npm run test:i18n`은 런타임 동작과 모든 JSON 리소스의 키·인자 이름 일치를
 검사합니다(Node.js 22.6 이상). `npx tsc --noEmit`은 호출부와 타입 오류 사례를 검사합니다.
-복수형, 자동 추출 및 나머지 함수형 사전의 변환은 후속 단계에서 설계합니다.
+복수형과 자동 추출은 후속 단계에서 설계합니다.

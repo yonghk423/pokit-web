@@ -2,14 +2,14 @@ import Link from "next/link";
 
 import { ArticleSectionCarousel } from "@/components/article-section-carousel";
 import type { Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 import { cn } from "@/lib/cn";
 import type { RelatedArticlesResult } from "@/sanity/lib/articles";
 
 type Props = {
   related: RelatedArticlesResult;
   locale: Locale;
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   heading: string;
   viewMoreLabel: string;
   className?: string;

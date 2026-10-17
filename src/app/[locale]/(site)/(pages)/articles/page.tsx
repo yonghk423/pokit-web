@@ -10,7 +10,8 @@ import { site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getArchiveMessages } from "@/i18n/get-archive-messages";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getCommonMessages } from "@/i18n/get-common-messages";
+import { createCategoryLabels } from "@/i18n/category-labels";
 import {
   getArchiveHeading,
   getArchiveSectionLabel,
@@ -67,12 +68,13 @@ export async function generateMetadata({
   const archiveSection =
     section && isArchiveSection(section) ? section : undefined;
   const sort = parseArchiveSort(rawSort);
-  const [dict, messages] = await Promise.all([
-    getDictionary(rawLocale),
+  const [commonMessages, messages] = await Promise.all([
+    getCommonMessages(rawLocale),
     getArchiveMessages(rawLocale),
   ]);
+  const categoryLabels = createCategoryLabels(createTranslator(commonMessages));
   const t = createTranslator(messages);
-  const heading = getArchiveHeading(dict, t, category, archiveSection);
+  const heading = getArchiveHeading(categoryLabels, t, category, archiveSection);
   const pageSuffix =
     page > 1
       ? searchTerm
@@ -86,10 +88,10 @@ export async function generateMetadata({
     ? t("\"{{term}}\" 검색 결과. 일상·루틴·웰니스 이야기를 POKIT에서 확인하세요.", { term: searchTerm })
     : archiveSection
       ? t("{{label}}. 일상 루틴·웰니스 이야기 | POKIT", {
-        label: getArchiveSectionLabel(archiveSection, dict),
+        label: getArchiveSectionLabel(archiveSection, categoryLabels),
       })
       : category
-        ? t("{{label}}. 일상 속 루틴과 웰니스 이야기 | POKIT", { label: getCategoryLabel(category, dict) })
+        ? t("{{label}}. 일상 속 루틴과 웰니스 이야기 | POKIT", { label: getCategoryLabel(category, categoryLabels) })
         : t("일상 루틴과 웰니스 가이드. POKIT에 발행된 모든 이야기를 확인하세요.");
 
   const isSearchResult = Boolean(searchTerm);
@@ -137,10 +139,12 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
   }
 
   const locale: Locale = rawLocale;
-  const [dict, messages] = await Promise.all([
-    getDictionary(rawLocale),
+  const [commonMessages, messages] = await Promise.all([
+    getCommonMessages(rawLocale),
     getArchiveMessages(rawLocale),
   ]);
+  const categoryLabels = createCategoryLabels(createTranslator(commonMessages));
+  const commonT = createTranslator(commonMessages);
   const t = createTranslator(messages);
   const { page: rawPage, category, section, q, sort: rawSort } =
     await searchParams;
@@ -169,7 +173,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
   const rangeStart = total === 0 ? 0 : (page - 1) * ARTICLES_PER_PAGE + 1;
   const rangeEnd = Math.min(page * ARTICLES_PER_PAGE, total);
-  const heading = getArchiveHeading(dict, t, category, archiveSection);
+  const heading = getArchiveHeading(categoryLabels, t, category, archiveSection);
   const sortLabel =
     sort === "oldest" ? t("오래된순") : t("최신순");
 
@@ -202,8 +206,8 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
           <ArticlesArchiveSections
             locale={locale}
             messages={messages}
-            categoryLabels={dict.categories}
-            categoriesAria={dict.header.categoriesAria}
+            categoryLabels={categoryLabels}
+            categoriesAria={commonT("카테고리")}
             category={category}
             section={archiveSection}
             q={searchTerm}
@@ -227,7 +231,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
             <ArticlesArchiveView
               articles={articles}
               locale={locale}
-              categoryLabels={dict.categories}
+              categoryLabels={categoryLabels}
               sort={sort}
               newestHref={articlesArchiveHref(
                 locale,

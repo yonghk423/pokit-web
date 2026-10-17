@@ -13,7 +13,8 @@ import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getArticleMessages } from "@/i18n/get-article-messages";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { getCommonMessages } from "@/i18n/get-common-messages";
+import { createCategoryLabels } from "@/i18n/category-labels";
 import { articleSeo } from "@/lib/article-seo";
 import { isValidArticleSlug } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
@@ -126,11 +127,13 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
-  const [dict, articleMessages, installMessages] = await Promise.all([
-    getDictionary(locale),
+  const [commonMessages, articleMessages, installMessages] = await Promise.all([
+    getCommonMessages(locale),
     getArticleMessages(locale),
     getAppInstallMessages(locale),
   ]);
+  const categoryLabels = createCategoryLabels(createTranslator(commonMessages));
+  const commonT = createTranslator(commonMessages);
   const t = createTranslator(articleMessages);
   const article = await getArticleBySlug(slug, locale);
 
@@ -142,7 +145,7 @@ export default async function ArticlePage({ params }: Props) {
     slug,
     article.category,
     locale,
-    dict,
+    categoryLabels,
   );
   const showKoreanOnlyBanner =
     (locale === "en" && article.hasEnglishTranslation === false) ||
@@ -169,7 +172,7 @@ export default async function ArticlePage({ params }: Props) {
         data={breadcrumbJsonLd(
           [
             { name: site.name, path: "/" },
-            { name: dict.header.allStories, path: "/articles" },
+            { name: commonT("모든 이야기"), path: "/articles" },
             { name: article.title, path: `/articles/${slug}` },
           ],
           jsonLdLocale,
@@ -243,7 +246,7 @@ export default async function ArticlePage({ params }: Props) {
           <RelatedArticles
             related={related}
             locale={locale}
-            categoryLabels={dict.categories}
+            categoryLabels={categoryLabels}
             heading={t("{{label}} 이야기", {
               label: locale === "en" ? related.label.toLowerCase() : related.label,
             })}

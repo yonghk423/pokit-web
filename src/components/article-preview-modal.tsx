@@ -25,7 +25,7 @@ import {
   DEFAULT_DURATION_MINUTES,
   toPokitRoutineArticle,
 } from "@/lib/pokit-bridge";
-import type { Dictionary } from "@/i18n/types";
+import type { CategoryLabels } from "@/i18n/category-labels";
 
 type PreviewArticle = {
   slug: string;
@@ -44,7 +44,7 @@ type PreviewArticle = {
 };
 
 type Props = {
-  categoryLabels: Dictionary["categories"];
+  categoryLabels: CategoryLabels;
   closeLabel: string;
   installMessages: AppInstallMessages;
   preview?: Pick<ReturnType<typeof useArticlePreview>, "locale" | "active" | "close">;
