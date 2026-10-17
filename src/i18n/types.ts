@@ -43,6 +43,11 @@ export type Dictionary = {
     heroAccent: string;
     heroRest: string;
     feedTitle: string;
+    video: {
+      label: string;
+      pause: string;
+      play: string;
+    };
     workLine1: string;
     workAccent: string;
     workRest: string;
@@ -113,8 +118,15 @@ export type Dictionary = {
     qrHint: string;
     /** Short line beside the home hero QR. */
     heroAside: string;
+    visualAlt: string;
   };
   appPage: {
+    trustLine: string;
+    heroAlt: string;
+    secondaryImageAlt: {
+      memo: string;
+      routines: string;
+    };
     metaTitle: string;
     metaDescription: string;
     kicker: string;

@@ -65,6 +65,11 @@ const dictionary: Dictionary = {
         title: "Daily wellness: ten minutes for your body",
       },
     },
+    video: {
+      label: "POKIT app preview",
+      pause: "Pause video",
+      play: "Play video",
+    },
     storiesAria: (label) => `${label} stories`,
     radioEmpty: (sectionNav) =>
       `Connect 3 stories in Home Page → ${sectionNav}.`,
@@ -146,6 +151,7 @@ const dictionary: Dictionary = {
     },
   },
   appDownload: {
+    visualAlt: "Highlighters and sticky notes labeled pokit, Routine, todo, Time Planner, and notes",
     kicker: "Carry daily routines and wellness in your pocket",
     title: "Track daily routines and protect your wellness in the POKIT app.",
     download: "Download on the App Store",
@@ -155,6 +161,12 @@ const dictionary: Dictionary = {
     heroAside: "POKIT - Daily Habit Planner",
   },
   appPage: {
+    trustLine: "Routines, notes, and tasks, all in one place",
+    heroAlt: "Illustration of a day of routines kept in the POKIT app",
+    secondaryImageAlt: {
+      memo: "POKIT screen for writing a daily memo for the lock screen",
+      routines: "POKIT first-launch screen for setting your daily span",
+    },
     metaTitle: "POKIT - Todo, time & routines",
     metaDescription:
       "Set your day bounds, then keep routines, tasks, memos, and history in one place. Start your daily rhythm with the POKIT app.",

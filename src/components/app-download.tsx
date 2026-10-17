@@ -32,18 +32,13 @@ type Props = {
   resourceLinks?: { href: string; label: string }[];
 };
 
-function defaultEditorialVisual(locale: Locale): DownloadVisual {
+function defaultEditorialVisual(locale: Locale, alt: string): DownloadVisual {
   return {
     src:
       locale === "ko"
         ? "/icon-with-multi-postit-labels.png"
         : "/en/icon-with-multi-postit-labels.png",
-    alt:
-      locale === "ko"
-        ? "형광펜과 포스트잇에 적힌 루틴, 할 일, 메모 라벨"
-        : locale === "ja"
-          ? "蛍光ペンと付箋に書かれたルーチン・TODO・メモのラベル"
-          : "Highlighters and sticky notes labeled pokit, Routine, todo, Time Planner, and notes",
+    alt,
     width: 1152,
     height: 864,
   };
@@ -63,7 +58,7 @@ export function AppDownload({
   const resolvedVisual =
     visual === null
       ? null
-      : (visual ?? (editorial ? defaultEditorialVisual(locale) : null));
+      : (visual ?? (editorial ? defaultEditorialVisual(locale, copy.visualAlt) : null));
 
   return (
     <section

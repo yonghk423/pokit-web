@@ -25,6 +25,7 @@ type Props = {
   feedTitle: string;
   feedPrevLabel: string;
   feedNextLabel: string;
+  video: Dictionary["home"]["video"];
   heroArticles: ArticleCardData[];
   feedArticles: ArticleCardData[];
   categoryLabels: Dictionary["categories"];
@@ -140,6 +141,7 @@ export function HomeHero({
   feedTitle,
   feedPrevLabel,
   feedNextLabel,
+  video,
   heroArticles,
   feedArticles,
   categoryLabels,
@@ -191,17 +193,6 @@ export function HomeHero({
     });
   }, []);
 
-  const videoLabel =
-    locale === "ko"
-      ? "POKIT 앱 소개 영상"
-      : locale === "ja"
-        ? "POKITアプリ紹介動画"
-        : "POKIT app preview";
-  const videoPauseLabel =
-    locale === "ko" ? "영상 정지" : locale === "ja" ? "動画を停止" : "Pause video";
-  const videoPlayLabel =
-    locale === "ko" ? "영상 재생" : locale === "ja" ? "動画を再生" : "Play video";
-
   const toggleVideo = useCallback(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -241,7 +232,7 @@ export function HomeHero({
                   muted
                   loop
                   playsInline
-                  aria-label={videoLabel}
+                  aria-label={video.label}
                   onPlay={() => setVideoPlaying(true)}
                   onPause={() => setVideoPlaying(false)}
                 />
@@ -249,7 +240,7 @@ export function HomeHero({
               <button
                 type="button"
                 onClick={toggleVideo}
-                aria-label={videoPlaying ? videoPauseLabel : videoPlayLabel}
+                aria-label={videoPlaying ? video.pause : video.play}
                 className="pointer-events-none absolute bottom-2 left-2 z-10 inline-flex size-8 cursor-pointer items-center justify-center rounded-full border-0 bg-ink/75 p-0 text-white opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100 max-nav:pointer-events-auto max-nav:opacity-100"
               >
                 {videoPlaying ? (

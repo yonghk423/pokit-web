@@ -303,13 +303,6 @@ export default async function AppIntroPage({ params }: Props) {
   const featureById = Object.fromEntries(
     copy.features.map((feature) => [feature.id, feature]),
   );
-  const trustLine =
-    locale === "ko"
-      ? "루틴도 메모도 할 일도, 여기 한곳에"
-      : locale === "ja"
-        ? "ルーチンもメモもやることも、ここひとつに"
-        : "Routines, notes, and tasks, all in one place";
-
   const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -326,13 +319,6 @@ export default async function AppIntroPage({ params }: Props) {
     },
     downloadUrl: storeUrl,
   };
-
-  const heroAlt =
-    locale === "ko"
-      ? "하루 루틴을 POKIT 앱으로 챙기는 일러스트"
-      : locale === "ja"
-        ? "一日のルーチンをPOKITアプリで進めるイラスト"
-        : "Illustration of a day of routines kept in the POKIT app";
 
   return (
     <main className="overflow-x-clip">
@@ -378,7 +364,7 @@ export default async function AppIntroPage({ params }: Props) {
             <div className="app-hero-rise app-hero-rise-4 mt-8 flex flex-col items-start gap-3 nav:mt-10 nav:flex-row nav:flex-wrap nav:items-center nav:gap-5">
               <AppStoreBadge locale={locale} label={copy.download} />
               <span className="font-sans text-[0.88rem] font-normal tracking-[-0.01em] text-ink/55 nav:text-[0.92rem]">
-                {trustLine}
+                {copy.trustLine}
               </span>
             </div>
           </div>
@@ -386,7 +372,7 @@ export default async function AppIntroPage({ params }: Props) {
           <div className="app-hero-phone relative mx-auto w-full max-w-[28rem] nav:hidden">
             <Image
               src={heroArt}
-              alt={heroAlt}
+              alt={copy.heroAlt}
               sizes="92vw"
               priority
               unoptimized
@@ -491,17 +477,9 @@ export default async function AppIntroPage({ params }: Props) {
                       }
                       secondaryAlt={
                         feature.id === "memo"
-                          ? locale === "ko"
-                            ? "잠금화면에 남길 하루 메모를 적는 화면"
-                            : locale === "ja"
-                              ? "ロック画面に残す一日のメモを書く画面"
-                              : "POKIT screen for writing a daily memo for the lock screen"
+                          ? copy.secondaryImageAlt.memo
                           : feature.id === "routines"
-                            ? locale === "ko"
-                              ? "POKIT 앱을 처음 열었을 때 하루 일과를 정하는 화면"
-                              : locale === "ja"
-                                ? "POKITアプリを初めて開いたときの一日の時間設定画面"
-                                : "POKIT first-launch screen for setting your daily span"
+                            ? copy.secondaryImageAlt.routines
                             : undefined
                       }
                     />

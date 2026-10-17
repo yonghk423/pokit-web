@@ -65,6 +65,11 @@ const dictionary: Dictionary = {
         title: "日常ウェルネス、体のための10分",
       },
     },
+    video: {
+      label: "POKITアプリ紹介動画",
+      pause: "動画を停止",
+      play: "動画を再生",
+    },
     storiesAria: (label) => `${label}のストーリー`,
     radioEmpty: (sectionNav) =>
       `Home Page → ${sectionNav} でストーリーを3つつないでください。`,
@@ -146,6 +151,7 @@ const dictionary: Dictionary = {
     },
   },
   appDownload: {
+    visualAlt: "蛍光ペンと付箋に書かれたルーチン・TODO・メモのラベル",
     kicker: "日常ルーチンとウェルネスをポケットに",
     title: "POKITアプリで日常ルーチンを記録し、ウェルネスを守ろう。",
     download: "App Storeでダウンロード",
@@ -155,6 +161,12 @@ const dictionary: Dictionary = {
     heroAside: "POKIT - ルーティン習慣",
   },
   appPage: {
+    trustLine: "ルーチンもメモもやることも、ここひとつに",
+    heroAlt: "一日のルーチンをPOKITアプリで進めるイラスト",
+    secondaryImageAlt: {
+      memo: "ロック画面に残す一日のメモを書く画面",
+      routines: "POKITアプリを初めて開いたときの一日の時間設定画面",
+    },
     metaTitle: "POKIT - タスク・時間管理・ルーティン",
     metaDescription:
       "一日の始まりと終わりを決め、ルーチン・やること・メモ・記録をひとつに。POKITアプリで日常を軽やかに。",

@@ -65,6 +65,11 @@ const dictionary: Dictionary = {
         title: "일상 웰니스, 몸을 위한 10분",
       },
     },
+    video: {
+      label: "POKIT 앱 소개 영상",
+      pause: "영상 정지",
+      play: "영상 재생",
+    },
     storiesAria: (label) => `${label} 이야기`,
     radioEmpty: (sectionNav) =>
       `Home Page → ${sectionNav}에서 이야기 3개를 연결해주세요.`,
@@ -146,6 +151,7 @@ const dictionary: Dictionary = {
     },
   },
   appDownload: {
+    visualAlt: "형광펜과 포스트잇에 적힌 루틴, 할 일, 메모 라벨",
     kicker: "일상 루틴과 웰니스를 주머니에",
     title: "POKIT 앱에서 일상 루틴을 기록하고, 웰니스를 지켜 보세요.",
     download: "App Store에서 다운로드",
@@ -155,6 +161,12 @@ const dictionary: Dictionary = {
     heroAside: "POKIT - 루틴 습관 투두리스트",
   },
   appPage: {
+    trustLine: "루틴도 메모도 할 일도, 여기 한곳에",
+    heroAlt: "하루 루틴을 POKIT 앱으로 챙기는 일러스트",
+    secondaryImageAlt: {
+      memo: "잠금화면에 남길 하루 메모를 적는 화면",
+      routines: "POKIT 앱을 처음 열었을 때 하루 일과를 정하는 화면",
+    },
     metaTitle: "POKIT - 투두 시간 관리 루틴",
     metaDescription:
       "하루의 시작과 끝을 정하고, 루틴·할 일·메모·기록을 한곳에서. POKIT 앱으로 일상을 가볍게 가꿔 보세요.",

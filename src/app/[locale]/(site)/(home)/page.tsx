@@ -149,6 +149,7 @@ export default async function Home({ params }: Props) {
                 heroArticles={weeklyHero.length > 0 ? weeklyHero : feedArticles}
                 feedArticles={feedArticles.length > 0 ? feedArticles : weeklyHero}
                 categoryLabels={categoryLabels}
+                video={dict.home.video}
                 download={dict.appDownload}
               />
             </div>
