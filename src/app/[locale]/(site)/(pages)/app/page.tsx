@@ -27,7 +27,6 @@ const OG_IMAGE = {
 } as const;
 
 const paper = "bg-[#f4f3ef]";
-const descriptionKey = "평범한 순간도 소중한 장면으로 남겨요.";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -42,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = createTranslator(await getAppPageMessages(rawLocale));
   const alternates = localeAlternates(rawLocale, "/app");
   const title = t("POKIT, 기록하고, 챙기고, 다정하게.");
-  const description = t(descriptionKey);
+  const description = t("평범한 순간도 소중한 장면으로 남겨요.");
 
   return {
     title: { absolute: title },
@@ -82,7 +81,13 @@ export default async function AppIntroPage({ params }: Props) {
   const t = createTranslator(pageMessages);
   const downloadT = createTranslator(downloadMessages);
   const boards = appBoardArt(locale);
-  const description = t(descriptionKey);
+  const description = t("평범한 순간도 소중한 장면으로 남겨요.");
+  const boardCopy = {
+    day: { label: t("하루"), alt: t("나의 하루가, 한 편의 이야기요") },
+    scenes: { label: t("장면"), alt: t("오늘의 장면을 차곡차곡 모아요") },
+    card: { label: t("카드"), alt: t("챙기고 싶은 일상, 카드 한 장에") },
+    overview: { label: t("한눈"), alt: t("나의 루틴을 한눈에 펼쳐봐요") },
+  } as const;
 
   const softwareJsonLd = {
     "@context": "https://schema.org",
@@ -112,11 +117,11 @@ export default async function AppIntroPage({ params }: Props) {
         <div className="mt-8 flex w-full flex-col items-start gap-5 nav:flex-row nav:items-center nav:gap-8">
           <AppStoreBadge locale={locale} label={downloadT("App Store에서 받기")} className="shrink-0" />
           <p className="m-0 max-w-3xl text-left font-sans text-[clamp(1.05rem,1.6vw,1.35rem)] leading-[1.5] tracking-[-0.02em] text-ink/70">
-            {t(descriptionKey)}
+            {description}
           </p>
         </div>
         <nav
-          aria-label={t(descriptionKey)}
+          aria-label={description}
           className="mt-10 grid w-full grid-cols-2 gap-3 nav:grid-cols-4"
         >
           {appBoards.map((board) => (
@@ -125,7 +130,7 @@ export default async function AppIntroPage({ params }: Props) {
               href={`#${board.id}`}
                 className="flex w-full items-center justify-center rounded-full border border-ink/15 px-4 py-3 font-sans text-[0.95rem] tracking-[-0.01em] text-ink/80 transition-colors hover:bg-ink hover:text-[#f4f3ef]"
             >
-              {board.index} {t(board.label)}
+              {board.index} {boardCopy[board.id].label}
             </a>
           ))}
         </nav>
@@ -137,7 +142,7 @@ export default async function AppIntroPage({ params }: Props) {
             <figure id={board.id} className="m-0 scroll-mt-24">
               <Image
                 src={boards[index]}
-                alt={t(board.alt)}
+                alt={boardCopy[board.id].alt}
                 priority={index === 0}
                 sizes="(min-width: 900px) 384px, 100vw"
                 className="h-auto w-full"
@@ -159,7 +164,7 @@ export default async function AppIntroPage({ params }: Props) {
             ...downloadMessages,
             "POKIT 깔고, 오늘부터 천천히 채워 보세요.": t("기록하고, 챙기고, 다정하게."),
             "오늘 필요한 것들을, POKIT에 담아보세요. 루틴도, 메모도, 해야 할 일도. 하루에 필요한 작은 것부터 하나씩. POKIT과 함께 오늘을 가볍게 시작해보세요.":
-              t(descriptionKey),
+              description,
           }}
         />
       </ScrollReveal>
