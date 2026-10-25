@@ -33,15 +33,12 @@ type Props = {
   resourceLinks?: { href: string; label: string }[];
 };
 
-function defaultEditorialVisual(locale: Locale, alt: string): DownloadVisual {
+function defaultEditorialVisual(alt: string): DownloadVisual {
   return {
-    src:
-      locale === "ko"
-        ? "/icon-with-multi-postit-labels.png"
-        : "/en/icon-with-multi-postit-labels.png",
+    src: "/start-visual.webp",
     alt,
-    width: 1152,
-    height: 864,
+    width: 1024,
+    height: 682,
   };
 }
 
@@ -63,10 +60,7 @@ export function AppDownload({
       ? null
       : (visual ??
         (editorial
-          ? defaultEditorialVisual(
-              locale,
-              t("형광펜과 포스트잇에 적힌 루틴, 할 일, 메모 라벨"),
-            )
+          ? defaultEditorialVisual(t("카메라를 들고 도시를 찍는 사람"))
           : null));
 
   return (
@@ -152,14 +146,14 @@ export function AppDownload({
           )}
         >
           {resolvedVisual ? (
-            <div className="w-[min(15rem,100%)] shrink-0 max-nav:mx-auto nav:w-[15rem] nav:-mr-1">
+            <div className="w-[min(18rem,100%)] shrink-0 max-nav:mx-auto nav:w-[18rem] nav:-mr-1">
               <Image
                 src={resolvedVisual.src}
                 alt={resolvedVisual.alt}
                 width={resolvedVisual.width}
                 height={resolvedVisual.height}
-                sizes="15rem"
-                className="h-auto w-full"
+                sizes="18rem"
+                className="h-auto w-full rounded-[1.15rem]"
               />
             </div>
           ) : null}

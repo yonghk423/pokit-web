@@ -47,7 +47,7 @@ export function SiteHeaderNav({
             aria-label={homeAria}
           >
             <Image
-              src="/pokit-mark.png"
+              src="/pokit-mark.png?v=20261025"
               alt=""
               width={28}
               height={28}

@@ -9,6 +9,7 @@ import { appStoreUrl, site } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getSupportMessages } from "@/i18n/get-support-messages";
+import { cn, monoContainer } from "@/lib/cn";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 
 type Props = {
@@ -21,26 +22,24 @@ const OG_IMAGE = {
   height: 512,
 } as const;
 
+const paper = "bg-[#f4f3ef]";
+
 function SupportBlockView({ block }: { block: SupportBlock }) {
   if (block.type === "p") {
-    return <p className="m-0 whitespace-pre-line font-sans text-[0.95rem] leading-[1.85] text-ink/75">{block.text}</p>;
-  }
-
-  if (block.type === "h3") {
     return (
-      <h3 className="m-0 mt-5 font-sans text-base font-semibold leading-snug text-ink">
+      <p className="m-0 whitespace-pre-line font-sans text-[1.05rem] leading-[1.75] text-ink/75">
         {block.text}
-      </h3>
+      </p>
     );
   }
 
   if (block.type === "list") {
     return (
-      <ul className="m-0 grid list-disc gap-2 pl-5 marker:text-ink/40">
+      <ul className="m-0 grid list-none gap-3 p-0">
         {block.items.map((item) => (
           <li
             key={item}
-            className="pl-1 font-sans text-[0.95rem] leading-[1.85] text-ink/75"
+            className="border-t border-ink/10 pt-3 font-sans text-[1.02rem] leading-[1.7] text-ink/80"
           >
             {item}
           </li>
@@ -51,29 +50,18 @@ function SupportBlockView({ block }: { block: SupportBlock }) {
 
   if (block.type === "faq") {
     return (
-      <article className="border-b border-ink/10 py-5 first:pt-0 last:border-0 last:pb-0">
-        <h3 className="m-0 font-sans text-base font-semibold leading-[1.6]">
+      <article className="border-t border-ink/10 pt-5">
+        <h3 className="m-0 font-serif text-[clamp(1.35rem,2vw,1.7rem)] font-normal italic leading-[1.25] tracking-[-0.02em]">
           {block.q}
         </h3>
-        <p className="mt-3 mb-0 whitespace-pre-line font-sans text-[0.95rem] leading-[1.85] text-ink/75">{block.a}</p>
+        <p className="mt-3 mb-0 whitespace-pre-line font-sans text-[1.02rem] leading-[1.7] text-ink/75">
+          {block.a}
+        </p>
       </article>
     );
   }
 
-  return (
-    <article className="border-b border-ink/10 py-5 first:pt-0 last:border-0 last:pb-0">
-      <h3 className="m-0 font-sans text-base font-semibold leading-[1.6]">
-        {block.title}
-      </h3>
-      <ul className="mt-3 mb-0 grid list-none gap-2 p-0">
-        {block.items.map((item) => (
-          <li key={item} className="font-sans text-[0.95rem] leading-[1.85] text-ink/75">
-            {item}
-          </li>
-        ))}
-      </ul>
-    </article>
-  );
+  return null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -120,60 +108,102 @@ export default async function SupportPage({ params }: Props) {
   const storeUrl = appStoreUrl(locale);
 
   return (
-    <main className="mx-auto w-full max-w-[68rem] px-6 pb-20 pt-12 font-sans text-ink nav:px-10 nav:pt-20">
-      <header>
-        <p className="m-0 text-xs font-medium tracking-[0.08em] text-ink/50">{copy.kicker}</p>
-        <div className="mt-4 grid gap-7 nav:grid-cols-[17rem_minmax(0,1fr)] nav:gap-12">
-          <h1 className="m-0 break-keep text-[clamp(1.75rem,3vw,2rem)] font-medium leading-[1.2] tracking-[-0.04em]">{copy.title}</h1>
-          <div>
-            <div className="grid gap-4">
-              {copy.lead.map(paragraph => (
-                <p key={paragraph} className="m-0 whitespace-pre-line text-[0.95rem] leading-[1.85] text-ink/75">{paragraph}</p>
-              ))}
-            </div>
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-sm">
-              <a href={storeUrl} className="text-ink underline decoration-ink/35 underline-offset-4 hover:decoration-ink">{copy.appStore}</a>
-              <SupportEmailLink className="text-ink decoration-ink/35 underline-offset-4 hover:decoration-ink">{t("메일 보내기")}</SupportEmailLink>
-            </div>
+    <main className={cn(paper, "pb-20 text-ink")}>
+      <header className={cn(monoContainer, "w-full pb-8 pt-14 nav:pb-12 nav:pt-20")}>
+        <p className="m-0 font-sans text-[0.72rem] font-semibold tracking-[0.16em] text-ink/45">
+          {copy.kicker}
+        </p>
+        <h1 className="m-0 mt-4 w-full text-left font-serif text-[clamp(3.2rem,8vw,7rem)] font-normal italic leading-[0.98] tracking-[-0.045em]">
+          {copy.title}
+        </h1>
+        <div className="mt-8 flex w-full flex-col items-start gap-6 nav:flex-row nav:items-end nav:justify-between">
+          <div className="grid max-w-3xl flex-1 gap-3">
+            {copy.lead.map((paragraph) => (
+              <p
+                key={paragraph}
+                className="m-0 text-left font-sans text-[clamp(1.05rem,1.7vw,1.35rem)] leading-[1.6] tracking-[-0.02em] text-ink/70"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
+          <div className="flex flex-col items-start gap-3">
+            <a
+              href={storeUrl}
+              className="font-sans text-[0.95rem] text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink"
+            >
+              {copy.appStore}
+            </a>
+            <SupportEmailLink className="font-sans text-[0.95rem] text-ink decoration-ink/30 underline-offset-4 hover:decoration-ink">
+              {t("메일 보내기")}
+            </SupportEmailLink>
           </div>
         </div>
       </header>
 
-      <nav className="my-12 border-y border-ink/15 py-5 nav:my-16" aria-label={copy.tocLabel}>
-        <p className="m-0 mb-3 text-xs text-ink/50">{copy.tocLabel}</p>
-        <ul className="m-0 flex list-none flex-wrap gap-x-6 gap-y-3 p-0">
-          {copy.sections.map(section => (
-            <li key={section.id}>
-              <a href={`#${section.id}`} className="text-sm text-ink/75 underline decoration-ink/20 underline-offset-4 hover:text-ink hover:decoration-ink">{section.title}</a>
-            </li>
-          ))}
-        </ul>
+      <nav
+        aria-label={copy.tocLabel}
+        className={cn(monoContainer, "grid w-full grid-cols-2 gap-3 pb-6 nav:grid-cols-6")}
+      >
+        {copy.sections.map((section, index) => (
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            className="flex w-full items-center justify-center rounded-full border border-ink/15 px-3 py-3 text-center font-sans text-[0.92rem] tracking-[-0.01em] text-ink/80 transition-colors hover:bg-ink hover:text-[#f4f3ef]"
+          >
+            {String(index + 1).padStart(2, "0")} {section.title}
+          </a>
+        ))}
       </nav>
 
-      <div>
-        {copy.sections.map(section => (
-          <section key={section.id} id={section.id} className="grid scroll-mt-24 gap-6 border-b border-ink/15 py-10 first:pt-0 last:border-0 nav:grid-cols-[17rem_minmax(0,1fr)] nav:gap-12 nav:py-12">
-            <div>
-              <h2 className="m-0 text-xl font-medium leading-snug tracking-[-0.025em] nav:sticky nav:top-24">{section.title}</h2>
-            </div>
-            <div className="min-w-0">
-              <div className="grid gap-5">
-                {section.blocks.map((block, index) => (
-                  <SupportBlockView key={`${section.id}-${block.type}-${index}`} block={block} />
-                ))}
-              </div>
+      {copy.sections.map((section, index) => (
+        <section
+          key={section.id}
+          id={section.id}
+          className="scroll-mt-24 border-t border-ink/10"
+        >
+          <div
+            className={cn(
+              monoContainer,
+              "grid w-full gap-6 py-12 nav:grid-cols-12 nav:gap-8 nav:py-16",
+            )}
+          >
+            <p className="m-0 font-serif text-[3.5rem] italic leading-none tracking-[-0.04em] text-ink/20 nav:col-span-2">
+              {String(index + 1).padStart(2, "0")}
+            </p>
+            <h2 className="m-0 font-serif text-[clamp(2rem,3.4vw,3rem)] font-normal italic leading-[1.1] tracking-[-0.03em] nav:col-span-4">
+              {section.title}
+            </h2>
+            <div className="grid min-w-0 content-start gap-5 nav:col-span-6">
+              {section.blocks.map((block, blockIndex) => (
+                <SupportBlockView
+                  key={`${section.id}-${block.type}-${blockIndex}`}
+                  block={block}
+                />
+              ))}
               {section.id === "contact" ? (
-                <div className="mt-6 grid justify-items-start gap-3">
-                  <p className="m-0 text-sm text-ink/60">{t("이메일")}</p>
-                  <SupportEmailLink className="break-all text-base text-ink decoration-ink/35">{site.supportEmail}</SupportEmailLink>
-                  <SupportEmailLink className="mt-2 text-sm text-ink decoration-ink/35">{t("메일 보내기")}</SupportEmailLink>
+                <div className="grid justify-items-start gap-2 border-t border-ink/10 pt-5">
+                  <p className="m-0 font-sans text-[0.78rem] tracking-[0.12em] text-ink/45">
+                    {t("이메일")}
+                  </p>
+                  <SupportEmailLink className="break-all font-sans text-[1.15rem] text-ink decoration-ink/30">
+                    {site.supportEmail}
+                  </SupportEmailLink>
                 </div>
               ) : null}
             </div>
-          </section>
-        ))}
+          </div>
+        </section>
+      ))}
+
+      <div className={cn(monoContainer, "border-t border-ink/10 pt-8")}>
+        <Link
+          href={withLocale(locale, "/")}
+          className="font-sans text-[0.95rem] text-ink/70 underline decoration-ink/25 underline-offset-4 hover:text-ink"
+        >
+          {t("← 홈으로")}
+        </Link>
       </div>
-      <Link href={withLocale(locale, "/")} className="mt-8 inline-block text-sm text-ink/65 underline decoration-ink/30 underline-offset-4 hover:text-ink">{t("← 홈으로")}</Link>
     </main>
   );
 }

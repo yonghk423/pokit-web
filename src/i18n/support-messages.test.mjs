@@ -19,9 +19,9 @@ for (const locale of ["ko", "en", "ja"]) {
     assert.equal(copy.title, expected[locale][0]);
     assert.equal(t("메일 보내기"), expected[locale][2]);
     assert.deepEqual(copy.sections.map(section => section.id), [
-      "about", "screens", "features", "howto", "faq", "troubleshoot", "contact",
+      "today", "scenes", "story", "keep", "faq", "contact",
     ]);
-    assert.deepEqual(copy.sections.map(section => section.blocks.length), [4, 6, 24, 2, 11, 7, 1]);
+    assert.deepEqual(copy.sections.map(section => section.blocks.length), [2, 2, 2, 2, 4, 1]);
     const faqs = copy.sections.find(section => section.id === "faq").blocks;
     assert.equal(faqs[0].q, expected[locale][1]);
     assert(faqs.every(block => block.type === "faq" && block.q && block.a));
