@@ -242,6 +242,13 @@ export default async function ArticlePage({ params }: Props) {
             <PortableText value={article.body} />
           </div>
         )}
+        {shouldShowPokitCta(article) && (
+          <AddToPokitCta
+            article={toPokitRoutineArticle(article)}
+            locale={locale}
+            messages={installMessages}
+          />
+        )}
         {related && (
           <RelatedArticles
             related={related}
@@ -253,13 +260,7 @@ export default async function ArticlePage({ params }: Props) {
             viewMoreLabel={t("더보기 →")}
           />
         )}
-        {shouldShowPokitCta(article) && (
-          <AddToPokitCta
-            article={toPokitRoutineArticle(article)}
-            locale={locale}
-            messages={installMessages}
-          />
-        )}
+
       </main>
     </>
   );

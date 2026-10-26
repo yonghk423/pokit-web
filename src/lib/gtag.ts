@@ -19,3 +19,9 @@ export function pageview(url: string) {
     page_path: url,
   });
 }
+
+/** Measures promotional link clicks, not App Store installs. */
+export function trackAppPromotion(placement: string, destination: "store" | "try" | "intro", locale: string) {
+  if (!GA_MEASUREMENT_ID || typeof window === "undefined" || typeof window.gtag !== "function") return;
+  window.gtag("event", "app_promotion_click", { placement, destination, app_locale: locale });
+}

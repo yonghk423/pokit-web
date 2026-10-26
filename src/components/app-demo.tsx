@@ -23,8 +23,8 @@ export function AppDemo({ locale, copy }: { locale: Locale; copy: Copy }) {
   const complete = note.trim().length > 0 && tasks.some(task => task.done);
   function reset() { setScene(0); setNote(""); setDraft(""); setTasks([]); }
   return <section id="try-pokit" className={styles.section} aria-labelledby="demo-title">
-    <header className={styles.heading}><p>{appName(locale)} / DEMO</p><h2 id="demo-title">{copy.title}</h2><p>{copy.intro}</p></header>
-    <div className={styles.workspace}>
+    <header data-reveal="text" className={styles.heading}><p>{appName(locale)} / DEMO</p><h2 id="demo-title">{copy.title}</h2><p>{copy.intro}</p></header>
+    <div data-reveal="text" className={styles.workspace}>
       <div className={styles.controls}>
         <fieldset><legend>01 / {copy.choose}</legend><div className={styles.scenes}>{art.map((image, index) => <button key={index} type="button" aria-pressed={scene === index} onClick={() => setScene(index)}><Image src={image} alt="" sizes="100px" /><span>{copy.scenes[index]}</span></button>)}</div></fieldset>
         <label className={styles.label} htmlFor="demo-note">02 / {copy.note}</label>

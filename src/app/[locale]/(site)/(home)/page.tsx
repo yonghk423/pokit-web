@@ -1,3 +1,4 @@
+import { AppPromotion } from "@/components/app-promotion";
 import { notFound } from "next/navigation";
 
 import { AppDownload } from "@/components/app-download";
@@ -183,6 +184,8 @@ export default async function Home({ params }: Props) {
               />
             </div>
           )}
+
+          <div className="mx-auto mt-12 max-w-[1320px] px-4 nav:px-6"><AppPromotion locale={locale} messages={downloadMessages} placement="home-between-stories" /></div>
 
           <HomeWorkRows
             line1={t("하루의 장면을")}

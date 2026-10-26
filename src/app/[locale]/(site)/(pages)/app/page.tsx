@@ -1,3 +1,6 @@
+import { AppScrollMotion } from "@/components/app-scroll-motion";
+import { AppHeroVideo } from "@/components/app-hero-video";
+import { getHomeVideoMessages } from "@/i18n/get-home-video-messages";
 import { AppDemo } from "@/components/app-demo";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -37,11 +40,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AppIntroPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const [pageMessages, downloadMessages, commonMessages] = await Promise.all([
-    getAppPageMessages(locale), getAppDownloadMessages(locale), getCommonMessages(locale),
+  const [pageMessages, downloadMessages, commonMessages, videoMessages] = await Promise.all([
+    getAppPageMessages(locale), getAppDownloadMessages(locale), getCommonMessages(locale), getHomeVideoMessages(locale),
   ]);
   const t = createTranslator(pageMessages);
   const downloadT = createTranslator(downloadMessages);
+  const videoT = createTranslator(videoMessages);
   const commonT = createTranslator(commonMessages);
   const labels = [t("장면"), t("메모"), t("하루"), t("메이트"), t("위젯"), t("홈")];
   const alts = [t("나의 하루를, 한 장면씩."), t("떠오른 생각과 작은 할 일을 함께."), t("흩어진 순간이 나만의 한 페이지로."), t("하루를 챙기는 작은 메이트."), t("앱을 열기 전에도, 오늘이 보여요."), t("기억하고 싶은 순간, 홈 화면 가까이에.")];
@@ -56,27 +60,33 @@ export default async function AppIntroPage({ params }: Props) {
       points: [[t("장면과 할 일을 함께"), t("큰 위젯에서 장면과 오늘 할 일을 함께 확인해요.")], [t("작은 공간에도 나의 장면"), t("작은 위젯으로 좋아하는 순간을 가까이 두세요.")]], indices: [4, 5] },
   ];
   return (
-    <main className={styles.page}>
+    <main id="app-intro-page" className={styles.page}>
+      <AppScrollMotion />
       <JsonLd data={{ "@context": "https://schema.org", "@type": "SoftwareApplication", name: appName(locale),
         applicationCategory: "LifestyleApplication", operatingSystem: "iOS, iPadOS", description,
         url: `${site.siteUrl}/${locale}/app`, image: `${site.siteUrl}/pokit-logo.png`,
         offers: { "@type": "Offer", price: "0", priceCurrency: "USD" }, downloadUrl: appStoreUrl(locale) }} />
       <section className={styles.hero} aria-labelledby="app-title">
-        <p className={styles.eyebrow}>{appName(locale)} <span aria-hidden="true"> / </span> iPhone &amp; iPad</p>
-        <h1 id="app-title">{t("나의 하루를, 한 장면씩.")}</h1>
-        <p className={styles.heroDescription}>{t("손그림 장면으로 남기는 나만의 이야기")}</p>
-        <div className={styles.actions}>
-          <AppStoreBadge locale={locale} label={downloadT("App Store에서 받기")} />
-          <a className={styles.textLink} href="#try-pokit">{t("직접 체험하기")} <span aria-hidden="true">↘</span></a>
+        <div className={styles.heroHeading}>
+          <div className={styles.heroBackdrop} aria-hidden="true">
+            <Image src={appHeroArt(locale)} alt="" fill preload sizes="(max-width: 1440px) 100vw, 1440px" />
+          </div>
+          <div className={styles.heroHeadingContent}>
+            <p className={styles.eyebrow}>{appName(locale)} <span aria-hidden="true"> / </span> iPhone &amp; iPad</p>
+            <h1 id="app-title">{t("나의 하루를, 한 장면씩.")}</h1>
+            <p className={styles.heroDescription}>{t("손그림 장면으로 남기는 나만의 이야기")}</p>
+            <div className={styles.actions}>
+              <AppStoreBadge locale={locale} label={downloadT("App Store에서 받기")} />
+              <a className={styles.textLink} href="#try-pokit">{t("직접 체험하기")} <span aria-hidden="true">↘</span></a>
+            </div>
+          </div>
         </div>
-        <div className={styles.heroArt}>
-          <Image src={appHeroArt(locale)} alt={t("손그림 장면으로 펼쳐진 하루의 기록")} preload sizes="(max-width: 1440px) 100vw, 1440px" />
-        </div>
+        <AppHeroVideo label={videoT("POKIT 앱 소개 영상")} playLabel={videoT("영상 재생")} pauseLabel={videoT("영상 정지")} />
         <nav className={styles.featureNav} aria-label={t("기능 살펴보기")}>
           {appBoards.map((board, index) => <a key={board.id} href={`#${board.id}`}><span>{board.index}</span>{labels[index]}</a>)}
         </nav>
       </section>
-      <section className={styles.intro}>
+      <section className={styles.intro} data-reveal="text">
         <p className={styles.eyebrow}>{t("나만의 하루를 담는 작은 공간")}</p>
         <h2>{t("기록은 가볍게.\n하루는 나답게.")}</h2>
         <p>{t("거창한 일기가 아니어도 괜찮아요. 오늘 마음에 남은 순간 하나면 충분해요.")}</p>
@@ -102,16 +112,16 @@ export default async function AppIntroPage({ params }: Props) {
         <section key={feature.id} id={feature.id} className={`${styles.feature} ${groupIndex === 1 ? styles.reverse : ""} ${groupIndex === 2 ? styles.widgets : ""}`} aria-labelledby={`${feature.id}-title`}>
           <div className={styles.featureInner}>
             <div className={styles.featureCopy}>
-              <p className={styles.eyebrow}>{String(groupIndex + 1).padStart(2, "0")} <span aria-hidden="true"> / </span> {labels[feature.indices[0]]} &amp; {labels[feature.indices[1]]}</p>
-              <h2 id={`${feature.id}-title`}>{feature.title}</h2>
-              <p className={styles.description}>{feature.description}</p>
+              <p data-reveal="text" className={styles.eyebrow}>{String(groupIndex + 1).padStart(2, "0")} <span aria-hidden="true"> / </span> {labels[feature.indices[0]]} &amp; {labels[feature.indices[1]]}</p>
+              <h2 data-reveal="text" data-reveal-delay="80" id={`${feature.id}-title`}>{feature.title}</h2>
+              <p data-reveal="text" data-reveal-delay="160" className={styles.description}>{feature.description}</p>
               <dl className={styles.points}>
-                {feature.points.map(([title, text], index) => <div key={title}><dt><span aria-hidden="true">0{index + 1}</span>{title}</dt><dd>{text}</dd></div>)}
+                {feature.points.map(([title, text], index) => <div key={title} data-reveal="text" data-reveal-delay={index * 120}><dt><span aria-hidden="true">0{index + 1}</span>{title}</dt><dd>{text}</dd></div>)}
               </dl>
             </div>
             <div className={styles.screenPair}>
               {feature.indices.map((index, position) => (
-                <figure key={index} id={position === 1 ? appBoards[index].id : undefined} className={styles.screen}>
+                <figure key={index} data-reveal={position === 0 ? "screen-left" : "screen-right"} data-reveal-delay={position * 180} id={position === 1 ? appBoards[index].id : undefined} className={styles.screen}>
                   <div className={styles.screenFrame}><Image src={screens[index]} alt={alts[index]} sizes="(max-width: 760px) 44vw, (max-width: 1200px) 25vw, 280px" /></div>
                   <figcaption><span>{appBoards[index].index}</span> {labels[index]}</figcaption>
                 </figure>
@@ -121,7 +131,7 @@ export default async function AppIntroPage({ params }: Props) {
         </section>
       ))}
       <section id="screenshots" className={styles.gallerySection} aria-labelledby="screenshots-title">
-        <div className={styles.galleryHeading}>
+        <div className={styles.galleryHeading} data-reveal="text">
           <div><p className={styles.eyebrow}>{appName(locale)} / {t("앱 둘러보기")}</p><h2 id="screenshots-title">{t("화면으로 만나보는 POKIT")}</h2></div>
           <p>{t("화면을 옆으로 넘기거나 선택해 크게 볼 수 있어요.")}</p>
         </div>
@@ -129,7 +139,7 @@ export default async function AppIntroPage({ params }: Props) {
       </section>
       <section className={styles.closing}>
         <p className={styles.eyebrow}>{appName(locale)}</p>
-        <h2>{t("오늘의 첫 장면을\n남겨볼까요?")}</h2>
+        <h2 data-reveal="text">{t("오늘의 첫 장면을\n남겨볼까요?")}</h2>
         <p>{t("가볍게 시작해요. 나의 하루를, 한 장면씩.")}</p>
         <div className={styles.actions}>
           <AppStoreBadge locale={locale} label={downloadT("App Store에서 받기")} className="border border-white/30" />
