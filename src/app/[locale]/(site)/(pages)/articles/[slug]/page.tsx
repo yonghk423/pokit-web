@@ -8,7 +8,7 @@ import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedArticles } from "@/components/related-articles";
-import { site } from "@/config/site";
+import { appName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getArticleMessages } from "@/i18n/get-article-messages";
@@ -85,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: "article",
-      siteName: site.name,
+      siteName: appName(rawLocale),
       url: alternates.canonical,
       publishedTime: article.publishedAt,
       modifiedTime: article._updatedAt,
@@ -171,7 +171,7 @@ export default async function ArticlePage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd(
           [
-            { name: site.name, path: "/" },
+            { name: appName(locale), path: "/" },
             { name: commonT("모든 이야기"), path: "/articles" },
             { name: article.title, path: `/articles/${slug}` },
           ],

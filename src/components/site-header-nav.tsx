@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { LanguageSwitcher, type LanguageLabels } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
-import { site } from "@/config/site";
+import { appName } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
@@ -39,7 +39,7 @@ export function SiteHeaderNav({
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink/8 bg-[color-mix(in_srgb,var(--color-paper)_88%,transparent)] backdrop-blur-md">
-      <div className={cn(monoContainer, "flex items-center justify-between gap-3 py-3")}>
+      <div className={cn(monoContainer, "flex items-center justify-between gap-3 py-3 max-[480px]:flex-wrap")}>
         <div className="flex min-w-0 items-center gap-2">
           <Link
             href={homeHref}
@@ -47,7 +47,7 @@ export function SiteHeaderNav({
             aria-label={homeAria}
           >
             <Image
-              src="/pokit-mark.png?v=20261025"
+              src="/pokit-mark.png?v=20261026"
               alt=""
               width={28}
               height={28}
@@ -56,7 +56,7 @@ export function SiteHeaderNav({
               className="size-7 rounded-lg object-cover"
             />
             <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em]">
-              {site.name}
+              {appName(locale)}
             </span>
           </Link>
           <p className="m-0 hidden truncate font-sans text-[0.72rem] text-muted nav:block">
@@ -64,7 +64,7 @@ export function SiteHeaderNav({
           </p>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="flex shrink-0 items-center gap-1.5 max-[480px]:w-full max-[480px]:justify-end">
           <Link
             href={appHref}
             className={cn(

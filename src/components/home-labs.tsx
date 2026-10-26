@@ -1,5 +1,7 @@
 "use client";
 
+import { appName } from "@/config/site";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -58,6 +60,7 @@ function openToolPreview(
 }
 
 export function HomeLabs({
+  locale,
   roundup,
   pastTools,
   line1,
@@ -132,7 +135,7 @@ export function HomeLabs({
                     />
                   ) : (
                     <span className="grid h-full place-items-center font-sans text-[0.7rem] font-extrabold tracking-[0.12em] text-indigo uppercase">
-                      POKIT
+                      {appName(locale)}
                     </span>
                   )}
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/65 to-transparent px-4 pb-4 pt-16">

@@ -9,22 +9,22 @@ const expected = {
   "ko": {
     "title": "2026-10-12 루틴 도구",
     "count": "총 0개",
-    "summary": "첫째 · 둘째 · 셋째 — POKIT 루틴 도구 추천",
-    "empty": "생산성·웰니스를 돕는 도구를 추천하는 POKIT 루틴 도구",
+    "summary": "첫째 · 둘째 · 셋째 — 오늘의 주인공 루틴 도구 추천",
+    "empty": "생산성·웰니스를 돕는 도구를 추천하는 오늘의 주인공 루틴 도구",
     "banner": "이 페이지의 일본어 번역은 아직 없습니다. 영어가 있으면 영어를, 없으면 한국어를 표시합니다."
   },
   "en": {
     "title": "Routine tools · 2026-10-12",
     "count": "0 tools",
-    "summary": "첫째 · 둘째 · 셋째 — POKIT routine tool picks",
-    "empty": "Tools for productivity and wellness — POKIT",
+    "summary": "첫째 · 둘째 · 셋째 — Your Day routine tool picks",
+    "empty": "Tools for productivity and wellness — Your Day",
     "banner": "A Japanese translation is not ready yet. We show English when available, otherwise Korean."
   },
   "ja": {
     "title": "2026-10-12 ルーチン道具",
     "count": "全0件",
-    "summary": "첫째 · 둘째 · 셋째。POKITルーチン道具のおすすめ",
-    "empty": "生産性とウェルネスを支える道具をおすすめするPOKITルーチン道具",
+    "summary": "첫째 · 둘째 · 셋째。Your Dayルーチン道具のおすすめ",
+    "empty": "生産性とウェルネスを支える道具をおすすめするYour Dayルーチン道具",
     "banner": "このページの日本語版はまだありません。韓国語を表示しています。"
   }
 };

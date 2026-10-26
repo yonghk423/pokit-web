@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { HomePreviewShell } from "@/components/home-preview-shell";
 import { JsonLd } from "@/components/json-ld";
 import { ToolArchiveCard } from "@/components/tool-archive-card";
-import { site } from "@/config/site";
+import { appName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url: alternates.canonical,
-      siteName: site.name,
+      siteName: appName(locale),
       locale: localeOpenGraph(locale),
       type: "website",
       images: [OG_IMAGE],
@@ -104,7 +104,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd(
           [
-            { name: site.name, path: "/" },
+            { name: appName(locale), path: "/" },
             { name: t("모든 도구들"), path: "/new-arrivals" },
           ],
           locale,
@@ -145,6 +145,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
           <div className="grid grid-cols-4 gap-x-4 gap-y-8 max-nav:grid-cols-2 max-archive:grid-cols-1">
             {tools.map((item) => (
               <ToolArchiveCard
+                locale={locale}
                 key={item.slug}
                 item={item}
                 kicker={t("루틴 도구")}

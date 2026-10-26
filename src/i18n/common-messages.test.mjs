@@ -21,9 +21,9 @@ test("identical Korean text retains its translation for each home context", () =
 
 test("common navigation, language labels and 404 text support every locale", () => {
   const expected = {
-    ko: ["POKIT 홈", "페이지를 찾을 수 없습니다", "루틴"],
-    en: ["POKIT home", "Page not found", "Routines"],
-    ja: ["POKIT ホーム", "ページが見つかりません", "ルーチン"],
+    ko: ["오늘의 주인공 홈", "페이지를 찾을 수 없습니다", "루틴"],
+    en: ["Your Day home", "Page not found", "Routines"],
+    ja: ["Your Day ホーム", "ページが見つかりません", "ルーチン"],
   };
   for (const locale of ["ko", "en", "ja"]) {
     const t = translator(locale, "common");

@@ -31,7 +31,7 @@ export function HomeHeroDownload({ locale, messages }: Props) {
             {t("POKIT - 루틴 습관 투두리스트")}
           </p>
           <Image
-            src="/pokit-mark.png?v=20261025"
+            src="/pokit-mark.png?v=20261026"
             alt=""
             width={QR_SIZE}
             height={QR_SIZE}

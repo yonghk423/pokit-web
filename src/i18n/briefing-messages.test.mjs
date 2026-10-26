@@ -8,18 +8,18 @@ import { createTranslator } from "./create-translator.ts";
 const expected = {
   "ko": {
     "title": "2026-10-12 웰니스 브리핑",
-    "summary": "첫째 · 둘째 · 셋째 — POKIT 주간 웰니스 브리핑",
-    "empty": "공공·국제 웰니스 소식을 일상 루틴으로 연결하는 POKIT 주간 브리핑"
+    "summary": "첫째 · 둘째 · 셋째 — 오늘의 주인공 주간 웰니스 브리핑",
+    "empty": "공공·국제 웰니스 소식을 일상 루틴으로 연결하는 오늘의 주인공 주간 브리핑"
   },
   "en": {
     "title": "Wellness briefing · 2026-10-12",
-    "summary": "첫째 · 둘째 · 셋째 — POKIT weekly wellness briefing",
-    "empty": "Weekly wellness updates, summarized for daily routines — POKIT"
+    "summary": "첫째 · 둘째 · 셋째 — Your Day weekly wellness briefing",
+    "empty": "Weekly wellness updates, summarized for daily routines — Your Day"
   },
   "ja": {
     "title": "2026-10-12 ウェルネスブリーフィング",
-    "summary": "첫째 · 둘째 · 셋째。POKIT週間ウェルネスブリーフィング",
-    "empty": "公的・国際のウェルネスニュースを日常ルーチンにつなげるPOKIT週間ブリーフィング"
+    "summary": "첫째 · 둘째 · 셋째。Your Day週間ウェルネスブリーフィング",
+    "empty": "公的・国際のウェルネスニュースを日常ルーチンにつなげるYour Day週間ブリーフィング"
   }
 };
 

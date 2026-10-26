@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+import { appName } from "@/config/site";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
@@ -13,6 +15,13 @@ type Props = {
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const name = appName(locale);
+  return { title: { default: name, template: `%s | ${name}` } };
 }
 
 export default async function LocaleLayout({ children, params }: Props) {

@@ -1,3 +1,4 @@
+import { appName } from "@/config/site";
 import { notFound } from "next/navigation";
 import { RoutedArticlePreview } from "@/components/routed-article-preview";
 import { isLocale } from "@/i18n/config";
@@ -34,7 +35,7 @@ export default async function ArticleModalPage({ params }: {
   const t = createTranslator(homeMessages);
   const metadata = await articleMetadata({ params });
   const seo = {
-    title: `${String(metadata.title ?? article.title)} | POKIT`,
+    title: `${String(metadata.title ?? article.title)} | ${appName(locale)}`,
     description: String(metadata.description ?? ""),
     robots: metadata.robots ? "noindex, follow" : "index, follow",
     canonical: String(metadata.alternates?.canonical ?? ""),

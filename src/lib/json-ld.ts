@@ -1,28 +1,28 @@
-import { site } from "@/config/site";
+import { site, appName } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import { localeToIntl } from "@/i18n/config";
 import { articlePath } from "@/lib/article-path";
 import { withLocale } from "@/lib/locale-path";
 
-const publisher = {
+const publisher = (locale: Locale) => ({
   "@type": "Organization" as const,
-  name: site.name,
+  name: appName(locale),
   url: site.siteUrl,
   logo: {
     "@type": "ImageObject" as const,
     url: `${site.siteUrl}/pokit-logo.png`,
   },
-};
+});
 
 export function websiteJsonLd(description: string, locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: site.name,
+    name: appName(locale),
     url: site.siteUrl,
     description,
     inLanguage: localeToIntl(locale),
-    publisher,
+    publisher: publisher(locale),
   };
 }
 
@@ -51,8 +51,8 @@ export function articleJsonLd(params: {
     },
     url,
     image: params.imageUrl,
-    author: publisher,
-    publisher,
+    author: publisher(params.locale),
+    publisher: publisher(params.locale),
   };
 }
 
@@ -92,10 +92,10 @@ export function briefingCollectionJsonLd(params: {
     datePublished: params.datePublished,
     isPartOf: {
       "@type": "WebSite",
-      name: site.name,
+      name: appName(params.locale),
       url: site.siteUrl,
     },
-    publisher,
+    publisher: publisher(params.locale),
     mainEntity: {
       "@type": "ItemList",
       itemListElement: params.items.map((item, index) => ({

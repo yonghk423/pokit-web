@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 
 import { JsonLd } from "@/components/json-ld";
 import { WellnessNewsDigest } from "@/components/wellness-news-digest";
-import { site } from "@/config/site";
+import { appName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getBriefingMessages } from "@/i18n/get-briefing-messages";
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: t("웰니스 브리핑"),
       description,
       url: alternates.canonical,
-      siteName: site.name,
+      siteName: appName(locale),
       locale: localeOpenGraph(locale),
       type: "website",
       images: [OG_IMAGE],
@@ -97,7 +97,7 @@ export default async function BriefingHubPage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd(
           [
-            { name: site.name, path: "/" },
+            { name: appName(locale), path: "/" },
             { name: t("웰니스 브리핑"), path: "/briefing" },
           ],
           locale,

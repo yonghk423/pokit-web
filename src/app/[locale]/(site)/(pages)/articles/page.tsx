@@ -6,7 +6,7 @@ import { ArticlesArchiveSections } from "@/components/articles-archive-sections"
 import { ArticlesArchiveSearch } from "@/components/articles-archive-search";
 import { ArticlesArchiveView } from "@/components/articles-archive-view";
 import { ArticlePagination } from "@/components/article-pagination";
-import { site } from "@/config/site";
+import { appName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getArchiveMessages } from "@/i18n/get-archive-messages";
@@ -47,7 +47,7 @@ function parsePage(raw?: string) {
 
 const ARCHIVE_OG_IMAGE = {
   url: "/pokit-logo.png",
-  alt: site.name,
+  alt: "Your Day",
   width: 512,
   height: 512,
 } as const;
@@ -115,17 +115,17 @@ export async function generateMetadata({
     alternates,
     robots: isSearchResult ? { index: false, follow: true } : undefined,
     openGraph: {
-      title: `${title} | ${site.name}`,
+      title: `${title} | ${appName(rawLocale)}`,
       description,
       url: alternates.canonical,
-      siteName: site.name,
+      siteName: appName(rawLocale),
       locale: localeOpenGraph(rawLocale),
       type: "website",
       images: [ARCHIVE_OG_IMAGE],
     },
     twitter: {
       card: "summary",
-      title: `${title} | ${site.name}`,
+      title: `${title} | ${appName(rawLocale)}`,
       description,
       images: [ARCHIVE_OG_IMAGE.url],
     },

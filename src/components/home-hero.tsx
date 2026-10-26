@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
 import { HomeHeroDownload } from "@/components/home-hero-download";
-import { appStoreUrl } from "@/config/site";
+import { appName, appStoreUrl } from "@/config/site";
 import { articlePath } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
@@ -229,10 +229,12 @@ export function HomeHero({
               >
                 <video
                   ref={videoRef}
-                  className="pointer-events-none h-[8.75rem] w-auto max-w-[min(22rem,34vw)] rounded-[0.7rem] object-cover max-nav:h-auto max-nav:w-full max-nav:max-w-none"
-                  src="/pokit-video-3.mp4"
+                  className="pointer-events-none h-auto w-[16rem] max-w-[min(22rem,34vw)] rounded-[0.7rem] object-cover max-nav:h-auto max-nav:w-full max-nav:max-w-none"
+                  src="/your-day-header-us.mp4"
+                  poster="/your-day-header-us.webp"
+                  preload="metadata"
                   width={1920}
-                  height={1080}
+                  height={824}
                   autoPlay
                   muted
                   loop
@@ -289,7 +291,7 @@ export function HomeHero({
                 />
               ) : (
                 <span className="grid h-full place-items-center font-sans text-sm font-extrabold tracking-[0.14em] text-indigo uppercase">
-                  POKIT
+                  {appName(locale)}
                 </span>
               )}
             </a>

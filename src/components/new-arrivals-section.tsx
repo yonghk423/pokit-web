@@ -1,3 +1,4 @@
+import { appName } from "@/config/site";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -71,7 +72,7 @@ function ToolCard({
               {...imageBlurProps(item.imageLqip)}
             />
           ) : (
-            <span>POKIT</span>
+            <span>{appName(locale)}</span>
           )}
         </figure>
         <div className="mt-3 min-w-0">

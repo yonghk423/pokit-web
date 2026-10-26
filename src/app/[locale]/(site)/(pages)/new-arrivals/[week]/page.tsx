@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 import { JsonLd } from "@/components/json-ld";
 import { NewArrivalsSection } from "@/components/new-arrivals-section";
-import { site } from "@/config/site";
+import { appName } from "@/config/site";
 import { isLocale, locales, localeToIntl, type Locale } from "@/i18n/config";
 import { getNewArrivalsMessages } from "@/i18n/get-new-arrivals-messages";
 import { createNewArrivalsDescription } from "@/content/new-arrivals-copy";
@@ -79,7 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url: alternates.canonical,
-      siteName: site.name,
+      siteName: appName(locale),
       locale: localeOpenGraph(locale),
       type: "article",
       images: [OG_IMAGE],
@@ -118,7 +118,7 @@ export default async function NewArrivalsWeekPage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd(
           [
-            { name: site.name, path: "/" },
+            { name: appName(locale), path: "/" },
             { name: t("루틴 도구"), path: "/new-arrivals" },
             { name: pageTitle, path: `/new-arrivals/${week}` },
           ],

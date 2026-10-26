@@ -1,5 +1,7 @@
 "use client";
 
+import { appName } from "@/config/site";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { AppInstallCta } from "@/components/app-install-cta";
@@ -61,7 +63,7 @@ export function AddToPokitCta({ article, locale, messages, className }: Props) {
       {inApp && (
         <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3.5 py-3.5">
           <p className="m-0 font-sans text-[0.68rem] font-semibold tracking-[0.08em] text-ink/45 uppercase">
-            POKIT
+            {appName(locale)}
           </p>
           <h2 className="mt-1 mb-0 font-sans text-[0.95rem] font-extrabold leading-snug tracking-[-0.02em] text-ink">
             {t("이 루틴을 앱에 담아 보세요")}

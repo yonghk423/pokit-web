@@ -1,6 +1,6 @@
 import { site } from "@/config/site";
 
-const DEFAULT_SUBJECT = "POKIT 문의";
+const DEFAULT_SUBJECT = "Your Day / 오늘의 주인공 문의";
 
 /** 모바일·메일 앱 설치 환경용 */
 export function supportMailtoHref(subject = DEFAULT_SUBJECT) {

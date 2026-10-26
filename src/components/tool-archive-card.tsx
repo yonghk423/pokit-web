@@ -1,6 +1,9 @@
 "use client";
 
+import { appName } from "@/config/site";
+
 import Image from "next/image";
+import type { Locale } from "@/i18n/config";
 
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { cn } from "@/lib/cn";
@@ -9,11 +12,12 @@ import { coverImageUrl, imageBlurProps } from "@/sanity/image";
 import type { NewArrivalsItem } from "@/sanity/types";
 
 type Props = {
+  locale: Locale;
   item: NewArrivalsItem;
   kicker: string;
 };
 
-export function ToolArchiveCard({ item, kicker }: Props) {
+export function ToolArchiveCard({ item, kicker, locale }: Props) {
   const preview = useOptionalArticlePreview();
   const imageUrl =
     isSanityConfigured() && item.image
@@ -67,7 +71,7 @@ export function ToolArchiveCard({ item, kicker }: Props) {
                 {...imageBlurProps(item.imageLqip)}
               />
             ) : (
-              <span>POKIT</span>
+              <span>{appName(locale)}</span>
             )}
           </div>
         </figure>

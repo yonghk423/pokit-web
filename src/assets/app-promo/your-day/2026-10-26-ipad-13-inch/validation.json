@@ -1,0 +1,168 @@
+{
+  "images": 18,
+  "passed": true,
+  "files": [
+    {
+      "file": "kr/01-your-scenes.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 3464936
+    },
+    {
+      "file": "kr/02-notes-and-todos.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 1969494
+    },
+    {
+      "file": "kr/03-day-overview.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 3387720
+    },
+    {
+      "file": "kr/04-mate-cards.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2974434
+    },
+    {
+      "file": "kr/05-large-widget.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2037603
+    },
+    {
+      "file": "kr/06-small-widget.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2118631
+    },
+    {
+      "file": "ja/01-your-scenes.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 3426263
+    },
+    {
+      "file": "ja/02-notes-and-todos.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 1816762
+    },
+    {
+      "file": "ja/03-day-overview.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 3352573
+    },
+    {
+      "file": "ja/04-mate-cards.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2678613
+    },
+    {
+      "file": "ja/05-large-widget.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2012828
+    },
+    {
+      "file": "ja/06-small-widget.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2102875
+    },
+    {
+      "file": "us/01-your-scenes.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 3418791
+    },
+    {
+      "file": "us/02-notes-and-todos.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 1845449
+    },
+    {
+      "file": "us/03-day-overview.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 3346317
+    },
+    {
+      "file": "us/04-mate-cards.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2721004
+    },
+    {
+      "file": "us/05-large-widget.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2026932
+    },
+    {
+      "file": "us/06-small-widget.png",
+      "width": 2048,
+      "height": 2732,
+      "bitDepth": 8,
+      "colorType": "RGB",
+      "alpha": false,
+      "bytes": 2103424
+    }
+  ]
+}
