@@ -69,7 +69,7 @@ export default async function AppIntroPage({ params }: Props) {
       <section className={styles.hero} aria-labelledby="app-title">
         <div className={styles.heroHeading}>
           <div className={styles.heroBackdrop} aria-hidden="true">
-            <Image src={appHeroArt(locale)} alt="" fill preload sizes="(max-width: 1440px) 100vw, 1440px" />
+            <Image placeholder="blur" src={appHeroArt(locale)} alt="" fill preload sizes="(max-width: 760px) 160vw, (max-width: 1440px) 100vw, 1440px" />
           </div>
           <div className={styles.heroHeadingContent}>
             <p className={styles.eyebrow}>{appName(locale)} <span aria-hidden="true"> / </span> iPhone &amp; iPad</p>
@@ -122,7 +122,7 @@ export default async function AppIntroPage({ params }: Props) {
             <div className={styles.screenPair}>
               {feature.indices.map((index, position) => (
                 <figure key={index} data-reveal={position === 0 ? "screen-left" : "screen-right"} data-reveal-delay={position * 180} id={position === 1 ? appBoards[index].id : undefined} className={styles.screen}>
-                  <div className={styles.screenFrame}><Image src={screens[index]} alt={alts[index]} sizes="(max-width: 760px) 44vw, (max-width: 1200px) 25vw, 280px" /></div>
+                  <div className={styles.screenFrame}><Image placeholder="blur" src={screens[index]} alt={alts[index]} sizes="(max-width: 760px) 44vw, (max-width: 1200px) 25vw, 280px" /></div>
                   <figcaption><span>{appBoards[index].index}</span> {labels[index]}</figcaption>
                 </figure>
               ))}

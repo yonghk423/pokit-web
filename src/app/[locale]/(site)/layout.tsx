@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import { SiteAppPromotions } from "@/components/site-app-promotions";
 import { getAppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { notFound } from "next/navigation";
@@ -32,6 +33,7 @@ export default async function SiteLayout({ children, params }: Props) {
       </div>
       <SiteAppPromotions locale={locale} messages={promoMessages} position="top" />
       {children}
+      <SiteFooter locale={locale} messages={messages} />
       <SiteAppPromotions locale={locale} messages={promoMessages} position="bottom" />
     </>
   );

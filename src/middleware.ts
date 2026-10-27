@@ -67,6 +67,14 @@ function withRequestHints(request: NextRequest, pathname: string) {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // next.config redirects exclude /_next URLs; recover only these retired assets here.
+  if (
+    pathname === "/_next/static/media/stationery-highlighter-yellow.0rj4p6.ohm_.8.png" ||
+    pathname === "/_next/static/media/stationery-highlighter-yellow.0rj4p6.ohm_.8.png-3"
+  ) {
+    return NextResponse.redirect(new URL("/images/stationery-highlighter-yellow.png", request.url), 308);
+  }
+
   if (
     pathname.startsWith("/studio") ||
     pathname.startsWith("/api") ||
@@ -154,5 +162,9 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)",
+    "/_next/static/media/stationery-highlighter-yellow.0rj4p6.ohm_.8.png",
+    "/_next/static/media/stationery-highlighter-yellow.0rj4p6.ohm_.8.png-3",
+  ],
 };

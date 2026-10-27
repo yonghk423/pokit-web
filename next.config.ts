@@ -13,8 +13,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+  async redirects() {
+    return [
+      // Stable destination for the pre-localization privacy URL.
+      { source: "/privacy", destination: "/en/privacy", permanent: true },
+    ];
+  },
   images: {
-    formats: ["image/avif", "image/webp"],
+    // WebP avoids the slower first-request AVIF encode for large app artwork.
+    formats: ["image/webp"],
     /** Include retina widths so phone frames stay sharp on mobile DPR. */
     imageSizes: [96, 128, 256, 384, 640, 750, 828],
     remotePatterns: [

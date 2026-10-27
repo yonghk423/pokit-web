@@ -298,7 +298,7 @@ export function StationeryScatter({
       )}
     >
       {pieces.map((spec, index) => (
-        <Piece key={`${spec.src.src}-${index}`} spec={spec} />
+        <Piece key={`stationery-${variant}-${fillSide}-${index}`} spec={spec} />
       ))}
     </div>
   );

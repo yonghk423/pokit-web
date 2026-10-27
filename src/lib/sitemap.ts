@@ -25,6 +25,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     "/new-arrivals",
     "/app",
     "/support",
+    "/privacy",
   ] as const;
 
   const staticPages: MetadataRoute.Sitemap = locales.flatMap((locale) =>

@@ -19,9 +19,12 @@ for (const locale of ["ko", "en", "ja"]) {
     assert.equal(copy.title, expected[locale][0]);
     assert.equal(t("메일 보내기"), expected[locale][2]);
     assert.deepEqual(copy.sections.map(section => section.id), [
-      "today", "scenes", "story", "keep", "faq", "contact",
+      "scenes", "today", "story", "keep", "faq", "contact",
     ]);
     assert.deepEqual(copy.sections.map(section => section.blocks.length), [2, 2, 2, 2, 4, 1]);
+    assert.equal(copy.sections[0].title, t("일기"));
+    assert.equal(copy.sections[1].title, t("일기 속 오늘 카드"));
+    assert(copy.sections[1].blocks[1].items.includes(t("일기 화면의 도구 메뉴에 있는 가방 버튼으로 오늘 카드를 엽니다.")));
     const faqs = copy.sections.find(section => section.id === "faq").blocks;
     assert.equal(faqs[0].q, expected[locale][1]);
     assert(faqs.every(block => block.type === "faq" && block.q && block.a));

@@ -26,7 +26,7 @@ export function AppDemo({ locale, copy }: { locale: Locale; copy: Copy }) {
     <header data-reveal="text" className={styles.heading}><p>{appName(locale)} / DEMO</p><h2 id="demo-title">{copy.title}</h2><p>{copy.intro}</p></header>
     <div data-reveal="text" className={styles.workspace}>
       <div className={styles.controls}>
-        <fieldset><legend>01 / {copy.choose}</legend><div className={styles.scenes}>{art.map((image, index) => <button key={index} type="button" aria-pressed={scene === index} onClick={() => setScene(index)}><Image src={image} alt="" sizes="100px" /><span>{copy.scenes[index]}</span></button>)}</div></fieldset>
+        <fieldset><legend>01 / {copy.choose}</legend><div className={styles.scenes}>{art.map((image, index) => <button key={index} type="button" aria-pressed={scene === index} onClick={() => setScene(index)}><Image placeholder="blur" src={image} alt="" sizes="100px" /><span>{copy.scenes[index]}</span></button>)}</div></fieldset>
         <label className={styles.label} htmlFor="demo-note">02 / {copy.note}</label>
         <textarea id="demo-note" maxLength={300} rows={3} placeholder={copy.placeholder} value={note} onChange={event => setNote(event.target.value)} />
         <form onSubmit={event => { event.preventDefault(); if (!draft.trim() || tasks.length >= 5) return; setTasks([...tasks, { id: nextId, text: draft.trim(), done: false }]); setNextId(nextId + 1); setDraft(""); }}>
@@ -36,7 +36,7 @@ export function AppDemo({ locale, copy }: { locale: Locale; copy: Copy }) {
         <button type="button" className={styles.reset} onClick={reset}>{copy.reset} ↺</button>
       </div>
       <div className={styles.card}>
-        <div className={styles.picture}><Image src={art[scene]} alt={copy.scenes[scene]} sizes="(max-width: 760px) 90vw, 420px" /></div>
+        <div className={styles.picture}><Image placeholder="blur" src={art[scene]} alt={copy.scenes[scene]} sizes="(max-width: 760px) 90vw, 420px" /></div>
         <div className={styles.cardBody}><p className={styles.sceneName}>{copy.scenes[scene]}</p><p className={styles.memo}>{note.trim() || copy.empty}</p>
           <ul className={styles.tasks}>{tasks.map(task => <li key={task.id}><label><input type="checkbox" checked={task.done} onChange={() => setTasks(tasks.map(item => item.id === task.id ? { ...item, done: !item.done } : item))} /><span className={task.done ? styles.done : undefined}>{task.text}</span></label><button type="button" aria-label={`${copy.remove}: ${task.text}`} onClick={() => setTasks(tasks.filter(item => item.id !== task.id))}>×</button></li>)}</ul>
         </div>

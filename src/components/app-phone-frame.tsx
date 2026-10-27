@@ -27,8 +27,6 @@ export function AppScreenImage({
       src={src}
       alt={alt}
       sizes={sizes}
-      // Keep WebP as-is so UI text stays sharp; still show build-time blur until paint.
-      unoptimized
       {...(src.blurDataURL
         ? { placeholder: "blur" as const, blurDataURL: src.blurDataURL }
         : {})}

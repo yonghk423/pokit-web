@@ -26,6 +26,6 @@ export function AppPromotion({ locale, messages, placement, variant = "banner" }
         <Link href={`${withLocale(locale, "/app")}#try-pokit`} onClick={() => trackAppPromotion(placement, "try", locale)}>{t("설치 전에 직접 체험하기")} <span aria-hidden="true">↗</span></Link>
       </div>
     </div>
-    <div className={styles.art} aria-hidden="true"><Image src={appHeroArt(locale)} alt="" unoptimized /></div>
+    <div className={styles.art} aria-hidden="true"><Image src={appHeroArt(locale)} alt="" placeholder="blur" sizes="(max-width: 760px) 100vw, (max-width: 1320px) 50vw, 660px" /></div>
   </aside>;
 }

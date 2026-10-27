@@ -32,8 +32,8 @@ export function AppScreenGallery({ phone, tablet, labels, copy }: Props) {
         </div>
       </div>
       <div ref={track} className={`${styles.galleryTrack} ${device === "iPad" ? styles.tabletTrack : ""}`} role="region" aria-label={`${device} ${copy.open}`} tabIndex={0}>
-        {images.map((image, index) => <a key={`${device}-${image.src}`} href={image.src} target="_blank" rel="noopener noreferrer" aria-label={`${copy.open}: ${labels[index]} (${device})`} className={styles.galleryCard}>
-          <Image src={image} alt={`${device} — ${labels[index]}`} sizes={device === "iPad" ? "(max-width: 600px) 78vw, 340px" : "(max-width: 600px) 72vw, 260px"} />
+        {images.map((image, index) => <a key={`${device}-${index}`} href={image.src} target="_blank" rel="noopener noreferrer" aria-label={`${copy.open}: ${labels[index]} (${device})`} className={styles.galleryCard}>
+          <Image placeholder="blur" src={image} alt={`${device} — ${labels[index]}`} sizes={device === "iPad" ? "(max-width: 436px) 78vw, 340px" : "(max-width: 361px) 72vw, 260px"} />
           <span className={styles.galleryCaption}>{String(index + 1).padStart(2, "0")} <span>{copy.open} ↗</span></span>
         </a>)}
       </div>
