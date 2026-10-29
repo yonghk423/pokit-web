@@ -40,11 +40,11 @@ export function SiteHeaderNav({
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink/8 bg-[color-mix(in_srgb,var(--color-paper)_88%,transparent)] backdrop-blur-md">
-      <div className={cn(monoContainer, "flex items-center justify-between gap-3 py-3 max-[480px]:flex-wrap")}>
-        <div className="flex min-w-0 items-center gap-2">
+      <div className={cn(monoContainer, "flex items-center justify-between gap-3 py-3 max-[480px]:gap-2 max-[480px]:py-2")}>
+        <div className="flex min-w-0 items-center gap-2 max-[480px]:gap-1.5">
           <Link
             href={homeHref}
-            className="flex shrink-0 items-center gap-2.5 no-underline"
+            className="flex shrink-0 items-center gap-2.5 no-underline max-[480px]:gap-2"
             aria-label={appActive ? (locale === "ko" ? `${brandName} 홈` : locale === "ja" ? `${brandName} ホーム` : `${brandName} home`) : homeAria}
           >
             <Image
@@ -53,9 +53,9 @@ export function SiteHeaderNav({
               width={32}
               height={32}
               priority
-              className="size-8 rounded-lg object-cover"
+              className="size-8 rounded-lg object-cover max-[480px]:size-7"
             />
-            <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em]">
+            <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em] max-[480px]:text-[0.98rem]">
               {brandName}
             </span>
           </Link>
@@ -64,11 +64,11 @@ export function SiteHeaderNav({
           </p>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1.5 max-[480px]:w-full max-[480px]:justify-end">
+        <div className="flex shrink-0 items-center gap-1.5 max-[480px]:gap-1">
           <Link
             href={appHref}
             className={cn(
-              "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline",
+              "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[480px]:px-2.5 max-[480px]:py-1.5 max-[480px]:text-[0.7rem]",
               appActive
                 ? "border border-ink/15 bg-ink/8 text-ink"
                 : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",

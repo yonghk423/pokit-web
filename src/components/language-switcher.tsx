@@ -35,6 +35,7 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
           {/* Reload across locales so preserved modal routes cannot restore the previous language. */}
           <a
             href={switchLocalePath(pathname, value)}
+            aria-label={labels[value]}
             className={cn(
               "px-1 py-0.5",
               locale === value
@@ -43,7 +44,8 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
             )}
             aria-current={locale === value ? "true" : undefined}
           >
-            {labels[value]}
+            <span className="min-[481px]:hidden">{value === "zh-TW" ? "繁中" : value.toUpperCase()}</span>
+            <span className="hidden min-[481px]:inline">{labels[value]}</span>
           </a>
         </span>
       ))}
