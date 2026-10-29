@@ -28,9 +28,7 @@ export default async function SiteLayout({ children, params }: Props) {
     <>
       <PokitAppDocumentFlag />
       <GoogleAnalytics />
-      <div data-hide-in-pokit-app>
-        <SiteHeader locale={locale} messages={messages} />
-      </div>
+      <SiteHeader locale={locale} messages={messages} />
       <SiteAppPromotions locale={locale} messages={promoMessages} position="top" />
       {children}
       <SiteFooter locale={locale} messages={messages} />
