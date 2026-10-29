@@ -69,9 +69,6 @@ export default async function YourdayStoryArticlePage({ params }: Props) {
 
   return <main className={styles.page} data-yourday-story>
     <div className={styles.shell}>
-      <header className={styles.masthead}>
-        <span className={styles.brand}>{t("YOURDAY STORY")}</span>
-      </header>
       <article className={styles.article}>
         <Link className={styles.articleBack} href={withLocale(locale, "/app/yourday-story")}>← {t("이야기 목록으로")}</Link>
         <figure className={styles.art}>

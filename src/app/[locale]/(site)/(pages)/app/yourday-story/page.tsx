@@ -42,9 +42,6 @@ export default async function YourdayStoryIndex({ params }: Props) {
 
   return <main className={styles.page} data-yourday-story>
     <div className={styles.shell}>
-      <header className={styles.masthead}>
-        <span className={styles.brand}>{t("YOURDAY STORY")}</span>
-      </header>
       <section className={styles.hero}>
         <p className={styles.eyebrow}>{appName(locale)} <span aria-hidden="true">/</span> JOURNAL &amp; NOTES</p>
         <h1>{t("하루를 붙잡는 세 가지 방식")}</h1>
