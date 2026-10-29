@@ -9,7 +9,7 @@
 .card { min-width:0; color:inherit; text-decoration:none; background:#fffdf8; border:1px solid #dedbd4; border-radius:14px; overflow:hidden; transition:transform .2s ease, box-shadow .2s ease }
 .card:hover { transform:translateY(-3px); box-shadow:0 12px 28px #29282412 }
 .art { width:100%; aspect-ratio:3 / 4; overflow:hidden; display:grid; place-items:center; background:#f0e9d9 }
-.art img { width:100%; height:100%; object-fit:contain; object-position:center top }
+.art img { width:100%; height:100%; object-fit:contain; object-position:center }
 .cardBody { padding:20px 20px 22px }
 .cardNumber { margin:0 0 13px; color:#898b7b; font-family:var(--font-sans); font-size:11px; letter-spacing:.12em }
 .card h2 { margin:0; font-family:var(--font-sans); font-size:clamp(18px,2vw,22px); line-height:1.45; letter-spacing:-.025em }
