@@ -18,6 +18,7 @@ export type ArticleCardData = {
   _updatedAt?: string;
   hasEnglishTranslation?: boolean;
   hasJapaneseTranslation?: boolean;
+  hasTraditionalChineseTranslation?: boolean;
 };
 
 export type ArticleDocument = ArticleCardData & {
@@ -74,6 +75,7 @@ export type NewArrivalsItem = {
   imageLqip?: string | null;
   hasEnglishTranslation?: boolean;
   hasJapaneseTranslation?: boolean;
+  hasTraditionalChineseTranslation?: boolean;
 };
 
 export type RoutineToolDetail = NewArrivalsItem & {

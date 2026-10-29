@@ -19,14 +19,20 @@ export const article = defineType({
       description: "Optional Japanese translation for /ja visitors.",
       options: { collapsible: true, collapsed: true },
     },
+    {
+      name: "traditionalChinese",
+      title: "Traditional Chinese (繁體中文)",
+      description: "Optional Traditional Chinese translation for /zh-TW visitors.",
+      options: { collapsible: true, collapsed: true },
+    },
   ],
   fields: [
-    ...(["", "En", "Ja"] as const).flatMap((suffix) => [
+    ...(["", "En", "Ja", "ZhTW"] as const).flatMap((suffix) => [
       defineField({
         name: `seoTitle${suffix}`,
         title: `SEO title${suffix ? ` (${suffix})` : ""}`,
         type: "string",
-        fieldset: suffix === "En" ? "english" : suffix === "Ja" ? "japanese" : undefined,
+        fieldset: suffix === "En" ? "english" : suffix === "Ja" ? "japanese" : suffix === "ZhTW" ? "traditionalChinese" : undefined,
         description: "선택 사항. 검색·공유용 제목이며 화면의 글 제목은 유지됩니다. 비우면 해당 언어의 Title을 사용합니다.",
         validation: (rule) => rule.max(70).warning("검색 결과에서 잘리지 않도록 간결하게 작성하세요."),
       }),
@@ -35,7 +41,7 @@ export const article = defineType({
         title: `SEO description${suffix ? ` (${suffix})` : ""}`,
         type: "text",
         rows: 3,
-        fieldset: suffix === "En" ? "english" : suffix === "Ja" ? "japanese" : undefined,
+        fieldset: suffix === "En" ? "english" : suffix === "Ja" ? "japanese" : suffix === "ZhTW" ? "traditionalChinese" : undefined,
         description: "선택 사항. 검색·공유용 요약. 비우면 해당 언어의 Description 또는 Title을 사용합니다.",
         validation: (rule) => rule.max(180).warning("검색 의도에 맞는 구체적인 요약을 작성하세요."),
       }),
@@ -208,6 +214,11 @@ export const article = defineType({
       of: [{ type: "block" }],
       fieldset: "japanese",
     }),
+    defineField({ name: "titleZhTW", title: "Title (繁體中文)", type: "string", fieldset: "traditionalChinese" }),
+    defineField({ name: "kickerZhTW", title: "Kicker (繁體中文)", type: "string", fieldset: "traditionalChinese" }),
+    defineField({ name: "descriptionZhTW", title: "Description (繁體中文)", type: "text", rows: 3, fieldset: "traditionalChinese" }),
+    defineField({ name: "coverImageAltZhTW", title: "Cover image alt text (繁體中文)", type: "string", fieldset: "traditionalChinese" }),
+    defineField({ name: "bodyZhTW", title: "Body (繁體中文)", type: "array", of: [{ type: "block" }], fieldset: "traditionalChinese" }),
   ],
   preview: {
     select: {

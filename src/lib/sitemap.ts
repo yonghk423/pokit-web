@@ -62,7 +62,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
 
   const [articles, digests, newArrivals, yourdayStories] = await Promise.all([
     client.fetch<
-      { slug: string; publishedAt?: string; _updatedAt?: string; hasEnglishTranslation?: boolean; hasJapaneseTranslation?: boolean }[]
+      { slug: string; publishedAt?: string; _updatedAt?: string; hasEnglishTranslation?: boolean; hasJapaneseTranslation?: boolean; hasTraditionalChineseTranslation?: boolean }[]
     >(SITEMAP_ARTICLES_QUERY, {}, sanityFetchOptions),
     client.fetch<{ weekOf: string; _updatedAt?: string }[]>(
       SITEMAP_DIGESTS_QUERY,
@@ -80,6 +80,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
       _updatedAt?: string;
       hasEnglishTranslation?: boolean;
       hasJapaneseTranslation?: boolean;
+      hasTraditionalChineseTranslation?: boolean;
     }[]>(YOURDAY_STORY_SITEMAP_QUERY, { slugs: [...YOURDAY_STORY_SLUGS] }, sanityFetchOptions),
   ]);
 

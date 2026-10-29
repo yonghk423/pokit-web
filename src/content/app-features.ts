@@ -105,6 +105,7 @@ const boardArt: Record<Locale, readonly StaticImageData[]> = {
   ko: [koScenes, koNotes, koDay, koMates, koWidget, koHome],
   en: [enScenes, enNotes, enDay, enMates, enWidget, enHome],
   ja: [jaScenes, jaNotes, jaDay, jaMates, jaWidget, jaHome],
+  "zh-TW": [enScenes, enNotes, enDay, enMates, enWidget, enHome],
 };
 
 export function appBoardArt(locale: Locale) {
@@ -115,6 +116,7 @@ const screenArt: Record<Locale, readonly StaticImageData[]> = {
   ko: [koscreen0, koscreen1, koscreen2, koscreen3, koscreen4, koscreen5],
   en: [enscreen0, enscreen1, enscreen2, enscreen3, enscreen4, enscreen5],
   ja: [jascreen0, jascreen1, jascreen2, jascreen3, jascreen4, jascreen5],
+  "zh-TW": [enscreen0, enscreen1, enscreen2, enscreen3, enscreen4, enscreen5],
 };
 export function appScreenArt(locale: Locale) { return screenArt[locale]; }
 
@@ -122,8 +124,9 @@ const ipadArt: Record<Locale, readonly StaticImageData[]> = {
   ko: [koipad0, koipad1, koipad2, koipad3, koipad4, koipad5],
   en: [enipad0, enipad1, enipad2, enipad3, enipad4, enipad5],
   ja: [jaipad0, jaipad1, jaipad2, jaipad3, jaipad4, jaipad5],
+  "zh-TW": [enipad0, enipad1, enipad2, enipad3, enipad4, enipad5],
 };
 export function appTabletArt(locale: Locale) { return ipadArt[locale]; }
 
-const heroArt = { ko: koHero, en: enHero, ja: jaHero };
+const heroArt = { ko: koHero, en: enHero, ja: jaHero, "zh-TW": enHero };
 export function appHeroArt(locale: Locale) { return heroArt[locale]; }

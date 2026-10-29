@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale: rawLocale } = await params;
 
-  if (!isLocale(rawLocale) && rawLocale !== "zh-TW") {
+  if (!isLocale(rawLocale)) {
     notFound();
   }
 

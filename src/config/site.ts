@@ -10,6 +10,7 @@ export const site = {
     /** Explicit US storefront — bare `/app/id…` geo-redirects to the scanner's country (often KR). */
     en: "https://apps.apple.com/us/app/id6762331629",
     ja: "https://apps.apple.com/jp/app/id6762331629",
+    "zh-TW": "https://apps.apple.com/tw/app/id6762331629",
   },
 } as const;
 

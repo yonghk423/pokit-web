@@ -153,7 +153,8 @@ export default async function ArticlePage({ params }: Props) {
   );
   const showKoreanOnlyBanner =
     (locale === "en" && article.hasEnglishTranslation === false) ||
-    (locale === "ja" && article.hasJapaneseTranslation === false);
+    (locale === "ja" && article.hasJapaneseTranslation === false) ||
+    (locale === "zh-TW" && article.hasTraditionalChineseTranslation === false);
 
   const coverUrl = coverImageUrl(article.coverImage, 1200, 675);
   const jsonLdImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;

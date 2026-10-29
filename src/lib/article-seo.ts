@@ -3,10 +3,11 @@ import type { ArticleCardData } from "@/sanity/types";
 
 /** Korean is the source; advertise only translations with a title and body. */
 export function articleAvailableLocales(article: Pick<ArticleCardData,
-  "hasEnglishTranslation" | "hasJapaneseTranslation">): Locale[] {
+  "hasEnglishTranslation" | "hasJapaneseTranslation" | "hasTraditionalChineseTranslation">): Locale[] {
   const available: Locale[] = ["ko"];
   if (article.hasEnglishTranslation === true) available.push("en");
   if (article.hasJapaneseTranslation === true) available.push("ja");
+  if (article.hasTraditionalChineseTranslation === true) available.push("zh-TW");
   return available;
 }
 

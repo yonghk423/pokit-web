@@ -8,6 +8,13 @@ import { cn } from "@/lib/cn";
 
 export type LanguageLabels = { label: string } & Record<Locale, string>;
 
+const compactLocaleLabels: Record<Locale, string> = {
+  ko: "한국어",
+  en: "EN",
+  ja: "日本語",
+  "zh-TW": "繁中",
+};
+
 type Props = {
   locale: Locale;
   labels: LanguageLabels;
@@ -44,7 +51,7 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
             )}
             aria-current={locale === value ? "true" : undefined}
           >
-            <span className="min-[761px]:hidden">{value.toUpperCase()}</span>
+            <span className="min-[761px]:hidden">{compactLocaleLabels[value]}</span>
             <span className="hidden min-[761px]:inline">{labels[value]}</span>
           </a>
         </span>

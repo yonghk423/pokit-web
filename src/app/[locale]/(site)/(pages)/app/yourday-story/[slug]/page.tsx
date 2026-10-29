@@ -72,10 +72,9 @@ export default async function YourdayStoryArticlePage({ params }: Props) {
       <article className={styles.article}>
         <Link className={styles.articleBack} href={withLocale(locale, "/app/yourday-story")}>← {t("이야기 목록으로")}</Link>
         <figure className={styles.art}>
-          <Image src={illustrations[imageIndex]} alt="" sizes="(max-width: 760px) 100vw, 740px" priority />
+          <Image src={illustrations[imageIndex]} alt="" sizes="(max-width: 760px) 100vw, 740px" placeholder="blur" priority />
         </figure>
         <header className={styles.articleHeader}>
-          {article.kicker && <p className={styles.eyebrow}>{article.kicker}</p>}
           <h1>{article.title}</h1>
           <p className={styles.articleDescription}>{article.description}</p>
           {article.publishedAt && <p className={styles.date}><time dateTime={article.publishedAt}>{formatPublishedLabel(article.publishedAt, locale)}</time></p>}

@@ -2,12 +2,14 @@
  * Locale field resolution:
  * - en → En, then ko
  * - ja → Ja, then ko (do not fall back to English on /ja)
+ * - zh-TW → ZhTW, then En, then ko
  * - ko → ko
  */
 const localizedString = (field: string) =>
   `select(
     $locale == "en" => coalesce(${field}En, ${field}),
     $locale == "ja" => coalesce(${field}Ja, ${field}),
+    $locale == "zh-TW" => coalesce(${field}ZhTW, ${field}En, ${field}),
     ${field}
   )`;
 
@@ -15,6 +17,7 @@ const localizedTextSearch = (field: string) =>
   `select(
     $locale == "en" => coalesce(${field}En, ${field}) match $pattern,
     $locale == "ja" => coalesce(${field}Ja, ${field}) match $pattern,
+    $locale == "zh-TW" => coalesce(${field}ZhTW, ${field}En, ${field}) match $pattern,
     ${field} match $pattern
   )`;
 
@@ -22,6 +25,7 @@ const localizedPortableText = (field: string) =>
   `select(
     $locale == "en" => coalesce(${field}En, ${field}),
     $locale == "ja" => coalesce(${field}Ja, ${field}),
+    $locale == "zh-TW" => coalesce(${field}ZhTW, ${field}En, ${field}),
     ${field}
   )`;
 
@@ -29,14 +33,15 @@ const articleCardFields = `
   "slug": slug.current,
   "title": ${localizedString("title")},
   "titleKo": title,
-  "seoTitle": select($locale == "en" => seoTitleEn, $locale == "ja" => seoTitleJa, seoTitle),
-  "seoDescription": select($locale == "en" => seoDescriptionEn, $locale == "ja" => seoDescriptionJa, seoDescription),
+  "seoTitle": select($locale == "en" => seoTitleEn, $locale == "ja" => seoTitleJa, $locale == "zh-TW" => coalesce(seoTitleZhTW, seoTitleEn), seoTitle),
+  "seoDescription": select($locale == "en" => seoDescriptionEn, $locale == "ja" => seoDescriptionJa, $locale == "zh-TW" => coalesce(seoDescriptionZhTW, seoDescriptionEn), seoDescription),
   "description": ${localizedString("description")},
   "kicker": ${localizedString("kicker")},
   category,
   "imageAlt": select(
     $locale == "en" => coalesce(coverImageAltEn, coverImageAlt, coverImage.alt, coalesce(titleEn, title)),
     $locale == "ja" => coalesce(coverImageAltJa, coverImageAlt, coverImage.alt, coalesce(titleJa, title)),
+    $locale == "zh-TW" => coalesce(coverImageAltZhTW, coverImageAltEn, coverImageAlt, coverImage.alt, coalesce(titleZhTW, titleEn, title)),
     coalesce(coverImageAlt, coverImage.alt, title)
   ),
   coverImage,
@@ -45,7 +50,8 @@ const articleCardFields = `
   publishedAt,
   "_updatedAt": _updatedAt,
   "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0,
-  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0
+  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0,
+  "hasTraditionalChineseTranslation": defined(titleZhTW) && length(titleZhTW) > 0 && coalesce(length(pt::text(bodyZhTW)), 0) > 0
 `;
 
 const sectionHeadingProjection = `{
@@ -116,6 +122,7 @@ const newArrivalsItemCardFields = `
   "imageAlt": select(
     $locale == "en" => coalesce(imageAltEn, imageAlt, nameEn, name),
     $locale == "ja" => coalesce(imageAltJa, imageAlt, nameJa, name),
+    $locale == "zh-TW" => coalesce(imageAltZhTW, imageAltEn, imageAlt, nameZhTW, nameEn, name),
     coalesce(imageAlt, name)
   ),
   "imageLqip": image.asset->metadata.lqip,
@@ -195,7 +202,8 @@ export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && coalesce(appStory
   publishedAt,
   _updatedAt,
   "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0,
-  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0
+  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0,
+  "hasTraditionalChineseTranslation": defined(titleZhTW) && length(titleZhTW) > 0 && coalesce(length(pt::text(bodyZhTW)), 0) > 0
 }`;
 
 export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && ${searchFilter}])`;

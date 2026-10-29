@@ -6,6 +6,7 @@ const messages = {
   ko: () => import("./messages/ko/privacy.json").then(module => module.default),
   en: () => import("./messages/en/privacy.json").then(module => module.default),
   ja: () => import("./messages/ja/privacy.json").then(module => module.default),
+  "zh-TW": () => import("./messages/zh-TW/privacy.json").then((module) => module.default),
 } satisfies Record<Locale, () => Promise<PrivacyMessages>>;
 
 export function getPrivacyMessages(locale: Locale): Promise<PrivacyMessages> {

@@ -7,6 +7,7 @@ const messages = {
   ko: () => import("./messages/ko/article.json").then((module) => module.default),
   en: () => import("./messages/en/article.json").then((module) => module.default),
   ja: () => import("./messages/ja/article.json").then((module) => module.default),
+  "zh-TW": () => import("./messages/zh-TW/article.json").then((module) => module.default),
 } satisfies Record<Locale, () => Promise<ArticleMessages>>;
 
 /** Load on the server and pass only this scope's strings to the client. */

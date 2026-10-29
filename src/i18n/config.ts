@@ -1,4 +1,4 @@
-export const locales = ["ko", "en", "ja"] as const;
+export const locales = ["ko", "en", "ja", "zh-TW"] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -10,12 +10,14 @@ const OG_LOCALES: Record<Locale, string> = {
   ko: "ko_KR",
   en: "en_US",
   ja: "ja_JP",
+  "zh-TW": "zh_TW",
 };
 
 const INTL_LOCALES: Record<Locale, string> = {
   ko: "ko-KR",
   en: "en-US",
   ja: "ja-JP",
+  "zh-TW": "zh-TW",
 };
 
 export function isLocale(value: string): value is Locale {
@@ -31,5 +33,5 @@ export function localeToIntl(locale: Locale) {
 }
 
 export function localeToHtmlLang(locale: Locale) {
-  return locale;
+  return locale === "zh-TW" ? "zh-Hant-TW" : locale;
 }

@@ -22,6 +22,7 @@ export function SiteHeader({ locale, messages }: Props) {
         ko: t("한국어"),
         en: t("English"),
         ja: t("日本語"),
+        "zh-TW": t("繁體中文"),
       }}
     />
   );

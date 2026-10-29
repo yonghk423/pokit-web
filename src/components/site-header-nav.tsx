@@ -45,7 +45,7 @@ export function SiteHeaderNav({
           <Link
             href={homeHref}
             className="flex shrink-0 items-center gap-2.5 no-underline max-[760px]:gap-2"
-            aria-label={appActive ? (locale === "ko" ? `${brandName} 홈` : locale === "ja" ? `${brandName} ホーム` : `${brandName} home`) : homeAria}
+            aria-label={appActive ? (locale === "ko" ? `${brandName} 홈` : locale === "ja" ? `${brandName} ホーム` : locale === "zh-TW" ? `${brandName}首頁` : `${brandName} home`) : homeAria}
           >
             <Image
               src="/icon.png"

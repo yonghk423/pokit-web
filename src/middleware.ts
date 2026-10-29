@@ -27,6 +27,7 @@ function detectLocale(request: NextRequest): Locale {
   if (country === "JP") {
     return "ja";
   }
+  if (["TW", "HK", "MO"].includes(country ?? "")) return "zh-TW";
 
   const accept = request.headers.get("accept-language") ?? "";
   if (/\bko\b/i.test(accept)) {
@@ -35,6 +36,7 @@ function detectLocale(request: NextRequest): Locale {
   if (/\bja\b/i.test(accept)) {
     return "ja";
   }
+  if (/\bzh-(TW|HK|MO|Hant)\b/i.test(accept)) return "zh-TW";
 
   return defaultLocale;
 }
