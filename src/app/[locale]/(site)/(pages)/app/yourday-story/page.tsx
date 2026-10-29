@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale)) return {};
   const t = createTranslator(await getAppPageMessages(rawLocale));
-  const title = t("하루를 붙잡는 세 가지 방식");
+  const title = t("심심할 때 읽기 좋은 이야기");
   const description = t("일기 한 줄, 메모 한 조각. 오늘을 내 방식으로 남기는 이야기들입니다.");
   return {
     title: `${title} | ${appName(rawLocale)}`,
@@ -42,6 +42,9 @@ export default async function YourdayStoryIndex({ params }: Props) {
 
   return <main className={styles.page} data-yourday-story>
     <div className={styles.shell}>
+      <header className={styles.hero}>
+        <h1>{t("심심할 때 읽기 좋은 이야기")}</h1>
+      </header>
       <section className={styles.grid} aria-label={t("하루를 담는 이야기")}>
         {articles.length ? articles.map((article, index) => <Link className={styles.card} key={article.slug} href={`/${locale}/app/yourday-story/${article.slug}`}>
           <div className={styles.art}><Image src={illustrations[index % illustrations.length]} alt="" sizes="(max-width: 760px) 112px, 320px" /></div>
