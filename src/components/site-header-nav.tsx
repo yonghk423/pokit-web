@@ -36,9 +36,7 @@ export function SiteHeaderNav({
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
   const appActive = pathMatches(pathname, appHref);
-  const yourdayStoryHref = withLocale(locale, "/app/yourday-story");
-  const isYourdayStory = pathMatches(pathname, yourdayStoryHref);
-  const brandName = isYourdayStory ? appName(locale) : siteName();
+  const brandName = appActive ? appName(locale) : siteName();
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink/8 bg-[color-mix(in_srgb,var(--color-paper)_88%,transparent)] backdrop-blur-md">
@@ -47,7 +45,7 @@ export function SiteHeaderNav({
           <Link
             href={homeHref}
             className="flex shrink-0 items-center gap-2.5 no-underline"
-            aria-label={isYourdayStory ? (locale === "ko" ? `${brandName} 홈` : locale === "ja" ? `${brandName} ホーム` : `${brandName} home`) : homeAria}
+            aria-label={appActive ? (locale === "ko" ? `${brandName} 홈` : locale === "ja" ? `${brandName} ホーム` : `${brandName} home`) : homeAria}
           >
             <Image
               src="/icon.png"
