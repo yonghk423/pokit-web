@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SupportEmailLink } from "@/components/support-email-link";
-import { appName, site } from "@/config/site";
+import { siteName, site } from "@/config/site";
 import { isLocale, locales } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getCommonMessages } from "@/i18n/get-common-messages";
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = t("pokitstory.com의 방문 통계, 브라우저 저장 및 웹 체험 데이터 처리에 대한 안내입니다.");
   const alternates = localeAlternates(locale, "/privacy");
   return { title, description, alternates,
-    openGraph: { title, description, siteName: appName(locale), url: alternates.canonical, locale: localeOpenGraph(locale), type: "website" } };
+    openGraph: { title, description, siteName: siteName(), url: alternates.canonical, locale: localeOpenGraph(locale), type: "website" } };
 }
 
 export default async function PrivacyPage({ params }: Props) {

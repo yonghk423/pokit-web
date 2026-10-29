@@ -1,18 +1,18 @@
 {
   "웰니스 브리핑": "Wellness briefing",
   "주간 브리핑": "Weekly briefing",
-  "공공기관·국제기구 소식을 POKIT이 요약하고, 일상 루틴으로 연결합니다. 원문은 출처에서 확인하세요.": "Your Day summarizes public-health and wellness updates and ties them to daily routines. Read the original at the source.",
+  "공공기관·국제기구 소식을 POKIT이 요약하고, 일상 루틴으로 연결합니다. 원문은 출처에서 확인하세요.": "POKIT summarizes public-health and wellness updates and ties them to daily routines. Read the original at the source.",
   "출처": "Source",
   "원문 보기": "Read source",
-  "POKIT 노트": "Your Day note",
+  "POKIT 노트": "POKIT note",
   "같이 읽으면 좋은 이야기": "Related stories",
   "지난 브리핑": "Past briefings",
   "아직 발행된 브리핑이 없습니다.": "No briefings published yet.",
   "← 브리핑 목록": "← All briefings",
   "전체 보기": "View full",
   "{{weekLabel}} 웰니스 브리핑": "Wellness briefing · {{weekLabel}}",
-  "{{title}} — 일상 루틴·웰니스 관점으로 정리한 주간 큐레이션 | POKIT": "{{title}} — a weekly curation through a daily-routine lens | Your Day",
-  "{{headlines}} — POKIT 주간 웰니스 브리핑": "{{headlines}} — Your Day weekly wellness briefing",
-  "공공·국제 웰니스 소식을 일상 루틴으로 연결하는 POKIT 주간 브리핑": "Weekly wellness updates, summarized for daily routines — Your Day",
+  "{{title}} — 일상 루틴·웰니스 관점으로 정리한 주간 큐레이션 | POKIT": "{{title}} — a weekly curation through a daily-routine lens | POKIT",
+  "{{headlines}} — POKIT 주간 웰니스 브리핑": "{{headlines}} — POKIT weekly wellness briefing",
+  "공공·국제 웰니스 소식을 일상 루틴으로 연결하는 POKIT 주간 브리핑": "Weekly wellness updates, summarized for daily routines — POKIT",
   "전체 보기 → {{week}}": "View full → {{week}}"
 }

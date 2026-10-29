@@ -1,3 +1,4 @@
+import { webDiaryCopy } from "@/content/web-diary-copy";
 import { AppScrollMotion } from "@/components/app-scroll-motion";
 import { AppHeroVideo } from "@/components/app-hero-video";
 import { getHomeVideoMessages } from "@/i18n/get-home-video-messages";
@@ -8,7 +9,7 @@ import { notFound } from "next/navigation";
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { AppScreenGallery } from "@/components/app-screen-gallery";
 import { JsonLd } from "@/components/json-ld";
-import { appStoreUrl, site, appName } from "@/config/site";
+import { appStoreUrl, site, appName, siteName } from "@/config/site";
 import { appBoardArt, appBoards, appHeroArt, appScreenArt, appTabletArt } from "@/content/app-features";
 import { isLocale, locales } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
@@ -31,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const hero = appHeroArt(locale);
   return {
     title: { absolute: title }, description, alternates,
-    openGraph: { title, description, url: alternates.canonical, siteName: appName(locale),
+    openGraph: { title, description, url: alternates.canonical, siteName: siteName(),
       locale: localeOpenGraph(locale), type: "website", images: [{ url: hero.src, width: hero.width, height: hero.height }] },
     twitter: { card: "summary_large_image", title, description, images: [hero.src] },
   };
@@ -78,6 +79,8 @@ export default async function AppIntroPage({ params }: Props) {
             <div className={styles.actions}>
               <AppStoreBadge locale={locale} label={downloadT("App Store에서 받기")} />
               <a className={styles.textLink} href="#try-pokit">{t("직접 체험하기")} <span aria-hidden="true">↘</span></a>
+              <a className={styles.textLink} href={withLocale(locale, "/app/yourday-story")}>{t("일기와 메모에 관한 이야기")} <span aria-hidden="true">↗</span></a>
+              <a className={styles.textLink} href={withLocale(locale, "/yourday-web")} target="_blank" rel="noopener noreferrer" aria-label={`${webDiaryCopy[locale].web} · ${webDiaryCopy[locale].newTab}`}>{webDiaryCopy[locale].web} <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </div>
@@ -92,21 +95,24 @@ export default async function AppIntroPage({ params }: Props) {
         <p>{t("거창한 일기가 아니어도 괜찮아요. 오늘 마음에 남은 순간 하나면 충분해요.")}</p>
       </section>
       <AppDemo locale={locale} copy={{
-          title: t("오늘의 한 장면을 만들어보세요."),
-          intro: t("장면을 고르고, 한 줄을 남기고, 작은 할 일을 체크해보세요."),
+          title: t("하루를 만화처럼 기록해보세요."),
+          intro: t("장면을 고르고 한 줄을 적어 말풍선으로 붙여보세요. 순간을 더하면 오늘의 한 페이지가 됩니다."),
           choose: t("장면 고르기"),
           note: t("한 줄 남기기"),
           placeholder: t("오늘 기억하고 싶은 순간은?"),
-          task: t("작은 할 일 더하기"),
+          task: t("이 장면에 할 일 더하기"),
           taskPlaceholder: t("예: 책 한 장 읽기"),
           add: t("추가"),
           remove: t("삭제"),
           reset: t("다시 시작하기"),
-          empty: t("당신의 이야기를 여기에 남겨보세요."),
-          complete: t("작은 기록 하나, 작은 완료 하나. 앱에서도 이어갈 습관이에요."),
-          cta: t("이런 순간을 매일 모으고 싶다면, POKIT에서 시작해요."),
+          empty: t("한 줄을 적으면 이곳에 보여요."),
+          complete: t("장면이 오늘의 페이지에 담겼어요. 다른 순간도 이어서 적어보세요."),
+          cta: t("장면 하나를 적어 오늘의 페이지에 담아보세요."),
           notice: t("가입 없는 웹 체험입니다. 새로고침하면 초기화되며, 입력한 내용은 저장되거나 앱으로 옮겨지지 않습니다."),
-          scenes: [t("커피 한 잔"), t("잠깐의 산책"), t("서점에서")], download: downloadT("App Store에서 받기"),
+          scenes: [t("커피 한 잔"), t("잠깐의 산책"), t("서점에서")],
+          dayPage: t("오늘의 만화 일기"), step: t("단계"), saveScene: t("이 장면을 오늘에 담기"),
+          addScene: t("다른 장면 더하기"), sceneCount: t("오늘의 장면 {count}개"),
+          optional: t("선택"), today: t("TODAY · MY DIARY"), download: downloadT("App Store에서 받기"),
       }} />
       {features.map((feature, groupIndex) => (
         <section key={feature.id} id={feature.id} className={`${styles.feature} ${groupIndex === 1 ? styles.reverse : ""} ${groupIndex === 2 ? styles.widgets : ""}`} aria-labelledby={`${feature.id}-title`}>

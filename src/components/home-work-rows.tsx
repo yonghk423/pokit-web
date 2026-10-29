@@ -1,6 +1,6 @@
 "use client";
 
-import { appName } from "@/config/site";
+import { siteName } from "@/config/site";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -282,7 +282,7 @@ function HomeWorkRow({
                   />
                 ) : (
                   <span className="grid h-full place-items-center font-sans text-[0.7rem] font-extrabold tracking-[0.12em] text-indigo uppercase">
-                    {appName(locale)}
+                    {siteName()}
                   </span>
                 )}
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/55 to-transparent px-3 pb-3 pt-10 font-sans text-[0.72rem] font-semibold leading-snug text-white nav:hidden">

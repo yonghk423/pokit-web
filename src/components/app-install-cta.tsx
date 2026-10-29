@@ -36,7 +36,7 @@ export function AppInstallCta({ locale, messages, className }: Props) {
           <div className="flex items-center gap-3">
             <div className="min-w-0 flex-1">
               <p className="m-0 font-sans text-[0.8rem] leading-snug text-ink/75">
-                {t("POKIT 앱에서 일상 루틴을 기록하고, 웰니스를 지켜 보세요.")}
+                {t("장면을 고르고 이야기를 남겨보세요. 오늘의 주인공에서 나만의 일기를 시작해요.")}
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-4">
                 <span onClickCapture={() => trackAppPromotion("reading-panel", "store", locale)}><AppStoreBadge locale={locale} label={t("App Store에서 다운로드")} size="compact" /></span>

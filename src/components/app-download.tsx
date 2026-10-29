@@ -52,7 +52,7 @@ export function AppDownload({
   resourceLinks,
 }: Props) {
   const t = createTranslator(messages);
-  const body = t("오늘 필요한 것들을, POKIT에 담아보세요. 루틴도, 메모도, 해야 할 일도. 하루에 필요한 작은 것부터 하나씩. POKIT과 함께 오늘을 가볍게 시작해보세요.");
+  const body = t("기억하고 싶은 순간을, 오늘의 주인공에 남겨보세요. 주인공을 고르고 장면에 생각을 더하면 나만의 일기가 됩니다. 짧은 한 줄부터 가볍게 시작해요.");
   const large = size === "large";
   const editorial = variant === "editorial";
   const resolvedVisual =

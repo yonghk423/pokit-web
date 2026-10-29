@@ -11,6 +11,7 @@ import { withLocale } from "@/lib/locale-path";
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { sanityFetchOptions } from "@/sanity/lib/cache";
+import { YOURDAY_STORY_SLUGS, YOURDAY_STORY_SITEMAP_QUERY } from "@/sanity/lib/yourday-stories";
 import {
   SITEMAP_ARTICLES_QUERY,
   SITEMAP_DIGESTS_QUERY,
@@ -24,6 +25,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     "/briefing",
     "/new-arrivals",
     "/app",
+    "/app/yourday-story",
     "/support",
     "/privacy",
   ] as const;
@@ -37,7 +39,8 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
         path === "/articles" ||
         path === "/briefing" ||
         path === "/new-arrivals" ||
-        path === "/app"
+        path === "/app" ||
+        path === "/app/yourday-story"
           ? "weekly"
           : "monthly",
       priority:
@@ -46,7 +49,8 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
           : path === "/articles" ||
               path === "/briefing" ||
               path === "/new-arrivals" ||
-              path === "/app"
+              path === "/app" ||
+              path === "/app/yourday-story"
             ? 0.9
             : 0.5,
     })),
@@ -56,7 +60,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     return staticPages;
   }
 
-  const [articles, digests, newArrivals] = await Promise.all([
+  const [articles, digests, newArrivals, yourdayStories] = await Promise.all([
     client.fetch<
       { slug: string; publishedAt?: string; _updatedAt?: string; hasEnglishTranslation?: boolean; hasJapaneseTranslation?: boolean }[]
     >(SITEMAP_ARTICLES_QUERY, {}, sanityFetchOptions),
@@ -70,6 +74,13 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
       {},
       sanityFetchOptions,
     ),
+    client.fetch<{
+      slug: string;
+      publishedAt?: string;
+      _updatedAt?: string;
+      hasEnglishTranslation?: boolean;
+      hasJapaneseTranslation?: boolean;
+    }[]>(YOURDAY_STORY_SITEMAP_QUERY, { slugs: [...YOURDAY_STORY_SLUGS] }, sanityFetchOptions),
   ]);
 
   const articlePages: MetadataRoute.Sitemap = (articles ?? [])
@@ -98,6 +109,19 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
       })),
     );
 
+  const yourdayStoryPages: MetadataRoute.Sitemap = (yourdayStories ?? [])
+    .filter(({ slug }) => slug)
+    .flatMap((story) => {
+      const availableLocales = articleAvailableLocales(story);
+      return availableLocales.map((locale) => ({
+        url: `${site.siteUrl}${withLocale(locale, `/app/yourday-story/${story.slug}`)}`,
+        alternates: { languages: localeAlternates(locale, `/app/yourday-story/${story.slug}`, { availableLocales }).languages },
+        lastModified: story._updatedAt ?? story.publishedAt,
+        changeFrequency: "monthly" as const,
+        priority: 0.75,
+      }));
+    });
+
   const newArrivalsPages: MetadataRoute.Sitemap = (newArrivals ?? [])
     .filter(({ weekOf }) => weekOf)
     .flatMap(({ weekOf, _updatedAt }) =>
@@ -113,6 +137,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticPages,
     ...articlePages,
+    ...yourdayStoryPages,
     ...digestPages,
     ...newArrivalsPages,
   ];

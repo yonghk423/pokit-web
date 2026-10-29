@@ -35,7 +35,6 @@ export function PreviewCoverImage({
       alt={alt}
       fill
       sizes={sizes}
-      quality={72}
       priority={priority}
       className={cn(
         "object-cover transition-opacity duration-300",

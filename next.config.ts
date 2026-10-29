@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/:locale(ko|en|ja|zh-TW)/web", destination: "/:locale/yourday-web", permanent: true },
+      { source: "/web", destination: "/yourday-web", permanent: true },
       // Stable destination for the pre-localization privacy URL.
       { source: "/privacy", destination: "/en/privacy", permanent: true },
     ];

@@ -1,6 +1,6 @@
 /** 사이트 기본 설정 — 새 컨셉에 맞게 수정하세요 */
 export const site = {
-  name: "Your Day",
+  name: "POKIT",
   tagline: "",
   siteUrl: "https://www.pokitstory.com",
   supportEmail: "pokit.app.help@gmail.com",
@@ -20,4 +20,9 @@ export function appStoreUrl(locale: keyof typeof site.appStoreUrls) {
 /** Official display name; identifiers and links keep their existing values. */
 export function appName(locale: keyof typeof site.appStoreUrls) {
   return locale === "ko" ? "오늘의 주인공" : "Your Day";
+}
+
+/** The editorial website keeps its own brand, separate from the app. */
+export function siteName() {
+  return "POKIT";
 }

@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
 import { HomeHeroDownload } from "@/components/home-hero-download";
-import { appName, appStoreUrl } from "@/config/site";
+import { siteName, appStoreUrl } from "@/config/site";
 import { articlePath } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
@@ -291,7 +291,7 @@ export function HomeHero({
                 />
               ) : (
                 <span className="grid h-full place-items-center font-sans text-sm font-extrabold tracking-[0.14em] text-indigo uppercase">
-                  {appName(locale)}
+                  {siteName()}
                 </span>
               )}
             </a>

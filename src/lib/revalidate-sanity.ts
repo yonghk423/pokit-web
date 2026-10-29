@@ -3,6 +3,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { sitemapPaths } from "@/lib/sitemap-paths";
 import { locales } from "@/i18n/config";
 import { SANITY_CACHE_TAG } from "@/sanity/lib/cache";
+import { YOURDAY_STORY_SLUGS } from "@/sanity/lib/yourday-stories";
 
 type SlugField = string | { current?: string };
 
@@ -55,6 +56,7 @@ export function revalidateSanityContent(slugs: string[] = []) {
   for (const locale of locales) {
     paths.add(`/${locale}`);
     paths.add(`/${locale}/articles`);
+    paths.add(`/${locale}/app`);
     paths.add(`/${locale}/briefing`);
     paths.add(`/${locale}/new-arrivals`);
     paths.add(`/${locale}/tools`);
@@ -62,6 +64,10 @@ export function revalidateSanityContent(slugs: string[] = []) {
     for (const slug of slugs) {
       paths.add(`/${locale}/articles/${encodeURIComponent(slug)}`);
       paths.add(`/${locale}/tools/${encodeURIComponent(slug)}`);
+      if (YOURDAY_STORY_SLUGS.includes(slug as (typeof YOURDAY_STORY_SLUGS)[number])) {
+        paths.add(`/${locale}/app/yourday-story`);
+        paths.add(`/${locale}/app/yourday-story/${encodeURIComponent(slug)}`);
+      }
       // weekOf dates (YYYY-MM-DD) also arrive as "slugs" from some webhooks
       if (/^\d{4}-\d{2}-\d{2}$/.test(slug)) {
         paths.add(`/${locale}/briefing/${slug}`);

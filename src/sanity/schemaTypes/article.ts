@@ -79,6 +79,13 @@ export const article = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "appStory",
+      title: "Your Day app story",
+      type: "boolean",
+      initialValue: false,
+      description: "Enable only for stories shown in the dedicated /app/yourday-story section. These are hidden from the general article archive.",
+    }),
+    defineField({
       name: "description",
       title: "Description",
       type: "text",

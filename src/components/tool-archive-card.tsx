@@ -1,6 +1,6 @@
 "use client";
 
-import { appName } from "@/config/site";
+import { siteName } from "@/config/site";
 
 import Image from "next/image";
 import type { Locale } from "@/i18n/config";
@@ -71,7 +71,7 @@ export function ToolArchiveCard({ item, kicker, locale }: Props) {
                 {...imageBlurProps(item.imageLqip)}
               />
             ) : (
-              <span>{appName(locale)}</span>
+              <span>{siteName()}</span>
             )}
           </div>
         </figure>

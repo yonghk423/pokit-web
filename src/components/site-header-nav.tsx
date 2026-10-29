@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { LanguageSwitcher, type LanguageLabels } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
-import { appName } from "@/config/site";
+import { siteName } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
@@ -47,16 +47,15 @@ export function SiteHeaderNav({
             aria-label={homeAria}
           >
             <Image
-              src="/pokit-mark.png?v=20261026"
+              src="/icon.png"
               alt=""
-              width={28}
-              height={28}
+              width={32}
+              height={32}
               priority
-              unoptimized
-              className="size-7 rounded-lg object-cover"
+              className="size-8 rounded-lg object-cover"
             />
             <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em]">
-              {appName(locale)}
+              {siteName()}
             </span>
           </Link>
           <p className="m-0 hidden truncate font-sans text-[0.72rem] text-muted nav:block">

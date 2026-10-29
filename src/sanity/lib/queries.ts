@@ -41,6 +41,7 @@ const articleCardFields = `
   ),
   coverImage,
   "coverImageLqip": coverImage.asset->metadata.lqip,
+  appStory,
   publishedAt,
   "_updatedAt": _updatedAt,
   "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0,
@@ -185,11 +186,11 @@ export const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0]{
   categoryKey
 }`;
 
-export const ARTICLE_SLUGS_QUERY = `*[_type == "article" && defined(slug.current)]{
+export const ARTICLE_SLUGS_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current)]{
   "slug": slug.current
 }`;
 
-export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && defined(slug.current)]{
+export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current)]{
   "slug": slug.current,
   publishedAt,
   _updatedAt,
@@ -197,15 +198,15 @@ export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && defined(slug.curr
   "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0
 }`;
 
-export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && defined(slug.current) && ${searchFilter}])`;
+export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && ${searchFilter}])`;
 
-export const ARTICLES_COUNT_BY_CATEGORY_QUERY = `count(*[_type == "article" && defined(slug.current) && category == $category && ${searchFilter}])`;
+export const ARTICLES_COUNT_BY_CATEGORY_QUERY = `count(*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && category == $category && ${searchFilter}])`;
 
-export const ARTICLES_RECENT_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category] | order(publishedAt desc)[0...$limit]{
+export const ARTICLES_RECENT_BY_CATEGORY_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && category == $category] | order(publishedAt desc)[0...$limit]{
   ${articleCardFields}
 }`;
 
-export const ARTICLES_DESIGN_SPACE_POOL_QUERY = `*[_type == "article" && defined(slug.current) && (
+export const ARTICLES_DESIGN_SPACE_POOL_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && (
   category == "Space" ||
   (category == "Routine" && slug.current in $routineSlugs)
 )] | order(publishedAt desc)[0...$limit]{
@@ -217,22 +218,22 @@ const designSpaceFilter = `(
   (category == "Routine" && slug.current in $routineSlugs)
 )`;
 
-export const ARTICLES_DESIGN_SPACE_COUNT_QUERY = `count(*[_type == "article" && defined(slug.current) && ${designSpaceFilter} && ${searchFilter}])`;
+export const ARTICLES_DESIGN_SPACE_COUNT_QUERY = `count(*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && ${designSpaceFilter} && ${searchFilter}])`;
 
 export function articlesDesignSpacePaginatedQuery(order: "asc" | "desc") {
-  return `*[_type == "article" && defined(slug.current) && ${designSpaceFilter} && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
+  return `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && ${designSpaceFilter} && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
   ${articleCardFields}
 }`;
 }
 
 export function articlesPaginatedQuery(order: "asc" | "desc") {
-  return `*[_type == "article" && defined(slug.current) && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
+  return `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
   ${articleCardFields}
 }`;
 }
 
 export function articlesPaginatedByCategoryQuery(order: "asc" | "desc") {
-  return `*[_type == "article" && defined(slug.current) && category == $category && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
+  return `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && category == $category && ${searchFilter}] | order(publishedAt ${order}) [$start...$end]{
   ${articleCardFields}
 }`;
 }
@@ -242,10 +243,10 @@ export const ARTICLES_DESIGN_SPACE_PAGINATED_QUERY = articlesDesignSpacePaginate
 export const ARTICLES_PAGINATED_QUERY = articlesPaginatedQuery("desc");
 export const ARTICLES_PAGINATED_BY_CATEGORY_QUERY = articlesPaginatedByCategoryQuery("desc");
 
-export const RELATED_BY_CATEGORY_QUERY = `*[_type == "article" && defined(slug.current) && category == $category && slug.current != $slug] | order(publishedAt desc)[0...$limit]{
+export const RELATED_BY_CATEGORY_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && category == $category && slug.current != $slug] | order(publishedAt desc)[0...$limit]{
   ${articleCardFields}
 }`;
 
-export const RELATED_DESIGN_SPACE_QUERY = `*[_type == "article" && defined(slug.current) && slug.current != $slug && ${designSpaceFilter}] | order(publishedAt desc)[0...$limit]{
+export const RELATED_DESIGN_SPACE_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && slug.current != $slug && ${designSpaceFilter}] | order(publishedAt desc)[0...$limit]{
   ${articleCardFields}
 }`;

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { SupportEmailLink } from "@/components/support-email-link";
 import { createSupportCopy } from "@/content/support-copy";
 import type { SupportBlock } from "@/content/support-types";
-import { appStoreUrl, site, appName } from "@/config/site";
+import { appStoreUrl, site, siteName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getSupportMessages } from "@/i18n/get-support-messages";
@@ -82,7 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: copy.title,
       description: copy.description,
       url: alternates.canonical,
-      siteName: appName(rawLocale),
+      siteName: siteName(),
       locale: localeOpenGraph(rawLocale),
       type: "website",
       images: [OG_IMAGE],

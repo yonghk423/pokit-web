@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { HomePreviewShell } from "@/components/home-preview-shell";
 import { JsonLd } from "@/components/json-ld";
 import { ToolArchiveCard } from "@/components/tool-archive-card";
-import { appName } from "@/config/site";
+import { siteName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       url: alternates.canonical,
-      siteName: appName(locale),
+      siteName: siteName(),
       locale: localeOpenGraph(locale),
       type: "website",
       images: [OG_IMAGE],
@@ -104,7 +104,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd(
           [
-            { name: appName(locale), path: "/" },
+            { name: siteName(), path: "/" },
             { name: t("모든 도구들"), path: "/new-arrivals" },
           ],
           locale,

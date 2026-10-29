@@ -67,6 +67,22 @@ function withRequestHints(request: NextRequest, pathname: string) {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // The web diary supports Traditional Chinese independently of the editorial site.
+  if (/^\/(ko|en|ja|zh-TW)\/yourday-web\/?$/.test(pathname)) {
+    const response = NextResponse.next({ request: { headers: withRequestHints(request, pathname) } });
+    response.cookies.set("YOUR_DAY_WEB_LOCALE", pathname.split("/")[1], { path: "/", maxAge: 31536000, sameSite: "lax" });
+    return response;
+  }
+  if (pathname === "/yourday-web" || pathname === "/yourday-web/") {
+    const saved = request.cookies.get("YOUR_DAY_WEB_LOCALE")?.value;
+    const language = request.headers.get("accept-language") ?? "";
+    const webLocale = saved && ["ko", "en", "ja", "zh-TW"].includes(saved)
+      ? saved : /zh-(TW|HK|Hant)/i.test(language) ? "zh-TW" : detectLocale(request);
+    const destination = request.nextUrl.clone(); destination.pathname = `/${webLocale}/yourday-web`;
+    return NextResponse.redirect(destination);
+  }
+
+
   // next.config redirects exclude /_next URLs; recover only these retired assets here.
   if (
     pathname === "/_next/static/media/stationery-highlighter-yellow.0rj4p6.ohm_.8.png" ||

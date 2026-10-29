@@ -8,7 +8,7 @@ import { ArticlesArchiveSections } from "@/components/articles-archive-sections"
 import { ArticlesArchiveSearch } from "@/components/articles-archive-search";
 import { ArticlesArchiveView } from "@/components/articles-archive-view";
 import { ArticlePagination } from "@/components/article-pagination";
-import { appName } from "@/config/site";
+import { siteName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getArchiveMessages } from "@/i18n/get-archive-messages";
@@ -117,17 +117,17 @@ export async function generateMetadata({
     alternates,
     robots: isSearchResult ? { index: false, follow: true } : undefined,
     openGraph: {
-      title: `${title} | ${appName(rawLocale)}`,
+      title: `${title} | ${siteName()}`,
       description,
       url: alternates.canonical,
-      siteName: appName(rawLocale),
+      siteName: siteName(),
       locale: localeOpenGraph(rawLocale),
       type: "website",
       images: [ARCHIVE_OG_IMAGE],
     },
     twitter: {
       card: "summary",
-      title: `${title} | ${appName(rawLocale)}`,
+      title: `${title} | ${siteName()}`,
       description,
       images: [ARCHIVE_OG_IMAGE.url],
     },

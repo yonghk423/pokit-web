@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedArticles } from "@/components/related-articles";
-import { appName } from "@/config/site";
+import { siteName } from "@/config/site";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
 import { getArticleMessages } from "@/i18n/get-article-messages";
@@ -72,7 +72,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const coverImage = coverImageUrl(article.coverImage, 1200, 630) ?? undefined;
   const { availableLocales, contentLocale, indexable, title, description } = articleSeo(article, rawLocale);
-  const alternates = localeAlternates(rawLocale, `/articles/${slug}`, {
+  const canonicalPath = article.appStory ? `/app/yourday-story/${slug}` : `/articles/${slug}`;
+  const alternates = localeAlternates(rawLocale, canonicalPath, {
     availableLocales,
   });
 
@@ -85,7 +86,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title,
       description,
       type: "article",
-      siteName: appName(rawLocale),
+      siteName: siteName(),
       url: alternates.canonical,
       publishedTime: article.publishedAt,
       modifiedTime: article._updatedAt,
@@ -140,6 +141,9 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) {
     notFound();
   }
+  if (article.appStory) {
+    permanentRedirect(withLocale(locale, `/app/yourday-story/${slug}`));
+  }
 
   const related = await getRelatedArticles(
     slug,
@@ -171,7 +175,7 @@ export default async function ArticlePage({ params }: Props) {
       <JsonLd
         data={breadcrumbJsonLd(
           [
-            { name: appName(locale), path: "/" },
+            { name: siteName(), path: "/" },
             { name: commonT("모든 이야기"), path: "/articles" },
             { name: article.title, path: `/articles/${slug}` },
           ],
@@ -223,16 +227,14 @@ export default async function ArticlePage({ params }: Props) {
           )}
         </header>
         {coverUrl && (
-          <figure className="mb-12 overflow-hidden rounded-[1.25rem] border border-ink/12 bg-[#f3f0e8]">
+          <figure data-article-cover className="relative mb-12 overflow-hidden rounded-[1.25rem] border border-ink/12 bg-[#f3f0e8]" style={{ aspectRatio: "16 / 9" }}>
             <Image
               src={coverUrl}
               alt={article.imageAlt}
-              width={1200}
-              height={675}
-              priority
-              quality={72}
-              className="block h-auto w-full"
-              sizes="(min-width: 1024px) 960px, 100vw"
+              fill
+              preload
+              className="object-cover"
+              sizes="(min-width: 1334px) calc(100vw - 48px), 96.4vw"
               {...imageBlurProps(article.coverImageLqip)}
             />
           </figure>

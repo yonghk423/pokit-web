@@ -10,6 +10,7 @@ export type ArticleCardData = {
   description?: string;
   kicker?: string;
   category: string;
+  appStory?: boolean;
   imageAlt: string;
   coverImage?: SanityImageSource | null;
   coverImageLqip?: string | null;
