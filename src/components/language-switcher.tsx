@@ -44,7 +44,7 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
             )}
             aria-current={locale === value ? "true" : undefined}
           >
-            <span className="min-[761px]:hidden">{value === "zh-TW" ? "繁中" : value.toUpperCase()}</span>
+            <span className="min-[761px]:hidden">{value.toUpperCase()}</span>
             <span className="hidden min-[761px]:inline">{labels[value]}</span>
           </a>
         </span>
