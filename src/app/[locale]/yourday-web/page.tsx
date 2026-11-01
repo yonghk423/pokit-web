@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-const journalFont = localFont({src: "../../../fonts/OwnglyphCorncorn.ttf", variable: "--font-yourday", display: "swap", weight: "400"});
+import { yourdayFont } from "@/lib/yourday-font";
 import { notFound } from "next/navigation";
 import { WebDiaryWorkspace } from "@/components/web-diary";
 import { webDiaryCopy, isWebLocale, webAppLocale } from "@/content/web-diary-copy";
@@ -15,5 +14,5 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 export default async function WebDiaryPage({params}: Props) {
   const {locale} = await params;
   if (!isWebLocale(locale)) notFound();
-  return <div className={journalFont.variable}><WebDiaryWorkspace locale={locale} copy={webDiaryCopy[locale]} /></div>;
+  return <div className={yourdayFont.variable}><WebDiaryWorkspace locale={locale} copy={webDiaryCopy[locale]} /></div>;
 }
