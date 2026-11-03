@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import { PortableText } from "next-sanity";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import books from "@/assets/app-demo/books.webp";
-import coffee from "@/assets/app-demo/coffee.webp";
-import walk from "@/assets/app-demo/walk.webp";
 import { appName, site } from "@/config/site";
 import { isLocale, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
@@ -17,8 +13,6 @@ import { formatPublishedLabel } from "@/lib/format-published";
 import { localeAlternates, localeOpenGraph, withLocale } from "@/lib/locale-path";
 import { getArticleBySlug } from "@/sanity/lib/article";
 import { YOURDAY_STORY_SLUGS } from "@/sanity/lib/yourday-stories";
-
-const illustrations = [walk, coffee, books];
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
 
@@ -60,10 +54,6 @@ export default async function YourdayStoryArticlePage({ params }: Props) {
   ]);
   if (!article?.appStory || !article.body?.length) notFound();
   const t = createTranslator(messages);
-  const imageIndex = Math.max(
-    0,
-    YOURDAY_STORY_SLUGS.indexOf(slug as (typeof YOURDAY_STORY_SLUGS)[number]),
-  );
   const { contentLocale } = articleSeo(article, locale);
   const jsonLd = {
     "@context": "https://schema.org",
@@ -115,21 +105,6 @@ export default async function YourdayStoryArticlePage({ params }: Props) {
             </p>
           ) : null}
         </header>
-
-        <figure
-          className="relative mb-12 overflow-hidden rounded-[1.25rem] border border-ink/12 bg-[#f3f0e8]"
-          style={{ aspectRatio: "16 / 9" }}
-        >
-          <Image
-            src={illustrations[imageIndex % illustrations.length]}
-            alt=""
-            fill
-            priority
-            className="object-cover"
-            sizes="(min-width: 1334px) calc(100vw - 48px), 96.4vw"
-            placeholder="blur"
-          />
-        </figure>
 
         <div className="prose max-w-[42rem] font-sans text-ink">
           <PortableText value={article.body} />

@@ -90,13 +90,13 @@ export default async function YourdayStoryIndex({ params }: Props) {
                       </p>
                     ) : null}
                   </div>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-[0.85rem] bg-[#ebe7df] max-archive:max-w-[16rem]">
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-[0.85rem] bg-[#ebe7df] max-archive:max-w-[12rem]">
                     <Image
                       src={illustrations[index % illustrations.length]}
                       alt=""
                       fill
                       sizes="(max-width: 560px) 100vw, 176px"
-                      className="object-cover transition-transform duration-500 group-hover/list:scale-[1.03]"
+                      className="object-contain transition-transform duration-500 group-hover/list:scale-[1.03]"
                     />
                   </div>
                 </Link>
