@@ -142,7 +142,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
         </header>
 
         {tools.length > 0 ? (
-          <ul className="m-0 list-none border-t border-ink/10 p-0">
+          <div className="grid grid-cols-4 gap-x-4 gap-y-8 max-nav:grid-cols-2 max-archive:grid-cols-1">
             {tools.map((item) => (
               <ToolArchiveCard
                 locale={locale}
@@ -151,7 +151,7 @@ export default async function NewArrivalsHubPage({ params }: Props) {
                 kicker={t("루틴 도구")}
               />
             ))}
-          </ul>
+          </div>
         ) : null}
 
         <p className="mt-14 mb-0 border-t border-ink/8 pt-8">

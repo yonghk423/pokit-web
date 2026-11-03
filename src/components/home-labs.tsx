@@ -1,5 +1,7 @@
 "use client";
 
+import { siteName } from "@/config/site";
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,7 +28,7 @@ type Props = {
 
 function toolImageUrl(item: NewArrivalsItem) {
   if (!isSanityConfigured() || !item.image) return null;
-  return coverImageUrl(item.image, 640, 480);
+  return coverImageUrl(item.image, 900, 1100);
 }
 
 function openToolPreview(
@@ -57,67 +59,8 @@ function openToolPreview(
   });
 }
 
-function ToolListRow({
-  item,
-  kicker,
-  meta,
-}: {
-  item: NewArrivalsItem;
-  kicker: string;
-  meta: string;
-}) {
-  const preview = useOptionalArticlePreview();
-  const imageUrl = toolImageUrl(item);
-
-  return (
-    <li className="border-b border-ink/10">
-      <button
-        type="button"
-        className="group/list grid w-full cursor-pointer grid-cols-[minmax(0,1fr)_minmax(7rem,11rem)] items-start gap-x-6 gap-y-3 border-0 bg-transparent py-7 text-left transition-colors max-archive:grid-cols-1"
-        aria-label={item.name}
-        onClick={(event) =>
-          openToolPreview(preview, item, event.currentTarget, imageUrl, kicker)
-        }
-      >
-        <div className="min-w-0">
-          <div className="flex items-start justify-between gap-3">
-            <p className="m-0 font-sans text-[0.72rem] leading-none tracking-[0.01em] text-muted">
-              {meta}
-            </p>
-            <span
-              className="mt-[-0.15rem] flex size-6 shrink-0 items-center justify-center font-sans text-[1.15rem] font-light leading-none text-ink/40 transition-colors group-hover/list:text-ink"
-              aria-hidden
-            >
-              +
-            </span>
-          </div>
-          <h3 className="m-0 mt-3 font-sans text-[clamp(1.15rem,2.2vw,1.45rem)] font-extrabold leading-[1.22] tracking-[-0.025em] text-ink">
-            {item.name}
-          </h3>
-          {item.summary ? (
-            <p className="mt-3 mb-0 max-w-[42rem] line-clamp-2 font-sans text-[0.88rem] leading-[1.6] text-muted">
-              {item.summary}
-            </p>
-          ) : null}
-        </div>
-        {imageUrl ? (
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[0.85rem] bg-[#ebe7df] max-archive:max-w-[16rem]">
-            <Image
-              src={imageUrl}
-              alt={item.imageAlt || item.name}
-              fill
-              sizes="(max-width: 560px) 100vw, 176px"
-              className="object-cover transition-transform duration-500 group-hover/list:scale-[1.03]"
-              {...imageBlurProps(item.imageLqip)}
-            />
-          </div>
-        ) : null}
-      </button>
-    </li>
-  );
-}
-
 export function HomeLabs({
+  locale,
   roundup,
   pastTools,
   line1,
@@ -128,12 +71,9 @@ export function HomeLabs({
   pastLabel,
   kicker,
 }: Props) {
-  const featured = roundup.items.slice(0, 2);
-  if (featured.length === 0) return null;
-
-  const pastOnly = pastTools.filter(
-    (item) => !featured.some((feature) => feature.slug === item.slug),
-  );
+  const preview = useOptionalArticlePreview();
+  const items = roundup.items.slice(0, 2);
+  if (items.length === 0) return null;
 
   return (
     <section
@@ -160,38 +100,118 @@ export function HomeLabs({
           </Link>
         </div>
 
-        <ul className="m-0 list-none border-t border-ink/10 p-0">
-          {featured.map((item) => (
-            <ToolListRow
-              key={item.slug}
-              item={item}
-              kicker={kicker}
-              meta={kicker}
-            />
-          ))}
-        </ul>
-
-        {pastOnly.length > 0 ? (
-          <div className="mt-10">
-            <p
-              className={cn(
-                "m-0 mb-2 font-sans text-[0.72rem] font-semibold tracking-[0.08em] text-muted uppercase",
-              )}
-            >
-              {pastLabel}
-            </p>
-            <ul className="m-0 list-none border-t border-ink/10 p-0" aria-label={pastLabel}>
-              {pastOnly.map((item) => (
-                <ToolListRow
-                  key={item.slug}
-                  item={item}
-                  kicker={kicker}
-                  meta={kicker}
-                />
-              ))}
-            </ul>
+        <div className="grid items-stretch gap-3 nav:grid-cols-[minmax(0,2fr)_minmax(16rem,0.86fr)]">
+          <div className="grid grid-cols-1 items-start gap-3 min-[640px]:grid-cols-2">
+          {items.map((item, index) => {
+            const imageUrl = toolImageUrl(item);
+            const tall = index % 3 === 1;
+            return (
+              <button
+                key={item.slug}
+                type="button"
+                className={cn(
+                  "group/lab block w-full cursor-pointer overflow-hidden rounded-[1.15rem] border-0 bg-[#ebe7df] p-0 text-left",
+                  tall ? "aspect-3/4" : "aspect-4/3",
+                )}
+                onClick={(event) =>
+                  openToolPreview(
+                    preview,
+                    item,
+                    event.currentTarget,
+                    imageUrl,
+                    kicker,
+                  )
+                }
+              >
+                <div className="relative h-full w-full">
+                  {imageUrl ? (
+                    <Image
+                      src={imageUrl}
+                      alt={item.imageAlt || item.name}
+                      fill
+                      sizes="(max-width: 900px) 100vw, 34vw"
+                      className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/lab:scale-[1.05]"
+                      {...imageBlurProps(item.imageLqip)}
+                    />
+                  ) : (
+                    <span className="grid h-full place-items-center font-sans text-[0.7rem] font-extrabold tracking-[0.12em] text-indigo uppercase">
+                      {siteName()}
+                    </span>
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/65 to-transparent px-4 pb-4 pt-16">
+                    <p className="m-0 font-sans text-[0.95rem] font-extrabold tracking-[-0.02em] text-white">
+                      {item.name}
+                    </p>
+                    {item.summary ? (
+                      <p className="m-0 mt-1 line-clamp-2 font-sans text-[0.75rem] leading-relaxed text-white/80">
+                        {item.summary}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
           </div>
-        ) : null}
+
+          {pastTools.length > 0 && (
+            <aside
+              className="scrollbar-hide overflow-y-auto rounded-[1.15rem] bg-[#ebe7df] px-3 py-4 nav:h-0 nav:min-h-full"
+              aria-label={pastLabel}
+            >
+              <p className="m-0 px-2 font-sans text-[0.72rem] font-extrabold tracking-[0.08em] text-indigo uppercase">
+                {pastLabel}
+              </p>
+              <ul className="m-0 mt-2 list-none p-0">
+                {pastTools.map((item) => {
+                  const imageUrl = toolImageUrl(item);
+                  return (
+                    <li key={item.slug}>
+                      <button
+                        type="button"
+                        className="flex w-full cursor-pointer items-center gap-3 rounded-xl border-0 bg-transparent px-2 py-2 text-left hover:bg-white/70"
+                        onClick={(event) =>
+                          openToolPreview(
+                            preview,
+                            item,
+                            event.currentTarget,
+                            imageUrl,
+                            kicker,
+                          )
+                        }
+                      >
+                        <span className="relative grid size-11 shrink-0 place-items-center overflow-hidden rounded-lg bg-white font-sans text-[0.65rem] font-extrabold tracking-[0.08em] text-indigo">
+                          {imageUrl ? (
+                            <Image
+                              src={imageUrl}
+                              alt=""
+                              fill
+                              sizes="44px"
+                              className="object-cover"
+                              {...imageBlurProps(item.imageLqip)}
+                            />
+                          ) : (
+                            item.name.slice(0, 1)
+                          )}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block truncate font-sans text-[0.95rem] font-extrabold tracking-[-0.02em] text-ink">
+                            {item.name}
+                          </span>
+                          {item.summary ? (
+                            <span className="mt-0.5 line-clamp-1 block font-sans text-[0.75rem] leading-snug text-muted">
+                              {item.summary}
+                            </span>
+                          ) : null}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </aside>
+          )}
+        </div>
       </div>
     </section>
   );
