@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { LanguageSwitcher, type LanguageLabels } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
-import { appName, siteName } from "@/config/site";
+import { siteName } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
@@ -28,7 +28,6 @@ export function SiteHeaderNav({
   locale,
   tagline,
   homeAria,
-  app,
   contact,
   languageLabels,
 }: Props) {
@@ -36,7 +35,7 @@ export function SiteHeaderNav({
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
   const appActive = pathMatches(pathname, appHref);
-  const brandName = appActive ? appName(locale) : siteName();
+  const brandName = appActive ? "Daylight" : siteName();
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink/8 bg-[color-mix(in_srgb,var(--color-paper)_88%,transparent)] backdrop-blur-md">
@@ -76,7 +75,7 @@ export function SiteHeaderNav({
             )}
             aria-current={appActive ? "page" : undefined}
           >
-            {app}
+            Daylight
           </Link>
           <SupportEmailLink className="hidden rounded-full px-3 py-1.5 font-sans text-[0.78rem] font-medium text-muted no-underline hover:text-ink md:inline-flex">
             {contact}

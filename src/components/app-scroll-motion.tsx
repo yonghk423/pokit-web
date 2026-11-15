@@ -1,60 +1,68 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
-/** Progressive enhancement: content stays visible if scripting or motion is unavailable. */
-export function AppScrollMotion() {
+type Props = {
+  children: ReactNode;
+  className: string;
+  lang: string;
+};
+
+export function AppScrollMotion({ children, className, lang }: Props) {
+  const rootRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
-    const root = document.getElementById("app-intro-page");
-    if (!root || !window.IntersectionObserver || !Element.prototype.animate) return;
+    const root = rootRef.current;
+    if (!root || !window.IntersectionObserver) return;
+    // Native timelines handle entry and reverse scrolling without hydration timing.
+    if (CSS.supports("animation-timeline", "view()")) return;
+
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const elements = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
-    let dispose = () => {};
+    let observer: IntersectionObserver | undefined;
 
     function setup() {
-      dispose();
+      observer?.disconnect();
+      for (const element of elements) {
+        element.removeAttribute("data-scroll-motion");
+        element.style.removeProperty("--reveal-delay");
+      }
       if (preference.matches) return;
-      const animations = new Set<Animation>();
-      const observer = new IntersectionObserver(entries => {
+
+      observer = new IntersectionObserver(entries => {
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
           const element = entry.target as HTMLElement;
-          observer.unobserve(element);
-          const type = element.dataset.reveal;
-          const image = type === "screen-left" || type === "screen-right";
-          const mobile = window.matchMedia("(max-width: 760px)").matches;
-          const x = image ? (type === "screen-left" ? -24 : 24) : 0;
-          const angle = image ? (type === "screen-left" ? -3 : 3) : 0;
-          const animation = element.animate([
-            { opacity: 0, transform: `translate3d(${x}px, ${image ? 90 : 36}px, 0) scale(${image ? .94 : 1}) rotate(${angle}deg)` },
-            { opacity: 1, transform: "translate3d(0, 0, 0) scale(1) rotate(0deg)" },
-          ], { duration: mobile ? 800 : image ? 1250 : 950, delay: Number(element.dataset.revealDelay ?? 0), easing: "cubic-bezier(.16, 1, .3, 1)", fill: "both" });
-          animations.add(animation);
-          animation.onfinish = () => { element.dataset.scrollMotion = "shown"; animations.delete(animation); animation.cancel(); };
+          if (entry.isIntersecting) {
+            element.dataset.scrollMotion = "shown";
+          } else if (entry.boundingClientRect.top > window.innerHeight) {
+            element.dataset.scrollMotion = "pending";
+          }
         }
-      }, { threshold: .08, rootMargin: "0px 0px -24px 0px" });
+      }, { threshold: 0.08, rootMargin: "0px 0px -50px 0px" });
 
       for (const element of elements) {
-        if (element.dataset.scrollMotion === "shown" || element.getBoundingClientRect().bottom < 0) continue;
-        element.dataset.scrollMotion = "pending";
+        element.style.setProperty("--reveal-delay", `${element.dataset.revealDelay ?? 0}ms`);
+        element.dataset.scrollMotion = element.getBoundingClientRect().bottom < 0 ? "shown" : "pending";
         observer.observe(element);
       }
-      const onFocus = (event: FocusEvent) => {
-        if (!(event.target instanceof Element)) return;
-        const element = event.target.closest<HTMLElement>('[data-scroll-motion="pending"]');
-        if (element) { element.dataset.scrollMotion = "shown"; observer.unobserve(element); }
-      };
-      root!.addEventListener("focusin", onFocus);
-      dispose = () => {
-        observer.disconnect();
-        animations.forEach(animation => animation.cancel());
-        elements.forEach(element => { delete element.dataset.scrollMotion; });
-        root!.removeEventListener("focusin", onFocus);
-      };
     }
+
+    const onFocus = (event: FocusEvent) => {
+      if (event.target instanceof Element) {
+        const element = event.target.closest<HTMLElement>("[data-reveal]");
+        if (element) element.dataset.scrollMotion = "shown";
+      }
+    };
     setup();
+    root.addEventListener("focusin", onFocus);
     preference.addEventListener("change", setup);
-    return () => { dispose(); preference.removeEventListener("change", setup); };
+    return () => {
+      observer?.disconnect();
+      root.removeEventListener("focusin", onFocus);
+      preference.removeEventListener("change", setup);
+      elements.forEach(element => element.removeAttribute("data-scroll-motion"));
+    };
   }, []);
-  return null;
+
+  return <main ref={rootRef} id="app-intro-page" lang={lang} className={className}>{children}</main>;
 }

@@ -5,15 +5,13 @@ import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react
 
 import { useOptionalArticlePreview } from "@/components/article-preview-context";
 import { DisplayHeading } from "@/components/display-heading";
-import { HomeHeroDownload } from "@/components/home-hero-download";
-import { siteName, appStoreUrl } from "@/config/site";
+import { siteName } from "@/config/site";
 import { articlePath } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
 import { splitDisplayTitle } from "@/lib/display-title";
 import type { Locale } from "@/i18n/config";
 import { localeToIntl } from "@/i18n/config";
 import type { CategoryLabels } from "@/i18n/category-labels";
-import { createTranslator } from "@/i18n/create-translator";
 import type { HomeVideoMessages } from "@/i18n/get-home-video-messages";
 import type { AppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { isSanityConfigured } from "@/sanity/env";
@@ -144,20 +142,14 @@ export function HomeHero({
   feedTitle,
   feedPrevLabel,
   feedNextLabel,
-  videoMessages,
   heroArticles,
   feedArticles,
   categoryLabels,
-  downloadMessages,
 }: Props) {
-  const t = createTranslator(videoMessages);
-  const downloadT = createTranslator(downloadMessages);
   const preview = useOptionalArticlePreview();
   const feedScrollRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(true);
   const hero = heroArticles.find((article) => article.coverImage) ?? heroArticles[0];
   const heroUrl =
     hero && isSanityConfigured()
@@ -198,16 +190,6 @@ export function HomeHero({
     });
   }, []);
 
-  const toggleVideo = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      void video.play();
-      return;
-    }
-    video.pause();
-  }, []);
-
   return (
     <section className="relative pt-8 max-nav:pt-6">
       <div className={monoContainer}>
@@ -220,51 +202,7 @@ export function HomeHero({
             as="h1"
             className="min-w-0 max-w-[52rem] flex-1 text-[clamp(2rem,5vw,3.75rem)]"
           />
-          <div className="flex shrink-0 items-end gap-4 max-nav:w-full max-nav:flex-col max-nav:items-stretch">
-            <div className="group relative mb-0.5 max-nav:mb-0">
-              <a
-                href={appStoreUrl(locale)}
-                aria-label={downloadT("App Store에서 다운로드")}
-                className="block cursor-pointer"
-              >
-                <video
-                  ref={videoRef}
-                  className="pointer-events-none h-auto w-[16rem] max-w-[min(22rem,34vw)] rounded-[0.7rem] object-cover max-nav:h-auto max-nav:w-full max-nav:max-w-none"
-                  src="/your-day-header-us.mp4"
-                  poster="/your-day-header-us.webp"
-                  preload="metadata"
-                  width={1920}
-                  height={824}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  aria-label={t("POKIT 앱 소개 영상")}
-                  onPlay={() => setVideoPlaying(true)}
-                  onPause={() => setVideoPlaying(false)}
-                />
-              </a>
-              <button
-                type="button"
-                onClick={toggleVideo}
-                aria-label={videoPlaying ? t("영상 정지") : t("영상 재생")}
-                className="pointer-events-none absolute bottom-2 left-2 z-10 inline-flex size-8 cursor-pointer items-center justify-center rounded-full border-0 bg-ink/75 p-0 text-white opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 focus-visible:pointer-events-auto focus-visible:opacity-100 max-nav:pointer-events-auto max-nav:opacity-100"
-              >
-                {videoPlaying ? (
-                  <span className="flex gap-[3px]" aria-hidden>
-                    <span className="block h-3 w-[3px] rounded-sm bg-white" />
-                    <span className="block h-3 w-[3px] rounded-sm bg-white" />
-                  </span>
-                ) : (
-                  <span
-                    aria-hidden
-                    className="ml-0.5 block h-0 w-0 border-y-[6px] border-l-[9px] border-y-transparent border-l-white"
-                  />
-                )}
-              </button>
-            </div>
-            <HomeHeroDownload locale={locale} messages={downloadMessages} />
-          </div>
+          <a className="rounded-full bg-[#eeebe5] px-6 py-3" href={`/${locale}/app`}>Daylight ↗</a>
         </div>
 
         {/* Oimachi `.hero_bottom`: height calc(100svh - 18rem), flex row, gap 0.4rem */}
