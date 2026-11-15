@@ -1,6 +1,7 @@
 import Image from "next/image";
 import {notFound} from "next/navigation";
 import {AppScrollMotion} from "@/components/app-scroll-motion";
+import blur from "@/content/daylight-blur.json";
 import copy from "@/content/daylight.json";
 import {isLocale,locales} from "@/i18n/config";
 import {localeAlternates} from "@/lib/locale-path";
@@ -35,11 +36,13 @@ export default async function Page({params}:Props){
       height={1646}
       sizes="100vw"
       className="block h-auto w-full"
+      placeholder="blur"
+      blurDataURL={blur[`header-${locale}`]}
       preload
     />
     <nav aria-label="Daylight"><strong>Daylight</strong>{labels.map((label,i)=><a key={label} href={`#chapter-${i}`}>{label}</a>)}</nav>
     {groups.map((indices,i)=><section key={i} id={`chapter-${i}`}><header data-reveal="text"><small>DAYLIGHT　 /　0{i+1}</small>{i===0?<h1>{copy[lang][0][0]}</h1>:<h2>{copy[lang][indices[0]][0]}</h2>}<p>{copy[lang][indices[0]][1]}</p></header>
-    <div className={styles.screens}>{indices.map((n,j)=><figure key={n} data-reveal={j%2?"screen-right":"screen-left"} data-reveal-delay={j*90}>{n === 4 ? (
-      <div className={styles.filmPreview} role="img" aria-label={ko ? "같은 인물 사진에 여섯 가지 필름을 적용한 모습" : "Six film looks applied to the same portrait"} />
-    ) : <Image src={`/daylight/${lang}-${n+1}.webp`} alt={copy[lang][n][0].replace("\n"," ")} width={600} height={1286} sizes="(max-width:700px) 70vw, 280px"/>}{indices.length > 1 && <figcaption><b>{copy[lang][n][0].replace("\n"," ")}</b><p>{copy[lang][n][1]}</p></figcaption>}</figure>)}</div></section>)}</AppScrollMotion>
+    <div className={styles.screens}>{indices.map(n=><figure key={n} data-reveal>{n === 4 ? (
+      <div className={styles.filmPreview}><Image src="/daylight/film-sequence.webp" width={3360} height={1218} unoptimized loading="lazy" placeholder="blur" blurDataURL={blur["film-sequence"]} alt={ko ? "같은 인물 사진에 여섯 가지 필름을 적용한 모습" : "Six film looks applied to the same portrait"} /></div>
+    ) : <Image src={`/daylight/${lang}-${n+1}.webp`} alt={copy[lang][n][0].replace("\n"," ")} width={600} height={1286} placeholder="blur" blurDataURL={blur[`${lang}-${n+1}` as keyof typeof blur]} sizes="(max-width: 426px) 68vw, (max-width: 700px) 290px, (max-width: 1076px) 26vw, 280px"/>}{indices.length > 1 && <figcaption><b>{copy[lang][n][0].replace("\n"," ")}</b><p>{copy[lang][n][1]}</p></figcaption>}</figure>)}</div></section>)}</AppScrollMotion>
 }

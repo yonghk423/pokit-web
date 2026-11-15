@@ -14,9 +14,6 @@ export function AppScrollMotion({ children, className, lang }: Props) {
   useEffect(() => {
     const root = rootRef.current;
     if (!root || !window.IntersectionObserver) return;
-    // Native timelines handle entry and reverse scrolling without hydration timing.
-    if (CSS.supports("animation-timeline", "view()")) return;
-
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     const elements = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
     let observer: IntersectionObserver | undefined;
@@ -25,7 +22,6 @@ export function AppScrollMotion({ children, className, lang }: Props) {
       observer?.disconnect();
       for (const element of elements) {
         element.removeAttribute("data-scroll-motion");
-        element.style.removeProperty("--reveal-delay");
       }
       if (preference.matches) return;
 
@@ -34,15 +30,14 @@ export function AppScrollMotion({ children, className, lang }: Props) {
           const element = entry.target as HTMLElement;
           if (entry.isIntersecting) {
             element.dataset.scrollMotion = "shown";
-          } else if (entry.boundingClientRect.top > window.innerHeight) {
-            element.dataset.scrollMotion = "pending";
+            observer?.unobserve(element);
           }
         }
       }, { threshold: 0.08, rootMargin: "0px 0px -50px 0px" });
 
       for (const element of elements) {
-        element.style.setProperty("--reveal-delay", `${element.dataset.revealDelay ?? 0}ms`);
-        element.dataset.scrollMotion = element.getBoundingClientRect().bottom < 0 ? "shown" : "pending";
+        if (element.getBoundingClientRect().top < window.innerHeight) continue;
+        element.dataset.scrollMotion = "pending";
         observer.observe(element);
       }
     }

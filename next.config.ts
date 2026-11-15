@@ -8,6 +8,7 @@ if (process.env.VERCEL && !process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
 }
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["172.29.75.150"],
   // Hide the floating Next.js "N" badge in local development.
   devIndicators: false,
   turbopack: {
