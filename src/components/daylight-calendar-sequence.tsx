@@ -53,6 +53,7 @@ export function DaylightCalendarSequence({ alt, locale }: { alt: string; locale:
               fill
               sizes="(max-width: 760px) 230px, 360px"
               quality={70}
+              placeholder="blur"
               className={`${styles.frame} ${index === activeFrame ? styles.active : ""}`}
               aria-hidden="true"
             />

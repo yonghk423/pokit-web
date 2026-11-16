@@ -21,7 +21,7 @@ export function DaylightFilmSequence({ alt, labels }: { alt: string; labels: rea
           <div className={styles.sample} role="listitem" key={image.src}>
             <div className={screenStyles.screenFrame}>
               <div className={styles.sampleImage}>
-                <Image src={image} alt="" sizes="(max-width: 760px) 25vw, 190px" quality={72} />
+                <Image src={image} alt="" sizes="(max-width: 760px) 25vw, 190px" quality={72} placeholder="blur" />
               </div>
             </div>
             <p className={styles.label}>{labels[index]}</p>
