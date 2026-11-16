@@ -1,0 +1,30 @@
+.calendarSequence {
+  grid-column: 1 / -1;
+  width: min(100%, 360px);
+  justify-self: center;
+}
+
+.sequence {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1206 / 2622;
+  overflow: hidden;
+  background: #f5f3ef;
+}
+
+.frame {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 420ms ease-in-out;
+  will-change: opacity;
+}
+
+.active { opacity: 1; }
+
+@media (max-width: 760px) {
+  .calendarSequence { width: min(100%, 230px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame { transition: none; }
+}

@@ -1,0 +1,35 @@
+.samples {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: min(100%, 660px);
+  margin: auto;
+}
+
+.sample { min-width: 0; }
+
+.sampleImage {
+  position: relative;
+  width: 100%;
+  background: #f5f3ef;
+}
+
+.samples .sampleImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.label {
+  margin: 12px 2px 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #68686c;
+}
+
+@media (max-width: 760px) {
+  .samples { gap: 9px; }
+  .label { margin-top: 9px; font-size: 10px; }
+}

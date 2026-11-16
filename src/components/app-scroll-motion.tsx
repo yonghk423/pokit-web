@@ -22,6 +22,7 @@ export function AppScrollMotion({ children, className, lang }: Props) {
       observer?.disconnect();
       for (const element of elements) {
         element.removeAttribute("data-scroll-motion");
+        element.style.removeProperty("transition-delay");
       }
       if (preference.matches) return;
 
@@ -30,13 +31,14 @@ export function AppScrollMotion({ children, className, lang }: Props) {
           const element = entry.target as HTMLElement;
           if (entry.isIntersecting) {
             element.dataset.scrollMotion = "shown";
-            observer?.unobserve(element);
+          } else {
+            element.dataset.scrollMotion = "pending";
           }
         }
-      }, { threshold: 0.08, rootMargin: "0px 0px -50px 0px" });
+      }, { threshold: 0.12, rootMargin: "0px 0px -70px 0px" });
 
       for (const element of elements) {
-        if (element.getBoundingClientRect().top < window.innerHeight) continue;
+        element.style.transitionDelay = `${Number(element.dataset.revealDelay || 0)}ms`;
         element.dataset.scrollMotion = "pending";
         observer.observe(element);
       }

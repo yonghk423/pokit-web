@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 import { LanguageSwitcher, type LanguageLabels } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
@@ -32,19 +33,43 @@ export function SiteHeaderNav({
   languageLabels,
 }: Props) {
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
   const appActive = pathMatches(pathname, appHref);
-  const brandName = appActive ? "Daylight" : siteName();
+  const brandName = siteName();
+
+  useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+
+    const syncHeight = () => {
+      document.documentElement.style.setProperty(
+        "--site-header-height",
+        `${header.offsetHeight}px`,
+      );
+    };
+
+    syncHeight();
+    const observer = new ResizeObserver(syncHeight);
+    observer.observe(header);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--site-header-height");
+    };
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/8 bg-[color-mix(in_srgb,var(--color-paper)_88%,transparent)] backdrop-blur-md">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-40 border-b border-ink/8 bg-[color-mix(in_srgb,var(--color-paper)_88%,transparent)] backdrop-blur-md"
+    >
       <div className={cn(monoContainer, "flex flex-nowrap items-center justify-between gap-3 py-3 max-[760px]:gap-2 max-[760px]:py-2")}>
         <div className="flex min-w-0 items-center gap-2 max-[760px]:gap-1.5">
           <Link
             href={homeHref}
             className="flex shrink-0 items-center gap-2.5 no-underline max-[760px]:gap-2"
-            aria-label={appActive ? (locale === "ko" ? `${brandName} 홈` : locale === "ja" ? `${brandName} ホーム` : locale === "zh-TW" ? `${brandName}首頁` : `${brandName} home`) : homeAria}
+            aria-label={homeAria}
           >
             <Image
               src="/icon.png"
@@ -58,9 +83,18 @@ export function SiteHeaderNav({
               {brandName}
             </span>
           </Link>
-          <p className="m-0 hidden truncate font-sans text-[0.72rem] text-muted nav:block">
-            {tagline}
-          </p>
+          {appActive ? (
+            <p className="m-0 flex min-w-0 items-center gap-2 font-sans text-[0.72rem] text-muted">
+              <span aria-hidden="true" className="text-ink/25">
+                /
+              </span>
+              <span className="truncate font-medium text-ink/70">Daylight</span>
+            </p>
+          ) : (
+            <p className="m-0 hidden truncate font-sans text-[0.72rem] text-muted nav:block">
+              {tagline}
+            </p>
+          )}
         </div>
 
         <div className="flex shrink-0 flex-nowrap items-center gap-1.5 max-[760px]:gap-1">

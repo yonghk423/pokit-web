@@ -33,12 +33,12 @@ type Props = {
   resourceLinks?: { href: string; label: string }[];
 };
 
-function defaultEditorialVisual(alt: string): DownloadVisual {
+function defaultEditorialVisual(locale: Locale, alt: string): DownloadVisual {
   return {
-    src: "/start-visual.webp",
+    src: `/daylight/header-${locale}.webp`,
     alt,
-    width: 1024,
-    height: 682,
+    width: 3840,
+    height: 1646,
   };
 }
 
@@ -60,7 +60,7 @@ export function AppDownload({
       ? null
       : (visual ??
         (editorial
-          ? defaultEditorialVisual(t("카메라를 들고 도시를 찍는 사람"))
+          ? defaultEditorialVisual(locale, t("카메라를 들고 도시를 찍는 사람"))
           : null));
 
   return (

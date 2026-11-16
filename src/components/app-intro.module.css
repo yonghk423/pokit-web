@@ -101,12 +101,18 @@
 @media (prefers-reduced-motion: reduce) { .page *, .page *::before, .page *::after { transition: none !important; scroll-behavior: auto !important; } }
 
 /* Fan artwork sits behind the introduction, leaving a calm reading area. */
-.heroHeading { position: relative; isolation: isolate; margin: -64px -28px 0; padding: 64px 28px 38px; overflow: hidden; }
+.heroHeading { position: relative; isolation: isolate; width: 100vw; margin: -64px 0 0 calc(50% - 50vw); padding: 0; overflow: hidden; }
+.heroBanner { display: block; width: 100%; height: auto; }
+.calendarShowcase { width: min(100%, 540px); margin-inline: auto; grid-template-columns: minmax(0, 1fr); }
+.filmShowcase { grid-column: 1 / -1; width: min(100%, 640px); justify-self: center; }
+.singleScreenShowcase { width: min(100%, 260px); margin-inline: auto; grid-template-columns: minmax(0, 1fr); }
 .heroBackdrop { position: absolute; inset: 0; z-index: -2; pointer-events: none; opacity: .85; mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent); }
 .heroBackdrop img { object-fit: cover; object-position: center 57%; }
 .heroHeading::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 50% 40%, #f7f6f4d6 0%, #f7f6f496 38%, #f7f6f41a 78%); }
 .heroHeadingContent { position: relative; }
-.page [data-scroll-motion="pending"] { opacity: 0; }
+.page [data-reveal] { transition: opacity .85s cubic-bezier(.2, .7, .2, 1), transform .85s cubic-bezier(.2, .7, .2, 1); }
+.page [data-scroll-motion="pending"] { opacity: 0; transform: translateY(24px); }
+.page [data-scroll-motion="shown"] { opacity: 1; transform: translateY(0); }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .screenFrame { transition: transform .55s cubic-bezier(.16, 1, .3, 1), box-shadow .55s; }
   .screen:hover .screenFrame { transform: translateY(-10px); box-shadow: 0 30px 55px -25px #15151855; }
@@ -114,8 +120,62 @@
   .galleryCard:hover { transform: translateY(-8px); }
 }
 @media (max-width: 760px) {
-  .heroHeading { margin: -40px -20px 0; padding: 40px 20px 30px; }
+  .heroHeading { margin-top: -40px; }
+  .calendarShowcase { width: min(100%, 440px); }
+  .singleScreenShowcase { width: min(100%, 140px); }
+  .filmShowcase { width: min(100%, 480px); }
   .heroBackdrop { inset: 0 -30%; opacity: .7; }
   .heroHeading::after { background: radial-gradient(ellipse at 50% 40%, #f7f6f4db, #f7f6f48c 55%, #f7f6f426); }
 }
 @media print, (prefers-reduced-motion: reduce) { .page [data-scroll-motion] { opacity: 1 !important; transform: none !important; } }
+
+/* Fit each standalone phone and its section spacing within the viewport budget. */
+.singleFeature { padding-block: 40px; }
+.singleFeature .calendarShowcase,
+.singleFeature .singleScreenShowcase,
+.singleFeature .screenPair > figure {
+  width: min(100%, 280px, calc((90svh - 80px) * 1206 / 2622));
+  margin-inline: auto;
+  justify-self: center;
+}
+.singleFeature .screenFrame img { display: block; width: 100%; height: auto; }
+.page [data-scroll-motion="pending"][data-reveal="screen-left"] { transform: translate(-44px, 28px) scale(.96); }
+.page [data-scroll-motion="pending"][data-reveal="screen-right"] { transform: translate(44px, 28px) scale(.96); }
+.page [data-scroll-motion="pending"][data-reveal="text"] { transform: translateY(36px); }
+@media (max-width: 760px) {
+  .singleFeature { padding-block: 28px; }
+  .singleFeature .featureInner { gap: 24px; }
+  .singleFeature .calendarShowcase,
+  .singleFeature .singleScreenShowcase,
+  .singleFeature .screenPair > figure {
+    width: min(100%, 220px, calc(max(180px, 90svh - 340px) * 1206 / 2622));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page [data-scroll-motion] { transform: none !important; }
+}
+
+.feature:not(.singleFeature) .screenPair:has(> figure:nth-child(2)) {
+  width: min(100%, calc((90svh - 260px) * 1206 / 2622 * 2 + 24px));
+  justify-self: center;
+}
+@media (max-width: 760px) {
+  .feature:not(.singleFeature) .screenPair:has(> figure:nth-child(2)) {
+    width: min(100%, calc(max(180px, 90svh - 420px) * 1206 / 2622 * 2 + 16px));
+  }
+}
+
+/* Three item collections share one baseline and the same phone size. */
+.feature.widgets .screenPair:has(> figure:nth-child(3)) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(100%, calc((90svh - 160px) * 1206 / 2622 * 3 + 32px));
+  gap: 16px;
+}
+.feature.widgets .screen { margin-top: 0; }
+@media (max-width: 760px) {
+  .feature.widgets .screenPair:has(> figure:nth-child(3)) {
+    width: min(100%, calc(max(180px, 90svh - 360px) * 1206 / 2622 * 3 + 20px));
+    gap: 10px;
+  }
+  .feature.widgets .screenFrame { border-radius: 12px; }
+}
