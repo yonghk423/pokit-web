@@ -12,11 +12,14 @@ declare global {
   }
 }
 
-export function pageview(url: string) {
-  if (!GA_MEASUREMENT_ID || typeof window.gtag !== "function") return;
+export function pageview(url: string, referrer: string) {
+  if (!GA_MEASUREMENT_ID || typeof window === "undefined" || typeof window.gtag !== "function") return;
 
-  window.gtag("config", GA_MEASUREMENT_ID, {
-    page_path: url,
+  window.gtag("event", "page_view", {
+    send_to: GA_MEASUREMENT_ID,
+    page_location: url,
+    page_title: document.title,
+    page_referrer: referrer,
   });
 }
 

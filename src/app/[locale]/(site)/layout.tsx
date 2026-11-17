@@ -1,7 +1,6 @@
 import { SiteFooter } from "@/components/site-footer";
 import { notFound } from "next/navigation";
 
-import { GoogleAnalytics } from "@/components/google-analytics";
 import { PokitAppDocumentFlag } from "@/components/pokit-app-chrome";
 import { SiteHeader } from "@/components/site-header";
 import { isLocale, type Locale } from "@/i18n/config";
@@ -25,7 +24,6 @@ export default async function SiteLayout({ children, params }: Props) {
   return (
     <>
       <PokitAppDocumentFlag />
-      <GoogleAnalytics />
       <SiteHeader locale={locale} messages={messages} />
       {children}
       <SiteFooter locale={locale} messages={messages} />

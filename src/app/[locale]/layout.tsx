@@ -7,6 +7,7 @@ import { isLocale, locales } from "@/i18n/config";
 import { fontVariables } from "@/lib/fonts";
 import { POKIT_APP_HEADER } from "@/lib/pokit-app-header";
 import { localeToHtmlLang } from "@/lib/locale-path";
+import { GoogleAnalytics } from "@/components/google-analytics";
 
 type Props = {
   children: React.ReactNode;
@@ -42,7 +43,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${fontVariables} scrollbar-hide`}
       {...(pokitApp ? { "data-pokit-app": "1" } : {})}
     >
-      <body>{children}</body>
+      <body>
+        <GoogleAnalytics />
+        {children}
+      </body>
     </html>
   );
 }
