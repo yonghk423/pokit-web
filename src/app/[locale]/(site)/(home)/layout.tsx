@@ -10,7 +10,10 @@ import { getCommonMessages } from "@/i18n/get-common-messages";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
 import { getHomeMessages } from "@/i18n/get-home-messages";
 
-type Props = { params: Promise<{ locale: string }> };
+type Props = {
+  params: Promise<{ locale: string }>;
+  modal: React.ReactNode;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: rawLocale } = await params;
