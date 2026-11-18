@@ -49,7 +49,7 @@ function parsePage(raw?: string) {
 
 const ARCHIVE_OG_IMAGE = {
   url: "/pokit-logo.png",
-  alt: "Your Day",
+  alt: "Daylight",
   width: 512,
   height: 512,
 } as const;

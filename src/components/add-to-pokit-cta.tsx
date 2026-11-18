@@ -58,7 +58,7 @@ export function AddToPokitCta({ article, locale, messages, className }: Props) {
         "mt-5 max-w-[42rem] max-nav:mx-1 max-nav:mb-[max(1.75rem,env(safe-area-inset-bottom))]",
         className,
       )}
-      aria-label={t("POKIT 앱에 루틴 담기")}
+      aria-label={t("Daylight 앱에 루틴 담기")}
     >
       {inApp && (
         <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3.5 py-3.5">
@@ -76,7 +76,7 @@ export function AddToPokitCta({ article, locale, messages, className }: Props) {
               className="inline-flex min-h-8 items-center justify-center gap-1.5 rounded-full bg-ink px-3.5 font-sans text-[0.72rem] font-semibold tracking-[-0.01em] text-white transition-colors hover:bg-indigo"
             >
               <span className="size-1.5 rounded-full bg-brand" aria-hidden />
-              {t("POKIT에 담기")}
+              {t("Daylight에 담기")}
             </button>
             {state === "sent" ? (
               <p

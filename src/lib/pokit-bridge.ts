@@ -47,7 +47,7 @@ function isMobileDevice() {
   return typeof navigator !== "undefined" && /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 }
 
-/** POKIT 앱 WebView 안인지 (브릿지 유무와 별개) */
+/** Daylight 앱 WebView 안인지 (브릿지 유무와 별개) */
 export function isPokitAppContext() {
   if (typeof window === "undefined") return false;
 

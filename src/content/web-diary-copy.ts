@@ -51,7 +51,7 @@ export type WebDiaryCopy = {
 export const webDiaryCopy: Record<WebLocale, WebDiaryCopy> = {
   "ko": {
     "web": "웹에서 사용하기",
-    "brandTagline": "일상 루틴과 웰니스를 위한 포켓 가이드 · Your Day와 함께",
+    "brandTagline": "일상 루틴과 웰니스를 위한 포켓 가이드 · Daylight와 함께",
     "prototype": "웹 초안",
     "title": "오늘의 기록을, 한 장면씩.",
     "description": "장면을 고르고 이야기를 남기는 나만의 웹 일기입니다.",
@@ -93,7 +93,7 @@ export const webDiaryCopy: Record<WebLocale, WebDiaryCopy> = {
   },
   "en": {
     "web": "Use on the web",
-    "brandTagline": "A pocket guide to daily routines and wellness, with Your Day",
+    "brandTagline": "A pocket guide to daily routines and wellness, with Daylight",
     "prototype": "Web preview",
     "title": "Your story, one scene at a time.",
     "description": "A little space to keep your days in scenes and words.",
@@ -135,7 +135,7 @@ export const webDiaryCopy: Record<WebLocale, WebDiaryCopy> = {
   },
   "ja": {
     "web": "ウェブで使う",
-    "brandTagline": "日々のルーティンとウェルネスのポケットガイド。Your Dayとともに。",
+    "brandTagline": "日々のルーティンとウェルネスのポケットガイド。Daylightとともに。",
     "prototype": "ウェブ版プレビュー",
     "title": "今日の記録を、ひとこまずつ。",
     "description": "シーンと言葉で残す、自分だけのウェブ日記です。",
@@ -177,7 +177,7 @@ export const webDiaryCopy: Record<WebLocale, WebDiaryCopy> = {
   },
   "zh-TW": {
   "web": "在網頁上使用",
-  "brandTagline": "日常習慣與身心健康的口袋指南，與 Your Day 一起",
+  "brandTagline": "日常習慣與身心健康的口袋指南，與 Daylight 一起",
   "prototype": "網頁版預覽",
   "title": "把今天，一幕一幕記下來。",
   "description": "用場景與文字，留下屬於自己的日記。",

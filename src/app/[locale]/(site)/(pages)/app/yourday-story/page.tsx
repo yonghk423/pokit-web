@@ -110,7 +110,7 @@ export default async function YourdayStoryIndex({ params }: Props) {
         )}
 
         <p className="mt-10 mb-0 max-w-[42rem] font-sans text-[0.9rem] leading-relaxed text-muted">
-          {t("오늘의 주인공에서 일기와 메모를 남기는 방법을 함께 살펴봐요.")}
+          {t("Daylight에서 일기와 메모를 남기는 방법을 함께 살펴봐요.")}
         </p>
 
         <p className="mt-14 mb-0 border-t border-ink/8 pt-8">

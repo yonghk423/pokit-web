@@ -4,7 +4,7 @@ import type { SupportMessages } from "@/i18n/get-support-messages";
 /** Section IDs, order and block structure are shared by every locale. */
 export function createSupportCopy(t: (key: keyof SupportMessages) => string): SupportCopy {
   return {
-    title: t("POKIT 지원 정보"),
+    title: t("Daylight 지원 정보"),
     description: t("장면을 골라 일기를 쓰고, 일기 안에서 메모와 오늘 카드를 사용하는 방법을 안내합니다."),
     kicker: t("Support"),
     lead: [
@@ -42,11 +42,11 @@ export function createSupportCopy(t: (key: keyof SupportMessages) => string): Su
         id: "story",
         title: t("스토리"),
         blocks: [
-          { type: "p", text: t("pokitstory의 글을 앱에서 읽습니다. 마음에 남는 글은 오늘의 주인공에 저장합니다.") },
+          { type: "p", text: t("pokitstory의 글을 앱에서 읽습니다. 마음에 남는 글은 Daylight에 저장합니다.") },
           {
             type: "list",
             items: [
-              t("글을 읽다가 저장하면, 오늘의 주인공 장면에 남습니다."),
+              t("글을 읽다가 저장하면, Daylight 장면에 남습니다."),
               t("글을 읽으려면 인터넷이 필요합니다. 카드와 장면 기록은 기기에 남습니다."),
             ],
           },
@@ -89,7 +89,7 @@ export function createSupportCopy(t: (key: keyof SupportMessages) => string): Su
           {
             type: "faq",
             q: t("Android에서도 쓸 수 있나요?"),
-            a: t("현재 POKIT은 iOS 앱입니다."),
+            a: t("현재 Daylight는 iOS 앱입니다."),
           },
         ],
       },

@@ -164,7 +164,7 @@ export default async function Home({ params }: Props) {
 
   return (
     <>
-      <JsonLd data={websiteJsonLd(commonT("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."), locale)} />
+      <JsonLd data={websiteJsonLd(commonT("POKIT은 일상·루틴·웰니스 이야기를 전하는 웹사이트입니다. 사진과 글로 하루를 기록하는 앱 Daylight도 만나보세요."), locale)} />
       <main>
           {(weeklyHero.length > 0 || feedArticles.length > 0) && (
             <div data-hide-in-pokit-app>

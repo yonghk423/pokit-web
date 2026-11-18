@@ -2,6 +2,8 @@ import Image, { type StaticImageData } from "next/image";
 import { notFound } from "next/navigation";
 import { AppScrollMotion } from "@/components/app-scroll-motion";
 import { AppStoreBadge } from "@/components/app-store-badge";
+import { JsonLd } from "@/components/json-ld";
+import { appJsonLd } from "@/lib/json-ld";
 import { DaylightFilmSequence } from "@/components/daylight-film-sequence";
 import { DaylightCalendarSequence } from "@/components/daylight-calendar-sequence";
 import blur from "@/content/daylight-blur.json";
@@ -10,8 +12,7 @@ import { localeAlternates, withLocale } from "@/lib/locale-path";
 import diaryColors from "@/assets/daylight/screens/diary-colors.png";
 import diaryIcons from "@/assets/daylight/screens/diary-icons.png";
 import calendarList from "@/assets/daylight/calendar-list.png";
-import diaryStory from "@/assets/daylight/screens/story/diary-story.png";
-import diaryPhotoEn from "@/assets/daylight/intro-en/photo-diary.webp";
+import diaryPhotoReal from "@/assets/daylight/screens/story/diary-photo-real.png";
 import diaryClipsEn from "@/assets/daylight/intro-en/diary-clips.webp";
 import diaryBinsEn from "@/assets/daylight/intro-en/diary-bins.webp";
 import diaryCamerasEn from "@/assets/daylight/intro-en/diary-cameras.webp";
@@ -111,16 +112,7 @@ const screenshots: readonly (readonly StaticImageData[])[] = [
   [calendarList],
   [],
   [diaryClipsEn, diaryBinsEn, diaryCamerasEn],
-  [diaryStory],
-  [],
-] as const;
-
-const englishScreenshots: readonly (readonly StaticImageData[])[] = [
-  [diaryColors, diaryIcons],
-  [calendarList],
-  [],
-  [diaryClipsEn, diaryBinsEn, diaryCamerasEn],
-  [diaryPhotoEn],
+  [diaryPhotoReal],
   [],
 ] as const;
 
@@ -128,7 +120,6 @@ export default async function AppIntroPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const text = copy[locale];
-  const pageScreenshots = locale === "en" ? englishScreenshots : screenshots;
   const headerKey = `header-${locale}` as keyof typeof blur;
   const headerImage = locale === "ko"
     ? "/daylight/header-ko.webp"
@@ -136,7 +127,8 @@ export default async function AppIntroPage({ params }: Props) {
 
   return (
     <AppScrollMotion className={styles.page} lang={locale}>
-      <h1 className="sr-only">{text.title} {text.description}</h1>
+      <JsonLd data={appJsonLd(text.description, locale)} />
+      <h1 className="sr-only">Daylight · {text.title} {text.description}</h1>
       <section className={styles.hero} aria-label="Daylight">
         <div className={styles.heroHeading}>
           <Image
@@ -170,7 +162,7 @@ export default async function AppIntroPage({ params }: Props) {
               <p data-reveal="text" data-reveal-delay="160" className={styles.description}>{feature[2]}</p>
             </div>
             <div className={`${styles.screenPair} ${index === 1 ? styles.calendarShowcase : ""} ${index === 4 ? styles.singleScreenShowcase : ""}`}>
-              {index === 2 ? <DaylightFilmSequence alt={text.alt[3]} labels={text.filmLabels} /> : index === 5 ? <DaylightCalendarSequence alt={text.alt[8]} locale={locale} /> : pageScreenshots[index].map((screen, position) => (
+              {index === 2 ? <DaylightFilmSequence alt={text.alt[3]} labels={text.filmLabels} /> : index === 5 ? <DaylightCalendarSequence alt={text.alt[8]} locale={locale} /> : screenshots[index].map((screen, position) => (
                 <figure key={screen.src} data-reveal={position % 2 ? "screen-right" : "screen-left"} data-reveal-delay={position * 160} className={styles.screen}>
                   <div className={styles.screenFrame}><Image src={screen} alt={index === 3 ? text.itemAlts[position] : text.alt[index === 0 ? position : index === 1 ? 2 : index === 3 ? position + 5 : 7]} sizes={index === 1 || index === 4 ? "(max-width: 760px) 230px, 540px" : "(max-width: 760px) 44vw, (max-width: 1200px) 25vw, 280px"} placeholder="blur" /></div>
                 </figure>

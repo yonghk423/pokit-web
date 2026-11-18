@@ -1,8 +1,7 @@
 import { QRCodeSVG } from "qrcode.react";
 
 import type { Locale } from "@/i18n/config";
-const daylightAppStoreUrl =
-  "https://apps.apple.com/kr/app/daylight-photo-diary/id6762331629";
+import { appStoreUrl } from "@/config/site";
 
 const downloadCopy = {
   ko: { action: "App Store에서 받기", scan: "QR 코드를 스캔해 Daylight를 만나보세요" },
@@ -13,6 +12,7 @@ const downloadCopy = {
 
 export function SiteAppPromotions({ locale }: { locale: Locale }) {
   const copy = downloadCopy[locale];
+  const daylightAppStoreUrl = appStoreUrl(locale);
 
   return (
     <aside

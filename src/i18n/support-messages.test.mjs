@@ -6,9 +6,9 @@ import { createSupportCopy } from "../content/support-copy.ts";
 import { createTranslator } from "./create-translator.ts";
 
 const expected = {
-  ko: ["오늘의 주인공 지원 정보", "데이터는 어디에 저장되나요?", "메일 보내기"],
-  en: ["Your Day Support", "Where is my data stored?", "Send email"],
-  ja: ["Your Dayサポート", "データはどこに保存されますか?", "メールを送る"],
+  ko: ["Daylight 지원 정보", "데이터는 어디에 저장되나요?", "메일 보내기"],
+  en: ["Daylight Support", "Where is my data stored?", "Send email"],
+  ja: ["Daylightサポート", "データはどこに保存されますか?", "メールを送る"],
 };
 
 for (const locale of ["ko", "en", "ja"]) {

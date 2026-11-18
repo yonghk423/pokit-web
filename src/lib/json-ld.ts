@@ -1,4 +1,4 @@
-import { site, siteName } from "@/config/site";
+import { appName, appStoreUrl, site, siteName } from "@/config/site";
 import type { Locale } from "@/i18n/config";
 import { localeToIntl } from "@/i18n/config";
 import { articlePath } from "@/lib/article-path";
@@ -23,6 +23,32 @@ export function websiteJsonLd(description: string, locale: Locale) {
     description,
     inLanguage: localeToIntl(locale),
     publisher: publisher(),
+    about: {
+      "@type": "SoftwareApplication",
+      "@id": `${site.siteUrl}/#daylight`,
+      name: appName(locale),
+      url: `${site.siteUrl}${withLocale(locale, "/app")}`,
+    },
+  };
+}
+
+/** The app is a distinct entity from the POKIT editorial website. */
+export function appJsonLd(description: string, locale: Locale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "@id": `${site.siteUrl}/#daylight`,
+    name: appName(locale),
+    description,
+    url: `${site.siteUrl}${withLocale(locale, "/app")}`,
+    operatingSystem: "iOS",
+    downloadUrl: appStoreUrl(locale),
+    inLanguage: localeToIntl(locale),
+    subjectOf: {
+      "@type": "WebSite",
+      name: siteName(),
+      url: site.siteUrl,
+    },
   };
 }
 

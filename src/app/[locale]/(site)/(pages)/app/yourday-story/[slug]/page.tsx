@@ -111,7 +111,7 @@ export default async function YourdayStoryArticlePage({ params }: Props) {
         </div>
 
         <p className="mt-12 mb-0 max-w-[42rem] border-t border-ink/10 pt-8 font-sans text-[0.9rem] leading-relaxed text-muted">
-          {t("오늘의 주인공에서 일기와 메모를 남기는 방법을 함께 살펴봐요.")}
+          {t("Daylight에서 일기와 메모를 남기는 방법을 함께 살펴봐요.")}
         </p>
       </main>
       <script

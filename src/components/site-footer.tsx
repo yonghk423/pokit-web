@@ -17,7 +17,10 @@ export function SiteFooter({ locale, messages }: { locale: Locale; messages: Com
   return (
     <footer data-hide-in-pokit-app className="border-t border-neutral-200 bg-white text-neutral-800">
       <div className="mx-auto flex max-w-[1320px] flex-col gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between sm:py-10">
-        <SiteAppPromotions locale={locale} />
+        <div className="max-w-xl">
+          <p className="mb-4 text-sm leading-relaxed text-neutral-600">{t("POKIT은 일상·루틴·웰니스 이야기를 전하는 웹사이트입니다. 사진과 글로 하루를 기록하는 앱 Daylight도 만나보세요.")}</p>
+          <SiteAppPromotions locale={locale} />
+        </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-neutral-200 pt-5 text-sm sm:border-0 sm:pt-0">
           {!isAppPage && <span>{siteName()}</span>}
           <nav aria-label="Information" className="flex flex-wrap gap-x-5 gap-y-2 text-neutral-600">

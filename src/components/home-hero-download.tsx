@@ -28,7 +28,7 @@ export function HomeHeroDownload({ locale, messages }: Props) {
       <div className="flex items-start gap-2.5">
         <div className="flex shrink-0 flex-col items-end gap-2 max-nav:items-start">
           <p className="m-0 mt-0.5 whitespace-nowrap text-right font-serif text-[0.78rem] font-normal italic leading-[1.45] tracking-[-0.02em] text-ink/60 max-nav:text-left">
-            {t("오늘의 주인공 - 장면으로 쓰는 나만의 일기")}
+            {t("Daylight · 사진과 글로 꾸미는 포토 다이어리")}
           </p>
           <Image
             src="/pokit-mark.png?v=20261026"
@@ -54,7 +54,7 @@ export function HomeHeroDownload({ locale, messages }: Props) {
               bgColor="#ffffff"
               fgColor="#181a2e"
               role="img"
-              aria-label={t("POKIT 앱 App Store QR 코드")}
+              aria-label={t("Daylight 앱 App Store QR 코드")}
             />
           </div>
           <p className="m-0 px-0.5 text-center font-sans text-[0.55rem] font-semibold leading-snug tracking-[-0.01em] text-ink/65">

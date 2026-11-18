@@ -26,11 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: t("POKIT — 일상 웰니스 루틴"),
-    description: t("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."),
+    description: t("POKIT은 일상·루틴·웰니스 이야기를 전하는 웹사이트입니다. 사진과 글로 하루를 기록하는 앱 Daylight도 만나보세요."),
     alternates,
     openGraph: {
       title: t("POKIT — 일상 웰니스 루틴"),
-      description: t("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."),
+      description: t("POKIT은 일상·루틴·웰니스 이야기를 전하는 웹사이트입니다. 사진과 글로 하루를 기록하는 앱 Daylight도 만나보세요."),
       url: alternates.canonical,
       siteName: siteName(),
       locale: localeOpenGraph(rawLocale),
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary",
       title: t("POKIT — 일상 웰니스 루틴"),
-      description: t("일상 속 작은 루틴으로 웰니스를 가꾸는 가이드와 앱. POKIT에서 일상·루틴·웰니스 이야기를 만나보세요."),
+      description: t("POKIT은 일상·루틴·웰니스 이야기를 전하는 웹사이트입니다. 사진과 글로 하루를 기록하는 앱 Daylight도 만나보세요."),
       images: ["/pokit-logo.png"],
     },
   };

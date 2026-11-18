@@ -13,7 +13,7 @@ import { WEB_DIARY_KEY, parseDiaryStore, saveDiary, deleteDiary, moveScene, impo
 import styles from "./web-diary.module.css";
 import { WebSceneSelector } from "./web-scene-selector";
 const castingCopy = {
- ko:{choose:'오늘의 주인공 고르기',name:'주인공1',ai:'나만의 주인공 만들기',app:'AI로 주인공을 만드는 기능은 앱에서 사용할 수 있어요.',scan:'QR 코드를 스캔해 앱에서 시작하세요.',start:'이 주인공으로 하루 시작하기',soon:'새 주인공 · 준비 중'},
+ ko:{choose:'오늘의 캐릭터 고르기',name:'주인공1',ai:'나만의 주인공 만들기',app:'AI로 주인공을 만드는 기능은 앱에서 사용할 수 있어요.',scan:'QR 코드를 스캔해 앱에서 시작하세요.',start:'이 주인공으로 하루 시작하기',soon:'새 주인공 · 준비 중'},
  en:{choose:'Choose your protagonist',name:'Protagonist 1',ai:'Create your own protagonist',app:'AI character creation is available in the app.',scan:'Scan to get the app.',start:'Start a day with this protagonist',soon:'New protagonist · Coming soon'},
  ja:{choose:'今日の主人公を選ぶ',name:'主人公1',ai:'自分だけの主人公を作る',app:'AIで主人公を作る機能はアプリで使えます。',scan:'QRコードからアプリへ。',start:'この主人公で一日を始める',soon:'新しい主人公 · 準備中'},
  'zh-TW':{choose:'選擇今天的主角',name:'主角1',ai:'打造自己的主角',app:'AI建立主角功能可在App中使用。',scan:'掃描QR碼下載App。',start:'與這位主角開始一天',soon:'新主角 · 即將推出'},

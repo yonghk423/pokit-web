@@ -1,4 +1,4 @@
-/** 사이트 기본 설정 — 새 컨셉에 맞게 수정하세요 */
+/** POKIT is the editorial website; Daylight is the photo diary app. */
 export const site = {
   name: "POKIT",
   tagline: "",
@@ -19,8 +19,10 @@ export function appStoreUrl(locale: keyof typeof site.appStoreUrls) {
 }
 
 /** Official display name; identifiers and links keep their existing values. */
-export function appName(locale: keyof typeof site.appStoreUrls) {
-  return locale === "ko" ? "오늘의 주인공" : "Your Day";
+export function appName(_locale: keyof typeof site.appStoreUrls) {
+  // Retain the locale argument for existing callers; the brand is the same in every language.
+  void _locale;
+  return "Daylight";
 }
 
 /** The editorial website keeps its own brand, separate from the app. */

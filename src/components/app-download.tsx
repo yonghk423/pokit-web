@@ -52,7 +52,7 @@ export function AppDownload({
   resourceLinks,
 }: Props) {
   const t = createTranslator(messages);
-  const body = t("기억하고 싶은 순간을, 오늘의 주인공에 남겨보세요. 주인공을 고르고 장면에 생각을 더하면 나만의 일기가 됩니다. 짧은 한 줄부터 가볍게 시작해요.");
+  const body = t("기억하고 싶은 순간을, Daylight에 남겨보세요. 사진에 한마디를 더하고 달력을 꾸미면 나만의 포토 다이어리가 됩니다. 짧은 한 줄부터 가볍게 시작해요.");
   const large = size === "large";
   const editorial = variant === "editorial";
   const resolvedVisual =
@@ -110,7 +110,7 @@ export function AppDownload({
                   ),
             )}
           >
-            {t("POKIT 깔고, 오늘부터 천천히 채워 보세요.")}
+            {t("Daylight를 설치하고, 오늘부터 천천히 채워 보세요.")}
           </h2>
           {body ? (
             <p
@@ -182,7 +182,7 @@ export function AppDownload({
                 bgColor="#ffffff"
                 fgColor="#181a2e"
                 role="img"
-                aria-label={t("POKIT 앱 App Store QR 코드")}
+                aria-label={t("Daylight 앱 App Store QR 코드")}
               />
             </div>
             <p
@@ -191,7 +191,7 @@ export function AppDownload({
                 large ? "text-[0.78rem]" : "text-[0.68rem]",
               )}
             >
-              {t("카메라로 QR 코드를 스캔해 POKIT을 바로 시작할 수 있어요.")}
+              {t("카메라로 QR 코드를 스캔해 Daylight를 바로 시작할 수 있어요.")}
             </p>
           </div>
         </div>
