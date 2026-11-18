@@ -142,7 +142,7 @@ export default async function AppIntroPage({ params }: Props) {
             blurDataURL={blur[headerKey]}
             preload
           />
-          <div className={styles.actions}><AppStoreBadge locale={locale} label={text.get} /></div>
+          <div className={styles.heroDownload}><AppStoreBadge locale={locale} label={text.get} /></div>
         </div>
         <nav className={styles.featureNav} aria-label={text.nav.join(" / ")}>
           {text.nav.map((label, index) => <a key={label} href={"#daylight-" + (index === 4 ? 4 : index === 5 ? 5 : index)}><span>{String(index + 1).padStart(2, "0")}</span>{label}</a>)}

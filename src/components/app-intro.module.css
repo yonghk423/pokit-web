@@ -179,3 +179,17 @@
   }
   .feature.widgets .screenFrame { border-radius: 12px; }
 }
+
+/* Anchor the download badge beneath the copy embedded in the hero artwork. */
+.heroDownload { position: absolute; top: 85%; left: 5.3%; text-align: left; }
+.heroDownload > a { transform-origin: top left; }
+@media (max-width: 1100px) {
+  .heroDownload > a { scale: .75; }
+}
+@media (max-width: 760px) {
+  .heroDownload > a { scale: .5; }
+}
+@media (max-width: 440px) {
+  .heroHeading { padding-bottom: 12px; }
+  .heroDownload { top: auto; bottom: 0; height: 28px; }
+}
