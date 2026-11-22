@@ -70,7 +70,7 @@ export function AppDownload({
     >
       <div
         className={cn(
-          "relative isolate overflow-hidden bg-[#2563eb] text-white",
+          "relative isolate overflow-hidden bg-[#f3eaed] text-ink",
           editorial
             ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-12 max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10 nav:gap-10"
             : cn(
@@ -80,21 +80,30 @@ export function AppDownload({
               ),
         )}
       >
-        <div className="pointer-events-none absolute -left-16 top-[-30%] h-56 w-56 rounded-full bg-brand/20 blur-3xl" />
-        <div className="pointer-events-none absolute -right-10 bottom-[-40%] h-64 w-64 rounded-full bg-tertiary-light/20 blur-3xl" />
+        <div className="pointer-events-none absolute -left-16 top-[-30%] h-56 w-56 rounded-full bg-white/55 blur-3xl" />
+        <div className="pointer-events-none absolute -right-10 bottom-[-40%] h-64 w-64 rounded-full bg-[#e8d6dc]/35 blur-3xl" />
 
         <div className={cn("relative z-10", large ? "max-w-2xl" : "max-w-xl")}>
           <p
             className={cn(
-              "m-0 inline-flex text-brand-soft",
+              "m-0 inline-flex items-center gap-2 text-green",
               editorial
                 ? "px-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase"
                 : cn(
-                    "border border-white/35 bg-white/10 px-2.5 py-1 label-caps",
+                    "border border-ink/10 bg-white/55 px-2.5 py-1 label-caps",
                     large && "text-[0.95rem]",
                   ),
             )}
           >
+            <Image
+              src="/daylight/promotion/daylight-photo-calendar-icon.jpg"
+              alt=""
+              aria-hidden="true"
+              width={160}
+              height={160}
+              sizes="20px"
+              className="size-5 shrink-0 rounded object-cover"
+            />
             {t("지금 시작")}
           </p>
           <h2
@@ -115,7 +124,7 @@ export function AppDownload({
           {body ? (
             <p
               className={cn(
-                "mt-5 mb-0 whitespace-pre-line font-sans font-normal leading-[1.7] tracking-[-0.01em] text-white/70",
+                "mt-5 mb-0 whitespace-pre-line font-sans font-normal leading-[1.7] tracking-[-0.01em] text-ink/65",
                 large ? "text-[1.05rem]" : "text-[0.98rem]",
               )}
             >
@@ -126,7 +135,7 @@ export function AppDownload({
             <nav className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
               {resourceLinks.map(link => (
                 <Link key={link.href} href={link.href}
-                  className="font-sans text-sm font-medium text-white underline decoration-white/70 underline-offset-4 transition-colors hover:text-white/80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                  className="font-sans text-sm font-medium text-ink underline decoration-ink/40 underline-offset-4 transition-colors hover:text-green focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink">
                   {link.label}
                 </Link>
               ))}

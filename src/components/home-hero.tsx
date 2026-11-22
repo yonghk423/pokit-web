@@ -203,13 +203,18 @@ export function HomeHero({
             className="min-w-0 max-w-[52rem] flex-1 text-[clamp(2rem,5vw,3.75rem)]"
           />
           <a
-            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#e7bdc9] bg-[#f9e9ee] px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-[#f4dce4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-[#e6dce0] bg-[#f6eff1] px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-[#f1e7ea] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             href={`/${locale}/app`}
           >
-            <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="size-4 shrink-0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2.75" y="4.25" width="14.5" height="13" rx="2" />
-              <path d="M6.25 2.75v3M13.75 2.75v3M2.75 8h14.5" />
-            </svg>
+            <Image
+              src="/daylight/promotion/daylight-photo-calendar-icon.jpg"
+              alt=""
+              aria-hidden="true"
+              width={160}
+              height={160}
+              sizes="24px"
+              className="size-6 shrink-0 rounded object-cover"
+            />
             <span>Daylight ↗</span>
           </a>
         </div>

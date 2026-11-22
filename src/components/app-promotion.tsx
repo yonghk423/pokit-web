@@ -31,7 +31,7 @@ export function AppPromotion({ locale }: { locale: Locale }) {
 
   return (
     <aside
-      className="my-6 flex min-h-[5.5rem] items-center justify-between gap-4 rounded-xl border border-[#e9bdca] bg-[#f9e9ee] px-4 py-3 text-ink sm:my-8 sm:px-5"
+      className="my-6 flex min-h-[5.5rem] items-center justify-between gap-4 rounded-xl border border-[#e8dfe2] bg-[#f7f0f2] px-4 py-3 text-ink sm:my-8 sm:px-5"
       aria-label="Daylight"
     >
       <div className="min-w-0">
@@ -43,12 +43,17 @@ export function AppPromotion({ locale }: { locale: Locale }) {
         </p>
         <Link
           href={withLocale(locale, "/app")}
-          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#e7bdc9] bg-[#fff8fa] px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#e8dfe2] bg-[#fffafb] px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
-          <svg aria-hidden="true" viewBox="0 0 20 20" fill="none" className="size-3.5 shrink-0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2.75" y="4.25" width="14.5" height="13" rx="2" />
-            <path d="M6.25 2.75v3M13.75 2.75v3M2.75 8h14.5" />
-          </svg>
+          <Image
+            src="/daylight/promotion/daylight-photo-calendar-icon.jpg"
+            alt=""
+            aria-hidden="true"
+            width={1024}
+            height={1024}
+            sizes="24px"
+            className="size-5 shrink-0 rounded object-cover"
+          />
           <span>{text.action}</span>
           <span aria-hidden="true" className="ml-0.5">↗</span>
         </Link>
