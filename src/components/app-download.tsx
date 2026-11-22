@@ -35,10 +35,10 @@ type Props = {
 
 function defaultEditorialVisual(locale: Locale, alt: string): DownloadVisual {
   return {
-    src: `/daylight/header-${locale}.webp`,
+    src: `/daylight/promotion/download-banner-${locale}.jpg`,
     alt,
-    width: 3840,
-    height: 1646,
+    width: 1920,
+    height: 823,
   };
 }
 
@@ -70,7 +70,7 @@ export function AppDownload({
     >
       <div
         className={cn(
-          "relative isolate overflow-hidden bg-[#f3eaed] text-ink",
+          "relative isolate overflow-hidden bg-[#f1dce2] text-ink",
           editorial
             ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-12 max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10 nav:gap-10"
             : cn(
@@ -80,15 +80,12 @@ export function AppDownload({
               ),
         )}
       >
-        <div className="pointer-events-none absolute -left-16 top-[-30%] h-56 w-56 rounded-full bg-white/55 blur-3xl" />
-        <div className="pointer-events-none absolute -right-10 bottom-[-40%] h-64 w-64 rounded-full bg-[#e8d6dc]/35 blur-3xl" />
-
         <div className={cn("relative z-10", large ? "max-w-2xl" : "max-w-xl")}>
           <p
             className={cn(
-              "m-0 inline-flex items-center gap-2 text-green",
+              "m-0 inline-flex items-center gap-3 text-green",
               editorial
-                ? "px-0 font-sans text-[0.72rem] font-semibold tracking-[0.14em] uppercase"
+                ? "px-0 font-sans text-[0.88rem] font-semibold tracking-[0.12em] uppercase"
                 : cn(
                     "border border-ink/10 bg-white/55 px-2.5 py-1 label-caps",
                     large && "text-[0.95rem]",
@@ -101,8 +98,8 @@ export function AppDownload({
               aria-hidden="true"
               width={160}
               height={160}
-              sizes="20px"
-              className="size-5 shrink-0 rounded object-cover"
+              sizes="40px"
+              className="size-10 shrink-0 rounded-lg object-cover"
             />
             {t("지금 시작")}
           </p>
