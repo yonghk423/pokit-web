@@ -40,7 +40,7 @@ export function AppStoreBadge({
         )}
       >
         <Image
-          src={iconSrc ?? "/daylight/daylight-app-icon.png"}
+          src={iconSrc ?? "/daylight/daylight-app-icon-pink.png"}
           alt=""
           width={compact ? 20 : 32}
           height={compact ? 20 : 32}

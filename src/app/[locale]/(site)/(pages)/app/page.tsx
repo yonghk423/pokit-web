@@ -171,7 +171,7 @@ export default async function AppIntroPage({ params }: Props) {
         <p className={styles.eyebrow}>DAYLIGHT</p>
         <h2 data-reveal="text">{text.closing[0]}<br />{text.closing[1]}</h2>
         <div className={styles.actions}>
-          <AppStoreBadge locale={locale} label={text.get} iconSrc="/daylight/daylight-app-icon.png" className="border border-white/30" />
+          <AppStoreBadge locale={locale} label={text.get} iconSrc="/daylight/daylight-app-icon-pink.png" className="border border-white/30" />
           <a className={styles.textLink} href={withLocale(locale, "/support")}>{text.support} <span aria-hidden="true">↗</span></a>
         </div>
       </section>
