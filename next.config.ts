@@ -23,8 +23,10 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
-    // WebP avoids the slower first-request AVIF encode for large app artwork.
-    formats: ["image/webp"],
+    // Vercel's Image Optimization endpoint is currently returning 402 for this
+    // project. Sanity URLs are pre-sized by coverImageUrl, so serve image URLs
+    // directly until the optimizer billing issue is resolved.
+    unoptimized: true,
     /** Include retina widths so phone frames stay sharp on mobile DPR. */
     imageSizes: [96, 128, 256, 384, 640, 750, 828],
     remotePatterns: [
