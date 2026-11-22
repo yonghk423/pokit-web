@@ -243,7 +243,7 @@ export function ArticlePreviewModal({
           <button
             type="button"
             onClick={close}
-            className="inline-flex size-8 items-center justify-center border-0 bg-transparent p-0 font-sans text-[1.35rem] font-light leading-none text-muted transition-colors hover:text-ink"
+            className="relative z-10 inline-flex size-11 shrink-0 cursor-pointer touch-manipulation items-center justify-center border-0 bg-transparent p-0 font-sans text-[1.35rem] font-light leading-none text-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             aria-label={closeLabel}
           >
             ×
