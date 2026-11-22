@@ -92,12 +92,19 @@ const copy = {
 type Props = { params: Promise<{ locale: string }> };
 export function generateStaticParams() { return locales.map(locale => ({ locale })); }
 
+const headers = {
+  en: { image: "/daylight/header-en.webp", blur: "header-en" },
+  ja: { image: "/daylight/header-ja.webp", blur: "header-ja" },
+  ko: { image: "/daylight/header-ko.webp", blur: "header-ko" },
+  "zh-TW": { image: "/daylight/header-zh-TW.webp", blur: "header-zh-TW" },
+} as const;
+
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
   const text = copy[locale];
   const description = text.description;
-  const headerImage = "/daylight/header-pink.webp";
+  const headerImage = headers[locale].image;
   return {
     title: { absolute: "Daylight" }, description, alternates: localeAlternates(locale, "/app"),
     openGraph: { title: "Daylight", description, images: [headerImage] },
@@ -118,8 +125,7 @@ export default async function AppIntroPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const text = copy[locale];
-  const headerKey = "header-pink";
-  const headerImage = "/daylight/header-pink.webp";
+  const { image: headerImage, blur: headerKey } = headers[locale];
 
   return (
     <AppScrollMotion className={styles.page} lang={locale}>

@@ -227,7 +227,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
         </header>
 
-        <div className="mb-10"><AppPromotion locale={locale} /></div>
+        <div className="mb-10"><AppPromotion locale={locale} placement="archive" /></div>
 
         {articles.length > 0 ? (
           <>

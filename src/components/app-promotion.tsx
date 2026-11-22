@@ -26,15 +26,33 @@ const copy = {
   },
 } satisfies Record<Locale, { eyebrow: string; title: string; action: string }>;
 
-const promotionVisuals = [
-  { src: "calendar.png", alt: "Daylight calendar", width: 1290, height: 2796 },
-  { src: "photo.png", alt: "Daylight photo editor", width: 1290, height: 2796 },
-  { src: "diary.png", alt: "Daylight photo diary", width: 1290, height: 2796 },
-  { src: "search.png", alt: "Daylight app screens", width: 3840, height: 2560 },
-];
+const promotionVisuals = {
+  home: [
+    { src: "calendar-themes.png", alt: "Daylight calendar themes" },
+    { src: "calendar-moments.png", alt: "Daylight calendar filled with photos" },
+    { src: "diary-space.png", alt: "Daylight personal diary" },
+  ],
+  archive: [
+    { src: "year-archive.png", alt: "Daylight yearly photo archive" },
+    { src: "diary-style.png", alt: "Daylight diary decorations" },
+    { src: "diary-closeup.png", alt: "A page from a Daylight photo diary" },
+  ],
+  article: [
+    { src: "diary-words.png", alt: "Writing a daily story in Daylight" },
+    { src: "photo-editor.png", alt: "Editing a photo in Daylight" },
+    { src: "diary-closeup.png", alt: "A page from a Daylight photo diary" },
+  ],
+} as const;
 
-export function AppPromotion({ locale }: { locale: Locale }) {
+export function AppPromotion({
+  locale,
+  placement = "article",
+}: {
+  locale: Locale;
+  placement?: keyof typeof promotionVisuals;
+}) {
   const text = copy[locale];
+  const visuals = promotionVisuals[placement];
 
   return (
     <aside
@@ -65,18 +83,16 @@ export function AppPromotion({ locale }: { locale: Locale }) {
           <span aria-hidden="true" className="ml-0.5">↗</span>
         </Link>
       </div>
-      <div className="flex h-20 shrink-0 items-center gap-1.5 max-[420px]:hidden" aria-label="Daylight app screens">
-        {promotionVisuals.map((visual, index) => (
+      <div className="flex h-20 shrink-0 items-center gap-1" aria-label="Daylight app screens">
+        {visuals.map((visual) => (
           <Image
             key={visual.src}
             src={`/daylight/promotion/${visual.src}`}
             alt={visual.alt}
-            width={visual.width}
-            height={visual.height}
-            sizes={index === 3 ? "64px" : "34px"}
-            className={index === 3
-              ? "h-14 w-16 rounded-md border border-ink/10 bg-white object-contain"
-              : "h-full w-[2.1rem] rounded-md border border-ink/10 bg-white object-cover object-top"}
+            width={1290}
+            height={2796}
+            sizes="48px"
+            className="h-full w-12 rounded-md border border-ink/10 bg-white object-cover object-top"
           />
         ))}
       </div>

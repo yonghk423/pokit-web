@@ -1,8 +1,10 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { site } from "@/config/site";
+import { appStoreUrl, site } from "@/config/site";
 import { isLocale } from "@/i18n/config";
+import { createTranslator } from "@/i18n/create-translator";
+import { getSupportMessages } from "@/i18n/get-support-messages";
 import { localeAlternates } from "@/lib/locale-path";
 
 const copy = {
@@ -100,6 +102,13 @@ const copy = {
   },
 };
 
+const featureImages = [
+  "/daylight/promotion/diary-words.png",
+  "/daylight/promotion/photo-editor.png",
+  "/daylight/promotion/diary-closeup.png",
+  "/daylight/promotion/calendar-themes.png",
+];
+
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -118,6 +127,11 @@ export default async function SupportPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const { title, intro, featuresTitle, features, faqTitle, faq, contact, guide, detail } = copy[locale];
+  const t = createTranslator(await getSupportMessages(locale));
+  const productFaq = [
+    [t("어떤 다이어리 꾸미기 기능이 있나요?"), t("Daylight에서는 글자색과 종이 배경색을 각각 고르고 아이콘을 더할 수 있습니다. 클립, 카메라, 휴지통 등 다양한 다이어리 아이템도 선택할 수 있습니다.")],
+    [t("Daylight는 어디에서 다운로드하나요?"), t("Daylight의 App Store 페이지에서 다운로드할 수 있습니다. 현재 가격과 기기 호환성은 App Store에서 확인해 주세요.")],
+  ];
 
   return (
     <main className="min-h-screen bg-[#faf8f4] px-6 py-16 text-[#302e2a] sm:py-24">
@@ -125,6 +139,7 @@ export default async function SupportPage({ params }: Props) {
         <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
         <p className="mt-6 text-lg leading-8">{intro}</p>
         <nav aria-label={title} className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm underline underline-offset-4">
+          <a href={appStoreUrl(locale)}>{t("App Store에서 보기")}</a>
           <a href="#features">{featuresTitle}</a>
           <a href="#questions">{faqTitle}</a>
           <a href="#contact">{contact}</a>
@@ -133,7 +148,7 @@ export default async function SupportPage({ params }: Props) {
           <h2 className="text-2xl font-semibold">{featuresTitle}</h2>
           {features.map(([name, instructions], index) => (
             <article key={name} className="mt-5 grid grid-cols-[minmax(70px,22%)_1fr] items-center gap-5 border-t border-black/10 pt-5 sm:gap-8">
-              <Image src={`/daylight/${locale === "ko" ? "ko" : "en"}-${[1, 5, 6, 8][index]}.webp`}
+              <Image src={featureImages[index]}
                 alt="" width={600} height={1286} sizes="(max-width: 700px) 20vw, 145px"
                 className="h-auto w-full rounded-xl" />
               <div>
@@ -145,7 +160,7 @@ export default async function SupportPage({ params }: Props) {
         </section>
         <section id="questions" className="mt-12 scroll-mt-6">
           <h2 className="mb-4 text-2xl font-semibold">{faqTitle}</h2>
-          {faq.map(([question, answer]) => (
+          {[...productFaq, ...faq].map(([question, answer]) => (
             <details key={question} className="border-t border-black/10 py-4">
               <summary className="cursor-pointer font-medium">{question}</summary>
               <p className="mt-3 leading-7">{answer}</p>

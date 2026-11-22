@@ -185,7 +185,7 @@ export default async function Home({ params }: Props) {
             </div>
           )}
 
-          <div className="mx-auto mt-12 max-w-[1320px] px-4 nav:px-6"><AppPromotion locale={locale} /></div>
+          <div className="mx-auto mt-12 max-w-[1320px] px-4 nav:px-6"><AppPromotion locale={locale} placement="home" /></div>
 
           <HomeWorkRows
             line1={t("하루의 장면을")}

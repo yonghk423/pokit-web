@@ -264,7 +264,7 @@ export default async function ArticlePage({ params }: Props) {
             viewMoreLabel={t("더보기 →")}
           />
         )}
-        <AppPromotion locale={locale} />
+        <AppPromotion locale={locale} placement="article" />
 
       </main>
     </>
