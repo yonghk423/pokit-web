@@ -26,12 +26,19 @@ const copy = {
   },
 } satisfies Record<Locale, { eyebrow: string; title: string; action: string }>;
 
+const promotionVisuals = [
+  { src: "calendar.png", alt: "Daylight calendar", width: 1290, height: 2796 },
+  { src: "photo.png", alt: "Daylight photo editor", width: 1290, height: 2796 },
+  { src: "diary.png", alt: "Daylight photo diary", width: 1290, height: 2796 },
+  { src: "search.png", alt: "Daylight app screens", width: 3840, height: 2560 },
+];
+
 export function AppPromotion({ locale }: { locale: Locale }) {
   const text = copy[locale];
 
   return (
     <aside
-      className="my-6 flex min-h-[5.5rem] items-center justify-between gap-4 rounded-xl border border-[#e8dfe2] bg-[#f7f0f2] px-4 py-3 text-ink sm:my-8 sm:px-5"
+      className="my-6 flex min-h-[5.5rem] items-center justify-between gap-4 rounded-xl border border-[#d9a0af] bg-[#e7b4c1] px-4 py-3 text-ink sm:my-8 sm:px-5"
       aria-label="Daylight"
     >
       <div className="min-w-0">
@@ -43,7 +50,7 @@ export function AppPromotion({ locale }: { locale: Locale }) {
         </p>
         <Link
           href={withLocale(locale, "/app")}
-          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#e8dfe2] bg-[#fffafb] px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#d9a0af] bg-[#fff4f6] px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
           <Image
             src="/daylight/promotion/daylight-photo-calendar-icon.jpg"
@@ -58,14 +65,21 @@ export function AppPromotion({ locale }: { locale: Locale }) {
           <span aria-hidden="true" className="ml-0.5">↗</span>
         </Link>
       </div>
-      <Image
-        src="/daylight/promotion/diary.png"
-        alt="Daylight photo diary screen"
-        width={1290}
-        height={2796}
-        sizes="44px"
-        className="h-[4.5rem] w-auto shrink-0 rounded-md border border-ink/10 object-cover object-top sm:h-20"
-      />
+      <div className="flex h-20 shrink-0 items-center gap-1.5 max-[420px]:hidden" aria-label="Daylight app screens">
+        {promotionVisuals.map((visual, index) => (
+          <Image
+            key={visual.src}
+            src={`/daylight/promotion/${visual.src}`}
+            alt={visual.alt}
+            width={visual.width}
+            height={visual.height}
+            sizes={index === 3 ? "64px" : "34px"}
+            className={index === 3
+              ? "h-14 w-16 rounded-md border border-ink/10 bg-white object-contain"
+              : "h-full w-[2.1rem] rounded-md border border-ink/10 bg-white object-cover object-top"}
+          />
+        ))}
+      </div>
     </aside>
   );
 }

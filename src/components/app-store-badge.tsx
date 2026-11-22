@@ -39,28 +39,14 @@ export function AppStoreBadge({
           compact ? "h-5 w-5" : "h-8 w-8",
         )}
       >
-        {iconSrc ? (
-          <Image
-            src={iconSrc}
-            alt=""
-            width={compact ? 20 : 32}
-            height={compact ? 20 : 32}
-            className="h-full w-full rounded-md object-cover"
-            aria-hidden="true"
-          />
-        ) : (
-          <Image
-            src="/apple-logo.png"
-            alt=""
-            width={compact ? 20 : 32}
-            height={compact ? 20 : 32}
-            className={cn(
-              "scale-[1.75] object-contain invert",
-              compact ? "h-5 w-5" : "h-8 w-8",
-            )}
-            aria-hidden="true"
-          />
-        )}
+        <Image
+          src={iconSrc ?? "/daylight/daylight-app-icon.png"}
+          alt=""
+          width={compact ? 20 : 32}
+          height={compact ? 20 : 32}
+          className="h-full w-full rounded-md object-cover"
+          aria-hidden="true"
+        />
       </span>
       <span className="flex flex-col leading-none">
         <span
