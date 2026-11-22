@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
+import { AppPromotion } from "@/components/app-promotion";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedArticles } from "@/components/related-articles";
@@ -263,6 +264,7 @@ export default async function ArticlePage({ params }: Props) {
             viewMoreLabel={t("더보기 →")}
           />
         )}
+        <AppPromotion locale={locale} />
 
       </main>
     </>

@@ -97,9 +97,7 @@ export async function generateMetadata({ params }: Props) {
   if (!isLocale(locale)) return {};
   const text = copy[locale];
   const description = text.description;
-  const headerImage = locale === "ko"
-    ? "/daylight/header-ko.webp"
-    : "/daylight/header-" + locale + ".webp";
+  const headerImage = "/daylight/header-pink.webp";
   return {
     title: { absolute: "Daylight" }, description, alternates: localeAlternates(locale, "/app"),
     openGraph: { title: "Daylight", description, images: [headerImage] },
@@ -120,10 +118,8 @@ export default async function AppIntroPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const text = copy[locale];
-  const headerKey = `header-${locale}` as keyof typeof blur;
-  const headerImage = locale === "ko"
-    ? "/daylight/header-ko.webp"
-    : "/daylight/header-" + locale + ".webp";
+  const headerKey = "header-pink";
+  const headerImage = "/daylight/header-pink.webp";
 
   return (
     <AppScrollMotion className={styles.page} lang={locale}>

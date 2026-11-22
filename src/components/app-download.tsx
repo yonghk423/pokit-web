@@ -18,6 +18,12 @@ type DownloadVisual = {
   height: number;
 };
 
+const productScreens = [
+  { src: "calendar.png", alt: "Daylight calendar with daily photos" },
+  { src: "photo.png", alt: "Daylight photo editor with film styles" },
+  { src: "diary.png", alt: "Daylight photo diary page" },
+];
+
 type Props = {
   locale: Locale;
   messages: AppDownloadMessages;
@@ -70,7 +76,7 @@ export function AppDownload({
     >
       <div
         className={cn(
-          "relative isolate overflow-hidden bg-[#f1dce2] text-ink",
+          "relative isolate overflow-hidden bg-[#e8c1cb] text-ink",
           editorial
             ? "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-8 px-[max(1.25rem,calc((100%-72rem)/2+1.25rem))] py-12 max-nav:grid-cols-1 max-nav:gap-8 max-nav:px-6 max-nav:py-10 nav:gap-10"
             : cn(
@@ -161,6 +167,20 @@ export function AppDownload({
                 sizes="18rem"
                 className="h-auto w-full rounded-[1.15rem]"
               />
+              <div className="mt-2 grid grid-cols-3 gap-2" aria-label="Daylight app screens">
+                {productScreens.map((screen) => (
+                  <div key={screen.src} className="overflow-hidden rounded-lg border border-ink/10 bg-white/80 shadow-sm">
+                    <Image
+                      src={`/daylight/promotion/${screen.src}`}
+                      alt={screen.alt}
+                      width={1290}
+                      height={2796}
+                      sizes="(max-width: 900px) 28vw, 88px"
+                      className="aspect-[1290/2796] w-full object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           ) : null}
 

@@ -1,5 +1,4 @@
 import { AppPromotion } from "@/components/app-promotion";
-import { getAppDownloadMessages } from "@/i18n/get-app-download-messages";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -179,7 +178,6 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
   const sortLabel =
     sort === "oldest" ? t("오래된순") : t("최신순");
 
-  const promoMessages = await getAppDownloadMessages(locale);
   return (
     <main className="pb-8">
       <section className={cn(monoContainer, "pt-10 pb-16 max-nav:pt-8")}>
@@ -229,7 +227,7 @@ export default async function ArticlesPage({ params, searchParams }: Props) {
 
         </header>
 
-        <div className="mb-10"><AppPromotion locale={locale} messages={promoMessages} placement="article-archive" variant="inline" /></div>
+        <div className="mb-10"><AppPromotion locale={locale} /></div>
 
         {articles.length > 0 ? (
           <>
