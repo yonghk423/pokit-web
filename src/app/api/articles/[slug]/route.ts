@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { isLocale, type Locale } from "@/i18n/config";
+import { getArticleRecordingPrompt } from "@/lib/article-recording-prompt";
 import { isValidArticleSlug } from "@/lib/article-path";
 import { getArticleBySlug } from "@/sanity/lib/article";
 import { isSanityConfigured } from "@/sanity/env";
@@ -33,6 +34,7 @@ export async function GET(request: Request, { params }: Params) {
 
   return NextResponse.json({
     slug: article.slug,
+    recordingPrompt: getArticleRecordingPrompt(article.slug, locale),
     title: article.title,
     titleKo: article.titleKo ?? article.title,
     description: article.description ?? null,

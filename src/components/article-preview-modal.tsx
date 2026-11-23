@@ -11,6 +11,7 @@ import {
   type CSSProperties,
 } from "react";
 
+import type { RecordingPrompt } from "@/components/article-recording-prompt";
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import {
@@ -28,6 +29,7 @@ import {
 import type { CategoryLabels } from "@/i18n/category-labels";
 
 type PreviewArticle = {
+  recordingPrompt?: RecordingPrompt | null;
   slug: string;
   title: string;
   titleKo: string | null;
@@ -348,6 +350,7 @@ export function ArticlePreviewModal({
 
                   {detail ? (
                     <AddToPokitCta
+                      recordingPrompt={detail.recordingPrompt}
                       article={toPokitRoutineArticle({
                         slug: detail.slug,
                         title: detail.title,

@@ -4,6 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 
+import calendarScreen from "../../public/daylight/promotion/calendar.png";
+import photoScreen from "../../public/daylight/promotion/photo.png";
+import diaryScreen from "../../public/daylight/promotion/diary.png";
+import writingScreen from "../../public/daylight/promotion/diary-words.png";
+
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { appStoreUrl } from "@/config/site";
 import type { Locale } from "@/i18n/config";
@@ -19,9 +24,10 @@ type DownloadVisual = {
 };
 
 const productScreens = [
-  { src: "calendar.png", alt: "Daylight calendar with daily photos" },
-  { src: "photo.png", alt: "Daylight photo editor with film styles" },
-  { src: "diary.png", alt: "Daylight photo diary page" },
+  { src: calendarScreen, alt: "Daylight calendar with daily photos" },
+  { src: photoScreen, alt: "Daylight photo editor with film styles" },
+  { src: diaryScreen, alt: "Daylight photo diary page" },
+  { src: writingScreen, alt: "Writing a story in the Daylight diary" },
 ];
 
 type Props = {
@@ -158,7 +164,7 @@ export function AppDownload({
           )}
         >
           {resolvedVisual ? (
-            <div className="w-[min(18rem,100%)] shrink-0 max-nav:mx-auto nav:w-[18rem] nav:-mr-1">
+            <div className="w-full max-w-[32rem] shrink-0 max-nav:mx-auto nav:w-[32rem] nav:-mr-1">
               <Image
                 src={resolvedVisual.src}
                 alt={resolvedVisual.alt}
@@ -167,15 +173,17 @@ export function AppDownload({
                 sizes="18rem"
                 className="h-auto w-full rounded-[1.15rem]"
               />
-              <div className="mt-2 grid grid-cols-3 gap-2" aria-label="Daylight app screens">
+              <div className="mt-3 grid grid-cols-2 gap-3 nav:grid-cols-4 nav:gap-2" aria-label="Daylight app screens">
                 {productScreens.map((screen) => (
-                  <div key={screen.src} className="overflow-hidden rounded-lg border border-ink/10 bg-white/80 shadow-sm">
+                  <div key={screen.alt} className="overflow-hidden rounded-xl border border-ink/10 bg-white/80 shadow-sm">
                     <Image
-                      src={`/daylight/promotion/${screen.src}`}
+                      src={screen.src}
                       alt={screen.alt}
                       width={1290}
                       height={2796}
-                      sizes="(max-width: 900px) 28vw, 88px"
+                      sizes="(max-width: 900px) min(16rem, calc((100vw - 3.5rem) / 2)), 7.5rem"
+                      quality={90}
+                      placeholder="blur"
                       className="aspect-[1290/2796] w-full object-contain"
                     />
                   </div>

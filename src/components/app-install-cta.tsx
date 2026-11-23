@@ -1,5 +1,8 @@
 import Image from "next/image";
+import { cn } from "@/lib/cn";
+import { ArticleRecordingPrompt, type RecordingPrompt } from "@/components/article-recording-prompt";
 import Link from "next/link";
+import { createTranslator } from "@/i18n/create-translator";
 import { withLocale } from "@/lib/locale-path";
 import type { Locale } from "@/i18n/config";
 import type { AppInstallMessages } from "@/i18n/get-app-install-messages";
@@ -7,13 +10,16 @@ type Props = {
   locale: Locale;
   messages: AppInstallMessages;
   className?: string;
+  recordingPrompt?: RecordingPrompt | null;
 };
 
 /** Shared browser download panel for article and tool previews. */
 
-export function AppInstallCta({locale}:Props){
+export function AppInstallCta({locale, className, recordingPrompt, messages}:Props){
+const t = createTranslator(messages);
 return (
-  <aside className="rounded-xl border border-[#e8dfe2] bg-[#f7f0f2] px-4 py-3 text-center sm:px-5 sm:py-4">
+  <aside className={cn("rounded-xl border border-[#e8dfe2] bg-[#f7f0f2] px-4 py-3 text-center sm:px-5 sm:py-4", className)}>
+    {recordingPrompt && <ArticleRecordingPrompt prompt={recordingPrompt} />}
     <Link
       href={withLocale(locale,"/app")}
       className="inline-flex items-center justify-center gap-2 rounded-full px-3 py-1.5 text-sm text-ink transition-colors hover:bg-white/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
@@ -27,7 +33,7 @@ return (
         sizes="24px"
         className="size-6 shrink-0 rounded object-cover"
       />
-      <span><strong>Daylight</strong>　{locale==="ko"?"다이어리 살펴보기":"Explore the diary"} ↗</span>
+      <span>{t("Daylight 포토 다이어리 살펴보기")} ↗</span>
     </Link>
   </aside>
 );

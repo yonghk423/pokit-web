@@ -4,6 +4,7 @@ import { appName } from "@/config/site";
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { ArticleRecordingPrompt, type RecordingPrompt } from "@/components/article-recording-prompt";
 import { AppInstallCta } from "@/components/app-install-cta";
 import type { Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
@@ -21,11 +22,12 @@ type Props = {
   locale: Locale;
   messages: AppInstallMessages;
   className?: string;
+  recordingPrompt?: RecordingPrompt | null;
 };
 
 type CtaState = "idle" | "sent";
 
-export function AddToPokitCta({ article, locale, messages, className }: Props) {
+export function AddToPokitCta({ article, locale, messages, className, recordingPrompt }: Props) {
   const t = createTranslator(messages);
   const [inApp, setInApp] = useState(false);
   const [state, setState] = useState<CtaState>("idle");
@@ -62,6 +64,7 @@ export function AddToPokitCta({ article, locale, messages, className }: Props) {
     >
       {inApp && (
         <div className="rounded-[0.85rem] border border-ink/10 bg-ink/[0.03] px-3.5 py-3.5">
+          {recordingPrompt && <ArticleRecordingPrompt prompt={recordingPrompt} />}
           <p className="m-0 font-sans text-[0.68rem] font-semibold tracking-[0.08em] text-ink/45 uppercase">
             {appName(locale)}
           </p>
@@ -91,7 +94,7 @@ export function AddToPokitCta({ article, locale, messages, className }: Props) {
       )}
 
       {!inApp && (
-        <AppInstallCta locale={locale} messages={messages} className="mt-0 max-w-none max-nav:mx-0 max-nav:mb-0" />
+        <AppInstallCta locale={locale} messages={messages} recordingPrompt={recordingPrompt} className="mt-0 max-w-none max-nav:mx-0 max-nav:mb-0" />
       )}
     </section>
   );

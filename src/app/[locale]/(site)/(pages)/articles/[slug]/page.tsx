@@ -16,6 +16,7 @@ import { getArticleMessages } from "@/i18n/get-article-messages";
 import { getAppInstallMessages } from "@/i18n/get-app-install-messages";
 import { getCommonMessages } from "@/i18n/get-common-messages";
 import { createCategoryLabels } from "@/i18n/category-labels";
+import { getArticleRecordingPrompt } from "@/lib/article-recording-prompt";
 import { articleSeo } from "@/lib/article-seo";
 import { isValidArticleSlug } from "@/lib/article-path";
 import { cn, monoContainer } from "@/lib/cn";
@@ -246,8 +247,23 @@ export default async function ArticlePage({ params }: Props) {
             <PortableText value={article.body} />
           </div>
         )}
+        <aside className="mt-8 max-w-[42rem] rounded-xl border border-[#d9a0af] bg-[#fff4f6] px-5 py-4">
+          <p className="m-0 font-sans text-[0.68rem] font-semibold tracking-wide text-muted uppercase">
+            {commonT("사진 일기")}
+          </p>
+          <p className="mt-2 mb-0 font-sans text-[0.92rem] leading-relaxed text-ink">
+            {commonT("오늘의 장면과 생각을 사진과 짧은 글로 남기는 방법도 살펴보세요.")}
+          </p>
+          <Link
+            href={withLocale(locale, "/app/yourday-story")}
+            className="mt-3 inline-flex font-sans text-sm font-semibold text-ink underline decoration-[#d9a0af] underline-offset-4 hover:decoration-ink"
+          >
+            {commonT("Daylight의 일기 예시 읽기")}
+          </Link>
+        </aside>
         {shouldShowPokitCta(article) && (
           <AddToPokitCta
+            recordingPrompt={getArticleRecordingPrompt(article.slug, locale)}
             article={toPokitRoutineArticle(article)}
             locale={locale}
             messages={installMessages}
