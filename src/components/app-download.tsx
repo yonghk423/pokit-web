@@ -1,13 +1,17 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 
-import calendarScreen from "../../public/daylight/promotion/calendar.png";
-import photoScreen from "../../public/daylight/promotion/photo.png";
-import diaryScreen from "../../public/daylight/promotion/diary.png";
-import writingScreen from "../../public/daylight/promotion/diary-words.png";
+import calendarScreen from "@/assets/daylight/promotion/calendar.webp";
+import photoScreen from "@/assets/daylight/promotion/photo.webp";
+import diaryScreen from "@/assets/daylight/promotion/diary.webp";
+import writingScreen from "@/assets/daylight/promotion/diary-words.webp";
+import bannerEn from "@/assets/daylight/promotion/download-banner-en.webp";
+import bannerJa from "@/assets/daylight/promotion/download-banner-ja.webp";
+import bannerKo from "@/assets/daylight/promotion/download-banner-ko.webp";
+import bannerZhTw from "@/assets/daylight/promotion/download-banner-zh-TW.webp";
 
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { appStoreUrl } from "@/config/site";
@@ -17,10 +21,10 @@ import type { AppDownloadMessages } from "@/i18n/get-app-download-messages";
 import { cn, monoContainer } from "@/lib/cn";
 
 type DownloadVisual = {
-  src: string;
+  src: StaticImageData | string;
   alt: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 };
 
 const productScreens = [
@@ -29,6 +33,13 @@ const productScreens = [
   { src: diaryScreen, alt: "Daylight photo diary page" },
   { src: writingScreen, alt: "Writing a story in the Daylight diary" },
 ];
+
+const downloadBanners = {
+  en: bannerEn,
+  ja: bannerJa,
+  ko: bannerKo,
+  "zh-TW": bannerZhTw,
+} as const satisfies Record<Locale, StaticImageData>;
 
 type Props = {
   locale: Locale;
@@ -47,10 +58,8 @@ type Props = {
 
 function defaultEditorialVisual(locale: Locale, alt: string): DownloadVisual {
   return {
-    src: `/daylight/promotion/download-banner-${locale}.jpg`,
+    src: downloadBanners[locale],
     alt,
-    width: 1920,
-    height: 823,
   };
 }
 
@@ -171,6 +180,7 @@ export function AppDownload({
                 width={resolvedVisual.width}
                 height={resolvedVisual.height}
                 sizes="18rem"
+                placeholder={typeof resolvedVisual.src === "object" ? "blur" : undefined}
                 className="h-auto w-full rounded-[1.15rem]"
               />
               <div className="mt-3 grid grid-cols-2 gap-3 nav:grid-cols-4 nav:gap-2" aria-label="Daylight app screens">
@@ -179,10 +189,8 @@ export function AppDownload({
                     <Image
                       src={screen.src}
                       alt={screen.alt}
-                      width={1290}
-                      height={2796}
                       sizes="(max-width: 900px) min(16rem, calc((100vw - 3.5rem) / 2)), 7.5rem"
-                      quality={90}
+                      quality={75}
                       placeholder="blur"
                       className="aspect-[1290/2796] w-full object-contain"
                     />

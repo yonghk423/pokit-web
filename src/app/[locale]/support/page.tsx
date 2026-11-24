@@ -7,6 +7,11 @@ import { createTranslator } from "@/i18n/create-translator";
 import { getSupportMessages } from "@/i18n/get-support-messages";
 import { localeAlternates } from "@/lib/locale-path";
 
+import diaryWords from "@/assets/daylight/promotion/diary-words.webp";
+import photoEditor from "@/assets/daylight/promotion/photo-editor.webp";
+import diaryCloseup from "@/assets/daylight/promotion/diary-closeup.webp";
+import calendarThemes from "@/assets/daylight/promotion/calendar-themes.webp";
+
 const copy = {
   ko: {
     title: "Daylight 앱 지원",
@@ -102,12 +107,7 @@ const copy = {
   },
 };
 
-const featureImages = [
-  "/daylight/promotion/diary-words.png",
-  "/daylight/promotion/photo-editor.png",
-  "/daylight/promotion/diary-closeup.png",
-  "/daylight/promotion/calendar-themes.png",
-];
+const featureImages = [diaryWords, photoEditor, diaryCloseup, calendarThemes];
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -148,9 +148,14 @@ export default async function SupportPage({ params }: Props) {
           <h2 className="text-2xl font-semibold">{featuresTitle}</h2>
           {features.map(([name, instructions], index) => (
             <article key={name} className="mt-5 grid grid-cols-[minmax(70px,22%)_1fr] items-center gap-5 border-t border-black/10 pt-5 sm:gap-8">
-              <Image src={featureImages[index]}
-                alt="" width={600} height={1286} sizes="(max-width: 700px) 20vw, 145px"
-                className="h-auto w-full rounded-xl" />
+              <Image
+                src={featureImages[index]}
+                alt=""
+                sizes="(max-width: 700px) 20vw, 145px"
+                quality={75}
+                placeholder="blur"
+                className="h-auto w-full rounded-xl"
+              />
               <div>
                 <h3 className="text-lg font-semibold">{name}</h3>
                 <p className="mt-2 leading-7">{instructions}</p>

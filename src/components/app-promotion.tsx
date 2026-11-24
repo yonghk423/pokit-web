@@ -1,7 +1,16 @@
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/lib/locale-path";
+
+import calendarThemes from "@/assets/daylight/promotion/calendar-themes.webp";
+import calendarMoments from "@/assets/daylight/promotion/calendar-moments.webp";
+import diarySpace from "@/assets/daylight/promotion/diary-space.webp";
+import yearArchive from "@/assets/daylight/promotion/year-archive.webp";
+import diaryStyle from "@/assets/daylight/promotion/diary-style.webp";
+import diaryCloseup from "@/assets/daylight/promotion/diary-closeup.webp";
+import diaryWords from "@/assets/daylight/promotion/diary-words.webp";
+import photoEditor from "@/assets/daylight/promotion/photo-editor.webp";
 
 const copy = {
   ko: {
@@ -26,23 +35,25 @@ const copy = {
   },
 } satisfies Record<Locale, { eyebrow: string; title: string; action: string }>;
 
+type PromoVisual = { src: StaticImageData; alt: string };
+
 const promotionVisuals = {
   home: [
-    { src: "calendar-themes.png", alt: "Daylight calendar themes" },
-    { src: "calendar-moments.png", alt: "Daylight calendar filled with photos" },
-    { src: "diary-space.png", alt: "Daylight personal diary" },
+    { src: calendarThemes, alt: "Daylight calendar themes" },
+    { src: calendarMoments, alt: "Daylight calendar filled with photos" },
+    { src: diarySpace, alt: "Daylight personal diary" },
   ],
   archive: [
-    { src: "year-archive.png", alt: "Daylight yearly photo archive" },
-    { src: "diary-style.png", alt: "Daylight diary decorations" },
-    { src: "diary-closeup.png", alt: "A page from a Daylight photo diary" },
+    { src: yearArchive, alt: "Daylight yearly photo archive" },
+    { src: diaryStyle, alt: "Daylight diary decorations" },
+    { src: diaryCloseup, alt: "A page from a Daylight photo diary" },
   ],
   article: [
-    { src: "diary-words.png", alt: "Writing a daily story in Daylight" },
-    { src: "photo-editor.png", alt: "Editing a photo in Daylight" },
-    { src: "diary-closeup.png", alt: "A page from a Daylight photo diary" },
+    { src: diaryWords, alt: "Writing a daily story in Daylight" },
+    { src: photoEditor, alt: "Editing a photo in Daylight" },
+    { src: diaryCloseup, alt: "A page from a Daylight photo diary" },
   ],
-} as const;
+} as const satisfies Record<string, readonly PromoVisual[]>;
 
 export function AppPromotion({
   locale,
@@ -56,7 +67,7 @@ export function AppPromotion({
 
   return (
     <aside
-      className="my-6 flex min-h-[5.5rem] items-center justify-between gap-4 rounded-xl border border-[#d9a0af] bg-[#e7b4c1] px-4 py-3 text-ink sm:my-8 sm:px-5"
+      className="my-6 flex items-center justify-between gap-4 overflow-visible rounded-xl border border-[#d9a0af] bg-[#e7b4c1] px-4 py-4 text-ink max-[420px]:flex-col max-[420px]:items-stretch sm:my-8 sm:gap-5 sm:px-5 sm:py-5"
       aria-label="Daylight"
     >
       <div className="min-w-0">
@@ -83,16 +94,19 @@ export function AppPromotion({
           <span aria-hidden="true" className="ml-0.5">↗</span>
         </Link>
       </div>
-      <div className="flex h-20 shrink-0 items-center gap-1" aria-label="Daylight app screens">
+      <div
+        className="flex shrink-0 items-end justify-end gap-1.5 max-[420px]:justify-center"
+        aria-label="Daylight app screens"
+      >
         {visuals.map((visual) => (
           <Image
-            key={visual.src}
-            src={`/daylight/promotion/${visual.src}`}
+            key={visual.alt}
+            src={visual.src}
             alt={visual.alt}
-            width={1290}
-            height={2796}
-            sizes="48px"
-            className="h-full w-12 rounded-md border border-ink/10 bg-white object-cover object-top"
+            sizes="(max-width: 420px) 28vw, 72px"
+            quality={75}
+            placeholder="blur"
+            className="h-[7.25rem] w-auto rounded-md border border-ink/10 bg-white object-contain sm:h-32"
           />
         ))}
       </div>
