@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AppScrollMotion } from "@/components/app-scroll-motion";
 import { AppStoreBadge } from "@/components/app-store-badge";
 import { JsonLd } from "@/components/json-ld";
+import { site } from "@/config/site";
 import { appJsonLd } from "@/lib/json-ld";
 import { DaylightFilmSequence } from "@/components/daylight-film-sequence";
 import { DaylightCalendarSequence } from "@/components/daylight-calendar-sequence";
@@ -161,7 +162,12 @@ export default async function AppIntroPage({ params }: Props) {
 
   return (
     <AppScrollMotion className={styles.page} lang={locale}>
-      <JsonLd data={appJsonLd(text.description, locale)} />
+      <JsonLd data={appJsonLd({
+        description: text.description,
+        locale,
+        featureList: text.features.map(([label, , description]) => `${label.replace(/^\d+\s*\/\s*/, "")}: ${description.replaceAll("\n", " ")}`),
+        screenshots: screenshots.flat().map((screen) => `${site.siteUrl}${screen.src}`),
+      })} />
       <h1 className="sr-only">Daylight · {text.title} {text.description}</h1>
       <section className={styles.hero} aria-label="Daylight">
         <div className={styles.heroHeading}>

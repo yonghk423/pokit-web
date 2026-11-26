@@ -33,17 +33,26 @@ export function websiteJsonLd(description: string, locale: Locale) {
 }
 
 /** The app is a distinct entity from the POKIT editorial website. */
-export function appJsonLd(description: string, locale: Locale) {
+export function appJsonLd(params: {
+  description: string;
+  locale: Locale;
+  featureList: string[];
+  screenshots: string[];
+}) {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "@id": `${site.siteUrl}/#daylight`,
-    name: appName(locale),
-    description,
-    url: `${site.siteUrl}${withLocale(locale, "/app")}`,
+    name: appName(params.locale),
+    description: params.description,
+    url: `${site.siteUrl}${withLocale(params.locale, "/app")}`,
     operatingSystem: "iOS",
-    downloadUrl: appStoreUrl(locale),
-    inLanguage: localeToIntl(locale),
+    applicationCategory: "Lifestyle",
+    downloadUrl: appStoreUrl(params.locale),
+    sameAs: appStoreUrl(params.locale),
+    featureList: params.featureList,
+    screenshot: params.screenshots,
+    inLanguage: localeToIntl(params.locale),
     subjectOf: {
       "@type": "WebSite",
       name: siteName(),
