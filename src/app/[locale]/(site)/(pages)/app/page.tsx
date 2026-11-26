@@ -29,7 +29,6 @@ const copy = {
       ["사진에 필름 느낌과 날짜를 넣을 수 있나요?", "네. 다양한 필름 색감을 고르고 사진에 문구나 날짜를 표시할 수 있어요."],
       ["달력도 꾸밀 수 있나요?", "네. 다양한 디자인의 달력을 골라 다이어리에서 사용할 수 있어요."],
     ],
-    storyLink: "Daylight의 일기와 메모 이야기 읽기",
     nav: ["다이어리", "달력", "필름", "아이템", "기록 모아보기", "일러스트 달력"],
     intro: ["사진과 글로 채우는", "오늘의 장면을 나답게 기록해요.", "마음에 남은 사진을 고르고, 그날의 생각을 적어보세요. 색과 아이콘, 다양한 다이어리 아이템으로 나만의 페이지를 완성할 수 있어요."],
     features: [
@@ -54,7 +53,6 @@ const copy = {
       ["Can I add a film look and date to a photo?", "Yes. Choose from different film looks, then add a caption or the photo date."],
       ["Can I customize the calendar?", "Yes. Choose from a variety of calendar designs and use your favorite in the diary."],
     ],
-    storyLink: "Read Daylight diary and memo stories",
     nav: ["Diary", "Calendar", "Film", "Items", "Photo diary", "Illustrated calendars"],
     intro: ["Made with photos and words", "Keep the moments that feel like you.", "Choose a photo that stays with you and write a few words about the day. Finish each page with your choice of colors, icons, and diary items."],
     features: [
@@ -79,7 +77,6 @@ const copy = {
       ["写真にフィルムの雰囲気や日付を加えられますか？", "はい。さまざまなフィルムの色合いを選び、写真に文章や日付を表示できます。"],
       ["カレンダーをカスタマイズできますか？", "はい。いろいろなデザインから選び、日記で使えます。"],
     ],
-    storyLink: "Daylightの日記とメモのストーリーを読む",
     nav: ["日記", "カレンダー", "フィルム", "アイテム", "写真日記", "イラストカレンダー"],
     intro: ["写真と言葉でつくる", "今日の思い出を、自分らしく。", "心に残った写真を選び、その日の気持ちを書き留めましょう。色やアイコン、さまざまなアイテムで自分だけのページに仕上げられます。"],
     features: [
@@ -104,7 +101,6 @@ const copy = {
       ["可以為照片加上底片效果和日期嗎？", "可以。你可以挑選不同的底片色調，也能在照片上顯示文字或日期。"],
       ["月曆可以自訂樣式嗎？", "可以。挑選喜歡的月曆設計，就能在手帳中使用。"],
     ],
-    storyLink: "閱讀 Daylight 日記與備忘故事",
     nav: ["手帳", "月曆", "底片", "小物", "照片日記", "插畫月曆"],
     intro: ["用照片與文字記錄", "用自己的方式收藏今天。", "選一張留在心上的照片，寫下今天的心情，再用色彩、圖示和各種手帳小物，完成專屬於你的頁面。"],
     features: [
@@ -223,9 +219,6 @@ export default async function AppIntroPage({ params }: Props) {
               </div>
             ))}
           </dl>
-          <a className={styles.textLink} href={withLocale(locale, "/app/yourday-story")}>
-            {text.storyLink} <span aria-hidden="true">↗</span>
-          </a>
         </div>
       </section>
       <section className={styles.closing}>
