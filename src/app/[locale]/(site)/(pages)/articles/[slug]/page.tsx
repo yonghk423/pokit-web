@@ -263,7 +263,7 @@ export default async function ArticlePage({ params }: Props) {
         </aside>
         {shouldShowPokitCta(article) && (
           <AddToPokitCta
-            recordingPrompt={getArticleRecordingPrompt(article.slug, locale)}
+            recordingPrompt={getArticleRecordingPrompt(article, locale)}
             article={toPokitRoutineArticle(article)}
             locale={locale}
             messages={installMessages}
