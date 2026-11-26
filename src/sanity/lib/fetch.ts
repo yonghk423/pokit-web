@@ -162,8 +162,6 @@ export type HomePageCarousels = {
 export type HomePageWithCarousels = HomePageContent & HomePageCarousels;
 
 const WEEKLY_POOL_LIMIT = 24;
-const CAROUSEL_POOL_LIMIT = 12;
-const SPACE_POOL_LIMIT = 24;
 
 async function fetchHomeCarouselPools(locale: Locale) {
   if (!client) {
@@ -187,7 +185,6 @@ async function fetchHomeCarouselPools(locale: Locale) {
         ARTICLES_RECENT_BY_CATEGORY_QUERY,
         {
           category: homeSections.routine.archiveCategory!,
-          limit: CAROUSEL_POOL_LIMIT,
           locale,
         },
         sanityFetchOptions,
@@ -196,7 +193,6 @@ async function fetchHomeCarouselPools(locale: Locale) {
         ARTICLES_RECENT_BY_CATEGORY_QUERY,
         {
           category: homeSections.commute.archiveCategory!,
-          limit: CAROUSEL_POOL_LIMIT,
           locale,
         },
         sanityFetchOptions,
@@ -205,7 +201,6 @@ async function fetchHomeCarouselPools(locale: Locale) {
         ARTICLES_RECENT_BY_CATEGORY_QUERY,
         {
           category: homeSections.sleep.archiveCategory!,
-          limit: CAROUSEL_POOL_LIMIT,
           locale,
         },
         sanityFetchOptions,
@@ -214,14 +209,13 @@ async function fetchHomeCarouselPools(locale: Locale) {
         ARTICLES_RECENT_BY_CATEGORY_QUERY,
         {
           category: homeSections.wellness.archiveCategory!,
-          limit: CAROUSEL_POOL_LIMIT,
           locale,
         },
         sanityFetchOptions,
       ),
       client.fetch<ArticleCardData[]>(
         ARTICLES_DESIGN_SPACE_POOL_QUERY,
-        { routineSlugs, limit: SPACE_POOL_LIMIT, locale },
+        { routineSlugs, locale },
         sanityFetchOptions,
       ),
     ]);
@@ -638,31 +632,31 @@ export async function getHomePageWithCarousels(
         home.spotlightRow,
         routinePool,
         homeSections.routine.archiveCategory!,
-        12,
+        Number.POSITIVE_INFINITY,
       ),
       commuteCarousel: mergeArticlesForCategory(
         home.radioArticles,
         commutePool,
         homeSections.commute.archiveCategory!,
-        12,
+        Number.POSITIVE_INFINITY,
       ),
       spaceCarousel: mergeArticlesForSpacePool(
         home.designAwards,
         spacePool,
         homeSections.space.spaceRoutineSlugs ?? [],
-        12,
+        Number.POSITIVE_INFINITY,
       ),
       sleepCarousel: mergeArticlesForCategory(
         home.sleepStories,
         sleepPool,
         homeSections.sleep.archiveCategory!,
-        12,
+        Number.POSITIVE_INFINITY,
       ),
       wellnessCarousel: mergeArticlesForCategory(
         home.cityGuides,
         wellnessPool,
         homeSections.wellness.archiveCategory!,
-        12,
+        Number.POSITIVE_INFINITY,
       ),
       newArrivals,
       pastRoutineTools,

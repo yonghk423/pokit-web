@@ -210,14 +210,14 @@ export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && coalesce(appS
 
 export const ARTICLES_COUNT_BY_CATEGORY_QUERY = `count(*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && category == $category && ${searchFilter}])`;
 
-export const ARTICLES_RECENT_BY_CATEGORY_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && category == $category] | order(publishedAt desc)[0...$limit]{
+export const ARTICLES_RECENT_BY_CATEGORY_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && category == $category] | order(publishedAt desc){
   ${articleCardFields}
 }`;
 
 export const ARTICLES_DESIGN_SPACE_POOL_QUERY = `*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && (
   category == "Space" ||
   (category == "Routine" && slug.current in $routineSlugs)
-)] | order(publishedAt desc)[0...$limit]{
+)] | order(publishedAt desc){
   ${articleCardFields}
 }`;
 

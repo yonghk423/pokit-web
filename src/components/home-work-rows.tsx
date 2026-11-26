@@ -38,14 +38,9 @@ type Props = {
 };
 
 const VISIBLE_DESKTOP = 3;
-const MAX_ARTICLES = 12;
 
 const navBtnClass =
   "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-ink/[0.05] p-0 font-sans text-[0.8rem] font-medium leading-none text-ink/55 transition-colors hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:bg-transparent disabled:text-ink/20";
-
-function articlesWithCover(articles: ArticleCardData[]) {
-  return articles.filter((article) => Boolean(article.coverImage)).slice(0, MAX_ARTICLES);
-}
 
 function HomeWorkRow({
   section,
@@ -59,7 +54,7 @@ function HomeWorkRow({
   autoplayOffsetMs: number;
 }) {
   const preview = useOptionalArticlePreview();
-  const images = articlesWithCover(section.articles);
+  const images = section.articles;
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -336,9 +331,7 @@ export function HomeWorkRows({
   sections,
   locale,
 }: Props) {
-  const visible = sections.filter(
-    (section) => articlesWithCover(section.articles).length > 0,
-  );
+  const visible = sections.filter((section) => section.articles.length > 0);
   if (visible.length === 0) return null;
 
   return (
