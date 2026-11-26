@@ -359,7 +359,7 @@ export function HomeWorkRows({
           />
           <Link
             href={viewAllHref}
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 font-sans text-[0.78rem] font-semibold tracking-[0.02em] text-white no-underline transition-colors hover:bg-indigo"
+            className="inline-flex items-center gap-2 rounded-full bg-[#f1f1ef] px-4 py-2 font-sans text-[0.78rem] font-semibold tracking-[0.02em] text-ink no-underline transition-colors hover:bg-[#e8e8e5]"
           >
             <span className="size-1.5 rounded-full bg-brand" aria-hidden />
             {viewAllLabel}
