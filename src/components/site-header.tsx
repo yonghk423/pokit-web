@@ -16,6 +16,7 @@ export function SiteHeader({ locale, messages }: Props) {
       tagline={t("일상 루틴과 웰니스를 위한 포켓 가이드")}
       homeAria={t("POKIT 홈")}
       app={t("App")}
+      library="Daylight Library"
       contact={t("Contact")}
       languageLabels={{
         label: t("Language"),

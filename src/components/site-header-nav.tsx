@@ -17,6 +17,7 @@ type Props = {
   tagline: string;
   homeAria: string;
   app: string;
+  library: string;
   contact: string;
   languageLabels: LanguageLabels;
 };
@@ -29,6 +30,7 @@ export function SiteHeaderNav({
   locale,
   tagline,
   homeAria,
+  library,
   contact,
   languageLabels,
 }: Props) {
@@ -36,7 +38,9 @@ export function SiteHeaderNav({
   const headerRef = useRef<HTMLElement>(null);
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
+  const libraryHref = withLocale(locale, "/app/library");
   const appActive = pathMatches(pathname, appHref);
+  const libraryActive = pathMatches(pathname, libraryHref);
   const brandName = siteName();
 
   useEffect(() => {
@@ -110,6 +114,19 @@ export function SiteHeaderNav({
             aria-current={appActive ? "page" : undefined}
           >
             Daylight
+          </Link>
+          <span aria-hidden="true" className="px-0.5 font-sans text-sm text-ink/35 max-[760px]:hidden">·</span>
+          <Link
+            href={libraryHref}
+            className={cn(
+              "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
+              libraryActive
+                ? "border border-ink/15 bg-ink/8 text-ink"
+                : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
+            )}
+            aria-current={libraryActive ? "page" : undefined}
+          >
+            {library}
           </Link>
           <SupportEmailLink className="hidden rounded-full px-3 py-1.5 font-sans text-[0.78rem] font-medium text-muted no-underline hover:text-ink md:inline-flex">
             {contact}

@@ -10,9 +10,12 @@
     "test:i18n": "node --experimental-strip-types --test src/i18n/*.test.mjs scripts/lib/*.test.mjs",
     "i18n:extract": "node scripts/extract-i18n.mjs",
     "i18n:check": "node scripts/check-i18n.mjs",
-    "check": "npm run i18n:check && tsc --noEmit"
+    "check": "npm run i18n:check && tsc --noEmit",
+    "geo:mcp": "node scripts/daylight-geo-mcp.mjs",
+    "geo:daily": "node scripts/daylight-geo-mcp.mjs --daily-report"
   },
   "dependencies": {
+    "@modelcontextprotocol/server": "^2.4.0",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.1",
     "@tailwindcss/typography": "^0.5.20",

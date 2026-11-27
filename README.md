@@ -31,3 +31,23 @@
 - 웹 기사에서 앱으로 루틴을 바로 담을 수 있습니다.
 
 문의: pokit.app.help@gmail.com
+
+## Daylight GEO 점검
+
+AI 답변 노출과 GEO 준비 상태를 확인하는 로컬 MCP 서버와 Markdown 리포터입니다. Google Search Console API에서 AI Overview / AI Mode `searchAppearance` 행만 GEO 성과로 집계합니다. 일반 검색 전체 클릭·노출·검색어·순위는 GEO 성과에 섞지 않습니다. API가 AI 전용 행을 반환하지 않으면 GEO 성과 자료가 없다고 표시합니다.
+
+기술 상태는 한국어·영어·일본어·번체 중국어 페이지의 공개 접근, `SoftwareApplication` JSON-LD, robots.txt의 OAI-SearchBot 정책, 언어별 사이트맵을 별도 섹션에서 점검합니다. 기술 점검 통과는 AI 인용·노출 성과를 뜻하지 않습니다. 매일은 확인 가능한 GEO 신호에 근거해 페이지 개선 가설과 변경 사항을 기록하며, 데이터나 출처가 없으면 성과를 지어내거나 반복 콘텐츠를 만들지 않습니다.
+
+```sh
+npm run geo:daily # GEO 전용 Markdown 일일 리포트
+npm run geo:mcp   # MCP 서버 (stdio)
+```
+
+Search Console 연동은 선택 사항입니다. 서비스 계정 키는 저장소에 넣지 말고 로컬 환경에 보관하세요. Google Search Console에서 해당 서비스 계정에 속성 읽기 권한을 부여한 뒤 `.env.local`에 다음 두 항목을 설정합니다.
+
+```dotenv
+GSC_SERVICE_ACCOUNT_KEY_FILE=/absolute/path/to/read-only-service-account.json
+GSC_SITE_URL=sc-domain:pokitstory.com
+```
+
+연동하지 않아도 기술 점검은 실행되며, GEO 성과는 연결되지 않았다고 표시됩니다. 일반 Google 검색 실적은 대체 수치로 사용하지 않습니다. GEO 개선은 독창성·신뢰성·사람에게 유용한 정보와 크롤링 가능성에 근거해야 하며, 불필요한 스키마나 대량 생성 콘텐츠를 추가하지 않습니다.
