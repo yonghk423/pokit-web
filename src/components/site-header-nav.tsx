@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { LanguageSwitcher, type LanguageLabels } from "@/components/language-switcher";
 import { SupportEmailLink } from "@/components/support-email-link";
 import { siteName } from "@/config/site";
 import type { Locale } from "@/i18n/config";
+import { isPokitAppContext } from "@/lib/pokit-bridge";
 import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
@@ -36,12 +37,18 @@ export function SiteHeaderNav({
 }: Props) {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
+  const [inApp, setInApp] = useState(false);
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
   const libraryHref = withLocale(locale, "/app/library");
-  const appActive = pathMatches(pathname, appHref);
   const libraryActive = pathMatches(pathname, libraryHref);
+  const appActive = pathMatches(pathname, appHref) && !libraryActive;
+  const hideLibraryNav = libraryActive && inApp;
   const brandName = siteName();
+
+  useEffect(() => {
+    setInApp(isPokitAppContext());
+  }, []);
 
   useEffect(() => {
     const header = headerRef.current;
@@ -87,7 +94,7 @@ export function SiteHeaderNav({
               {brandName}
             </span>
           </Link>
-          {appActive ? (
+          {hideLibraryNav ? null : appActive ? (
             <p className="m-0 flex min-w-0 items-center gap-2 font-sans text-[0.72rem] text-muted">
               <span aria-hidden="true" className="text-ink/25">
                 /
@@ -102,32 +109,36 @@ export function SiteHeaderNav({
         </div>
 
         <div className="flex shrink-0 flex-nowrap items-center gap-1.5 max-[760px]:gap-1">
-          <Link
-            href={appHref}
-            className={cn(
-              "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
-              appActive
-                ? "border border-ink/15 bg-ink/8 text-ink"
-                : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
-              appActive && "max-[760px]:hidden",
-            )}
-            aria-current={appActive ? "page" : undefined}
-          >
-            Daylight
-          </Link>
-          <span aria-hidden="true" className="px-0.5 font-sans text-sm text-ink/35 max-[760px]:hidden">·</span>
-          <Link
-            href={libraryHref}
-            className={cn(
-              "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
-              libraryActive
-                ? "border border-ink/15 bg-ink/8 text-ink"
-                : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
-            )}
-            aria-current={libraryActive ? "page" : undefined}
-          >
-            {library}
-          </Link>
+          {!hideLibraryNav ? (
+            <>
+              <Link
+                href={appHref}
+                className={cn(
+                  "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
+                  appActive
+                    ? "border border-ink/15 bg-ink/8 text-ink"
+                    : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
+                  appActive && "max-[760px]:hidden",
+                )}
+                aria-current={appActive ? "page" : undefined}
+              >
+                Daylight
+              </Link>
+              <span aria-hidden="true" className="px-0.5 font-sans text-sm text-ink/35 max-[760px]:hidden">·</span>
+              <Link
+                href={libraryHref}
+                className={cn(
+                  "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
+                  libraryActive
+                    ? "border border-ink/15 bg-ink/8 text-ink"
+                    : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
+                )}
+                aria-current={libraryActive ? "page" : undefined}
+              >
+                {library}
+              </Link>
+            </>
+          ) : null}
           <SupportEmailLink className="hidden rounded-full px-3 py-1.5 font-sans text-[0.78rem] font-medium text-muted no-underline hover:text-ink md:inline-flex">
             {contact}
           </SupportEmailLink>
