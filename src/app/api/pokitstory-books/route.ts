@@ -2,16 +2,19 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-type Operation = "bestseller" | "search";
-
 export async function GET(request: Request) {
   const url = new URL(request.url);
-  const operation = url.searchParams.get("operation") as Operation | null;
+  const operation = url.searchParams.get("operation");
   const query = url.searchParams.get("query")?.trim() ?? "";
-  if (operation !== "bestseller" && operation !== "search") {
+  const page = Number(url.searchParams.get("page") ?? "1");
+  if (operation !== "categories" && operation !== "search") {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
   if (operation === "search" && (!query || query.length > 100)) {
+    return NextResponse.json({ error: "invalid_request" }, { status: 400 });
+  }
+
+  if (!Number.isSafeInteger(page) || page < 1) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
 
@@ -23,14 +26,14 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ operation, ...(operation === "search" ? { query } : {}) }),
+      body: JSON.stringify(operation === "search" ? { operation, query, page } : { operation }),
       cache: "no-store",
       signal: AbortSignal.timeout(12000),
     });
     const payload = await response.json().catch(() => ({ error: "provider_error" }));
     return NextResponse.json(payload, {
       status: response.ok ? 200 : response.status,
-      headers: { "Cache-Control": operation === "bestseller" ? "public, s-maxage=300, stale-while-revalidate=900" : "no-store" },
+      headers: { "Cache-Control": response.ok && operation !== "search" ? "public, s-maxage=300, stale-while-revalidate=900" : "no-store" },
     });
   } catch {
     return NextResponse.json({ error: "provider_error" }, { status: 502 });

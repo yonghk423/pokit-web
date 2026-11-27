@@ -118,7 +118,7 @@ export function SiteHeaderNav({
                   appActive
                     ? "border border-ink/15 bg-ink/8 text-ink"
                     : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
-                  appActive && "max-[760px]:hidden",
+                  (appActive || libraryActive) && "max-[760px]:hidden",
                 )}
                 aria-current={appActive ? "page" : undefined}
               >
@@ -130,7 +130,7 @@ export function SiteHeaderNav({
                 className={cn(
                   "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
                   libraryActive
-                    ? "border border-ink/15 bg-ink/8 text-ink"
+                    ? "border border-ink/15 bg-ink/8 text-ink max-[760px]:hidden"
                     : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
                 )}
                 aria-current={libraryActive ? "page" : undefined}
