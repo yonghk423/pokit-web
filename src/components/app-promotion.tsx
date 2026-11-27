@@ -95,7 +95,7 @@ export function AppPromotion({
         </p>
         <Link
           href={withLocale(locale, "/app")}
-          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#d9a0af] bg-[#fff4f6] px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#c9879a] bg-[#fff4f6] px-3 py-1.5 text-xs font-semibold text-ink shadow-[0_2px_7px_rgba(86,35,51,0.18)] transition-all hover:bg-white hover:shadow-[0_3px_9px_rgba(86,35,51,0.24)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
         >
           <Image
             src="/daylight/promotion/daylight-photo-calendar-icon.jpg"

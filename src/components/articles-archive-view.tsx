@@ -97,7 +97,7 @@ export function ArticlesArchiveView({
     <>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-x-6 gap-y-4 border-b border-ink/8 pb-5">
         <div
-          className="flex items-center gap-1 rounded-full border border-ink/10 bg-white/70 p-1"
+          className="flex items-center gap-1 rounded-full border border-ink/15 bg-[#e1e0dc] p-1 shadow-[0_3px_10px_rgba(24,26,46,0.12)]"
           role="group"
           aria-label={labels.sortAria}
         >
@@ -109,7 +109,7 @@ export function ArticlesArchiveView({
               "no-underline",
               sort === "newest"
                 ? "bg-ink text-white"
-                : "bg-transparent text-muted hover:text-ink",
+                : "bg-[#f6f5f2] text-ink/75 shadow-[0_1px_4px_rgba(24,26,46,0.12)] hover:bg-white hover:text-ink hover:shadow-[0_2px_6px_rgba(24,26,46,0.16)]",
             )}
             aria-current={sort === "newest" ? "page" : undefined}
           >
@@ -123,7 +123,7 @@ export function ArticlesArchiveView({
               "no-underline",
               sort === "oldest"
                 ? "bg-ink text-white"
-                : "bg-transparent text-muted hover:text-ink",
+                : "bg-[#f6f5f2] text-ink/75 shadow-[0_1px_4px_rgba(24,26,46,0.12)] hover:bg-white hover:text-ink hover:shadow-[0_2px_6px_rgba(24,26,46,0.16)]",
             )}
             aria-current={sort === "oldest" ? "page" : undefined}
           >
@@ -132,7 +132,7 @@ export function ArticlesArchiveView({
         </div>
 
         <div
-          className="inline-flex items-center gap-1 rounded-full border border-ink/10 bg-white/70 p-1"
+          className="inline-flex items-center gap-1 rounded-full border border-ink/15 bg-[#e1e0dc] p-1 shadow-[0_3px_10px_rgba(24,26,46,0.12)]"
           role="group"
           aria-label={labels.viewModeAria}
         >
@@ -142,7 +142,7 @@ export function ArticlesArchiveView({
               pillBase,
               view === "grid"
                 ? "bg-ink text-white"
-                : "bg-transparent text-muted hover:text-ink",
+                : "bg-[#f6f5f2] text-ink/75 shadow-[0_1px_4px_rgba(24,26,46,0.12)] hover:bg-white hover:text-ink hover:shadow-[0_2px_6px_rgba(24,26,46,0.16)]",
             )}
             aria-pressed={view === "grid"}
             onClick={() => selectView("grid")}
@@ -156,7 +156,7 @@ export function ArticlesArchiveView({
               pillBase,
               view === "list"
                 ? "bg-ink text-white"
-                : "bg-transparent text-muted hover:text-ink",
+                : "bg-[#f6f5f2] text-ink/75 shadow-[0_1px_4px_rgba(24,26,46,0.12)] hover:bg-white hover:text-ink hover:shadow-[0_2px_6px_rgba(24,26,46,0.16)]",
             )}
             aria-pressed={view === "list"}
             onClick={() => selectView("list")}
