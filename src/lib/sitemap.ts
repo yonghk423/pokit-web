@@ -25,6 +25,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     "/briefing",
     "/new-arrivals",
     "/app",
+    "/app/library",
     "/app/yourday-story",
     "/support",
     "/privacy",
@@ -40,6 +41,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
         path === "/briefing" ||
         path === "/new-arrivals" ||
         path === "/app" ||
+        path === "/app/library" ||
         path === "/app/yourday-story"
           ? "weekly"
           : "monthly",
@@ -50,6 +52,7 @@ export async function getSitemapEntries(): Promise<MetadataRoute.Sitemap> {
               path === "/briefing" ||
               path === "/new-arrivals" ||
               path === "/app" ||
+              path === "/app/library" ||
               path === "/app/yourday-story"
             ? 0.9
             : 0.5,

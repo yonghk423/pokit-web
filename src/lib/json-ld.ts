@@ -3,6 +3,7 @@ import type { Locale } from "@/i18n/config";
 import { localeToIntl } from "@/i18n/config";
 import { articlePath } from "@/lib/article-path";
 import { withLocale } from "@/lib/locale-path";
+import type { LibraryBook } from "@/lib/library-shelves";
 
 const publisher = () => ({
   "@type": "Organization" as const,
@@ -139,6 +140,52 @@ export function briefingCollectionJsonLd(params: {
         name: item.headline,
         description: item.summary,
         url: item.sourceUrl,
+      })),
+    },
+  };
+}
+
+export function libraryCollectionJsonLd(params: {
+  locale: Locale;
+  name: string;
+  description: string;
+  books: LibraryBook[];
+}) {
+  const url = `${site.siteUrl}${withLocale(params.locale, "/app/library")}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: params.name,
+    description: params.description,
+    url,
+    inLanguage: localeToIntl(params.locale),
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteName(),
+      url: site.siteUrl,
+    },
+    about: {
+      "@type": "SoftwareApplication",
+      "@id": `${site.siteUrl}/#daylight`,
+      name: appName(params.locale),
+      url: `${site.siteUrl}${withLocale(params.locale, "/app")}`,
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: params.books.map((book, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Book",
+          name: book.title,
+          author: book.author,
+          description: book.description,
+          image: book.coverUrl,
+          url: book.link,
+          publisher: book.publisher,
+          inLanguage: localeToIntl(params.locale),
+        },
       })),
     },
   };
