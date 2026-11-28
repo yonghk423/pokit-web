@@ -715,7 +715,7 @@ function LibraryCharts({ locale, onSelect, category }: { category?: { id: string
     </div>
     {chartDate && <small>{feed === "bestsellerMonthly" ? chartDate.slice(0, 7) : chartDate}</small>}
     {failed ? <button onClick={() => setAttempt(n => n + 1)} className="py-2 text-sm underline">{copy[locale].error} ↻</button>
-      : books === null ? <p role="status">{copy[locale].loading}</p>
+      : books === null ? <p role="status" className={category ? undefined : "mt-3 h-[18rem] sm:h-[24rem] lg:h-[30rem]"}>{copy[locale].loading}</p>
       : books.length === 0 ? <p>{ { ko: "집계된 도서가 없습니다.", en: "No chart entries available.", ja: "ランキングはまだありません。", "zh-TW": "尚無排行資料。" }[locale] }</p>
       : !category ? (
         <div className="mt-3 grid h-[18rem] grid-cols-[minmax(0,42%)_minmax(0,1fr)] gap-3 sm:h-[24rem] sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:h-[30rem] lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">

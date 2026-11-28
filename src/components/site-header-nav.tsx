@@ -14,6 +14,7 @@ import { withLocale } from "@/lib/locale-path";
 import { cn, monoContainer } from "@/lib/cn";
 
 type Props = {
+  initialInApp: boolean;
   locale: Locale;
   tagline: string;
   homeAria: string;
@@ -28,6 +29,7 @@ function pathMatches(pathname: string, href: string) {
 }
 
 export function SiteHeaderNav({
+  initialInApp,
   locale,
   tagline,
   homeAria,
@@ -37,7 +39,7 @@ export function SiteHeaderNav({
 }: Props) {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
-  const [inApp, setInApp] = useState(false);
+  const [inApp, setInApp] = useState(initialInApp);
   const appHref = withLocale(locale, "/app");
   const homeHref = withLocale(locale, "/");
   const libraryHref = withLocale(locale, "/app/library");
@@ -47,8 +49,8 @@ export function SiteHeaderNav({
   const brandName = siteName();
 
   useEffect(() => {
-    setInApp(isPokitAppContext());
-  }, []);
+    setInApp(initialInApp || isPokitAppContext());
+  }, [initialInApp]);
 
   useEffect(() => {
     const header = headerRef.current;
