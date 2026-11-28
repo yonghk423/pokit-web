@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   const query = url.searchParams.get("query")?.trim() ?? "";
   const page = Number(url.searchParams.get("page") ?? "1");
   const byId = operation === "detail" || operation === "content" || operation === "author";
-  if ((operation !== "categories" && operation !== "search" && !byId) || (byId && !/^[1-9]\d{0,11}$/.test(query))) {
+  if ((operation !== "categories" && operation !== "search" && operation !== "chart" && !byId) || (byId && !/^[1-9]\d{0,11}$/.test(query))) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
   if (operation === "search" && (!query || query.length > 100)) {

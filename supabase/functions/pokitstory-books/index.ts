@@ -14,6 +14,7 @@ type Yes24Item = {
   publishDate?: string;
   cover?: string;
   pages?: number;
+  sortOrder?: number;
   contentDetail?: { bookIntroduction?: string; bookSummary?: string };
 };
 
@@ -36,8 +37,9 @@ Deno.serve(async request => {
   const body = await request.json().catch(() => null);
   const operation: unknown = body?.operation;
   const query = typeof body?.query === 'string' ? body.query.trim() : '';
+  const chart = operation === "chart";
   const extra = operation === 'content' || operation === 'author';
-  if (operation !== 'categories' && operation !== 'search' && operation !== 'detail' && !extra) {
+  if (operation !== 'categories' && operation !== 'search' && operation !== 'detail' && !chart && !extra) {
     return json({ error: 'invalid_request' }, 400);
   }
   if (operation === 'search' && (!query || query.length > 100)) return json({ error: 'invalid_request' }, 400);
@@ -45,12 +47,24 @@ Deno.serve(async request => {
   const page = body?.page ?? 1;
   if (!Number.isSafeInteger(page) || page < 1) return json({ error: 'invalid_request' }, 400);
 
+  if (chart && !["bestsellerRealtime", "bestseller", "bestsellerDaily", "bestsellerMonthly", "bestsellerSteady", "bestsellerDeal", "newproduct", "newproductAttention"].includes(query)) return json({ error: "invalid_chart" }, 400);
+
   const key = Deno.env.get('POKITSTORY_YES24_API_KEY')?.trim();
   if (!key) return json({ error: 'not_configured' }, 503);
 
   const paths = { categories: 'category/list', search: 'goods/itemList', detail: 'goods/itemDetail', content: 'goods/content', author: 'goods/author' };
-  const url = new URL(paths[operation], 'https://apis.yes24.com/v1/');
-  if (operation === 'detail' || extra) {
+  const url = new URL(chart ? 'category/' + query : paths[operation], 'https://apis.yes24.com/v1/');
+  let chartDate: string | undefined;
+  if (chart) {
+    url.searchParams.set('categoryId', '001');
+    url.searchParams.set('pageSize', String(pageSize));
+    if (query === 'bestsellerDaily' || query === 'bestsellerMonthly') {
+      const day = new Date(Date.now() - (query === 'bestsellerDaily' ? 86400000 : 0));
+      const date = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul' }).format(day);
+      chartDate = query === 'bestsellerMonthly' ? date.slice(0, 8) + '01' : date;
+      url.searchParams.set('date', chartDate);
+    }
+  } else if (operation === 'detail' || extra) {
     url.searchParams.set('searchType', 'ItemId');
     url.searchParams.set('query', query);
     if (operation === 'detail') url.searchParams.set('detail', 'Y');
@@ -99,6 +113,7 @@ Deno.serve(async request => {
       .map(item => ({
         itemId: item.itemId,
         title: item.title,
+        rank: chart ? item.sortOrder : undefined,
         totalPages: Number.isSafeInteger(item.pages) && item.pages! > 0 ? item.pages : undefined,
         author: item.author ?? '',
         publisher: item.publisher ?? '',
@@ -111,7 +126,7 @@ Deno.serve(async request => {
     const hasMore = Number.isSafeInteger(totalCount)
       && page * (responsePageSize > 0 ? responsePageSize : pageSize) < totalCount
       && payload.data.items.length > 0;
-    return json({ items, hasMore });
+    return json({ items, hasMore, chartDate });
   } catch {
     return json({ error: 'provider_error' }, 502);
   }

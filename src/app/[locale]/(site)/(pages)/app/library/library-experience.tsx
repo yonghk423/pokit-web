@@ -710,6 +710,98 @@ function BookPreviewModal({
   );
 }
 
+const chartLabels = {
+  "ko": {
+    "bestsellerRealtime": "실시간 베스트셀러",
+    "bestseller": "종합 베스트셀러",
+    "bestsellerDaily": "일간 베스트셀러",
+    "bestsellerMonthly": "월간 베스트셀러",
+    "bestsellerSteady": "스테디셀러",
+    "bestsellerDeal": "특가 베스트셀러",
+    "newproduct": "신간",
+    "newproductAttention": "주목할 신간"
+  },
+  "en": {
+    "bestsellerRealtime": "Real-time bestsellers",
+    "bestseller": "Overall bestsellers",
+    "bestsellerDaily": "Daily bestsellers",
+    "bestsellerMonthly": "Monthly bestsellers",
+    "bestsellerSteady": "Steady sellers",
+    "bestsellerDeal": "Bestselling deals",
+    "newproduct": "New releases",
+    "newproductAttention": "Notable new releases"
+  },
+  "ja": {
+    "bestsellerRealtime": "リアルタイムランキング",
+    "bestseller": "総合ベストセラー",
+    "bestsellerDaily": "日別ベストセラー",
+    "bestsellerMonthly": "月間ベストセラー",
+    "bestsellerSteady": "ロングセラー",
+    "bestsellerDeal": "特価本ランキング",
+    "newproduct": "新刊",
+    "newproductAttention": "注目の新刊"
+  },
+  "zh-TW": {
+    "bestsellerRealtime": "即時暢銷榜",
+    "bestseller": "綜合暢銷榜",
+    "bestsellerDaily": "每日暢銷榜",
+    "bestsellerMonthly": "每月暢銷榜",
+    "bestsellerSteady": "長銷書榜",
+    "bestsellerDeal": "特價書暢銷榜",
+    "newproduct": "新書",
+    "newproductAttention": "注目新書"
+  }
+} as const;
+
+function LibraryCharts({ locale, onSelect }: { locale: Locale; onSelect: (book: LibraryBook) => void }) {
+  const labels = chartLabels[locale];
+  const [chartDate, setChartDate] = useState("");
+  const [feed, setFeed] = useState<keyof typeof labels>("bestsellerRealtime");
+  const [books, setBooks] = useState<(LibraryBook & { rank?: number })[] | null>(null);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    const controller = new AbortController();
+    setBooks(null);
+    setChartDate("");
+    setFailed(false);
+    fetch(`/api/pokitstory-books?operation=chart&query=${feed}`, { signal: controller.signal })
+      .then(async response => {
+        if (!response.ok) throw new Error();
+        const payload = await response.json();
+        if (!Array.isArray(payload.items)) throw new Error();
+        if (!controller.signal.aborted) {
+          setBooks(payload.items);
+          setChartDate(payload.chartDate ?? "");
+        }
+      }).catch(() => { if (!controller.signal.aborted) setFailed(true); });
+    return () => controller.abort();
+  }, [feed, attempt]);
+  const heading = { ko: "YES24 국내도서 순위", en: "YES24 Korean book charts", ja: "YES24 韓国書籍ランキング", "zh-TW": "YES24 韓國圖書排行榜" }[locale];
+  return <section id="library-charts" className={cn(monoContainer, "mt-6 scroll-mt-16")}>
+    <div className="flex flex-wrap items-center justify-between gap-2">
+      <h2 className="text-lg font-bold">{heading}</h2>
+      <select aria-label={heading} value={feed} onChange={e => setFeed(e.target.value as keyof typeof labels)} className="max-w-full rounded-lg border border-ink/15 px-2 py-1 text-sm">
+        {Object.entries(labels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
+      </select>
+    </div>
+    {chartDate && <small>{feed === "bestsellerMonthly" ? chartDate.slice(0, 7) : chartDate}</small>}
+    {failed ? <button onClick={() => setAttempt(n => n + 1)} className="py-2 text-sm underline">{copy[locale].error} ↻</button>
+      : books === null ? <p role="status">{copy[locale].loading}</p>
+      : books.length === 0 ? <p>{ { ko: "집계된 도서가 없습니다.", en: "No chart entries available.", ja: "ランキングはまだありません。", "zh-TW": "尚無排行資料。" }[locale] }</p>
+      : <ol className="mt-2 flex snap-x gap-3 overflow-x-auto pb-2">{books.map((book, index) => (
+        <li key={book.itemId} className="w-24 shrink-0 snap-start">
+          <button type="button" onClick={() => onSelect(book)} className="w-full text-left">
+            <span className="relative flex h-32 items-center justify-center overflow-hidden">
+              <BookCoverImage src={book.coverUrl} alt={book.title} />
+              <strong className="absolute bottom-0 left-0 rounded bg-ink px-1.5 text-sm text-white">{book.rank || index + 1}</strong>
+            </span>
+            <span className="mt-1 block line-clamp-2 text-sm">{sanitizeBookText(book.title)}</span>
+          </button>
+        </li>))}</ol>}
+  </section>;
+}
+
 export function LibraryExperience({
   locale,
   initialData,
@@ -725,7 +817,7 @@ export function LibraryExperience({
   const searchSectionRef = useRef<HTMLElement>(null);
   const categoriesSectionRef = useRef<HTMLElement>(null);
 
-  const [selected, setSelected] = useState<LibraryBook | null>(null);
+  const [selected, setSelected] = useState<(LibraryBook & { provider?: "yes24" }) | null>(null);
   const [books, setBooks] = useState<LibraryBook[]>([]);
   const [query, setQuery] = useState("");
   const [showAllGroups, setShowAllGroups] = useState(false);
@@ -847,7 +939,7 @@ export function LibraryExperience({
 
   return (
     <main className="min-h-screen bg-[#FEFEFF] pb-14">
-      <section className="relative pt-10 max-nav:pt-7">
+      <section className="relative pt-10 max-nav:pt-3">
         <div className={monoContainer}>
           <DisplayHeading
             line1={t.heroLine1}
@@ -862,7 +954,7 @@ export function LibraryExperience({
       {/* ── Domestic Book Search (/v1/goods/itemList, 20 per page) ── */}
       <section
         ref={searchSectionRef}
-        className="mt-9 scroll-mt-20 max-nav:mt-7"
+        className="mt-9 scroll-mt-20 max-nav:mt-4"
         aria-label={t.search}
       >
         <div className={monoContainer}>
@@ -1040,6 +1132,8 @@ export function LibraryExperience({
           ) : null}
         </div>
       </section>
+
+      <LibraryCharts locale={locale} onSelect={book => setSelected({ ...book, provider: "yes24" })} />
 
       {/* ── Curated Shelf Rows (matches /ko HomeWorkRows) ── */}
       {shelves.some((s) => s.books.length > 0) ? (
@@ -1245,16 +1339,16 @@ export function LibraryExperience({
 
       {selected ? (
         <BookPreviewModal
-          key={provider + selected.itemId}
-          provider={provider}
+          key={(selected.provider ?? provider) + selected.itemId}
+          provider={selected.provider ?? provider}
           locale={locale}
           picker={picker}
           book={selected}
           labels={{
             close: t.close,
             detail: t.detail,
-            buy: t.buy,
-            attribution: t.attribution,
+            buy: selected.provider && isAppleBooks ? "YES24" : t.buy,
+            attribution: selected.provider && isAppleBooks ? "YES24" : t.attribution,
           }}
           onClose={() => setSelected(null)}
         />
