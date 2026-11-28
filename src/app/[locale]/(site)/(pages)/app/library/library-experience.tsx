@@ -346,12 +346,8 @@ function LibraryShelfRow({
   return (
     <div
       id={`shelf-${section.id}`}
-      className="group/row relative grid scroll-mt-24 grid-cols-1 items-start gap-4 overflow-visible py-7 max-nav:py-7 nav:grid-cols-[minmax(12rem,0.78fr)_minmax(0,1.62fr)] nav:items-stretch nav:gap-8 nav:py-8"
+      className="relative grid bg-white scroll-mt-24 grid-cols-1 items-start gap-4 overflow-visible py-7 max-nav:py-7 nav:grid-cols-[minmax(12rem,0.78fr)_minmax(0,1.62fr)] nav:items-stretch nav:gap-8 nav:py-8"
     >
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-7 bg-gradient-to-b from-ink/[0.025] to-transparent"
-        aria-hidden
-      />
 
       <div className="relative z-[1] flex min-h-0 flex-col gap-3 nav:h-full nav:justify-between nav:gap-6">
         <div className="min-w-0">
@@ -404,7 +400,7 @@ function LibraryShelfRow({
           <div className="hidden items-center gap-2 nav:flex">
             <button
               type="button"
-              className={navBtnClass}
+              className={cn(navBtnClass, "border border-ink/15 bg-white hover:bg-white disabled:bg-white")}
               aria-label={prevLabel}
               disabled={!canPrev}
               onClick={() => scrollByCard("prev")}
@@ -413,7 +409,7 @@ function LibraryShelfRow({
             </button>
             <button
               type="button"
-              className={navBtnClass}
+              className={cn(navBtnClass, "border border-ink/15 bg-white hover:bg-white disabled:bg-white")}
               aria-label={nextLabel}
               disabled={!canNext}
               onClick={() => scrollByCard("next")}
@@ -454,7 +450,7 @@ function LibraryShelfRow({
                     src={book.coverUrl}
                     alt={book.title}
                     className={cn(
-                      "transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                      "shadow-none transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
                       isActive ? "scale-[1.04]" : "scale-100",
                     )}
                   />
@@ -474,7 +470,7 @@ function LibraryShelfRow({
           <div className="mt-1 hidden items-center justify-end gap-2 max-nav:flex">
             <button
               type="button"
-              className={navBtnClass}
+              className={cn(navBtnClass, "border border-ink/15 bg-white hover:bg-white disabled:bg-white")}
               aria-label={prevLabel}
               disabled={!canPrev}
               onClick={() => scrollByCard("prev")}
@@ -483,7 +479,7 @@ function LibraryShelfRow({
             </button>
             <button
               type="button"
-              className={navBtnClass}
+              className={cn(navBtnClass, "border border-ink/15 bg-white hover:bg-white disabled:bg-white")}
               aria-label={nextLabel}
               disabled={!canNext}
               onClick={() => scrollByCard("next")}
@@ -494,10 +490,6 @@ function LibraryShelfRow({
         ) : null}
       </div>
 
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-5 bg-gradient-to-t from-ink/[0.015] to-transparent opacity-0 transition-opacity duration-500 group-hover/row:opacity-100"
-        aria-hidden
-      />
     </div>
   );
 }
@@ -1121,7 +1113,7 @@ export function LibraryExperience({
       {/* ── Curated Shelf Rows (matches /ko HomeWorkRows) ── */}
       {shelves.some((s) => s.books.length > 0) ? (
         <section
-          className="mt-14 max-nav:mt-10"
+          className="mt-14 bg-white max-nav:mt-10"
           aria-labelledby="library-shelves-heading"
         >
           <div className={monoContainer}>
