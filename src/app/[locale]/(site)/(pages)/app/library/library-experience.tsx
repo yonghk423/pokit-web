@@ -175,13 +175,6 @@ function formatPubDate(raw: string | undefined): string | null {
   return raw;
 }
 
-const BOOK_COVER_BLUR_DATA_URL =
-  "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMCIgaGVpZ2h0PSI0MiI+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2U5ZThlNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2RjZGJlMCIvPjwvbGluZWFyR3JhZGllbnQ+PHJlY3Qgd2lkdGg9IjMwIiBoZWlnaHQ9IjQyIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+";
-
-/**
- * Renders any book cover at its natural aspect ratio inside its stage so wide
- * or square covers are never cropped, with blur placeholder + smooth reveal.
- */
 function BookCoverImage({
   src,
   alt,
@@ -193,16 +186,11 @@ function BookCoverImage({
   priority?: boolean;
   className?: string;
 }) {
-  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-
-  useEffect(() => {
-    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
-      setLoadedSrc(src);
-    }
-  }, [src]);
-
-  if (!src) {
+  const [failedUrl, setFailedUrl] = useState("");
+  const fallback = src.includes(".mzstatic.com/") ? src.replace("/600x600bb.jpg", "/100x100bb.jpg") : src;
+  const url = failedUrl === src ? fallback : src;
+  const [failedFallback, setFailedFallback] = useState("");
+  if (!url || failedFallback === url || (failedUrl === src && fallback === src)) {
     return (
       <span className="line-clamp-3 p-3 text-center font-serif text-sm text-ink/70">
         {alt}
@@ -210,26 +198,21 @@ function BookCoverImage({
     );
   }
 
-  const isLoaded = loadedSrc === src;
+
 
   return (
     <Image
-      ref={imgRef}
-      src={src}
+      src={url}
       alt={alt}
       width={300}
       height={420}
       priority={priority}
       loading={priority ? "eager" : "lazy"}
       decoding="async"
-      placeholder="blur"
-      blurDataURL={BOOK_COVER_BLUR_DATA_URL}
       unoptimized
-      onLoad={() => setLoadedSrc(src)}
-      onError={() => setLoadedSrc(src)}
+      onError={() => { if (url === src) setFailedUrl(src); else setFailedFallback(url); }}
       className={cn(
         "block h-auto max-h-full w-auto max-w-full rounded-[0.25rem] object-contain shadow-[0_14px_32px_rgba(24,26,46,0.28),0_4px_10px_rgba(24,26,46,0.16)] transition-[filter,opacity,transform] duration-500 ease-out",
-        isLoaded ? "blur-0 opacity-100" : "blur-[6px] opacity-80",
         className,
       )}
     />
@@ -739,7 +722,7 @@ function LibraryCharts({ locale, onSelect, category }: { category?: { id: string
           <button type="button" onClick={() => onSelect(books[0])}
             className="relative flex min-h-0 flex-col rounded-lg bg-transparent p-2 text-left sm:p-3">
             <strong className="absolute left-2 top-2 z-10 rounded bg-ink px-1.5 text-sm text-white">{books[0].rank || 1}</strong>
-            <span className="flex min-h-0 flex-1 items-center justify-center"><BookCoverImage src={books[0].coverUrl.replace(/^https:\/\/image\.yes24\.com\/goods\/(\d+)\/L$/, "https://image.yes24.com/goods/$1/XL")} alt="" /></span>
+            <span className="flex min-h-0 flex-1 items-center justify-center"><BookCoverImage priority src={books[0].coverUrl.replace(/^https:\/\/image\.yes24\.com\/goods\/(\d+)\/L$/, "https://image.yes24.com/goods/$1/XL")} alt="" /></span>
             <span className="mt-2 line-clamp-2 font-semibold leading-tight sm:text-xl">{sanitizeBookText(books[0].title)}</span>
             <span className="truncate text-xs text-muted">{books[0].author}</span>
           </button>
