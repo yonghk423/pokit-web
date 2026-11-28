@@ -78,7 +78,7 @@ export function SiteHeaderNav({
       <div className={cn(monoContainer, "flex flex-nowrap items-center justify-between gap-3 py-3 max-[760px]:gap-2 max-[760px]:py-2")}>
         <div className="flex min-w-0 items-center gap-2 max-[760px]:gap-1.5">
           {hideLibraryNav && (
-            <Image src="/daylight/promotion/daylight-photo-calendar-icon.jpg" alt="Daylight" width={28} height={28} className="size-7 shrink-0 rounded-md" />
+            <Image unoptimized loading="eager" src="/daylight/promotion/daylight-photo-calendar-icon.jpg" alt="Daylight" width={28} height={28} className="size-7 shrink-0 rounded-md" />
           )}
           {inApp ? null : (
             <Link
