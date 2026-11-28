@@ -1,10 +1,14 @@
 import { localeToIntl, type Locale } from "@/i18n/config";
-import { fetchAppleBooksShelf } from "@/lib/apple-books";
+import {
+  fetchAppleBooksGenres,
+  fetchAppleBooksShelf,
+} from "@/lib/apple-books";
 
 export type LibraryProvider = "yes24" | "apple-books";
 
 export type LibraryBook = {
   itemId: number;
+  totalPages?: number;
   title: string;
   author: string;
   publisher: string;
@@ -23,7 +27,9 @@ export type LibraryCategoryGroup = {
   id: string;
   label: string;
   query?: string;
-  children: { id: string; label: string; query?: string }[];
+  /** Apple Books genre id; search results are limited to this genre. */
+  genreId?: string;
+  children: { id: string; label: string; query?: string; genreId?: string }[];
 };
 
 export type LibraryShelfSection = {
@@ -446,12 +452,15 @@ function booksFunctionUrl(): string {
   return `${projectUrl.replace(/\/$/, "")}/functions/v1/pokitstory-books`;
 }
 
-async function fetchYes24SearchBooks(query: string): Promise<LibraryBook[]> {
+async function fetchYes24SearchBooks(
+  query: string,
+  page = 1,
+): Promise<LibraryBook[]> {
   try {
     const response = await fetch(booksFunctionUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ operation: "search", query, page: 1 }),
+      body: JSON.stringify({ operation: "search", query, page }),
       next: { revalidate: 1800 },
       signal: AbortSignal.timeout(8000),
     });
@@ -566,12 +575,48 @@ function buildHeroAndFeed(shelves: LibraryShelfSection[]): {
       : [];
 
   const hero = rotated[0] ?? shelves[0]?.books[0] ?? null;
-  const feed = rotated.slice(1, 9);
+  const feed = rotated.slice(1, 12);
 
   return {
     hero,
-    feed: feed.length > 0 ? feed : shelves.flatMap((s) => s.books).slice(1, 9),
+    feed: feed.length > 0 ? feed : shelves.flatMap((s) => s.books).slice(1, 12),
   };
+}
+
+/** Each ISR regeneration (30 min) draws a different sample per shelf. */
+const SHELF_SAMPLE_PAGES = 4;
+
+function shuffled<T>(items: readonly T[]): T[] {
+  const out = [...items];
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+function uniqueByItemId(books: LibraryBook[]): LibraryBook[] {
+  const seen = new Set<number>();
+  return books.filter((book) => {
+    if (seen.has(book.itemId)) return false;
+    seen.add(book.itemId);
+    return true;
+  });
+}
+
+async function fetchYes24ShelfSample(query: string): Promise<LibraryBook[]> {
+  const [first, second] = shuffled(
+    Array.from({ length: SHELF_SAMPLE_PAGES }, (_, i) => i + 1),
+  );
+  const pages = await Promise.all([
+    fetchYes24SearchBooks(query, first),
+    fetchYes24SearchBooks(query, second),
+  ]);
+  let pool = uniqueByItemId(pages.flat());
+  if (pool.length < 10 && first !== 1 && second !== 1) {
+    pool = uniqueByItemId([...pool, ...(await fetchYes24SearchBooks(query, 1))]);
+  }
+  return shuffled(pool);
 }
 
 async function fetchAppleShelfForSpec(
@@ -580,23 +625,15 @@ async function fetchAppleShelfForSpec(
 ): Promise<LibraryBook[]> {
   const primaryQuery = spec.queries[locale];
   if (locale !== "zh-TW") {
-    return fetchAppleBooksShelf(primaryQuery, locale, 30);
+    return shuffled(await fetchAppleBooksShelf(primaryQuery, locale, 50));
   }
 
   const fallbackQuery = ZH_TW_FALLBACK_QUERIES[spec.id];
   const [primary, secondary] = await Promise.all([
-    fetchAppleBooksShelf(primaryQuery, locale, 30),
-    fallbackQuery ? fetchAppleBooksShelf(fallbackQuery, locale, 24) : Promise.resolve([]),
+    fetchAppleBooksShelf(primaryQuery, locale, 50),
+    fallbackQuery ? fetchAppleBooksShelf(fallbackQuery, locale, 30) : Promise.resolve([]),
   ]);
-
-  const seen = new Set<number>();
-  const merged: LibraryBook[] = [];
-  for (const book of [...primary, ...secondary]) {
-    if (seen.has(book.itemId)) continue;
-    seen.add(book.itemId);
-    merged.push(book);
-  }
-  return merged;
+  return shuffled(uniqueByItemId([...primary, ...secondary]));
 }
 
 export async function getInitialLibraryData(
@@ -605,7 +642,7 @@ export async function getInitialLibraryData(
   if (locale === "ko") {
     const [results, categories] = await Promise.all([
       Promise.all(
-        SHELF_SPECS.map((spec) => fetchYes24SearchBooks(spec.queries.ko)),
+        SHELF_SPECS.map((spec) => fetchYes24ShelfSample(spec.queries.ko)),
       ),
       fetchYes24Categories(),
     ]);
@@ -639,9 +676,10 @@ export async function getInitialLibraryData(
   }
 
   // en / ja / zh-TW -> Apple Books (US / JP / US Traditional Chinese)
-  const results = await Promise.all(
-    SHELF_SPECS.map((spec) => fetchAppleShelfForSpec(spec, locale)),
-  );
+  const [results, genres] = await Promise.all([
+    Promise.all(SHELF_SPECS.map((spec) => fetchAppleShelfForSpec(spec, locale))),
+    fetchAppleBooksGenres(locale),
+  ]);
 
   const seenGlobal = new Set<number>();
   const shelves: LibraryShelfSection[] = SHELF_SPECS.map((spec, idx) => {
@@ -663,11 +701,25 @@ export async function getInitialLibraryData(
 
   const { hero, feed } = buildHeroAndFeed(shelves);
 
+  const genreGroups: LibraryCategoryGroup[] = genres.map((group) => ({
+    id: group.id,
+    label: group.label,
+    query: group.label,
+    genreId: group.id,
+    children: group.children.map((sub) => ({
+      id: sub.id,
+      label: sub.label,
+      query: sub.label,
+      genreId: sub.id,
+    })),
+  }));
+
   return {
     provider: "apple-books",
     hero,
     feed,
     shelves,
-    categoryGroups: APPLE_BOOK_CATEGORIES[locale],
+    categoryGroups:
+      genreGroups.length > 0 ? genreGroups : APPLE_BOOK_CATEGORIES[locale],
   };
 }

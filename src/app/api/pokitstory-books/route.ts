@@ -7,7 +7,8 @@ export async function GET(request: Request) {
   const operation = url.searchParams.get("operation");
   const query = url.searchParams.get("query")?.trim() ?? "";
   const page = Number(url.searchParams.get("page") ?? "1");
-  if (operation !== "categories" && operation !== "search") {
+  const byId = operation === "detail" || operation === "content" || operation === "author";
+  if ((operation !== "categories" && operation !== "search" && !byId) || (byId && !/^[1-9]\d{0,11}$/.test(query))) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
   if (operation === "search" && (!query || query.length > 100)) {
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(operation === "search" ? { operation, query, page } : { operation }),
+      body: JSON.stringify({ operation, query, page }),
       cache: "no-store",
       signal: AbortSignal.timeout(12000),
     });

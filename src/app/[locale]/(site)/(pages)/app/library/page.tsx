@@ -79,11 +79,7 @@ export default async function LibraryPage({ params }: Props) {
   if (!isLocale(locale)) notFound();
   const initialData = await getInitialLibraryData(locale);
   const copy = LIBRARY_COPY[locale];
-  const books = [
-    ...(initialData.hero ? [initialData.hero] : []),
-    ...initialData.feed,
-    ...initialData.shelves.flatMap((shelf) => shelf.books),
-  ].filter(
+  const books = initialData.shelves.flatMap((shelf) => shelf.books).filter(
     (book, index, all) =>
       all.findIndex((item) => item.itemId === book.itemId) === index,
   );

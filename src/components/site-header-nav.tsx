@@ -77,24 +77,26 @@ export function SiteHeaderNav({
     >
       <div className={cn(monoContainer, "flex flex-nowrap items-center justify-between gap-3 py-3 max-[760px]:gap-2 max-[760px]:py-2")}>
         <div className="flex min-w-0 items-center gap-2 max-[760px]:gap-1.5">
-          <Link
-            href={homeHref}
-            className="flex shrink-0 items-center gap-2.5 no-underline max-[760px]:gap-2"
-            aria-label={homeAria}
-          >
-            <Image
-              src="/icon.png"
-              alt=""
-              width={32}
-              height={32}
-              priority
-              className="size-8 rounded-lg object-cover max-[760px]:size-7"
-            />
-            <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em] max-[760px]:text-[0.98rem]">
-              {brandName}
-            </span>
-          </Link>
-          {hideLibraryNav ? null : appActive ? (
+          {inApp ? null : (
+            <Link
+              href={homeHref}
+              className="flex shrink-0 items-center gap-2.5 no-underline max-[760px]:gap-2"
+              aria-label={homeAria}
+            >
+              <Image
+                src="/icon.png"
+                alt=""
+                width={32}
+                height={32}
+                priority
+                className="size-8 rounded-lg object-cover max-[760px]:size-7"
+              />
+              <span className="font-sans text-[1.15rem] font-extrabold tracking-[-0.04em] max-[760px]:text-[0.98rem]">
+                {brandName}
+              </span>
+            </Link>
+          )}
+          {hideLibraryNav || inApp ? null : appActive ? (
             <p className="m-0 flex min-w-0 items-center gap-2 font-sans text-[0.72rem] text-muted">
               <span aria-hidden="true" className="text-ink/25">
                 /

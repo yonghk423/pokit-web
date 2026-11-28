@@ -6,6 +6,7 @@ type ITunesEbookResult = {
   trackName?: string;
   artistName?: string;
   genres?: string[];
+  genreIds?: string[];
   releaseDate?: string;
   artworkUrl100?: string;
   trackViewUrl?: string;
@@ -28,7 +29,7 @@ const EN_NOISE_RE =
   /\b(study guide|workbook|summary of|exam prep|test prep|flashcards|box set|boxed set|coloring book|trivia|crossword|sudoku|activity book|textbook|edition\s*\d|for kids|children'?s|bedtime stories for kids|billionaire)\b/i;
 
 const JA_NOISE_RE =
-  /コミック|漫画|マンガ|異世界|転生|電子単行本|分冊版|合本版|ライトノベル|ラノベ|問題集|過去問|資格|試験|対策|参考書|ドリル|児童書|絵本|学習まんが|攻略本|写真集|恋愛暴君|悪役令嬢|チート|スキル|ハーレム|勇者|魔王|召喚|追放|スローライフ～|【連載版】|（\d+）$|巻$/;
+  /コミック|漫画|マンガ|AV監督|AV女優|アダルト|官能|異世界|転生|電子単行本|分冊版|合本版|ライトノベル|ラノベ|問題集|過去問|資格|試験|対策|参考書|ドリル|児童書|絵本|学習まんが|攻略本|写真集|恋愛暴君|悪役令嬢|チート|スキル|ハーレム|勇者|魔王|召喚|追放|スローライフ～|【連載版】|（\d+）$|巻$/;
 
 const ZH_TW_NOISE_RE =
   /漫畫|色情|情色|題庫|考試|測驗|檢定|攻略|寫真|輕小說|穿越|重生|反派千金|總裁|霸道|童顏|巨乳|公職|證照|國考|學測|指考|統測|會考|多益|TOEIC|簡體/i;
@@ -184,24 +185,112 @@ export async function fetchAppleBooksShelf(
   }
 }
 
+type AppleGenreNode = {
+  id: string;
+  name: string;
+  subgenres?: Record<string, AppleGenreNode>;
+};
+
+/** Apple Books root genre (id 38) */
+const APPLE_BOOKS_ROOT_GENRE = "38";
+
+/** Editorial-first order, mirroring the YES24 domestic category priority. */
+const PRIORITY_GENRE_IDS = [
+  "9031", // Fiction & Literature
+  "9008", // Biographies & Memoirs
+  "9002", // Nonfiction
+  "9007", // Arts & Entertainment
+  "9004", // Travel & Adventure
+  "9024", // Lifestyle & Home
+  "9025", // Health, Mind & Body
+  "9028", // Cookbooks, Food & Wine
+  "9015", // History
+  "9019", // Science & Nature
+  "9009", // Business & Personal Finance
+  "9034", // Politics & Current Events
+];
+
+export type AppleGenreGroup = {
+  id: string;
+  label: string;
+  children: { id: string; label: string }[];
+};
+
+/** Store whose genre names match the page language (TW for Traditional Chinese labels). */
+function genreStoreForLocale(locale: Locale): "us" | "jp" | "tw" {
+  if (locale === "ja") return "jp";
+  if (locale === "zh-TW") return "tw";
+  return "us";
+}
+
+export async function fetchAppleBooksGenres(
+  locale: Locale,
+): Promise<AppleGenreGroup[]> {
+  const params = new URLSearchParams({
+    id: APPLE_BOOKS_ROOT_GENRE,
+    cc: genreStoreForLocale(locale),
+  });
+  try {
+    const response = await fetch(
+      `https://itunes.apple.com/WebObjects/MZStoreServices.woa/ws/genres?${params}`,
+      { next: { revalidate: 86400 }, signal: AbortSignal.timeout(8000) },
+    );
+    if (!response.ok) return [];
+    const payload = (await response.json().catch(() => null)) as Record<
+      string,
+      AppleGenreNode
+    > | null;
+    const root = payload?.[APPLE_BOOKS_ROOT_GENRE];
+    if (!root?.subgenres) return [];
+
+    const seenLabels = new Set<string>();
+    const groups: AppleGenreGroup[] = [];
+    for (const node of Object.values(root.subgenres)) {
+      if (!node?.id || !node.name || seenLabels.has(node.name)) continue;
+      seenLabels.add(node.name);
+      groups.push({
+        id: node.id,
+        label: node.name,
+        children: Object.values(node.subgenres ?? {})
+          .filter((sub) => sub?.id && sub.name)
+          .map((sub) => ({ id: sub.id, label: sub.name })),
+      });
+    }
+
+    const priority = new Map(PRIORITY_GENRE_IDS.map((id, idx) => [id, idx]));
+    return groups.sort(
+      (a, b) => (priority.get(a.id) ?? 999) - (priority.get(b.id) ?? 999),
+    );
+  } catch {
+    return [];
+  }
+}
+
 export async function searchAppleBooks({
   query,
   locale,
   page = 1,
   pageSize = 20,
+  genreId,
 }: {
   query: string;
   locale: Locale;
   page?: number;
   pageSize?: number;
+  /** Keep only results Apple files under this genre. */
+  genreId?: string;
 }): Promise<{ items: LibraryBook[]; page: number; hasMore: boolean }> {
   const country = appleBooksCountryForLocale(locale);
   const safePage = Math.max(1, Math.min(page, 8));
   // iTunes Search ignores `offset`; over-fetch and slice deterministically.
-  const fetchLimit = Math.min(
-    locale === "zh-TW" ? safePage * pageSize * 2 + 20 : safePage * pageSize + 20,
-    200,
-  );
+  const fetchLimit = genreId
+    ? 200
+    : Math.min(
+        locale === "zh-TW"
+          ? safePage * pageSize * 2 + 20
+          : safePage * pageSize + 20,
+        200,
+      );
 
   const params = new URLSearchParams({
     term: query,
@@ -226,7 +315,9 @@ export async function searchAppleBooks({
   const payload = (await response.json().catch(() => null)) as
     | ITunesSearchResponse
     | null;
-  const rawList = Array.isArray(payload?.results) ? payload.results : [];
+  const rawList = (Array.isArray(payload?.results) ? payload.results : []).filter(
+    (raw) => !genreId || (raw.genreIds ?? []).includes(genreId),
+  );
 
   const filtered: LibraryBook[] = [];
   const seenIds = new Set<number>();
@@ -241,7 +332,7 @@ export async function searchAppleBooks({
 
   // Fallback: if user typed a foreign-language query (e.g. English title on ja/zh-TW page),
   // don't hide direct matches solely due to script check.
-  if (filtered.length === 0 && rawList.length > 0) {
+  if (!genreId && filtered.length === 0 && rawList.length > 0) {
     for (const raw of rawList) {
       if (
         !raw.trackId ||

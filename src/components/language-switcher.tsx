@@ -42,6 +42,10 @@ export function LanguageSwitcher({ locale, labels, className }: Props) {
           {/* Reload across locales so preserved modal routes cannot restore the previous language. */}
           <a
             href={switchLocalePath(pathname, value)}
+            onClick={event => {
+              if (!pathname.endsWith("/app/library") || new URLSearchParams(window.location.search).get("picker") !== "1") return;
+              event.currentTarget.href = switchLocalePath(pathname, value) + "?pokit_app=1&picker=1" + window.location.hash;
+            }}
             aria-label={labels[value]}
             className={cn(
               "px-1 py-0.5",

@@ -11,8 +11,12 @@ export async function GET(request: Request) {
   const locale: Locale = isLocale(rawLocale) ? rawLocale : "en";
   const query = url.searchParams.get("query")?.trim() ?? "";
   const page = Number(url.searchParams.get("page") ?? "1");
+  const genreId = url.searchParams.get("genre") ?? undefined;
 
   if (!query || query.length > 100) {
+    return NextResponse.json({ error: "invalid_request" }, { status: 400 });
+  }
+  if (genreId !== undefined && !/^\d{1,8}$/.test(genreId)) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
   if (!Number.isSafeInteger(page) || page < 1) {
@@ -20,7 +24,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await searchAppleBooks({ query, locale, page });
+    const result = await searchAppleBooks({ query, locale, page, genreId });
     return NextResponse.json(result, {
       status: 200,
       headers: { "Cache-Control": "no-store" },

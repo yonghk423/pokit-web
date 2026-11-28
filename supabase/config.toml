@@ -1,0 +1,4 @@
+project_id = "pokit-web"
+
+[functions.pokitstory-books]
+verify_jwt = false
