@@ -788,6 +788,8 @@ export function LibraryExperience({
     page: number;
     genreId?: string;
   }>({ query: "", page: 1 });
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const [pendingHeight, setPendingHeight] = useState<number>();
   const [shownPage, setShownPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const firstPage = 1 + Math.floor((shownPage - 1) / 5) * 5;
@@ -881,6 +883,7 @@ export function LibraryExperience({
     if (normalized !== listing.query || genreId !== listing.genreId) {
       setBooks([]); setShownPage(1); setTotalPages(1); setHasMore(false);
     }
+    setPendingHeight(normalized === listing.query && genreId === listing.genreId ? resultsRef.current?.getBoundingClientRect().height : undefined);
     setQuery(normalized);
     setSelected(null);
     setFailed(false);
@@ -1010,7 +1013,7 @@ export function LibraryExperience({
 
           {/* ── Active Search Results (20 books / page) ── */}
           {listing.query ? (
-            <div className="mt-8">
+            <div ref={resultsRef} style={loading && pendingHeight ? { height: pendingHeight, overflow: "clip" } : undefined} className="mt-8">
               <div className="mb-5 flex flex-wrap items-end justify-between gap-4 border-b border-ink/10 pb-3.5">
                 <div>
                   <p className="m-0 font-sans text-[0.7rem] font-semibold tracking-[0.06em] text-green uppercase">
