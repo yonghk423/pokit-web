@@ -29,6 +29,10 @@ const localizedPortableText = (field: string) =>
     ${field}
   )`;
 
+export const hasArticleBody = (field: string) =>
+  `(coalesce(length(pt::text(${field})), 0) > 0 ||
+    coalesce(count(${field}[_type == "articleTable" && count(headers) > 0 && count(rows) > 0]), 0) > 0)`;
+
 const articleCardFields = `
   "slug": slug.current,
   "title": ${localizedString("title")},
@@ -49,9 +53,9 @@ const articleCardFields = `
   appStory,
   publishedAt,
   "_updatedAt": _updatedAt,
-  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0,
-  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0,
-  "hasTraditionalChineseTranslation": defined(titleZhTW) && length(titleZhTW) > 0 && coalesce(length(pt::text(bodyZhTW)), 0) > 0
+  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && ${hasArticleBody("bodyEn")},
+  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && ${hasArticleBody("bodyJa")},
+  "hasTraditionalChineseTranslation": defined(titleZhTW) && length(titleZhTW) > 0 && ${hasArticleBody("bodyZhTW")}
 `;
 
 const sectionHeadingProjection = `{
@@ -201,9 +205,9 @@ export const SITEMAP_ARTICLES_QUERY = `*[_type == "article" && coalesce(appStory
   "slug": slug.current,
   publishedAt,
   _updatedAt,
-  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0,
-  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0,
-  "hasTraditionalChineseTranslation": defined(titleZhTW) && length(titleZhTW) > 0 && coalesce(length(pt::text(bodyZhTW)), 0) > 0
+  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && ${hasArticleBody("bodyJa")},
+  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && ${hasArticleBody("bodyEn")},
+  "hasTraditionalChineseTranslation": defined(titleZhTW) && length(titleZhTW) > 0 && ${hasArticleBody("bodyZhTW")}
 }`;
 
 export const ARTICLES_COUNT_QUERY = `count(*[_type == "article" && coalesce(appStory, false) != true && defined(slug.current) && ${searchFilter}])`;

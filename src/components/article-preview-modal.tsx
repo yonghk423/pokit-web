@@ -2,7 +2,6 @@
 
 import type { AppInstallMessages } from "@/i18n/get-app-install-messages";
 
-import { PortableText, type PortableTextBlock } from "next-sanity";
 import {
   useEffect,
   useId,
@@ -13,6 +12,7 @@ import {
 
 import type { RecordingPrompt } from "@/components/article-recording-prompt";
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
+import { ArticleBody } from "@/components/article-body";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import {
   useArticlePreview,
@@ -27,6 +27,7 @@ import {
   toPokitRoutineArticle,
 } from "@/lib/pokit-bridge";
 import type { CategoryLabels } from "@/i18n/category-labels";
+import type { ArticleBodyBlock } from "@/sanity/types";
 
 type PreviewArticle = {
   recordingPrompt?: RecordingPrompt | null;
@@ -40,7 +41,7 @@ type PreviewArticle = {
   durationMinutes: number | null;
   imageAlt: string;
   publishedAt: string | null;
-  body: PortableTextBlock[] | null;
+  body: ArticleBodyBlock[] | null;
   coverUrl: string | null;
   coverImageLqip: string | null;
 };
@@ -342,7 +343,7 @@ export function ArticlePreviewModal({
                 <div className="scrollbar-hide min-h-0 flex-1 overflow-y-auto overscroll-contain pt-4 max-nav:overflow-visible nav:pt-5">
                   {detail?.body ? (
                     <div className="prose max-w-[44rem] pb-3 font-sans text-ink prose-p:text-[0.96rem] prose-p:leading-[1.75]">
-                      <PortableText value={detail.body} />
+                      <ArticleBody value={detail.body} />
                     </div>
                   ) : loading ? (
                     <ArticlePreviewBodySkeleton />

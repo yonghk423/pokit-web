@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 
 import { AddToPokitCta } from "@/components/add-to-pokit-cta";
 import { AppPromotion } from "@/components/app-promotion";
+import { ArticleBody } from "@/components/article-body";
 import { ArticleDisplayTitle } from "@/components/article-display-title";
 import { JsonLd } from "@/components/json-ld";
 import { RelatedArticles } from "@/components/related-articles";
@@ -244,7 +244,7 @@ export default async function ArticlePage({ params }: Props) {
         )}
         {article.body && (
           <div className="prose max-w-[42rem] font-sans text-ink">
-            <PortableText value={article.body} />
+            <ArticleBody value={article.body} />
           </div>
         )}
         <aside className="mt-8 max-w-[42rem] rounded-xl border border-[#d9a0af] bg-[#fff4f6] px-5 py-4">

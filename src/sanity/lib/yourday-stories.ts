@@ -1,8 +1,9 @@
 import { client } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { sanityFetchOptions } from "@/sanity/lib/cache";
+import { hasArticleBody } from "@/sanity/lib/queries";
+import type { ArticleBodyBlock } from "@/sanity/types";
 import type { Locale } from "@/i18n/config";
-import type { PortableTextBlock } from "next-sanity";
 
 export const YOURDAY_STORY_SLUGS = [
   "diary-one-scene-is-enough",
@@ -15,7 +16,7 @@ export type YourdayStoryArticle = {
   title: string;
   description: string;
   kicker?: string;
-  body: PortableTextBlock[];
+  body: ArticleBodyBlock[];
   publishedAt?: string;
 };
 
@@ -38,8 +39,8 @@ export const YOURDAY_STORY_SITEMAP_QUERY = `*[_type == "article" && appStory == 
   "slug": slug.current,
   publishedAt,
   _updatedAt,
-  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && coalesce(length(pt::text(bodyEn)), 0) > 0,
-  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && coalesce(length(pt::text(bodyJa)), 0) > 0
+  "hasEnglishTranslation": defined(titleEn) && length(titleEn) > 0 && ${hasArticleBody("bodyEn")},
+  "hasJapaneseTranslation": defined(titleJa) && length(titleJa) > 0 && ${hasArticleBody("bodyJa")}
 }`;
 
 export async function getYourdayStoryArticles(locale: Locale) {

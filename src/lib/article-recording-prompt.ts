@@ -1,3 +1,5 @@
+import type { PortableTextBlock } from "next-sanity";
+
 import prompts from "@/content/article-recording-prompts.ko.json";
 import type { Locale } from "@/i18n/config";
 import type { RecordingPrompt } from "@/components/article-recording-prompt";
@@ -23,7 +25,8 @@ export function getArticleRecordingPrompt(article: ArticleDocument, locale: Loca
   }[locale];
   if (!isTranslated) return { heading: language.heading, text: language.fallback };
   const section = article.body?.find(
-    block => block._type === "block" && ["h2", "h3"].includes(String(block.style)),
+    (block): block is PortableTextBlock =>
+      block._type === "block" && "style" in block && (block.style === "h2" || block.style === "h3"),
   );
   const topic = section?.children
     ?.map(child => ("text" in child ? child.text : ""))

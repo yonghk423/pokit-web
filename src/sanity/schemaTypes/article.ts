@@ -1,6 +1,11 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 
 import { articleCategoryOptions } from "@/content/categories";
+
+const articleBodyBlocks = [
+  defineArrayMember({ type: "block" }),
+  defineArrayMember({ type: "articleTable" }),
+];
 
 export const article = defineType({
   name: "article",
@@ -127,7 +132,7 @@ export const article = defineType({
       name: "body",
       title: "Body",
       type: "array",
-      of: [{ type: "block" }],
+      of: articleBodyBlocks,
     }),
     defineField({
       name: "durationMinutes",
@@ -179,7 +184,7 @@ export const article = defineType({
       name: "bodyEn",
       title: "Body (English)",
       type: "array",
-      of: [{ type: "block" }],
+      of: articleBodyBlocks,
       fieldset: "english",
     }),
     defineField({
@@ -211,14 +216,14 @@ export const article = defineType({
       name: "bodyJa",
       title: "Body (Japanese)",
       type: "array",
-      of: [{ type: "block" }],
+      of: articleBodyBlocks,
       fieldset: "japanese",
     }),
     defineField({ name: "titleZhTW", title: "Title (繁體中文)", type: "string", fieldset: "traditionalChinese" }),
     defineField({ name: "kickerZhTW", title: "Kicker (繁體中文)", type: "string", fieldset: "traditionalChinese" }),
     defineField({ name: "descriptionZhTW", title: "Description (繁體中文)", type: "text", rows: 3, fieldset: "traditionalChinese" }),
     defineField({ name: "coverImageAltZhTW", title: "Cover image alt text (繁體中文)", type: "string", fieldset: "traditionalChinese" }),
-    defineField({ name: "bodyZhTW", title: "Body (繁體中文)", type: "array", of: [{ type: "block" }], fieldset: "traditionalChinese" }),
+    defineField({ name: "bodyZhTW", title: "Body (繁體中文)", type: "array", of: articleBodyBlocks, fieldset: "traditionalChinese" }),
   ],
   preview: {
     select: {

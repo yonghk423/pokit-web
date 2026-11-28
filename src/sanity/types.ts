@@ -21,8 +21,18 @@ export type ArticleCardData = {
   hasTraditionalChineseTranslation?: boolean;
 };
 
+export type ArticleTableBlock = {
+  _type: "articleTable";
+  _key: string;
+  caption?: string;
+  headers?: string[];
+  rows?: { _key: string; cells?: string[] }[];
+};
+
+export type ArticleBodyBlock = PortableTextBlock | ArticleTableBlock;
+
 export type ArticleDocument = ArticleCardData & {
-  body?: PortableTextBlock[];
+  body?: ArticleBodyBlock[];
   publishedAt?: string;
   durationMinutes?: number;
   categoryKey?: string;

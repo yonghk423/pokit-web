@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { PortableText } from "next-sanity";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticleBody } from "@/components/article-body";
 import { appName, site } from "@/config/site";
 import { isLocale, type Locale } from "@/i18n/config";
 import { createTranslator } from "@/i18n/create-translator";
@@ -107,7 +107,7 @@ export default async function YourdayStoryArticlePage({ params }: Props) {
         </header>
 
         <div className="prose max-w-[42rem] font-sans text-ink">
-          <PortableText value={article.body} />
+          <ArticleBody value={article.body} />
         </div>
 
         <p className="mt-12 mb-0 max-w-[42rem] border-t border-ink/10 pt-8 font-sans text-[0.9rem] leading-relaxed text-muted">
