@@ -7,6 +7,8 @@ export async function GET(request: Request) {
   const operation = url.searchParams.get("operation");
   const query = url.searchParams.get("query")?.trim() ?? "";
   const page = Number(url.searchParams.get("page") ?? "1");
+  const categoryId = url.searchParams.get("categoryId") ?? "001";
+  if (!/^001(?:\d{3}){0,5}$/.test(categoryId)) return NextResponse.json({ error: "invalid_category" }, { status: 400 });
   const byId = operation === "detail" || operation === "content" || operation === "author";
   if ((operation !== "categories" && operation !== "search" && operation !== "chart" && !byId) || (byId && !/^[1-9]\d{0,11}$/.test(query))) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
@@ -27,7 +29,7 @@ export async function GET(request: Request) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ operation, query, page }),
+      body: JSON.stringify({ operation, query, page, categoryId }),
       cache: "no-store",
       signal: AbortSignal.timeout(12000),
     });

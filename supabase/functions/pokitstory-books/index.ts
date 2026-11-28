@@ -56,7 +56,9 @@ Deno.serve(async request => {
   const url = new URL(chart ? 'category/' + query : paths[operation], 'https://apis.yes24.com/v1/');
   let chartDate: string | undefined;
   if (chart) {
-    url.searchParams.set('categoryId', '001');
+    const categoryId = body.categoryId ?? '001';
+    if (typeof categoryId !== 'string' || !domesticCategory.test(categoryId)) return json({ error: 'invalid_category' }, 400);
+    url.searchParams.set('categoryId', categoryId);
     url.searchParams.set('pageSize', String(pageSize));
     if (query === 'bestsellerDaily' || query === 'bestsellerMonthly') {
       const day = new Date(Date.now() - (query === 'bestsellerDaily' ? 86400000 : 0));

@@ -42,7 +42,7 @@ const copy = {
     categoriesAccent: "분야별로",
     categoriesRest: "둘러보기.",
     categoriesCta: "국내도서 전체 ↗",
-    categoriesHint: "세부 분야를 누르면 해당 YES24 도서 목록으로 바로 이동합니다.",
+    categoriesHint: "분야를 선택하면 그 분야의 주목할 신간을 볼 수 있어요.",
     openParentCategory: (label: string) => `${label} 전체 보기`,
     showAllCategories: "전체 분야 보기",
     showFewerCategories: "주요 분야만 보기",
@@ -703,10 +703,10 @@ const chartLabels = {
   "zh-TW": { topfreeebooks: "免費圖書排行" },
 } as const;
 
-function LibraryCharts({ locale, onSelect }: { locale: Locale; onSelect: (book: LibraryBook) => void }) {
+function LibraryCharts({ locale, onSelect, category }: { category?: { id: string; label: string }; locale: Locale; onSelect: (book: LibraryBook) => void }) {
   const labels = chartLabels[locale];
   const [chartDate, setChartDate] = useState("");
-  const [feed, setFeed] = useState(Object.keys(labels)[0]);
+  const [feed, setFeed] = useState(category ? "newproductAttention" : Object.keys(labels)[0]);
   const [books, setBooks] = useState<(LibraryBook & { rank?: number })[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -716,7 +716,7 @@ function LibraryCharts({ locale, onSelect }: { locale: Locale; onSelect: (book: 
     setChartDate("");
     setFailed(false);
     const endpoint = locale === "ko" ? "/api/pokitstory-books" : "/api/library-books";
-    fetch(`${endpoint}?operation=chart&locale=${locale}&query=${feed}`, { signal: controller.signal })
+    fetch(`${endpoint}?operation=chart&locale=${locale}&query=${feed}${category ? "&categoryId=" + category.id : ""}`, { signal: controller.signal })
       .then(async response => {
         if (!response.ok) throw new Error();
         const payload = await response.json();
@@ -727,14 +727,14 @@ function LibraryCharts({ locale, onSelect }: { locale: Locale; onSelect: (book: 
         }
       }).catch(() => { if (!controller.signal.aborted) setFailed(true); });
     return () => controller.abort();
-  }, [feed, attempt, locale]);
-  const heading = { ko: "YES24 국내도서 순위", en: "Apple Books charts", ja: "Apple Books ランキング", "zh-TW": "Apple Books 圖書排行榜" }[locale];
-  return <section id="library-charts" className={cn(monoContainer, "mt-6 scroll-mt-16")}>
+  }, [feed, attempt, locale, category?.id]);
+  const heading = category ? category.label + " 주목할 신간" : { ko: "YES24 국내도서 순위", en: "Apple Books charts", ja: "Apple Books ランキング", "zh-TW": "Apple Books 圖書排行榜" }[locale];
+  return <section id={category ? "category-new-books" : "library-charts"} className={cn(monoContainer, "mt-6 scroll-mt-16")}>
     <div className="flex flex-wrap items-center justify-between gap-2">
       <h2 className="text-lg font-bold">{heading}</h2>
-      <select aria-label={heading} value={feed} onChange={e => setFeed(e.target.value)} className="max-w-full rounded-lg border border-ink/15 px-2 py-1 text-sm">
+      {!category && <select aria-label={heading} value={feed} onChange={e => setFeed(e.target.value)} className="max-w-full rounded-lg border border-ink/15 px-2 py-1 text-sm">
         {Object.entries(labels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
-      </select>
+      </select>}
     </div>
     {chartDate && <small>{feed === "bestsellerMonthly" ? chartDate.slice(0, 7) : chartDate}</small>}
     {failed ? <button onClick={() => setAttempt(n => n + 1)} className="py-2 text-sm underline">{copy[locale].error} ↻</button>
@@ -784,6 +784,7 @@ export function LibraryExperience({
   const { provider, shelves, categoryGroups } = initialData;
   const isAppleBooks = provider === "apple-books";
 
+  const [subCategory, setSubCategory] = useState<{ id: string; label: string } | null>(null);
   const [selectedGroupId, setSelectedGroupId] = useState<string>(
     () => categoryGroups[0]?.id ?? "001001047",
   );
@@ -1170,7 +1171,7 @@ export function LibraryExperience({
                     <button
                       key={group.id}
                       type="button"
-                      onClick={() => setSelectedGroupId(group.id)}
+                      onClick={() => { setSubCategory(null); setSelectedGroupId(group.id); }}
                       aria-pressed={isSelected}
                       className={cn(
                         "inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 font-sans text-[0.76rem] font-semibold transition-all",
@@ -1256,25 +1257,14 @@ export function LibraryExperience({
                               </span>
                             </button>
                           ) : (
-                            <a
-                              href={yes24CategoryHref(sub.id)}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 rounded-full border border-ink/10 bg-[#FEFEFF] px-3 py-1 font-sans text-[0.75rem] font-medium text-ink/85 no-underline transition-colors hover:border-ink/30 hover:bg-white hover:text-ink"
-                            >
-                              <span>{sub.label}</span>
-                              <span
-                                aria-hidden="true"
-                                className="text-[0.68rem] text-muted"
-                              >
-                                ↗
-                              </span>
-                            </a>
+                            <button type="button" onClick={() => setSubCategory(sub)} aria-pressed={subCategory?.id === sub.id}
+                              className="rounded-full border border-ink/10 px-3 py-1 text-xs aria-pressed:bg-ink aria-pressed:text-white">{sub.label}</button>
                           )}
                         </li>
                       ))}
                     </ul>
                   ) : null}
+                  {!isAppleBooks && <LibraryCharts locale={locale} key={subCategory?.id ?? activeGroup.id} category={subCategory ?? activeGroup} onSelect={setSelected} />}
                 </div>
               ) : null}
             </div>
