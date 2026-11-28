@@ -733,9 +733,9 @@ function LibraryCharts({ locale, onSelect, category, initialChart = null }: { in
             <span className="mt-2 line-clamp-2 font-semibold leading-tight sm:text-xl">{sanitizeBookText(books[0].title)}</span>
             <span className="truncate text-xs text-muted">{books[0].author}</span>
           </button>
-          <ol key={feed} start={2} className="m-0 min-h-0 list-none overflow-y-auto overscroll-contain p-0">
+          <ol key={feed} start={2} className="m-0 grid min-h-0 min-w-0 list-none content-start grid-cols-[repeat(auto-fill,minmax(min(100%,16rem),1fr))] gap-x-5 overflow-y-auto overscroll-contain p-0">
             {books.slice(1).map((book, index) => (
-              <li key={book.itemId} className="border-b border-ink/10">
+              <li key={book.itemId} className="min-w-0 border-b border-ink/10">
                 <button type="button" onClick={() => onSelect(book)} className="flex w-full items-start gap-2 py-2 text-left sm:gap-4 sm:py-3">
                   <span className="flex h-20 w-14 shrink-0 items-center justify-center sm:h-28 sm:w-20"><BookCoverImage src={book.coverUrl} alt="" className="shadow-none" /></span>
                   <span className="min-w-0">
