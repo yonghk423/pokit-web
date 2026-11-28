@@ -21,16 +21,18 @@ import styles from "@/components/app-intro.module.css";
 
 const copy = {
   ko: {
-    title: "쓰는 재미, 담는 즐거움.", seoTitle: "Daylight 포토 다이어리 | 사진과 글로 하루를 기록해요", description: "사진과 글로 꾸미는 나만의 포토 다이어리",
+    title: "서재 관리도 되는 포토 다이어리",
+    seoTitle: "Daylight | 서재 관리가 되는 포토 다이어리",
+    description: "사진과 글로 하루를 기록하고, 읽은 책과 독서 기록을 나만의 서재에 모아 관리하세요. Daylight에서 사진 일기와 서재를 한곳에 담을 수 있어요.",
     faqTitle: "Daylight 포토 다이어리, 자주 묻는 질문",
     faqs: [
-      ["Daylight는 어떤 앱인가요?", "사진과 글로 하루를 기록하고, 색상과 아이콘, 다이어리 아이템으로 페이지를 꾸미는 iOS 포토 다이어리예요."],
+      ["Daylight는 어떤 앱인가요?", "사진과 글로 하루를 기록하고, 읽은 책과 독서 기록을 서재에 모아 관리할 수 있는 iOS 포토 다이어리예요."],
       ["사진과 글을 함께 기록할 수 있나요?", "네. 사진을 고르고 그날의 짧은 글을 더해 한 페이지에 하루의 순간을 남길 수 있어요."],
       ["사진에 필름 느낌과 날짜를 넣을 수 있나요?", "네. 다양한 필름 색감을 고르고 사진에 문구나 날짜를 표시할 수 있어요."],
       ["달력도 꾸밀 수 있나요?", "네. 다양한 디자인의 달력을 골라 다이어리에서 사용할 수 있어요."],
     ],
     nav: ["다이어리", "달력", "필름", "아이템", "기록 모아보기", "일러스트 달력"],
-    intro: ["사진과 글로 채우는", "오늘의 장면을 나답게 기록해요.", "마음에 남은 사진을 고르고, 그날의 생각을 적어보세요. 색과 아이콘, 다양한 다이어리 아이템으로 나만의 페이지를 완성할 수 있어요."],
+    intro: "마음에 남은 사진에 그날의 이야기를 적고, 읽은 책과 독서 기록은 나만의 서재에 모아보세요.",
     features: [
       ["01 / 다이어리", "글자색과 배경색을 고르고,\n작은 아이콘을 더해요.", "글자색과 종이 배경색을 각각 바꾸고, 어울리는 아이콘으로 오늘의 기록을 마무리해 보세요."],
       ["02 / 달력", "달력도 취향에 맞게\n골라 펼쳐보세요.", "종이와 가죽, 클립의 질감부터 차분한 색과 선명한 색까지. 다양한 달력 디자인을 한눈에 둘러볼 수 있어요."],
@@ -45,16 +47,18 @@ const copy = {
     filmLabels: ["따뜻한 색감", "흑백", "차가운 색감"],
   },
   en: {
-    title: "Fun to write. A joy to make your own.", seoTitle: "Daylight Photo Diary | Capture Your Day in Photos and Words", description: "Your photos, your words. Your photo diary to decorate.",
+    title: "A photo diary with a personal bookshelf",
+    seoTitle: "Daylight | Photo Diary and Personal Bookshelf",
+    description: "Keep a photo diary on your iPhone and organize the books you've read and your reading notes on your personal bookshelf in Daylight.",
     faqTitle: "Daylight photo diary: frequently asked questions",
     faqs: [
-      ["What is Daylight?", "Daylight is an iOS photo diary for recording your day in pictures and words, then personalizing each page with colors, icons, and diary items."],
+      ["What is Daylight?", "Daylight is an iOS photo diary where you can capture your day in photos and words and keep the books you've read and your reading notes on a personal bookshelf."],
       ["Can I keep photos and writing together?", "Yes. Choose a photo, add a few words about the day, and keep the moment together on one diary page."],
       ["Can I add a film look and date to a photo?", "Yes. Choose from different film looks, then add a caption or the photo date."],
       ["Can I customize the calendar?", "Yes. Choose from a variety of calendar designs and use your favorite in the diary."],
     ],
     nav: ["Diary", "Calendar", "Film", "Items", "Photo diary", "Illustrated calendars"],
-    intro: ["Made with photos and words", "Keep the moments that feel like you.", "Choose a photo that stays with you and write a few words about the day. Finish each page with your choice of colors, icons, and diary items."],
+    intro: "Add a few words to the photos you want to remember, and bring the books you've read and your reading notes together on your personal bookshelf.",
     features: [
       ["01 / DIARY", "Choose your colors.\nAdd a little icon.", "Set the text and paper colors separately, then finish today's entry with an icon that feels right."],
       ["02 / CALENDAR", "Find a calendar\nthat feels like yours.", "Browse a range of calendar designs, from paper and leather textures to calm neutrals and vivid colors."],
@@ -69,16 +73,18 @@ const copy = {
     filmLabels: ["Warm", "Black & white", "Cool blue"],
   },
   ja: {
-    title: "書く楽しさ、残すよろこび。", seoTitle: "Daylight フォトダイアリー | 写真と言葉で一日を記録", description: "写真と言葉で自由に飾る、自分だけのフォトダイアリー。",
+    title: "本棚も管理できるフォトダイアリー",
+    seoTitle: "Daylight｜本棚も管理できるフォトダイアリー",
+    description: "写真と言葉で一日を記録し、読んだ本や読書記録は自分の本棚にまとめましょう。写真日記と本棚をDaylightひとつで管理できます。",
     faqTitle: "Daylightフォトダイアリー よくある質問",
     faqs: [
-      ["Daylightはどんなアプリですか？", "写真と言葉で一日を記録し、色やアイコン、日記アイテムでページを飾れるiOS向けフォトダイアリーです。"],
+      ["Daylightはどんなアプリですか？", "写真と言葉で一日を記録し、読んだ本や読書記録を本棚にまとめて管理できるiOS向けフォトダイアリーです。"],
       ["写真と文章を一緒に残せますか？", "はい。写真を選び、その日の短い言葉を添えて、一日のひとコマを一ページに残せます。"],
       ["写真にフィルムの雰囲気や日付を加えられますか？", "はい。さまざまなフィルムの色合いを選び、写真に文章や日付を表示できます。"],
       ["カレンダーをカスタマイズできますか？", "はい。いろいろなデザインから選び、日記で使えます。"],
     ],
     nav: ["日記", "カレンダー", "フィルム", "アイテム", "写真日記", "イラストカレンダー"],
-    intro: ["写真と言葉でつくる", "今日の思い出を、自分らしく。", "心に残った写真を選び、その日の気持ちを書き留めましょう。色やアイコン、さまざまなアイテムで自分だけのページに仕上げられます。"],
+    intro: "心に残った写真にその日の言葉を添えて、読んだ本や読書記録は自分だけの本棚にまとめましょう。",
     features: [
       ["01 / 日記", "文字と背景に色を。\n小さなアイコンも。", "文字色と紙の背景色を別々に選び、アイコンを添えて今日の記録を仕上げましょう。"],
       ["02 / カレンダー", "お気に入りの一枚を\n選んで開く。", "紙や革、クリップの質感から落ち着いた色、鮮やかな色まで、さまざまなデザインを見比べられます。"],
@@ -93,16 +99,18 @@ const copy = {
     filmLabels: ["あたたかな色合い", "モノクロ", "涼しげな色合い"],
   },
   "zh-TW": {
-    title: "寫字的樂趣，收藏的喜悅。", seoTitle: "Daylight 照片日記｜用照片與文字記錄每一天", description: "用照片和文字自由佈置，打造專屬你的照片手帳。",
+    title: "也能管理個人書櫃的照片日記",
+    seoTitle: "Daylight｜照片日記與個人書櫃",
+    description: "用照片與文字記錄每天的生活，把讀過的書和閱讀筆記整理到個人書櫃。在 Daylight 裡，一次管理照片日記與書櫃。",
     faqTitle: "Daylight 照片日記常見問題",
     faqs: [
-      ["Daylight 是什麼樣的 App？", "Daylight 是 iOS 照片日記 App，可以用照片與文字記錄生活，再用色彩、圖示和手帳小物裝飾頁面。"],
+      ["Daylight 是什麼樣的 App？", "Daylight 是一款 iOS 照片日記 App，可以用照片和文字記錄生活，也能把讀過的書與閱讀筆記整理到個人書櫃。"],
       ["可以把照片和文字記錄在一起嗎？", "可以。選一張照片，寫下幾句當天的心情，就能把生活片刻留在同一頁。"],
       ["可以為照片加上底片效果和日期嗎？", "可以。你可以挑選不同的底片色調，也能在照片上顯示文字或日期。"],
       ["月曆可以自訂樣式嗎？", "可以。挑選喜歡的月曆設計，就能在手帳中使用。"],
     ],
     nav: ["手帳", "月曆", "底片", "小物", "照片日記", "插畫月曆"],
-    intro: ["用照片與文字記錄", "用自己的方式收藏今天。", "選一張留在心上的照片，寫下今天的心情，再用色彩、圖示和各種手帳小物，完成專屬於你的頁面。"],
+    intro: "為想留下的照片寫幾句當天的故事，再把讀過的書和閱讀筆記收進自己的書櫃。",
     features: [
       ["01 / 手帳", "挑選文字與背景色，\n再加上一個小圖示。", "分別選擇文字顏色和紙張背景色，再用合適的圖示為今天的日記收尾。"],
       ["02 / 月曆", "挑一本喜歡的月曆，\n慢慢翻開。", "從紙張、皮革與夾子的質感，到沉穩或鮮明的色彩，一次瀏覽多種月曆設計。"],
@@ -164,13 +172,12 @@ export default async function AppIntroPage({ params }: Props) {
         featureList: text.features.map(([label, , description]) => `${label.replace(/^\d+\s*\/\s*/, "")}: ${description.replaceAll("\n", " ")}`),
         screenshots: screenshots.flat().map((screen) => `${site.siteUrl}${screen.src}`),
       })} />
-      <h1 className="sr-only">Daylight · {text.title} {text.description}</h1>
       <section className={styles.hero} aria-label="Daylight">
         <div className={styles.heroHeading}>
           <Image
             className={styles.heroBanner}
             src={headerImage}
-            alt={text.title + " " + text.description}
+            alt=""
             width={3840}
             height={1646}
             sizes="100vw"
@@ -186,8 +193,8 @@ export default async function AppIntroPage({ params }: Props) {
       </section>
       <section className={styles.intro} data-reveal="text">
         <p className={styles.eyebrow}>DAYLIGHT <span aria-hidden="true">/</span> PHOTO DIARY</p>
-        <h2>{text.intro[1]}</h2>
-        <p>{text.intro[2]}</p>
+        <h1>{text.title}</h1>
+        <p>{text.intro}</p>
       </section>
       {text.features.map((feature, index) => (
         <section key={feature[0]} id={"daylight-" + index} className={`${styles.feature} ${index % 2 ? styles.reverse : ""} ${index === 3 ? styles.widgets : ""} ${[1, 4, 5].includes(index) ? styles.singleFeature : ""}`} aria-labelledby={"daylight-title-" + index}>
