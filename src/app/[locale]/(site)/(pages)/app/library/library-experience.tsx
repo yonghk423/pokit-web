@@ -470,19 +470,6 @@ function LibraryShelfRow({
           })}
         </div>
 
-        {canPrev ? (
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-7 bg-gradient-to-r from-[#FEFEFF]/85 to-transparent"
-            aria-hidden
-          />
-        ) : null}
-        {canNext ? (
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-9 bg-gradient-to-l from-[#FEFEFF]/85 to-transparent"
-            aria-hidden
-          />
-        ) : null}
-
         {showControls ? (
           <div className="mt-1 hidden items-center justify-end gap-2 max-nav:flex">
             <button
