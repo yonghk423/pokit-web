@@ -588,7 +588,9 @@ function BookPreviewModal({
     <div className="fixed inset-0 z-[80]" role="presentation">
       <button
         type="button"
-        className="absolute inset-0 border-0 bg-ink/45 backdrop-blur-[2px]"
+        tabIndex={-1}
+        aria-hidden="true"
+        className="absolute inset-0 hidden nav:block border-0 bg-ink/45 backdrop-blur-[2px]"
         aria-label={labels.close}
         onClick={onClose}
       />
@@ -599,50 +601,38 @@ function BookPreviewModal({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        data-preview-modal-panel
         className={cn(
-          "absolute inset-x-1.5 top-1.5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] overflow-hidden rounded-[1.15rem] bg-[#FEFEFF] shadow-[0_24px_80px_rgba(24,26,46,0.28)] outline-none",
+          "absolute inset-0 overflow-hidden bg-[#FEFEFF] nav:shadow-[0_24px_80px_rgba(24,26,46,0.28)] outline-none",
           "nav:inset-3 nav:mx-auto nav:max-w-[64rem] nav:rounded-[1.35rem]",
           "flex flex-col",
         )}
       >
-        <div className="flex shrink-0 items-center justify-between gap-3 px-5 py-2.5 max-nav:px-4">
-          <button
-            type="button"
-            onClick={onClose}
-            className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 font-sans text-[0.82rem] font-medium tracking-[-0.01em] text-muted transition-colors hover:text-ink"
-          >
-            <span aria-hidden className="text-[0.95em]">
-              ←
-            </span>
-            {labels.close}
-          </button>
+        <div className="flex shrink-0 justify-end px-2 nav:px-4">
           <button
             type="button"
             onClick={onClose}
             aria-label={labels.close}
-            className="relative z-10 inline-flex size-10 shrink-0 cursor-pointer touch-manipulation items-center justify-center border-0 bg-transparent p-0 font-sans text-[1.35rem] font-light leading-none text-muted transition-colors hover:text-ink"
+            className="relative z-10 inline-flex size-11 shrink-0 cursor-pointer touch-manipulation items-center justify-center border-0 bg-transparent p-0 font-sans text-[1.35rem] font-light leading-none text-muted transition-colors hover:text-ink"
           >
             ×
           </button>
         </div>
 
-        <div className="scrollbar-hide grid min-h-0 flex-1 grid-cols-1 gap-5 overflow-y-auto px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-1 max-nav:gap-5 nav:grid-cols-[minmax(15rem,0.8fr)_minmax(0,1.25fr)] nav:gap-8 nav:overflow-hidden nav:px-6 nav:pb-6">
-          <div className="min-h-0 shrink-0 max-nav:mx-auto max-nav:w-full max-nav:max-w-[18rem]">
+        <div className="scrollbar-hide grid min-h-0 flex-1 grid-cols-[minmax(5rem,28%)_minmax(0,1fr)] content-start gap-4 overflow-y-auto px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-1 nav:content-normal nav:grid-cols-[minmax(15rem,0.8fr)_minmax(0,1.25fr)] nav:gap-8 nav:overflow-hidden nav:px-6 nav:pb-6">
+          <div className="min-h-0 shrink-0 self-start nav:self-stretch">
             <div
-              data-preview-cover
-              className="relative isolate flex h-[15rem] items-center justify-center overflow-visible p-5 nav:h-full nav:min-h-72 nav:p-8"
+              className="relative isolate flex aspect-[3/4] items-start justify-center nav:aspect-auto nav:items-center overflow-visible nav:h-full nav:min-h-72 nav:p-8"
             >
               <BookCoverImage
                 src={book.coverUrl}
                 alt={book.title}
-                className="shadow-[0_18px_38px_rgba(24,26,46,0.22)]"
+                className="shadow-sm"
               />
             </div>
           </div>
 
-          <div className="flex min-h-0 min-w-0 flex-col">
-            <div className="shrink-0 border-b border-ink/8 pb-4">
+          <div className="contents nav:flex nav:min-h-0 nav:min-w-0 nav:flex-col">
+            <div className="min-w-0 self-center nav:self-stretch nav:shrink-0 nav:border-b nav:border-ink/8 nav:pb-4">
               <p className="m-0 font-sans text-[0.7rem] font-semibold leading-snug tracking-[0.06em] text-green uppercase">
                 {labels.detail}
               </p>
@@ -659,7 +649,7 @@ function BookPreviewModal({
               </p>
             </div>
 
-            <div className="scrollbar-hide min-h-0 flex-1 overflow-y-auto py-4">
+            <div className="col-span-full border-t border-ink/10 py-4 nav:min-h-0 nav:flex-1 nav:overflow-y-auto nav:border-0">
               {book.description ? (
                 <p className="m-0 max-w-[38rem] whitespace-pre-line font-sans text-[0.9rem] leading-[1.75] text-ink/80">
                   {book.description}
