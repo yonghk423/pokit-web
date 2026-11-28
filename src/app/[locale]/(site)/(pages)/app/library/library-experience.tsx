@@ -740,6 +740,31 @@ function LibraryCharts({ locale, onSelect, category }: { category?: { id: string
     {failed ? <button onClick={() => setAttempt(n => n + 1)} className="py-2 text-sm underline">{copy[locale].error} ↻</button>
       : books === null ? <p role="status">{copy[locale].loading}</p>
       : books.length === 0 ? <p>{ { ko: "집계된 도서가 없습니다.", en: "No chart entries available.", ja: "ランキングはまだありません。", "zh-TW": "尚無排行資料。" }[locale] }</p>
+      : !category ? (
+        <div className="mt-3 grid h-[18rem] grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-3 sm:h-[24rem] sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:h-[30rem] lg:grid-cols-[minmax(0,3fr)_minmax(0,1fr)]">
+          <button type="button" onClick={() => onSelect(books[0])}
+            className="relative flex min-h-0 flex-col rounded-lg bg-[#f4f2ed] p-3 text-left sm:p-6">
+            <strong className="absolute left-2 top-2 z-10 rounded bg-ink px-1.5 text-sm text-white">{books[0].rank || 1}</strong>
+            <span className="flex min-h-0 flex-1 items-center justify-center p-2"><BookCoverImage src={books[0].coverUrl} alt="" /></span>
+            <span className="mt-2 line-clamp-2 font-semibold leading-tight sm:text-xl">{sanitizeBookText(books[0].title)}</span>
+            <span className="truncate text-xs text-muted">{books[0].author}</span>
+          </button>
+          <ol key={feed} start={2} className="m-0 min-h-0 list-none overflow-y-auto overscroll-contain p-0">
+            {books.slice(1).map((book, index) => (
+              <li key={book.itemId} className="border-b border-ink/10">
+                <button type="button" onClick={() => onSelect(book)} className="flex w-full items-start gap-2 py-2 text-left sm:gap-4 sm:py-3">
+                  <span className="flex h-16 w-10 shrink-0 items-center justify-center sm:h-24 sm:w-16"><BookCoverImage src={book.coverUrl} alt="" className="shadow-none" /></span>
+                  <span className="min-w-0">
+                    <strong className="block text-xs tabular-nums text-muted">{book.rank || index + 2}</strong>
+                    <span className="line-clamp-2 text-sm font-semibold leading-snug">{sanitizeBookText(book.title)}</span>
+                    <span className="block truncate text-xs text-muted">{book.author}</span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )
       : <ol className="mt-2 flex snap-x gap-3 overflow-x-auto pb-2">{books.map((book, index) => (
         <li key={book.itemId} className="w-24 shrink-0 snap-start">
           <button type="button" onClick={() => onSelect(book)} className="w-full text-left">
