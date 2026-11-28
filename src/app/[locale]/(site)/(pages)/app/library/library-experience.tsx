@@ -967,7 +967,11 @@ export function LibraryExperience({
               disabled={!query.trim() || loading}
               className="shrink-0 cursor-pointer border-0 bg-transparent p-0 pb-1 font-sans text-[0.85rem] font-semibold text-ink transition-opacity disabled:cursor-default disabled:opacity-30"
             >
-              {t.submit} →
+              {t.submit}
+              <svg aria-hidden="true" className="ml-1 inline-block size-4 align-middle" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <circle cx="10" cy="10" r="6.5" />
+                <path d="m15 15 5 5" />
+              </svg>
             </button>
           </form>
 
