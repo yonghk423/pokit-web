@@ -745,7 +745,7 @@ function LibraryCharts({ locale, onSelect, category }: { category?: { id: string
       : !category ? (
         <div className="mt-3 grid h-[18rem] grid-cols-[minmax(0,42%)_minmax(0,1fr)] gap-3 sm:h-[24rem] sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] lg:h-[30rem] lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">
           <button type="button" onClick={() => onSelect(books[0])}
-            className="relative flex min-h-0 flex-col rounded-lg bg-[#f4f2ed] p-2 text-left sm:p-3">
+            className="relative flex min-h-0 flex-col rounded-lg bg-transparent p-2 text-left sm:p-3">
             <strong className="absolute left-2 top-2 z-10 rounded bg-ink px-1.5 text-sm text-white">{books[0].rank || 1}</strong>
             <span className="flex min-h-0 flex-1 items-center justify-center"><BookCoverImage src={books[0].coverUrl.replace(/^https:\/\/image\.yes24\.com\/goods\/(\d+)\/L$/, "https://image.yes24.com/goods/$1/XL")} alt="" /></span>
             <span className="mt-2 line-clamp-2 font-semibold leading-tight sm:text-xl">{sanitizeBookText(books[0].title)}</span>
