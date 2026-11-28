@@ -48,7 +48,7 @@ const copy = {
     showFewerCategories: "주요 분야만 보기",
     previous: "이전",
     next: "다음",
-    search: "책 제목이나 저자를 검색해 보세요",
+    search: "제목·저자 검색",
     submit: "검색",
     loading: "책을 불러오고 있어요…",
     empty: "검색 결과가 없어요. 다른 제목이나 저자로 찾아보세요.",
@@ -893,13 +893,13 @@ export function LibraryExperience({
     <main className="min-h-screen bg-[#FEFEFF] pb-14">
       <section className="relative pt-10 max-nav:pt-3">
         <div className={monoContainer}>
-          <DisplayHeading
+          {locale === "ko" ? <h1 className="m-0 text-2xl font-bold tracking-tight text-ink">오늘의 서재</h1> : (<DisplayHeading
             line1={t.heroLine1}
             accent={t.heroAccent}
             rest={t.heroRest}
             as="h1"
             className="text-[clamp(1.75rem,4vw,2.85rem)]"
-          />
+          />)}
         </div>
       </section>
 
@@ -1095,14 +1095,14 @@ export function LibraryExperience({
         >
           <div className={monoContainer}>
             <div className="mb-7 flex flex-wrap items-end justify-between gap-4 max-nav:mb-5">
-              <DisplayHeading
+              {locale === "ko" ? <h2 className="m-0 text-xl font-bold tracking-tight text-ink">주제별 책장</h2> : (<DisplayHeading
                 id="library-shelves-heading"
                 line1={t.shelvesLine1}
                 accent={t.shelvesAccent}
                 rest={t.shelvesRest}
                 as="h2"
                 className="text-[clamp(1.5rem,3.6vw,2.5rem)]"
-              />
+              />)}
             </div>
 
             <div>
