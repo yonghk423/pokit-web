@@ -629,7 +629,7 @@ function BookPreviewModal({
                   {section && <p aria-live="polite" className="whitespace-pre-line">{extra}</p>}
                 </div>
               )}
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className={cn("mt-6 flex flex-wrap items-center gap-3", picker && "justify-end")}>
                 {picker ? (
                   <button type="button" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#e3e2df] px-5 font-sans text-[0.82rem] font-semibold text-[#111322] no-underline shadow-[0_3px_10px_rgba(24,26,46,0.12)] transition-all hover:bg-[#d7d6d2]"
                     onClick={() => window.ReactNativeWebView?.postMessage(JSON.stringify({
