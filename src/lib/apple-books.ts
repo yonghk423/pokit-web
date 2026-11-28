@@ -355,3 +355,29 @@ export async function searchAppleBooks({
 
   return { items, page: safePage, hasMore };
 }
+
+type ChartEntry = {
+  id: { label: string; attributes: { "im:id": string } };
+  "im:name": { label: string };
+  "im:artist"?: { label: string };
+  "im:image"?: { label: string }[];
+  "im:releaseDate"?: { label: string };
+  summary?: { label: string };
+};
+
+export async function fetchAppleBooksChart(locale: Exclude<Locale, "ko">, feed: "topfreeebooks" | "toppaidebooks") {
+  const store = genreStoreForLocale(locale);
+  const response = await fetch(`https://itunes.apple.com/${store}/rss/${feed}/limit=20/json`, {
+    next: { revalidate: 300 }, signal: AbortSignal.timeout(8000),
+  });
+  if (!response.ok) throw new Error("apple_chart_unavailable");
+  const { feed: chart } = await response.json();
+  if (!chart) throw new Error("apple_chart_unavailable");
+  return ((chart.entry ?? []) as ChartEntry[]).map((entry, index) => ({
+    rank: index + 1, itemId: Number(entry.id.attributes["im:id"]), title: sanitizeText(entry["im:name"].label),
+    author: sanitizeText(entry["im:artist"]?.label), publisher: "Apple Books",
+    pubDate: formatReleaseDate(entry["im:releaseDate"]?.label),
+    link: entry.id.label, coverUrl: entry["im:image"]?.at(-1)?.label ?? "",
+    description: sanitizeText(entry.summary?.label),
+  })).filter(book => Number.isSafeInteger(book.itemId) && book.itemId > 0 && book.title && book.link.startsWith("https://books.apple.com/"));
+}

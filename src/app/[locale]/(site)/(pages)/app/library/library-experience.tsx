@@ -711,42 +711,15 @@ const chartLabels = {
     "newproduct": "신간",
     "newproductAttention": "주목할 신간"
   },
-  "en": {
-    "bestsellerRealtime": "Real-time bestsellers",
-    "bestseller": "Overall bestsellers",
-    "bestsellerDaily": "Daily bestsellers",
-    "bestsellerMonthly": "Monthly bestsellers",
-    "bestsellerSteady": "Steady sellers",
-    "bestsellerDeal": "Bestselling deals",
-    "newproduct": "New releases",
-    "newproductAttention": "Notable new releases"
-  },
-  "ja": {
-    "bestsellerRealtime": "リアルタイムランキング",
-    "bestseller": "総合ベストセラー",
-    "bestsellerDaily": "日別ベストセラー",
-    "bestsellerMonthly": "月間ベストセラー",
-    "bestsellerSteady": "ロングセラー",
-    "bestsellerDeal": "特価本ランキング",
-    "newproduct": "新刊",
-    "newproductAttention": "注目の新刊"
-  },
-  "zh-TW": {
-    "bestsellerRealtime": "即時暢銷榜",
-    "bestseller": "綜合暢銷榜",
-    "bestsellerDaily": "每日暢銷榜",
-    "bestsellerMonthly": "每月暢銷榜",
-    "bestsellerSteady": "長銷書榜",
-    "bestsellerDeal": "特價書暢銷榜",
-    "newproduct": "新書",
-    "newproductAttention": "注目新書"
-  }
+  en: { toppaidebooks: "Top paid books", topfreeebooks: "Top free books" },
+  ja: { toppaidebooks: "有料ランキング", topfreeebooks: "無料ランキング" },
+  "zh-TW": { topfreeebooks: "免費圖書排行" },
 } as const;
 
 function LibraryCharts({ locale, onSelect }: { locale: Locale; onSelect: (book: LibraryBook) => void }) {
   const labels = chartLabels[locale];
   const [chartDate, setChartDate] = useState("");
-  const [feed, setFeed] = useState<keyof typeof labels>("bestsellerRealtime");
+  const [feed, setFeed] = useState(Object.keys(labels)[0]);
   const [books, setBooks] = useState<(LibraryBook & { rank?: number })[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -755,7 +728,8 @@ function LibraryCharts({ locale, onSelect }: { locale: Locale; onSelect: (book: 
     setBooks(null);
     setChartDate("");
     setFailed(false);
-    fetch(`/api/pokitstory-books?operation=chart&query=${feed}`, { signal: controller.signal })
+    const endpoint = locale === "ko" ? "/api/pokitstory-books" : "/api/library-books";
+    fetch(`${endpoint}?operation=chart&locale=${locale}&query=${feed}`, { signal: controller.signal })
       .then(async response => {
         if (!response.ok) throw new Error();
         const payload = await response.json();
@@ -766,12 +740,12 @@ function LibraryCharts({ locale, onSelect }: { locale: Locale; onSelect: (book: 
         }
       }).catch(() => { if (!controller.signal.aborted) setFailed(true); });
     return () => controller.abort();
-  }, [feed, attempt]);
-  const heading = { ko: "YES24 국내도서 순위", en: "YES24 Korean book charts", ja: "YES24 韓国書籍ランキング", "zh-TW": "YES24 韓國圖書排行榜" }[locale];
+  }, [feed, attempt, locale]);
+  const heading = { ko: "YES24 국내도서 순위", en: "Apple Books charts", ja: "Apple Books ランキング", "zh-TW": "Apple Books 圖書排行榜" }[locale];
   return <section id="library-charts" className={cn(monoContainer, "mt-6 scroll-mt-16")}>
     <div className="flex flex-wrap items-center justify-between gap-2">
       <h2 className="text-lg font-bold">{heading}</h2>
-      <select aria-label={heading} value={feed} onChange={e => setFeed(e.target.value as keyof typeof labels)} className="max-w-full rounded-lg border border-ink/15 px-2 py-1 text-sm">
+      <select aria-label={heading} value={feed} onChange={e => setFeed(e.target.value)} className="max-w-full rounded-lg border border-ink/15 px-2 py-1 text-sm">
         {Object.entries(labels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
       </select>
     </div>
@@ -807,7 +781,7 @@ export function LibraryExperience({
   const searchSectionRef = useRef<HTMLElement>(null);
   const categoriesSectionRef = useRef<HTMLElement>(null);
 
-  const [selected, setSelected] = useState<(LibraryBook & { provider?: "yes24" }) | null>(null);
+  const [selected, setSelected] = useState<LibraryBook | null>(null);
   const [books, setBooks] = useState<LibraryBook[]>([]);
   const [query, setQuery] = useState("");
   const [showAllGroups, setShowAllGroups] = useState(false);
@@ -1123,7 +1097,7 @@ export function LibraryExperience({
         </div>
       </section>
 
-      <LibraryCharts locale={locale} onSelect={book => setSelected({ ...book, provider: "yes24" })} />
+      <LibraryCharts key={locale} locale={locale} onSelect={setSelected} />
 
       {/* ── Curated Shelf Rows (matches /ko HomeWorkRows) ── */}
       {shelves.some((s) => s.books.length > 0) ? (
@@ -1329,16 +1303,16 @@ export function LibraryExperience({
 
       {selected ? (
         <BookPreviewModal
-          key={(selected.provider ?? provider) + selected.itemId}
-          provider={selected.provider ?? provider}
+          key={provider + selected.itemId}
+          provider={provider}
           locale={locale}
           picker={picker}
           book={selected}
           labels={{
             close: t.close,
             detail: t.detail,
-            buy: selected.provider && isAppleBooks ? "YES24" : t.buy,
-            attribution: selected.provider && isAppleBooks ? "YES24" : t.attribution,
+            buy: t.buy,
+            attribution: t.attribution,
           }}
           onClose={() => setSelected(null)}
         />

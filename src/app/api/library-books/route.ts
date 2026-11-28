@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { isLocale, type Locale } from "@/i18n/config";
-import { searchAppleBooks } from "@/lib/apple-books";
+import { fetchAppleBooksChart, searchAppleBooks } from "@/lib/apple-books";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +13,17 @@ export async function GET(request: Request) {
   const page = Number(url.searchParams.get("page") ?? "1");
   const genreId = url.searchParams.get("genre") ?? undefined;
 
+  if (url.searchParams.get("operation") === "chart") {
+    if (locale === "ko" || (query !== "topfreeebooks" && query !== "toppaidebooks")) {
+      return NextResponse.json({ error: "invalid_request" }, { status: 400 });
+    }
+    try {
+      const items = await fetchAppleBooksChart(locale, query);
+      return NextResponse.json({ items }, { headers: { "Cache-Control": "public, s-maxage=300" } });
+    } catch {
+      return NextResponse.json({ error: "provider_error" }, { status: 502 });
+    }
+  }
   if (!query || query.length > 100) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 });
   }
