@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/json-ld";
 import { appName, siteName } from "@/config/site";
 import { isLocale } from "@/i18n/config";
 import { breadcrumbJsonLd, libraryCollectionJsonLd } from "@/lib/json-ld";
-import { getInitialLibraryData } from "@/lib/library-shelves";
+import { getInitialLibraryChart, getInitialLibraryData } from "@/lib/library-shelves";
 import { localeAlternates, localeOpenGraph } from "@/lib/locale-path";
 import { LibraryExperience } from "./library-experience";
 
@@ -77,7 +77,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function LibraryPage({ params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const initialData = await getInitialLibraryData(locale);
+  const [initialData, initialChart] = await Promise.all([getInitialLibraryData(locale), getInitialLibraryChart(locale)]);
   const copy = LIBRARY_COPY[locale];
   const books = initialData.shelves.flatMap((shelf) => shelf.books).filter(
     (book, index, all) =>
@@ -103,7 +103,7 @@ export default async function LibraryPage({ params }: Props) {
           books,
         })}
       />
-      <LibraryExperience locale={locale} initialData={initialData} />
+      <LibraryExperience initialChart={initialChart} locale={locale} initialData={initialData} />
     </>
   );
 }

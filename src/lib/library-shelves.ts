@@ -1,5 +1,6 @@
 import { localeToIntl, type Locale } from "@/i18n/config";
 import {
+  fetchAppleBooksChart,
   fetchAppleBooksGenres,
   fetchAppleBooksShelf,
 } from "@/lib/apple-books";
@@ -450,6 +451,22 @@ function booksFunctionUrl(): string {
     process.env.POKITSTORY_SUPABASE_URL?.trim() ||
     "https://wvvtyaxsedpqiscogrwk.supabase.co";
   return `${projectUrl.replace(/\/$/, "")}/functions/v1/pokitstory-books`;
+}
+
+export async function getInitialLibraryChart(locale: Locale): Promise<LibraryBook[] | null> {
+  try {
+    if (locale !== "ko") return await fetchAppleBooksChart(locale, locale === "zh-TW" ? "topfreeebooks" : "toppaidebooks");
+    const response = await fetch(booksFunctionUrl(), {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ operation: "chart", query: "bestsellerRealtime" }),
+      next: { revalidate: 300 }, signal: AbortSignal.timeout(8000),
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    return Array.isArray(data.items) ? data.items : null;
+  } catch {
+    return null;
+  }
 }
 
 async function fetchYes24SearchBooks(

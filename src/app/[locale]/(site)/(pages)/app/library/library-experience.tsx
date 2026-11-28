@@ -680,14 +680,21 @@ const chartLabels = {
   "zh-TW": { topfreeebooks: "免費圖書排行" },
 } as const;
 
-function LibraryCharts({ locale, onSelect, category }: { category?: { id: string; label: string }; locale: Locale; onSelect: (book: LibraryBook) => void }) {
+function LibraryCharts({ locale, onSelect, category, initialChart = null }: { initialChart?: LibraryBook[] | null; category?: { id: string; label: string }; locale: Locale; onSelect: (book: LibraryBook) => void }) {
   const labels = chartLabels[locale];
   const [chartDate, setChartDate] = useState("");
-  const [feed, setFeed] = useState(category ? "newproductAttention" : Object.keys(labels)[0]);
-  const [books, setBooks] = useState<(LibraryBook & { rank?: number })[] | null>(null);
+  const defaultFeed = category ? "newproductAttention" : Object.keys(labels)[0];
+  const [feed, setFeed] = useState(defaultFeed);
+  const [books, setBooks] = useState<(LibraryBook & { rank?: number })[] | null>(initialChart);
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
+    if (initialChart && feed === defaultFeed) {
+      setBooks(initialChart);
+      setChartDate("");
+      setFailed(false);
+      return;
+    }
     const controller = new AbortController();
     setBooks(null);
     setChartDate("");
@@ -704,7 +711,7 @@ function LibraryCharts({ locale, onSelect, category }: { category?: { id: string
         }
       }).catch(() => { if (!controller.signal.aborted) setFailed(true); });
     return () => controller.abort();
-  }, [feed, attempt, locale, category?.id]);
+  }, [feed, attempt, locale, category?.id, defaultFeed, initialChart]);
   const heading = category ? category.label + " 주목할 신간" : { ko: "YES24 국내도서 순위", en: "Apple Books charts", ja: "Apple Books ランキング", "zh-TW": "Apple Books 圖書排行榜" }[locale];
   return <section id={category ? "category-new-books" : "library-charts"} className={cn(monoContainer, "mt-6 scroll-mt-16")}>
     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -758,7 +765,9 @@ function LibraryCharts({ locale, onSelect, category }: { category?: { id: string
 export function LibraryExperience({
   locale,
   initialData,
+  initialChart,
 }: {
+  initialChart: LibraryBook[] | null;
   locale: Locale;
   initialData: InitialLibraryData;
 }) {
@@ -1091,7 +1100,7 @@ export function LibraryExperience({
         </div>
       </section>
 
-      <LibraryCharts key={locale} locale={locale} onSelect={setSelected} />
+      <LibraryCharts initialChart={initialChart} key={locale} locale={locale} onSelect={setSelected} />
 
       {/* ── Curated Shelf Rows (matches /ko HomeWorkRows) ── */}
       {shelves.some((s) => s.books.length > 0) ? (
