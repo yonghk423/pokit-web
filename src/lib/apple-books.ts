@@ -56,7 +56,7 @@ function sanitizeText(value: string | undefined): string {
 
 function highResArtwork(url: string | undefined): string {
   if (!url) return "";
-  return url.replace(/100x100bb/i, "600x600bb");
+  return url.replace(/\/(?:0x\d+|100x100)bb\.(?:png|jpe?g)(?=$|\?)/i, "/600x600bb.jpg");
 }
 
 function formatReleaseDate(iso: string | undefined): string {
@@ -377,7 +377,7 @@ export async function fetchAppleBooksChart(locale: Exclude<Locale, "ko">, feed: 
     rank: index + 1, itemId: Number(entry.id.attributes["im:id"]), title: sanitizeText(entry["im:name"].label),
     author: sanitizeText(entry["im:artist"]?.label), publisher: "Apple Books",
     pubDate: formatReleaseDate(entry["im:releaseDate"]?.label),
-    link: entry.id.label, coverUrl: entry["im:image"]?.at(-1)?.label ?? "",
+    link: entry.id.label, coverUrl: highResArtwork(entry["im:image"]?.at(-1)?.label),
     description: sanitizeText(entry.summary?.label),
   })).filter(book => Number.isSafeInteger(book.itemId) && book.itemId > 0 && book.title && book.link.startsWith("https://books.apple.com/"));
 }
