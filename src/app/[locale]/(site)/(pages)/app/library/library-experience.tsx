@@ -655,16 +655,17 @@ function BookPreviewModal({
                 </div>
               )}
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                {picker && (
-                  <button type="button" className="min-h-10 rounded-full bg-ink px-5 text-sm font-semibold text-white"
+                {picker ? (
+                  <button type="button" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[#e3e2df] px-5 font-sans text-[0.82rem] font-semibold text-[#111322] no-underline shadow-[0_3px_10px_rgba(24,26,46,0.12)] transition-all hover:bg-[#d7d6d2]"
                     onClick={() => window.ReactNativeWebView?.postMessage(JSON.stringify({
                       type: "daylight.selectBook.v1", source: provider,
                       book: { itemId: book.itemId, title: book.title, author: book.author,
                         coverUrl: book.coverUrl, link: book.link, totalPages: book.totalPages },
                     }))}>
+                    <span className="size-2 rounded-full bg-[#2ca6a4] shadow-[0_0_6px_rgba(44,166,164,0.55)]" aria-hidden />
                     {{ ko: "이 책 선택", en: "Select this book", ja: "この本を選ぶ", "zh-TW": "選擇此書" }[locale]}
                   </button>
-                )}
+                ) : (
                 <a
                   href={book.link}
                   target="_blank"
@@ -674,6 +675,7 @@ function BookPreviewModal({
                   <span className="size-2 rounded-full bg-[#2ca6a4] shadow-[0_0_6px_rgba(44,166,164,0.55)]" aria-hidden />
                   {labels.buy} ↗
                 </a>
+                )}
               </div>
 
               <p className="mt-4 mb-0 max-w-[36rem] font-sans text-[0.72rem] leading-relaxed text-muted">
