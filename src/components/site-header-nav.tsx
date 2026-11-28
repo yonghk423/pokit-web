@@ -116,7 +116,7 @@ export function SiteHeaderNav({
                 className={cn(
                   "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
                   appActive
-                    ? "border border-ink/15 bg-ink/8 text-ink"
+                    ? "border border-[#e5b4c0] bg-[#fae8ec] text-ink shadow-[0_2px_8px_rgba(157,63,87,0.14)]"
                     : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
                   (appActive || libraryActive) && "max-[760px]:hidden",
                 )}
@@ -130,7 +130,7 @@ export function SiteHeaderNav({
                 className={cn(
                   "header-app-cta rounded-full px-3.5 py-1.5 font-sans text-[0.78rem] font-semibold no-underline max-[760px]:px-2.5 max-[760px]:py-1.5 max-[760px]:text-[0.7rem]",
                   libraryActive
-                    ? "border border-ink/15 bg-ink/8 text-ink max-[760px]:hidden"
+                    ? "border border-[#e5b4c0] bg-[#fae8ec] text-ink shadow-[0_2px_8px_rgba(157,63,87,0.14)] max-[760px]:hidden"
                     : "border border-ink/15 bg-white/80 text-ink hover:border-ink/30 hover:bg-white",
                 )}
                 aria-current={libraryActive ? "page" : undefined}
