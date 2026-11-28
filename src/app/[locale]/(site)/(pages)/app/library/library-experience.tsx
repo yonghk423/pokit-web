@@ -1238,6 +1238,7 @@ export function LibraryExperience({
                     )}
                   </div>
 
+                  {!isAppleBooks && <LibraryCharts locale={locale} key={subCategory?.id ?? activeGroup.id} category={subCategory ?? activeGroup} onSelect={setSelected} />}
                   {activeGroup.children.length > 0 ? (
                     <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
                       {activeGroup.children.map((sub) => (
@@ -1257,14 +1258,13 @@ export function LibraryExperience({
                               </span>
                             </button>
                           ) : (
-                            <button type="button" onClick={() => setSubCategory(sub)} aria-pressed={subCategory?.id === sub.id}
+                            <button type="button" onClick={() => { setSubCategory(sub); requestAnimationFrame(() => document.getElementById("category-new-books")?.scrollIntoView({ block: "start" })); }} aria-pressed={subCategory?.id === sub.id}
                               className="rounded-full border border-ink/10 px-3 py-1 text-xs aria-pressed:bg-ink aria-pressed:text-white">{sub.label}</button>
                           )}
                         </li>
                       ))}
                     </ul>
                   ) : null}
-                  {!isAppleBooks && <LibraryCharts locale={locale} key={subCategory?.id ?? activeGroup.id} category={subCategory ?? activeGroup} onSelect={setSelected} />}
                 </div>
               ) : null}
             </div>
