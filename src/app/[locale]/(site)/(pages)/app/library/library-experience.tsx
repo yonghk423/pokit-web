@@ -788,6 +788,9 @@ export function LibraryExperience({
     page: number;
     genreId?: string;
   }>({ query: "", page: 1 });
+  const [shownPage, setShownPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const firstPage = 1 + Math.floor((shownPage - 1) / 5) * 5;
   const [hasMore, setHasMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -855,12 +858,13 @@ export function LibraryExperience({
             description: sanitizeBookText(item.description),
           })),
         );
+        setShownPage(listing.page);
+        setTotalPages(payload.totalPages ?? (listing.page + Number(payload.hasMore === true)));
         setHasMore(payload.hasMore === true);
       } catch {
         if (!controller.signal.aborted) {
           setFailed(true);
-          setBooks([]);
-          setHasMore(false);
+
         }
       } finally {
         if (!controller.signal.aborted) setLoading(false);
@@ -874,17 +878,20 @@ export function LibraryExperience({
     (nextQuery: string, page = 1, genreId?: string) => {
     const normalized = nextQuery.trim();
     if (!normalized) return;
+    if (normalized !== listing.query || genreId !== listing.genreId) {
+      setBooks([]); setShownPage(1); setTotalPages(1); setHasMore(false);
+    }
     setQuery(normalized);
     setSelected(null);
     setFailed(false);
     setLoading(true);
     setListing({ query: normalized, page, genreId });
-    searchSectionRef.current?.scrollIntoView({
+    if (normalized !== listing.query || page === 1 && listing.page === 1) searchSectionRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
     },
-    [],
+    [listing],
   );
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
@@ -1008,8 +1015,8 @@ export function LibraryExperience({
                 <div>
                   <p className="m-0 font-sans text-[0.7rem] font-semibold tracking-[0.06em] text-green uppercase">
                     {t.result}
-                    {!loading && books.length > 0
-                      ? ` · ${t.pageLabel(listing.page, books.length)}`
+                    {books.length > 0
+                      ? ` · ${t.pageLabel(shownPage, books.length)}`
                       : null}
                   </p>
                   <h2 className="mt-1 mb-0 font-sans text-[clamp(1.25rem,2.6vw,1.75rem)] font-bold tracking-[-0.03em] text-ink">
@@ -1025,11 +1032,11 @@ export function LibraryExperience({
                 </button>
               </div>
 
-              {loading ? (
+              {loading && !books.length ? (
                 <p className="m-0 rounded-[1rem] bg-[#f5f5f7] px-5 py-9 font-sans text-sm text-muted">
                   {t.loading}
                 </p>
-              ) : failed ? (
+              ) : failed && !books.length ? (
                 <p
                   role="alert"
                   className="m-0 rounded-[1rem] bg-[#f5f5f7] px-5 py-9 font-sans text-sm text-muted"
@@ -1070,26 +1077,30 @@ export function LibraryExperience({
                 </ul>
               )}
 
-              {!loading && (listing.page > 1 || hasMore) ? (
-                <div className="mt-7 flex items-center justify-center gap-3 font-sans text-sm text-ink">
+              {failed && books.length > 0 && <p role="alert">{t.error}</p>}
+              {(shownPage > 1 || hasMore) ? (
+                <div aria-busy={loading} className="relative mt-7 flex items-center justify-center gap-1 font-sans text-sm text-ink">
                   <button
                     type="button"
                     className={navBtnClass}
                     aria-label={t.previous}
-                    disabled={listing.page === 1}
-                    onClick={() => runSearch(listing.query, listing.page - 1, listing.genreId)}
+                    disabled={loading || shownPage === 1}
+                    onClick={() => runSearch(listing.query, shownPage - 1, listing.genreId)}
                   >
                     ←
                   </button>
-                  <span className="min-w-6 text-center text-xs font-semibold text-muted">
-                    {listing.page}
-                  </span>
+                  {loading && <span role="status" className="absolute bottom-full mb-1 rounded bg-white px-2 text-xs">{t.loading}</span>}
+                  {Array.from({ length: Math.min(5, totalPages - firstPage + 1) }, (_, i) => firstPage + i).map(n => (
+                    <button key={n} type="button" disabled={loading || n === shownPage} aria-current={n === shownPage ? "page" : undefined}
+                      className="size-8 shrink-0 rounded-md aria-[current=page]:bg-ink aria-[current=page]:text-white"
+                      onClick={() => runSearch(listing.query, n, listing.genreId)}>{n}</button>
+                  ))}
                   <button
                     type="button"
                     className={navBtnClass}
                     aria-label={t.next}
-                    disabled={!hasMore}
-                    onClick={() => runSearch(listing.query, listing.page + 1, listing.genreId)}
+                    disabled={loading || !hasMore}
+                    onClick={() => runSearch(listing.query, shownPage + 1, listing.genreId)}
                   >
                     →
                   </button>

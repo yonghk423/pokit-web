@@ -128,7 +128,7 @@ Deno.serve(async request => {
     const hasMore = Number.isSafeInteger(totalCount)
       && page * (responsePageSize > 0 ? responsePageSize : pageSize) < totalCount
       && payload.data.items.length > 0;
-    return json({ items, hasMore, chartDate });
+    return json({ items, hasMore, chartDate, totalPages: operation === "search" && Number.isSafeInteger(totalCount) ? Math.ceil(totalCount / (responsePageSize > 0 ? responsePageSize : pageSize)) : undefined });
   } catch {
     return json({ error: 'provider_error' }, 502);
   }

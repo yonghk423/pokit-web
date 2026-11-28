@@ -279,18 +279,11 @@ export async function searchAppleBooks({
   pageSize?: number;
   /** Keep only results Apple files under this genre. */
   genreId?: string;
-}): Promise<{ items: LibraryBook[]; page: number; hasMore: boolean }> {
+}): Promise<{ items: LibraryBook[]; page: number; hasMore: boolean; totalPages: number }> {
   const country = appleBooksCountryForLocale(locale);
   const safePage = Math.max(1, Math.min(page, 8));
   // iTunes Search ignores `offset`; over-fetch and slice deterministically.
-  const fetchLimit = genreId
-    ? 200
-    : Math.min(
-        locale === "zh-TW"
-          ? safePage * pageSize * 2 + 20
-          : safePage * pageSize + 20,
-        200,
-      );
+  const fetchLimit = 200;
 
   const params = new URLSearchParams({
     term: query,
@@ -353,7 +346,7 @@ export async function searchAppleBooks({
   const items = filtered.slice(start, end);
   const hasMore = filtered.length > end && safePage < 8;
 
-  return { items, page: safePage, hasMore };
+  return { items, page: safePage, hasMore, totalPages: Math.min(8, Math.ceil(filtered.length / pageSize)) };
 }
 
 type ChartEntry = {
